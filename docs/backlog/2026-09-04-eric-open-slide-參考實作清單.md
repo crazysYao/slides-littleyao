@@ -64,7 +64,7 @@ CLI scaffold 模板 `packages/cli/template/vercel.json` **原生就內建**:
 
 ### 7. 工程細節 【小、實作時順手】
 
-- ~~pin Node 20~~ ✅ 已完成(2026-09-04):`engines` 改 `20.x` + 根目錄 `.node-version`
+- ~~pin Node~~ ✅ 已完成(2026-09-04):採 pin 模式但改鎖 Node 24 LTS(20 已於 2026/4 EOL):`engines` 改 `24.x` + 根目錄 `.node-version`
 - `netlify.toml` 等其他平台 fallback 設定:不需要,我們只用 Vercel(備查:同樣是 `/* → /index.html` 200)
 
 ## 不參考的部分(明確排除)
