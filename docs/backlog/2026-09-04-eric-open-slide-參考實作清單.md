@@ -27,18 +27,7 @@ CLI scaffold 模板 `packages/cli/template/vercel.json` **原生就內建**:
 
 ## 下一輪可參考的實作(依建議優先序)
 
-### 1. `open-slide.config.ts` 設定 `locale: zhTW` 【小、建議下輪就做】
-
-- 出處:`my-slide/open-slide.config.ts`
-- 內容:
-  ```ts
-  import type { OpenSlideConfig } from '@open-slide/core';
-  import { zhTW } from '@open-slide/core/locale';
-
-  const openSlideConfig: OpenSlideConfig = { locale: zhTW };
-  export default openSlideConfig;
-  ```
-- 價值:viewer / manager 介面中文化,個人使用體驗直接提升。
+### 1. ~~`open-slide.config.ts` 設定 `locale: zhTW`~~ ✅ 已完成(2026-09-04)
 
 ### 2. 個人主題:`themes/<id>.md` 【中、做第一份正式 deck 前】
 
@@ -75,7 +64,7 @@ CLI scaffold 模板 `packages/cli/template/vercel.json` **原生就內建**:
 
 ### 7. 工程細節 【小、實作時順手】
 
-- pin Node 20:`package.json` 的 `"engines": { "node": "20.x" }` + 根目錄 `.node-version`(內容 `20`)
+- ~~pin Node~~ ✅ 已完成(2026-09-04):採 pin 模式但改鎖 Node 24 LTS(20 已於 2026/4 EOL):`engines` 改 `24.x` + 根目錄 `.node-version`
 - `netlify.toml` 等其他平台 fallback 設定:不需要,我們只用 Vercel(備查:同樣是 `/* → /index.html` 200)
 
 ## 不參考的部分(明確排除)
