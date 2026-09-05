@@ -290,12 +290,16 @@ const Agenda: Page = () => (
       >
         今天的流程 <span style={{ fontSize: 36, color: 'var(--osd-accent)', fontWeight: 600 }}>Chương trình hôm nay</span>
       </h2>
-      <Step><AgendaRow time="0:00 – 0:15" label="取餐、暖場" vi="Lấy đồ ăn, khởi động" /></Step>
-      <Step><AgendaRow time="0:15 – 0:25" label="照片回顧影片" vi="Video kỷ niệm" /></Step>
-      <Step><AgendaRow time="0:25 – 0:45" label="「這段時間的你」" vi="Bạn trong thời gian qua" /></Step>
-      <Step><AgendaRow time="0:45 – 1:00" label="主角分享" vi="Nhân vật chính chia sẻ" /></Step>
-      <Step><AgendaRow time="1:00 – 1:15" label="頒發實習證明" vi="Trao giấy chứng nhận thực tập" /></Step>
-      <Step><AgendaRow time="1:15 – 1:30" label="合照、道別" vi="Chụp ảnh, tạm biệt" /></Step>
+      <Step>
+        <div>
+          <AgendaRow time="0:00 – 0:15" label="取餐、暖場" vi="Lấy đồ ăn, khởi động" />
+          <AgendaRow time="0:15 – 0:25" label="照片回顧影片" vi="Video kỷ niệm" />
+          <AgendaRow time="0:25 – 0:45" label="「這段時間的你」" vi="Bạn trong thời gian qua" />
+          <AgendaRow time="0:45 – 1:00" label="主角分享" vi="Nhân vật chính chia sẻ" />
+          <AgendaRow time="1:00 – 1:15" label="頒發實習證明" vi="Trao giấy chứng nhận thực tập" />
+          <AgendaRow time="1:15 – 1:30" label="合照、道別" vi="Chụp ảnh, tạm biệt" />
+        </div>
+      </Step>
     </Steps>
     <PageFooter />
   </div>
@@ -509,7 +513,7 @@ const Sharing: Page = () => (
       Đến lượt bạn chia sẻ
     </p>
     <div style={{ display: 'flex', gap: 64 }}>
-      <PromptCard tape={tapeMint} title="在台灣學到的事" vi="Điều học được ở Đài Loan" />
+      <PromptCard tape={tapeMint} title="在實習學到的事" vi="Điều học được trong kỳ thực tập" />
       <PromptCard tape={tapeYellow} title="最驚訝的事" vi="Điều bất ngờ nhất" />
     </div>
     <PageFooter />
