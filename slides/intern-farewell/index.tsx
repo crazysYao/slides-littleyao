@@ -1,5 +1,6 @@
 import type { DesignSystem, Page, SlideMeta, SlideTransition } from '@open-slide/core';
 import { Step, Steps, useSlidePageNumber } from '@open-slide/core';
+import { useState } from 'react';
 
 import officeCircle from './assets/office-circle.jpg';
 import mentoring from './assets/mentoring.jpg';
@@ -522,8 +523,63 @@ const Sharing: Page = () => (
 
 /* ---------- P8 頒發實習證明 ---------- */
 // 依素材中兩位主角簡化而成的扁平人物
-// 女生:黑長髮、淺藍襯衫、黑短裙、米色鞋
+// 女生:黑長直髮側分、米色寬版外套、白色短版上衣、淺色喇叭牛仔褲、黑白球鞋、比 YA
 const InternGirl = () => (
+  <svg width="220" height="340" viewBox="0 0 220 340">
+    {/* 後髮(過肩長直髮) */}
+    <path d="M58 64 Q52 150 66 212 L154 212 Q168 150 162 64 Z" fill="#2b2320" />
+    {/* 頭 */}
+    <circle cx="110" cy="78" r="44" fill="#f3d3b3" />
+    {/* 前髮:側分,右側斜蓋額頭 */}
+    <path d="M66 74 Q66 30 110 30 Q154 30 154 74 Q146 44 112 44 Q100 44 92 62 Q84 48 66 74 Z" fill="#2b2320" />
+    {/* 表情:嘟嘴 */}
+    <circle cx="94" cy="82" r="5" fill="#40342a" />
+    <circle cx="126" cy="82" r="5" fill="#40342a" />
+    <ellipse cx="110" cy="100" rx="6" ry="4.5" fill="#c96f52" />
+    <circle cx="82" cy="94" r="7" fill="rgba(226,112,74,0.25)" />
+    <circle cx="138" cy="94" r="7" fill="rgba(226,112,74,0.25)" />
+    {/* 脖子 */}
+    <rect x="100" y="116" width="20" height="20" fill="#f3d3b3" />
+    {/* 白色短版上衣 */}
+    <path d="M84 132 Q110 124 136 132 L138 194 L82 194 Z" fill="#fbfaf5" stroke="#d8cfbf" strokeWidth="2" />
+    <circle cx="110" cy="148" r="2.5" fill="#d8cfbf" />
+    <circle cx="110" cy="164" r="2.5" fill="#d8cfbf" />
+    <circle cx="110" cy="180" r="2.5" fill="#d8cfbf" />
+    {/* 露出的腰 */}
+    <rect x="84" y="192" width="52" height="14" fill="#f3d3b3" />
+    {/* 高腰淺色喇叭牛仔褲 */}
+    <path
+      d="M78 204 L142 204 L146 262 Q150 296 162 318 L126 318 Q120 280 116 250 L104 250 Q100 280 94 318 L58 318 Q70 296 74 262 Z"
+      fill="#b9cfe4"
+      stroke="#8fabc9"
+      strokeWidth="2"
+    />
+    <rect x="78" y="204" width="64" height="10" fill="#9db8d6" />
+    <line x1="110" y1="214" x2="110" y2="248" stroke="#8fabc9" strokeWidth="2" />
+    {/* 黑球鞋、白鞋頭 */}
+    <path d="M54 318 Q76 312 96 318 L96 332 L52 332 Z" fill="#2a2a2e" />
+    <path d="M52 332 L54 322 Q64 318 74 324 L74 332 Z" fill="#ffffff" />
+    <path d="M124 318 Q144 312 166 318 L168 332 L124 332 Z" fill="#2a2a2e" />
+    <path d="M168 332 L166 322 Q156 318 146 324 L146 332 Z" fill="#ffffff" />
+    {/* 米色寬版外套:敞開兩片 + 連帽領 */}
+    <path d="M84 132 Q70 130 62 142 L56 236 L86 236 L86 200 Q82 160 84 132 Z" fill="#dfd6c3" stroke="#c2b397" strokeWidth="2" />
+    <path d="M136 132 Q150 130 158 142 L164 236 L134 236 L134 200 Q138 160 136 132 Z" fill="#dfd6c3" stroke="#c2b397" strokeWidth="2" />
+    <path d="M84 130 Q92 116 110 118 Q128 116 136 130 Q126 138 110 136 Q94 138 84 130 Z" fill="#cfc4ad" />
+    {/* 右手舉起比 YA(畫面左側) */}
+    <path d="M72 140 Q40 152 44 104" stroke="#c2b397" strokeWidth="26" fill="none" strokeLinecap="round" />
+    <path d="M72 140 Q40 152 44 104" stroke="#dfd6c3" strokeWidth="22" fill="none" strokeLinecap="round" />
+    <circle cx="46" cy="90" r="11" fill="#f3d3b3" />
+    <line x1="41" y1="82" x2="36" y2="64" stroke="#f3d3b3" strokeWidth="7" strokeLinecap="round" />
+    <line x1="51" y1="82" x2="57" y2="64" stroke="#f3d3b3" strokeWidth="7" strokeLinecap="round" />
+    {/* 左手自然垂下(畫面右側) */}
+    <path d="M148 140 Q172 172 166 218" stroke="#c2b397" strokeWidth="26" fill="none" strokeLinecap="round" />
+    <path d="M148 140 Q172 172 166 218" stroke="#dfd6c3" strokeWidth="22" fill="none" strokeLinecap="round" />
+    <circle cx="166" cy="224" r="10" fill="#f3d3b3" />
+  </svg>
+);
+
+// 女生舊版:黑長髮、淺藍襯衫、黑短裙、米色鞋
+const InternGirlClassic = () => (
   <svg width="220" height="340" viewBox="0 0 220 340">
     {/* 後髮 */}
     <path d="M62 60 Q58 150 74 196 L146 196 Q162 150 158 60 Z" fill="#2b2320" />
@@ -560,6 +616,16 @@ const InternGirl = () => (
     <path d="M114 316 Q126 310 138 316 L138 326 L114 326 Z" fill="#d9c39a" />
   </svg>
 );
+
+// 點人偶在新舊兩版之間切換;data-osd-interactive 讓簡報模式的點擊不會誤觸換頁
+const InternGirlSwitch = () => {
+  const [classic, setClassic] = useState(false);
+  return (
+    <div data-osd-interactive style={{ cursor: 'pointer' }} onClick={() => setClassic((v) => !v)}>
+      {classic ? <InternGirlClassic /> : <InternGirl />}
+    </div>
+  );
+};
 
 // 男生:黑短髮、深藍襯衫、黑長褲、白球鞋
 const InternBoy = () => (
@@ -726,7 +792,7 @@ const Gifts: Page = () => (
             className="if-award-anim"
             style={{ animation: `if-walk-in-right 700ms ${EASE_OUT} both` }}
           >
-            <InternGirl />
+            <InternGirlSwitch />
           </div>
         </div>
         {/* 動畫收尾後才浮現的 QR 貼紙(外層定位、內層跑動畫,transform 不互相覆蓋) */}
