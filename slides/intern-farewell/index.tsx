@@ -597,6 +597,7 @@ const InternBoy = () => (
 // 證書卡片:兩人到位後,從下方升起、微傾後擺正
 const CertCard = () => (
   <div
+    className="if-award-anim"
     style={{
       background: paper,
       border: '3px solid #c9a35c',
@@ -674,6 +675,10 @@ const Gifts: Page = () => (
         70%  { opacity: 1; transform: rotate(3deg) scale(1.05) translateY(-4px); }
         100% { opacity: 1; transform: rotate(3deg) scale(1) translateY(0); }
       }
+      /* Step 揭示前凍結動畫時間軸,按下一步才從頭播放 */
+      [data-osd-step='pending'] .if-award-anim {
+        animation-play-state: paused !important;
+      }
     `}</style>
     <div
       style={{
@@ -704,50 +709,62 @@ const Gifts: Page = () => (
     <p style={{ fontSize: 34, color: 'var(--osd-accent)', fontWeight: 600, margin: '0 0 48px' }}>
       Trao giấy chứng nhận thực tập
     </p>
-    <div style={{ display: 'flex', alignItems: 'flex-end', gap: 48 }}>
-      <div style={{ animation: `if-walk-in-left 700ms ${EASE_OUT} both` }}>
-        <InternBoy />
-      </div>
-      <div style={{ alignSelf: 'center' }}>
-        <CertCard />
-      </div>
-      <div style={{ animation: `if-walk-in-right 700ms ${EASE_OUT} both` }}>
-        <InternGirl />
-      </div>
-    </div>
-    {/* 動畫收尾後才浮現的 QR 貼紙(外層定位、內層跑動畫,transform 不互相覆蓋) */}
-    <div
-      style={{
-        position: 'absolute',
-        right: 130,
-        top: '50%',
-        transform: 'translateY(-50%)',
-        zIndex: 10,
-      }}
-    >
-      <div
-        style={{
-          background: paper,
-          borderRadius: 'var(--osd-radius)',
-          boxShadow: '0 16px 40px rgba(64, 52, 42, 0.18)',
-          padding: '26px 30px 22px',
-          display: 'flex',
-          flexDirection: 'column',
-          alignItems: 'center',
-          gap: 14,
-          animation: `if-qr-pop 600ms ${EASE_OUT} 2400ms both`,
-        }}
-      >
-        <img src={certQr} style={{ width: 220, height: 220, display: 'block' }} />
-        <div style={{ fontSize: 24, fontWeight: 600, textAlign: 'center', lineHeight: 1.5 }}>
-          掃描領取電子證明
-          <br />
-          <span style={{ fontSize: 20, color: muted, fontWeight: 500 }}>
-            Quét mã để nhận bản điện tử
-          </span>
+    {/* 一開始只有標題;按下一步(→/點擊)才揭示並播放頒證動畫 */}
+    <Steps>
+      <Step>
+        <div style={{ display: 'flex', alignItems: 'flex-end', gap: 48 }}>
+          <div
+            className="if-award-anim"
+            style={{ animation: `if-walk-in-left 700ms ${EASE_OUT} both` }}
+          >
+            <InternBoy />
+          </div>
+          <div style={{ alignSelf: 'center' }}>
+            <CertCard />
+          </div>
+          <div
+            className="if-award-anim"
+            style={{ animation: `if-walk-in-right 700ms ${EASE_OUT} both` }}
+          >
+            <InternGirl />
+          </div>
         </div>
-      </div>
-    </div>
+        {/* 動畫收尾後才浮現的 QR 貼紙(外層定位、內層跑動畫,transform 不互相覆蓋) */}
+        <div
+          style={{
+            position: 'absolute',
+            right: 130,
+            top: '50%',
+            transform: 'translateY(-50%)',
+            zIndex: 10,
+          }}
+        >
+          <div
+            className="if-award-anim"
+            style={{
+              background: paper,
+              borderRadius: 'var(--osd-radius)',
+              boxShadow: '0 16px 40px rgba(64, 52, 42, 0.18)',
+              padding: '26px 30px 22px',
+              display: 'flex',
+              flexDirection: 'column',
+              alignItems: 'center',
+              gap: 14,
+              animation: `if-qr-pop 600ms ${EASE_OUT} 2400ms both`,
+            }}
+          >
+            <img src={certQr} style={{ width: 220, height: 220, display: 'block' }} />
+            <div style={{ fontSize: 24, fontWeight: 600, textAlign: 'center', lineHeight: 1.5 }}>
+              掃描領取電子證明
+              <br />
+              <span style={{ fontSize: 20, color: muted, fontWeight: 500 }}>
+                Quét mã để nhận bản điện tử
+              </span>
+            </div>
+          </div>
+        </div>
+      </Step>
+    </Steps>
     <PageFooter />
   </div>
 );
