@@ -54,5 +54,7 @@ A–E 的案例與素材保留，觀點定下來後再挑合適的當佐證。
 - [x] Synora deck 產生器(51 頁：35 頁內容＋Demo＋9 題搶答＋2 個排行榜＋4 頁揭曉拆頁)
 - [x] 建立 Synora 專案並 push、設定上課日 11/26
 - [x] 教案「課前準備」改寫為 Synora 操作
+- [x] 安裝 Synora 官方 Claude Code Plugin(0.8.8)並完成 OAuth 登入，`doctor` ready(2026-10-19)
+- [ ] 學員存取仍是 `draft`：classroom-preflight 判定 blocked，待決定開放時間
 - [ ] 講師在 Synora 編輯器逐頁檢查、改字
 - [ ] 真實課堂互動(投票、搶答計分)尚未在 Presenter／Student 實測
