@@ -236,23 +236,6 @@ const Term = ({ name, children }: { name: string; children: ReactNode }) => (
   </div>
 );
 
-const Option = ({ label, children }: { label: string; children: ReactNode }) => (
-  <div
-    style={{
-      display: 'flex',
-      alignItems: 'center',
-      gap: 24,
-      background: panel,
-      borderRadius: 20,
-      padding: '22px 32px',
-      fontSize: 36,
-    }}
-  >
-    <span style={{ fontWeight: 800, color: 'var(--osd-accent)' }}>{label}</span>
-    <span>{children}</span>
-  </div>
-);
-
 const NumRow = ({ color, q, children }: { color: string; q: string; children: ReactNode }) => (
   <div
     style={{
@@ -448,6 +431,7 @@ const S1: Page = () => (
 // 換頁會卸載頁面元件,iframe 若跟著頁面重建每次要等 5–6 秒,
 // 所以 iframe 掛在 body 上常駐;用 popover 進 top layer,全螢幕播放時才看得到。
 const SLIDO_S1 = 'foRgVyUkDkqswYiUu3C6JR';
+const SLIDO_S3 = '6UJNcWZQSpAsrzqa4BKS1S';
 const WALL_W = 1640;
 const WALL_H = 820;
 const walls = new Map<string, HTMLDivElement>();
@@ -795,9 +779,15 @@ const PracticeV1: Page = () => (
   </Frame>
 );
 
+const S1VoteWall: Page = () => (
+  <Frame section="01 思維">
+    <SlidoWall event={SLIDO_S1} />
+  </Frame>
+);
+
 const S1Vote: Page = () => (
   <Frame section="01 思維">
-    <Pill color="var(--osd-accent)">Slido 投票</Pill>
+    <Pill color="var(--osd-accent)">投票解析</Pill>
     <div style={{ marginTop: 28 }}>
       <H>哪個問法比較好？</H>
     </div>
@@ -960,16 +950,7 @@ const S3: Page = () => (
 
 const S3Poll: Page = () => (
   <Frame section="03 討論與應用">
-    <Pill color="var(--osd-accent)">Slido 投票</Pill>
-    <div style={{ marginTop: 28 }}>
-      <H>同一類問題，你重複問過 AI 幾次？</H>
-    </div>
-    <div style={{ display: 'flex', flexDirection: 'column', gap: 24, marginTop: 56, alignItems: 'flex-start' }}>
-      <Option label="A">1 次</Option>
-      <Option label="B">2–5 次</Option>
-      <Option label="C">5 次以上</Option>
-      <Option label="D">沒注意過</Option>
-    </div>
+    <SlidoWall event={SLIDO_S3} />
   </Frame>
 );
 
@@ -1030,20 +1011,10 @@ const MySkill: Page = () => (
   </Frame>
 );
 
+// 最佳攻防、出口票兩題共用這頁,在 Slido 後台依序 Start
 const ExitVote: Page = () => (
   <Frame section="03 討論與應用">
-    <Pill color="var(--osd-accent)">Slido 投票</Pill>
-    <div style={{ display: 'flex', flexDirection: 'column', gap: 64, marginTop: 48 }}>
-      <H>選出今天的「最佳攻防」</H>
-      <div>
-        <H>出口票：今天你最記得哪一問？</H>
-        <div style={{ display: 'flex', gap: 24, marginTop: 40 }}>
-          <Pill color={qWhy}>為什麼？</Pill>
-          <Pill color={qWhyNot}>為什麼不用 X？</Pill>
-          <Pill color={qBetter}>有沒有更好的方法？</Pill>
-        </div>
-      </div>
-    </div>
+    <SlidoWall event={SLIDO_S3} />
   </Frame>
 );
 
@@ -1127,6 +1098,7 @@ export default [
   CaseCompare,
   CaseAsk,
   PracticeV1,
+  S1VoteWall,
   S1Vote,
   Break1,
   S2,
