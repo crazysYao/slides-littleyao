@@ -56,7 +56,7 @@ export class SessionRoom extends DurableObject<Env> {
       return;
     }
     if (msg?.t === 'remote') {
-      if (role !== 'teacher') return;
+      if (role !== 'teacher' || !['next', 'prev', 'switch-session'].includes(msg.cmd)) return;
       const out: ServerMsg = { t: 'remote', cmd: msg.cmd };
       for (const t of this.ctx.getWebSockets('teacher')) if (t !== ws) t.send(JSON.stringify(out));
       return;

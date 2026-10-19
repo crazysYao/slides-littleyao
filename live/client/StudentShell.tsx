@@ -1,6 +1,5 @@
 import { type DesignSystem, designToCssVars, type Page, useIsActivePage } from '@open-slide/core';
 import { type CSSProperties, type ReactNode, useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react';
-import { createPortal } from 'react-dom';
 import type { StudentView } from '../shared/protocol.ts';
 import { type DeckPage, followTarget, type LiveDeck, maxSelfIndex, publicPages } from './deck.ts';
 import { Leaderboard, OptionBars, useCountdown } from './Interaction.tsx';
@@ -8,6 +7,7 @@ import { formatCode } from './JoinBadge.tsx';
 import { ControlledPage } from './steps.tsx';
 import { createLiveStore, type LiveStore, saveName, setCurrentStore, studentIdentity, useLiveStore } from './store.ts';
 import { C } from './theme.ts';
+import { btn, Portal } from './ui.tsx';
 
 const CANVAS_W = 1920;
 const CANVAS_H = 1080;
@@ -17,19 +17,6 @@ const CODE_RE = /^[A-Z2-9]{6}$/;
 export function liveApiBase(): string {
   return location.hostname === 'localhost' ? 'http://localhost:8787' : 'https://live.littleyao.me';
 }
-
-const btn = (primary: boolean): CSSProperties => ({
-  minHeight: 56,
-  padding: '0 22px',
-  borderRadius: 16,
-  border: primary ? 'none' : `2px solid ${C.line}`,
-  background: primary ? C.accent : C.panel,
-  color: primary ? '#fff' : C.text,
-  fontSize: 18,
-  fontWeight: 700,
-  fontFamily: C.font,
-  cursor: 'pointer',
-});
 
 const input: CSSProperties = {
   width: '100%',
@@ -414,27 +401,6 @@ function StudentApp({ deck, design }: { deck: LiveDeck; design?: DesignSystem })
       />
     );
   return <Classroom deck={deck} pub={pub} code={code} pid={identity.pid} name={name} cssVars={cssVars} />;
-}
-
-function Portal({ children }: { children: ReactNode }) {
-  const [el] = useState(() => {
-    const d = document.createElement('div');
-    Object.assign(d.style, {
-      position: 'fixed',
-      inset: '0',
-      zIndex: '2147483000',
-      overflow: 'auto',
-      background: C.bg,
-      color: C.text,
-      fontFamily: C.font,
-    });
-    return d;
-  });
-  useEffect(() => {
-    document.body.appendChild(el);
-    return () => el.remove();
-  }, [el]);
-  return createPortal(children, el);
 }
 
 export function makeStudentDeck(deck: LiveDeck, design?: DesignSystem): Page[] {

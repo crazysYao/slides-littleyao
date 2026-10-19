@@ -1,5 +1,5 @@
 import { useSyncExternalStore } from 'react';
-import type { ClientMsg, Role, ServerMsg, StudentView, TeacherView } from '../shared/protocol.ts';
+import type { ClientMsg, RemoteCmd, Role, ServerMsg, StudentView, TeacherView } from '../shared/protocol.ts';
 
 export type LiveSnapshot = { connected: boolean; view: TeacherView | StudentView | null; role: Role };
 
@@ -16,7 +16,7 @@ type StoreOpts = {
   pid?: string;
   name?: string;
   onOpen?: () => void;
-  onRemote?: (cmd: 'next' | 'prev') => void;
+  onRemote?: (cmd: RemoteCmd) => void;
   WebSocketImpl?: typeof WebSocket;
   setTimeoutImpl?: (fn: () => void, ms: number) => void;
 };
