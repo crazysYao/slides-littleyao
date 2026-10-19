@@ -1,0 +1,27 @@
+{
+  "name": "slides-live",
+  "main": "index.ts",
+  "compatibility_date": "2026-05-01",
+  "durable_objects": {
+    "bindings": [
+      { "name": "SESSION", "class_name": "SessionRoom" },
+      { "name": "REGISTRY", "class_name": "Registry" }
+    ]
+  },
+  "migrations": [{ "tag": "v1", "new_sqlite_classes": ["SessionRoom", "Registry"] }],
+  "assets": {
+    "directory": "../../dist-teacher",
+    "binding": "ASSETS",
+    "run_worker_first": true,
+    "not_found_handling": "single-page-application"
+  },
+  "routes": [
+    { "pattern": "live.littleyao.me", "custom_domain": true },
+    { "pattern": "teach.littleyao.me", "custom_domain": true }
+  ],
+  "vars": {
+    "ACCESS_TEAM_DOMAIN": "",
+    "ACCESS_AUD": "",
+    "TEACHER_EMAIL": "a39795979@gmail.com"
+  }
+}

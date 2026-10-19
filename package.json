@@ -11,7 +11,9 @@
     "dev": "open-slide dev",
     "build": "open-slide build",
     "preview": "open-slide preview",
-    "sync:skills": "open-slide sync:skills"
+    "sync:skills": "open-slide sync:skills",
+    "test:live": "~/.nvm/versions/node/v24.20.0/bin/node --test 'live/**/*.test.ts'",
+    "dev:worker": "npx -y wrangler@4.86.0 dev -c live/worker/wrangler.jsonc --port 8787 --host localhost"
   },
   "dependencies": {
     "@open-slide/core": "^1.17.1",

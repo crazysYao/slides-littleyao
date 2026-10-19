@@ -4,3 +4,6 @@ dist
 .vercel
 .env*
 .superpowers/
+dist-teacher/
+.dev.vars
+.wrangler/
