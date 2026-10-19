@@ -16,7 +16,7 @@ import {
 } from '../../slides/ntut-three-questions/content.tsx';
 
 // 公開建置(slides.littleyao.me)不得出現的字串；live/scripts/check-public-build.mjs 讀取
-export const LEAK_MARKERS = ['Demo：這堂課是怎麼備出來的', '/api/teacher/'];
+export const LEAK_MARKERS = ['Demo：這堂課是怎麼備出來的', '這裡有五個主題候選', '/api/teacher/'];
 
 const Demo: Page = () => (
   <Frame section="02 關鍵字">
