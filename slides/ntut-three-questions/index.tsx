@@ -322,26 +322,6 @@ const SectionDivider = ({ no, title, time, sub }: { no: string; title: string; t
   </div>
 );
 
-const InteractPage = ({
-  section,
-  tool,
-  title,
-  code,
-}: {
-  section: string;
-  tool: string;
-  title: string;
-  code: string;
-}) => (
-  <Frame section={section}>
-    <div style={{ flex: 1, display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center' }}>
-      <Pill color="var(--osd-accent)">{tool}</Pill>
-      <div style={{ fontSize: 120, fontWeight: 900, marginTop: 40 }}>{title}</div>
-      <div style={{ fontSize: 40, color: muted, marginTop: 32 }}>{code}</div>
-    </div>
-  </Frame>
-);
-
 const BreakPage = ({ back }: { back: string }) => (
   <div
     style={{
@@ -431,6 +411,8 @@ const S1: Page = () => (
 // 換頁會卸載頁面元件,iframe 若跟著頁面重建每次要等 5–6 秒,
 // 所以 iframe 掛在 body 上常駐;用 popover 進 top layer,全螢幕播放時才看得到。
 const SLIDO_S1 = 'foRgVyUkDkqswYiUu3C6JR';
+const SLIDO_S2_WARMUP = 'gjatxRN4JVTqUesrqoFB2V';
+const SLIDO_S2_REVIEW = '5LymfUW6he46vmyVcH19HL';
 const SLIDO_S3 = '6UJNcWZQSpAsrzqa4BKS1S';
 const WALL_W = 1640;
 const WALL_H = 820;
@@ -814,7 +796,9 @@ const S2: Page = () => (
 );
 
 const Warmup: Page = () => (
-  <InteractPage section="02 關鍵字" tool="Wayground 搶答" title="暖身搶答" code="4 題 · 加入代碼：＿＿＿＿" />
+  <Frame section="02 關鍵字">
+    <SlidoWall event={SLIDO_S2_WARMUP} />
+  </Frame>
 );
 
 const PromptContext: Page = () => (
@@ -937,7 +921,9 @@ const Demo: Page = () => (
 );
 
 const Review: Page = () => (
-  <InteractPage section="02 關鍵字" tool="Wayground 搶答" title="關鍵字複習" code="5 題 · 加入代碼：＿＿＿＿" />
+  <Frame section="02 關鍵字">
+    <SlidoWall event={SLIDO_S2_REVIEW} />
+  </Frame>
 );
 
 const Break2: Page = () => <BreakPage back="11:05" />;
