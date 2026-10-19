@@ -75,3 +75,8 @@ test('格式錯被拒', async () => {
   assert.deepEqual(await verifyAccessJwt('abc', opts), { ok: false, reason: 'malformed' });
   assert.deepEqual(await verifyAccessJwt('', opts), { ok: false, reason: 'malformed' });
 });
+
+test('JWKS 回傳格式錯誤時拒絕而不丟例外', async () => {
+  const r = await verifyAccessJwt(await sign(good), { ...opts, fetchJwks: async () => ({}) as never });
+  assert.deepEqual(r, { ok: false, reason: 'jwks' });
+});

@@ -1,5 +1,5 @@
 import { verifyAccessJwt } from './access.ts';
-import { classify, studentOriginAllowed } from './routes.ts';
+import { classify, studentOriginAllowed, teacherOriginAllowed } from './routes.ts';
 
 export { Registry } from './registry-do.ts';
 export { SessionRoom } from './session-do.ts';
@@ -34,21 +34,29 @@ async function createSession(env: Env, deckId: string): Promise<string> {
   return code;
 }
 
+async function currentSession(env: Env, deckId: string): Promise<string> {
+  const { code } = await registry(env).currentOrCreate(deckId);
+  // init 可重複呼叫，已存在就略過
+  await room(env, code).init(code, deckId);
+  return code;
+}
+
 async function teacherApi(env: Env, url: URL, method: string): Promise<Response> {
+  const detail = url.pathname.match(/^\/api\/teacher\/sessions\/([A-Z2-9]{6})$/);
+  if (detail && method === 'GET') {
+    const view = await room(env, detail[1]).snapshot();
+    return view ? json(view) : json({ error: 'not found' }, 404);
+  }
   const m = url.pathname.match(/^\/api\/teacher\/decks\/([^/]+)\/(sessions|current)$/);
   if (!m || !DECK_RE.test(m[1])) return json({ error: 'not found' }, 404);
   const [, deckId, action] = m;
-  if (action === 'current' && method === 'GET') {
-    const { code } = await registry(env).current(deckId);
-    return json({ code: code ?? (await createSession(env, deckId)) });
-  }
+  if (action === 'current' && method === 'GET') return json({ code: await currentSession(env, deckId) });
   if (action === 'sessions' && method === 'POST') return json({ code: await createSession(env, deckId) });
   if (action === 'sessions' && method === 'GET') {
     const entries = await registry(env).list(deckId);
     const sessions = await Promise.all(
       entries.map(async (e) => {
-        const s = await room(env, e.code).summary();
-        return { code: e.code, createdAt: e.createdAt, participants: s?.participants ?? 0, view: s?.view ?? null };
+        return { code: e.code, createdAt: e.createdAt, participants: await room(env, e.code).participants() };
       }),
     );
     return json({ sessions });
@@ -78,6 +86,8 @@ export default {
       case 'teacher-ws':
       case 'teacher-api':
       case 'teacher-asset':
+        if (!teacherOriginAllowed(request.headers.get('Origin'), kind === 'teacher-ws' ? 'WS' : request.method, dev))
+          return new Response('forbidden', { status: 403 });
         if (!(await teacherAllowed(request, env, url))) return new Response('forbidden', { status: 403 });
         if (kind === 'teacher-ws') return forwardWs(request, env, url, 'teacher');
         if (kind === 'teacher-api') return teacherApi(env, url, request.method);

@@ -25,3 +25,12 @@ export function classify(url: URL, devMode: boolean): { kind: RouteKind } {
 export function studentOriginAllowed(origin: string | null, devMode: boolean): boolean {
   return origin === STUDENT_ORIGIN || (devMode && origin === DEV_STUDENT_ORIGIN);
 }
+
+const TEACH_ORIGIN = `https://${TEACH_HOST}`;
+
+// 防止老師登入後被其他網站借用 Access cookie 操作(CSRF / 跨站 WebSocket)
+export function teacherOriginAllowed(origin: string | null, method: string, devMode: boolean): boolean {
+  if (origin === TEACH_ORIGIN) return true;
+  if (devMode && origin !== null && /^http:\/\/localhost(:\d+)?$/.test(origin)) return true;
+  return origin === null && (method === 'GET' || method === 'HEAD');
+}

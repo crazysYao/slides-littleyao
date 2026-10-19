@@ -10,6 +10,7 @@ import type {
 } from './protocol.ts';
 
 const DEFAULT_QUIZ_SECONDS = 20;
+const MAX_PARTICIPANTS = 200;
 
 export function createSession(sessionId: string, deckId: string, now: number): SessionState {
   return {
@@ -50,6 +51,7 @@ export function reduce(
   msg: ClientMsg,
   ctx: { role: Role; pid?: string; now: number },
 ): SessionState {
+  if (!msg || typeof msg !== 'object' || typeof msg.t !== 'string') return s;
   if (ctx.role === 'student') return reduceStudent(s, msg, ctx.pid, ctx.now);
   return reduceTeacher(s, msg, ctx.now);
 }
@@ -57,15 +59,19 @@ export function reduce(
 function reduceStudent(s: SessionState, msg: ClientMsg, pid: string | undefined, now: number): SessionState {
   if (!pid) return s;
   if (msg.t === 'join') {
+    if (typeof msg.name !== 'string') return s;
     const name = msg.name.trim();
     if (msg.pid !== pid || name.length < 1 || [...name].length > 20) return s;
     const prev = s.participants[pid];
+    if (prev?.name === name) return s;
+    if (!prev && Object.keys(s.participants).length >= MAX_PARTICIPANTS) return s;
     return { ...s, participants: { ...s.participants, [pid]: { name, score: prev?.score ?? 0 } } };
   }
   if (msg.t === 'answer') {
-    const i = s.interactions[msg.iid];
+    const i = typeof msg.iid === 'string' ? s.interactions[msg.iid] : undefined;
     if (!s.participants[pid] || !i || i.status !== 'open') return s;
     if (!Number.isInteger(msg.choice) || msg.choice < 0 || msg.choice >= i.options.length) return s;
+    if (i.answers[pid]?.choice === msg.choice) return s;
     if (i.kind === 'quiz') {
       if (i.answers[pid]) return s;
       if (now - (i.openedAt ?? now) > limitMs(i)) return s;
@@ -78,6 +84,7 @@ function reduceStudent(s: SessionState, msg: ClientMsg, pid: string | undefined,
 function reduceTeacher(s: SessionState, msg: ClientMsg, now: number): SessionState {
   switch (msg.t) {
     case 'define': {
+      if (!Array.isArray(msg.defs)) return s;
       const interactions = { ...s.interactions };
       for (const d of msg.defs) {
         const prev = interactions[d.id];
@@ -93,7 +100,8 @@ function reduceTeacher(s: SessionState, msg: ClientMsg, now: number): SessionSta
       return { ...s, view: msg.view };
     case 'open': {
       const i = s.interactions[msg.iid];
-      if (!i) return s;
+      // 只能從 idle 開題；要重開請先 reset，否則舊作答會被重複計分
+      if (!i || i.status !== 'idle') return s;
       const next = setInteraction(s, { ...i, status: 'open', openedAt: now });
       return { ...next, activeId: i.id, view: 'question' };
     }

@@ -2,6 +2,7 @@
 const BASE = process.env.LIVE_BASE ?? 'http://localhost:8787';
 const WS = BASE.replace(/^http/, 'ws');
 const ORIGIN = 'http://localhost:5173';
+const TEACH = { Origin: BASE };
 const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
 
 function connect(url, headers = {}) {
@@ -24,10 +25,18 @@ function assert(cond, msg) {
   }
 }
 
-const { code } = await (await fetch(`${BASE}/api/teacher/decks/smoke/sessions`, { method: 'POST' })).json();
+const { code } = await (await fetch(`${BASE}/api/teacher/decks/smoke/sessions`, { method: 'POST', headers: TEACH })).json();
 assert(/^[A-Z2-9]{6}$/.test(code), `code ${code}`);
 
-const t = await connect(`${WS}/api/teacher/ws?code=${code}`);
+const t = await connect(`${WS}/api/teacher/ws?code=${code}`, TEACH);
+const evilTeacher = await new Promise((res) => {
+  const ws = new WebSocket(`${WS}/api/teacher/ws?code=${code}`, { headers: { Origin: 'https://evil.example' } });
+  ws.addEventListener('open', () => res('opened'));
+  ws.addEventListener('error', () => res('rejected'));
+});
+assert(evilTeacher === 'rejected', 'cross-site teacher ws should be rejected');
+const evilPost = await fetch(`${BASE}/api/teacher/decks/smoke/sessions`, { method: 'POST' });
+assert(evilPost.status === 403, `POST without origin ${evilPost.status}`);
 t.ws.send(JSON.stringify({ t: 'define', defs: [{ id: 'q1', kind: 'quiz', question: 'Q', options: ['a', 'b'], seconds: 20, correct: 1 }] }));
 
 const bad = await new Promise((res) => {
@@ -60,7 +69,11 @@ await sleep(300);
 assert(s2.last.me.score === score, 'score kept after reconnect');
 
 const list = await (await fetch(`${BASE}/api/teacher/decks/smoke/sessions`)).json();
-assert(list.sessions.some((x) => x.code === code && x.participants === 1), 'session listed');
+assert(list.sessions.some((x) => x.code === code && x.participants === 1 && !('view' in x)), 'session listed');
+const detail = await (await fetch(`${BASE}/api/teacher/sessions/${code}`)).json();
+assert(detail.counts.q1[1] === 1, 'session detail');
+const [c1, c2] = await Promise.all([1, 2].map(async () => (await (await fetch(`${BASE}/api/teacher/decks/race-${code.toLowerCase()}/current`)).json()).code));
+assert(c1 && c1 === c2, `current is atomic ${c1} ${c2}`);
 const asset = await fetch(`${BASE}/`);
 assert(asset.status === 200, 'teacher asset served in dev');
 

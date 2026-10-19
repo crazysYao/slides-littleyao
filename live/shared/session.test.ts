@@ -211,3 +211,55 @@ test('未知訊息原樣回傳', () => {
   const role: Role = 'teacher';
   assert.equal(reduce(s, { t: 'bogus' } as unknown as ClientMsg, { role, now: 0 }), s);
 });
+
+test('已公布的題目不能再 open(避免重複計分)', () => {
+  let s = T(setup(), { t: 'open', iid: 'q1' }, 0);
+  s = S(s, 'p1', { t: 'answer', iid: 'q1', choice: 1 }, 15000);
+  s = T(s, { t: 'reveal', iid: 'q1' }, 21000);
+  const score = s.participants.p1.score;
+  s = T(s, { t: 'open', iid: 'q1' }, 30000);
+  s = T(s, { t: 'reveal', iid: 'q1' }, 31000);
+  assert.equal(s.participants.p1.score, score);
+  assert.equal(s.interactions.q1.status, 'revealed');
+});
+
+test('已關閉的題目不能再 open', () => {
+  let s = T(setup(), { t: 'open', iid: 'q1' }, 0);
+  s = T(s, { t: 'close', iid: 'q1' }, 1000);
+  s = T(s, { t: 'open', iid: 'q1' }, 5000);
+  assert.equal(s.interactions.q1.status, 'closed');
+  assert.equal(s.interactions.q1.openedAt, 0);
+});
+
+test('reset 後可以重新 open', () => {
+  let s = T(setup(), { t: 'open', iid: 'q1' }, 0);
+  s = T(s, { t: 'reveal', iid: 'q1' }, 1000);
+  s = T(s, { t: 'reset', iid: 'q1' });
+  s = T(s, { t: 'open', iid: 'q1' }, 2000);
+  assert.equal(s.interactions.q1.status, 'open');
+});
+
+test('投票重送相同選項不產生新狀態', () => {
+  let s = T(setup(), { t: 'open', iid: 'p1' });
+  s = S(s, 'p1', { t: 'answer', iid: 'p1', choice: 1 });
+  assert.equal(S(s, 'p1', { t: 'answer', iid: 'p1', choice: 1 }), s);
+});
+
+test('重送相同名字不產生新狀態', () => {
+  const s = setup();
+  assert.equal(S(s, 'p1', { t: 'join', pid: 'p1', name: '小明' }), s);
+});
+
+test('參與者上限 200 人', () => {
+  let s = createSession('S1', 'deck', 0);
+  for (let i = 0; i < 205; i++) s = S(s, `p${i}`, { t: 'join', pid: `p${i}`, name: `n${i}` });
+  assert.equal(Object.keys(s.participants).length, 200);
+});
+
+test('格式錯的訊息不丟例外、原樣回傳', () => {
+  const s = setup();
+  for (const bad of [null, 1, {}, { t: 'join', pid: 'p1', name: 1 }, { t: 'answer', iid: 1, choice: 'a' }]) {
+    assert.equal(S(s, 'p1', bad as unknown as ClientMsg), s);
+    assert.equal(T(s, bad as unknown as ClientMsg), s);
+  }
+});

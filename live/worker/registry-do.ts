@@ -19,8 +19,11 @@ export class Registry extends DurableObject<Env> {
     return code;
   }
 
-  async current(deckId: string): Promise<{ code: string | null }> {
-    return { code: (await this.deck(deckId)).current };
+  // 查詢與建立在同一個 DO 方法內完成，筆電與手機同時開也只會有一個目前場次
+  async currentOrCreate(deckId: string): Promise<{ code: string; created: boolean }> {
+    const current = (await this.deck(deckId)).current;
+    if (current) return { code: current, created: false };
+    return { code: await this.newSession(deckId), created: true };
   }
 
   async list(deckId: string): Promise<SessionEntry[]> {

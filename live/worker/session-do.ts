@@ -2,6 +2,9 @@ import { DurableObject } from 'cloudflare:workers';
 import type { ClientMsg, Role, ServerMsg, SessionState } from '../shared/protocol.ts';
 import { createSession, reduce, studentView, teacherView } from '../shared/session.ts';
 
+const MAX_MESSAGE_CHARS = 64_000;
+const STUDENT_MIN_INTERVAL_MS = 150;
+
 export class SessionRoom extends DurableObject<Env> {
   private state: SessionState | null = null;
 
@@ -18,9 +21,12 @@ export class SessionRoom extends DurableObject<Env> {
     await this.ctx.storage.put('state', this.state);
   }
 
-  async summary(): Promise<{ participants: number; view: ReturnType<typeof teacherView> } | null> {
-    if (!this.state) return null;
-    return { participants: Object.keys(this.state.participants).length, view: teacherView(this.state) };
+  async participants(): Promise<number> {
+    return this.state ? Object.keys(this.state.participants).length : 0;
+  }
+
+  async snapshot(): Promise<ReturnType<typeof teacherView> | null> {
+    return this.state ? teacherView(this.state) : null;
   }
 
   async fetch(request: Request): Promise<Response> {
@@ -35,15 +41,21 @@ export class SessionRoom extends DurableObject<Env> {
   }
 
   async webSocketMessage(ws: WebSocket, raw: string | ArrayBuffer): Promise<void> {
-    if (!this.state || typeof raw !== 'string') return;
+    if (!this.state || typeof raw !== 'string' || raw.length > MAX_MESSAGE_CHARS) return;
+    const [role, pid] = this.ctx.getTags(ws) as [Role, string];
+    if (role === 'student') {
+      const now = Date.now();
+      const last = (ws.deserializeAttachment() as { last?: number } | null)?.last ?? 0;
+      if (now - last < STUDENT_MIN_INTERVAL_MS) return;
+      ws.serializeAttachment({ last: now });
+    }
     let msg: ClientMsg;
     try {
       msg = JSON.parse(raw);
     } catch {
       return;
     }
-    const [role, pid] = this.ctx.getTags(ws) as [Role, string];
-    if (msg.t === 'remote') {
+    if (msg?.t === 'remote') {
       if (role !== 'teacher') return;
       const out: ServerMsg = { t: 'remote', cmd: msg.cmd };
       for (const t of this.ctx.getWebSockets('teacher')) if (t !== ws) t.send(JSON.stringify(out));
@@ -51,8 +63,8 @@ export class SessionRoom extends DurableObject<Env> {
     }
     const next = reduce(this.state, msg, { role, pid: role === 'student' ? pid : undefined, now: Date.now() });
     if (next === this.state) return;
-    this.state = next;
     await this.ctx.storage.put('state', next);
+    this.state = next;
     for (const s of this.ctx.getWebSockets()) this.sendView(s);
   }
 

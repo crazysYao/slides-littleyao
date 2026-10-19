@@ -1,6 +1,6 @@
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
-import { classify, studentOriginAllowed } from './routes.ts';
+import { classify, studentOriginAllowed, teacherOriginAllowed } from './routes.ts';
 
 const k = (u: string, dev = false) => classify(new URL(u), dev).kind;
 
@@ -41,4 +41,22 @@ test('學生 WebSocket 來源限制', () => {
   assert.equal(studentOriginAllowed(null, false), false);
   assert.equal(studentOriginAllowed('http://localhost:5173', false), false);
   assert.equal(studentOriginAllowed('http://localhost:5173', true), true);
+});
+
+test('老師 WebSocket 與寫入 API 只接受 teach 網域來源', () => {
+  assert.equal(teacherOriginAllowed('https://teach.littleyao.me', 'POST', false), true);
+  assert.equal(teacherOriginAllowed('https://evil.example', 'POST', false), false);
+  assert.equal(teacherOriginAllowed(null, 'POST', false), false);
+  assert.equal(teacherOriginAllowed('https://evil.example', 'WS', false), false);
+  assert.equal(teacherOriginAllowed('https://teach.littleyao.me', 'WS', false), true);
+});
+
+test('老師 GET 不帶 Origin 可通過(一般頁面瀏覽)，帶錯的 Origin 不行', () => {
+  assert.equal(teacherOriginAllowed(null, 'GET', false), true);
+  assert.equal(teacherOriginAllowed('https://evil.example', 'GET', false), false);
+});
+
+test('開發模式放行 localhost 來源', () => {
+  assert.equal(teacherOriginAllowed('http://localhost:8787', 'WS', true), true);
+  assert.equal(teacherOriginAllowed('http://localhost:8787', 'WS', false), false);
 });
