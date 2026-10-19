@@ -13,7 +13,10 @@
     "preview": "open-slide preview",
     "sync:skills": "open-slide sync:skills",
     "test:live": "~/.nvm/versions/node/v24.20.0/bin/node --test 'live/**/*.test.ts'",
-    "dev:worker": "npx -y wrangler@4.86.0 dev -c live/worker/wrangler.jsonc --port 8787 --host localhost"
+    "dev:worker": "npx -y wrangler@4.86.0 dev -c live/worker/wrangler.jsonc --port 8787 --host localhost",
+    "dev:teacher": "OPEN_SLIDE_SLIDES_DIR=teacher-slides open-slide dev --port 5174",
+    "build:teacher": "OPEN_SLIDE_SLIDES_DIR=teacher-slides open-slide build --out-dir dist-teacher",
+    "check:public": "node live/scripts/check-public-build.mjs dist"
   },
   "dependencies": {
     "@open-slide/core": "^1.17.1",
