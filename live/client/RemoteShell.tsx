@@ -11,6 +11,12 @@ type SessionRow = { code: string; createdAt: number; participants: number };
 const section: CSSProperties = { background: C.panel, borderRadius: 20, padding: 16, display: 'flex', flexDirection: 'column', gap: 12 };
 const grid2: CSSProperties = { display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 10 };
 
+async function getJson<T>(url: string, init?: RequestInit): Promise<T> {
+  const res = await fetch(url, { credentials: 'include', ...init });
+  if (!res.ok) throw new Error(`${res.status}`);
+  return res.json() as Promise<T>;
+}
+
 const STATUS: Record<string, string> = { idle: '尚未開始', open: '作答中', closed: '已結束', revealed: '已公布' };
 
 // 需要二次確認的按鈕(不用 confirm()，避免阻塞頁面)
@@ -57,10 +63,11 @@ function Counts({ view, iid }: { view: TeacherView; iid: string }) {
 function SessionHistory({ apiBase, deckId }: { apiBase: string; deckId: string }) {
   const [rows, setRows] = useState<SessionRow[] | null>(null);
   const [detail, setDetail] = useState<TeacherView | null>(null);
+  const [error, setError] = useState('');
   useEffect(() => {
-    void fetch(`${apiBase}/api/teacher/decks/${deckId}/sessions`)
-      .then((r) => r.json())
-      .then((d: { sessions: SessionRow[] }) => setRows([...d.sessions].reverse()));
+    getJson<{ sessions: SessionRow[] }>(`${apiBase}/api/teacher/decks/${deckId}/sessions`)
+      .then((d) => setRows([...d.sessions].reverse()))
+      .catch(() => setError('讀取場次失敗，請稍後再試'));
   }, [apiBase, deckId]);
   if (detail)
     return (
@@ -76,6 +83,7 @@ function SessionHistory({ apiBase, deckId }: { apiBase: string; deckId: string }
         ))}
       </div>
     );
+  if (error) return <div style={{ color: C.bad }}>{error}</div>;
   if (!rows) return <div style={{ color: C.muted }}>載入中…</div>;
   return (
     <div style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
@@ -84,7 +92,11 @@ function SessionHistory({ apiBase, deckId }: { apiBase: string; deckId: string }
           key={r.code}
           type="button"
           style={{ ...btn(false), display: 'flex', justifyContent: 'space-between' }}
-          onClick={() => void fetch(`${apiBase}/api/teacher/sessions/${r.code}`).then((x) => x.json()).then(setDetail)}
+          onClick={() =>
+            getJson<TeacherView>(`${apiBase}/api/teacher/sessions/${r.code}`)
+              .then(setDetail)
+              .catch(() => setError('讀取場次結果失敗'))
+          }
         >
           <span>{formatCode(r.code)}</span>
           <span style={{ color: C.muted, fontWeight: 500 }}>
@@ -101,9 +113,14 @@ function Controls({ apiBase, deckId }: { apiBase: string; deckId: string }) {
   const [store, setStore] = useState<LiveStore | null>(null);
   const [showHistory, setShowHistory] = useState(false);
 
+  const [error, setError] = useState('');
   const loadCurrent = useCallback(async () => {
-    const r = await fetch(`${apiBase}/api/teacher/decks/${deckId}/current`);
-    setCode(((await r.json()) as { code: string }).code);
+    try {
+      setCode((await getJson<{ code: string }>(`${apiBase}/api/teacher/decks/${deckId}/current`)).code);
+      setError('');
+    } catch {
+      setError('連不上伺服器，請確認網路或重新登入');
+    }
   }, [apiBase, deckId]);
 
   useEffect(() => {
@@ -125,7 +142,12 @@ function Controls({ apiBase, deckId }: { apiBase: string; deckId: string }) {
   const inter = iid ? view?.interactions[iid] : undefined;
 
   const newSession = async () => {
-    await fetch(`${apiBase}/api/teacher/decks/${deckId}/sessions`, { method: 'POST' });
+    try {
+      await getJson(`${apiBase}/api/teacher/decks/${deckId}/sessions`, { method: 'POST' });
+    } catch {
+      setError('開新場次失敗，請再試一次');
+      return;
+    }
     send({ t: 'remote', cmd: 'switch-session' });
     await loadCurrent();
   };
@@ -140,10 +162,13 @@ function Controls({ apiBase, deckId }: { apiBase: string; deckId: string }) {
         </span>
       </div>
 
+      {error && <div style={{ ...section, color: C.bad }}>{error}</div>}
+
       <div style={section}>
         <div style={{ color: C.muted, fontSize: 15 }}>
           目前頁：<b style={{ color: C.text }}>{nav?.pageId ?? '老師版尚未播放(請在筆電按 F)'}</b>
-          {nav ? ` · 第 ${nav.step} 步` : ''}
+          {nav?.index !== undefined ? ` · 第 ${nav.index + 1} / ${nav.total} 頁` : ''}
+          {nav && nav.step > 0 ? ` · 第 ${nav.step} 步` : ''}
           {nav?.teacherOnly ? ' · 學生看不到' : ''}
         </div>
         <div style={grid2}>

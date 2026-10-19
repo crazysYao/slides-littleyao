@@ -14,4 +14,6 @@ export const C = {
 
 export const STUDENT_SITE = 'slides.littleyao.me';
 
-export const studentUrl = (deckId: string, code: string) => `https://${STUDENT_SITE}/${deckId}?s=${code}`;
+export const studentPath = (deckId: string) => `/s/${deckId}`;
+
+export const studentUrl = (deckId: string, code: string) => `https://${STUDENT_SITE}${studentPath(deckId)}?s=${code}`;

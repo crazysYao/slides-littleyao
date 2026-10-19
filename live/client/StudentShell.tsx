@@ -182,7 +182,7 @@ function AnswerPanel({ view, store }: { view: StudentView; store: LiveStore }) {
   let status = '';
   if (a.status === 'idle') status = '等待老師開始';
   else if (a.status === 'open' && !timeUp) status = a.myChoice === undefined ? (quiz ? '搶答中，選一個答案' : '選一個答案') : quiz ? '已送出，等待公布' : '已送出，公布前可以改選';
-  else if (!revealed) status = a.myChoice === undefined ? '時間到' : '已送出，等待公布';
+  else if (!revealed) status = a.myChoice !== undefined ? '已送出，等待公布' : quiz ? '時間到' : '已結束';
   else if (quiz && a.correct !== undefined)
     status = a.myChoice === undefined ? '這題沒有作答' : a.myChoice === a.correct ? '答對了！' : '答錯了';
   else status = '已公布';
@@ -324,7 +324,7 @@ function Classroom({ deck, pub, code, pid, name, cssVars }: {
         <span style={{ fontWeight: 800, fontSize: 17, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{name}</span>
         <span style={{ color: C.muted, fontSize: 15 }}>{snap?.connected ? '' : '連線中…'}</span>
         <button type="button" style={{ ...btn(mode === 'follow'), marginLeft: 'auto', minHeight: 44 }} onClick={() => (mode === 'follow' ? startSelf() : setMode('follow'))}>
-          {mode === 'follow' ? '跟隨老師中' : '回到老師目前頁'}
+          {mode === 'follow' ? '自己翻' : '回到老師目前頁'}
         </button>
       </div>
       <div

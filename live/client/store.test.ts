@@ -1,6 +1,6 @@
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
-import { createLiveStore, studentIdentity, saveName } from './store.ts';
+import { createLiveStore, remainingSeconds, saveName, studentIdentity } from './store.ts';
 
 class FakeWS {
   static all: FakeWS[] = [];
@@ -142,4 +142,30 @@ test('localStorage 拋錯時退回記憶體', () => {
   const b = studentIdentity('BBBBBB', broken);
   assert.equal(b.pid, a.pid);
   assert.equal(b.name, '小華');
+});
+
+test('close 之後，已排程的重連不會再建立連線', () => {
+  reset();
+  const timers = fakeTimers();
+  const store = createLiveStore({ url: 'ws://x', role: 'teacher', WebSocketImpl: FakeWS as never, setTimeoutImpl: timers.setTimeoutImpl });
+  FakeWS.all[0].fire('close');
+  store.close();
+  timers.calls[0].fn();
+  assert.equal(FakeWS.all.length, 1);
+});
+
+test('收到 state 時記錄伺服器時間差', () => {
+  reset();
+  const timers = fakeTimers();
+  const store = createLiveStore({ url: 'ws://x', role: 'student', WebSocketImpl: FakeWS as never, setTimeoutImpl: timers.setTimeoutImpl, nowImpl: () => 1000 });
+  FakeWS.all[0].fire('open');
+  FakeWS.all[0].fire('message', JSON.stringify({ t: 'state', state: {}, now: 6000 }));
+  assert.equal(store.getState().offset, 5000);
+  store.close();
+});
+
+test('remainingSeconds 用伺服器時間計算，重連後不會從頭倒數', () => {
+  // 伺服器 openedAt=10_000、時限 20 秒；本機時鐘慢 5 秒、本機現在 20_000(伺服器 25_000)
+  assert.equal(remainingSeconds(10_000, 20, 20_000, 5_000), 5);
+  assert.equal(remainingSeconds(10_000, 20, 40_000, 5_000), 0);
 });

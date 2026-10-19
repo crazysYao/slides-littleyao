@@ -78,7 +78,7 @@ export class SessionRoom extends DurableObject<Env> {
     if (!this.state) return;
     const [role, pid] = this.ctx.getTags(ws) as [Role, string];
     const state = role === 'teacher' ? teacherView(this.state) : studentView(this.state, pid);
-    const out: ServerMsg = { t: 'state', state };
+    const out: ServerMsg = { t: 'state', state, now: Date.now() };
     try {
       ws.send(JSON.stringify(out));
     } catch {}

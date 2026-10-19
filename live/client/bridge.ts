@@ -13,6 +13,8 @@ export function navFromPresenter(deck: LiveDeck, notes: (string | undefined)[], 
     teacherOnly: Boolean(page.teacherOnly),
     title: page.id,
     note: notes[index] ?? '',
+    index,
+    total: deck.pages.length,
     ...(page.interaction ? { interaction: page.interaction } : {}),
   };
 }
@@ -63,9 +65,21 @@ async function run({ deck, answers, notes, apiBase }: BridgeOpts) {
     maybeAutoOpen();
   };
 
+  const fetchCode = async (): Promise<string> => {
+    for (let wait = 1000; ; wait = Math.min(wait * 2, 10_000)) {
+      try {
+        const res = await fetch(`${apiBase}/api/teacher/decks/${deck.deckId}/current`, { credentials: 'include' });
+        if (res.ok) {
+          const { code } = (await res.json()) as { code?: string };
+          if (code) return code;
+        }
+      } catch {}
+      await new Promise((r) => setTimeout(r, wait));
+    }
+  };
+
   const connect = async () => {
-    const res = await fetch(`${apiBase}/api/teacher/decks/${deck.deckId}/current`, { credentials: 'include' });
-    const { code } = (await res.json()) as { code: string };
+    const code = await fetchCode();
     store?.close();
     const ws = apiBase.replace(/^http/, 'ws');
     const next = createLiveStore({

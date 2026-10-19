@@ -1,5 +1,5 @@
 import { useMemo } from 'react';
-import { C, STUDENT_SITE, studentUrl } from './theme.ts';
+import { C, STUDENT_SITE, studentPath, studentUrl } from './theme.ts';
 import { qrcodegen } from './vendor/qrcodegen.ts';
 
 export function QrSvg({ text, size }: { text: string; size: number }) {
@@ -38,7 +38,8 @@ export function JoinBadge({ deckId, code, size = 260 }: { deckId: string; code: 
       <QrSvg text={studentUrl(deckId, code)} size={size} />
       <div style={{ fontSize: 20, color: C.muted, textAlign: 'center', lineHeight: 1.4, whiteSpace: 'nowrap' }}>
         {STUDENT_SITE}
-        <br />/{deckId}
+        <br />
+        {studentPath(deckId)}
       </div>
       <div style={{ fontSize: 48, fontWeight: 800, letterSpacing: 4 }}>{formatCode(code)}</div>
     </div>

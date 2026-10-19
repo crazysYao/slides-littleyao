@@ -18,7 +18,16 @@ export type Interaction = InteractionDef & {
   awarded?: Record<string, number>;
 };
 
-export type Nav = { pageId: string; step: number; teacherOnly: boolean; title: string; note: string; interaction?: string };
+export type Nav = {
+  pageId: string;
+  step: number;
+  teacherOnly: boolean;
+  title: string;
+  note: string;
+  interaction?: string;
+  index?: number;
+  total?: number;
+};
 
 export type RemoteCmd = 'next' | 'prev' | 'switch-session';
 
@@ -69,6 +78,6 @@ export type ClientMsg =
   | { t: 'remote'; cmd: RemoteCmd };
 
 export type ServerMsg =
-  | { t: 'state'; state: TeacherView | StudentView }
+  | { t: 'state'; state: TeacherView | StudentView; now: number }
   | { t: 'remote'; cmd: RemoteCmd }
   | { t: 'error'; reason: string };

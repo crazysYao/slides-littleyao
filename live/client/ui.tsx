@@ -34,5 +34,11 @@ export function Portal({ children }: { children: ReactNode }) {
     document.body.appendChild(el);
     return () => el.remove();
   }, [el]);
-  return createPortal(children, el);
+  return createPortal(
+    <>
+      <style>{'button:disabled{opacity:.4;cursor:default}'}</style>
+      {children}
+    </>,
+    el,
+  );
 }

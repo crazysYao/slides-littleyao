@@ -1,7 +1,12 @@
 import { useSyncExternalStore } from 'react';
 import type { ClientMsg, RemoteCmd, Role, ServerMsg, StudentView, TeacherView } from '../shared/protocol.ts';
 
-export type LiveSnapshot = { connected: boolean; view: TeacherView | StudentView | null; role: Role };
+export type LiveSnapshot = { connected: boolean; view: TeacherView | StudentView | null; role: Role; offset: number };
+
+// 伺服器時間 = 本機時間 + offset
+export function remainingSeconds(openedAt: number, seconds: number, localNow: number, offset: number): number {
+  return Math.max(0, (openedAt + seconds * 1000 - (localNow + offset)) / 1000);
+}
 
 export type LiveStore = {
   subscribe(fn: () => void): () => void;
@@ -19,6 +24,7 @@ type StoreOpts = {
   onRemote?: (cmd: RemoteCmd) => void;
   WebSocketImpl?: typeof WebSocket;
   setTimeoutImpl?: (fn: () => void, ms: number) => void;
+  nowImpl?: () => number;
 };
 
 const MAX_BACKOFF_MS = 10_000;
@@ -26,8 +32,9 @@ const MAX_BACKOFF_MS = 10_000;
 export function createLiveStore(opts: StoreOpts): LiveStore {
   const WS = opts.WebSocketImpl ?? WebSocket;
   const later = opts.setTimeoutImpl ?? ((fn, ms) => void setTimeout(fn, ms));
+  const now = opts.nowImpl ?? Date.now;
   const listeners = new Set<() => void>();
-  let snapshot: LiveSnapshot = { connected: false, view: null, role: opts.role };
+  let snapshot: LiveSnapshot = { connected: false, view: null, role: opts.role, offset: 0 };
   let ws: WebSocket | null = null;
   let queue: string[] = [];
   let backoff = 1000;
@@ -39,6 +46,7 @@ export function createLiveStore(opts: StoreOpts): LiveStore {
   };
 
   const connect = () => {
+    if (closed) return;
     const socket = new WS(opts.url);
     ws = socket;
     socket.addEventListener('open', () => {
@@ -53,7 +61,7 @@ export function createLiveStore(opts: StoreOpts): LiveStore {
     });
     socket.addEventListener('message', (e: MessageEvent) => {
       const msg = JSON.parse(String(e.data)) as ServerMsg;
-      if (msg.t === 'state') emit({ view: msg.state });
+      if (msg.t === 'state') emit({ view: msg.state, ...(typeof msg.now === 'number' ? { offset: msg.now - now() } : {}) });
       else if (msg.t === 'remote') opts.onRemote?.(msg.cmd);
     });
     socket.addEventListener('close', () => {
@@ -87,7 +95,7 @@ export function createLiveStore(opts: StoreOpts): LiveStore {
   };
 }
 
-const EMPTY: LiveSnapshot = { connected: false, view: null, role: 'student' };
+const EMPTY: LiveSnapshot = { connected: false, view: null, role: 'student', offset: 0 };
 const noop = () => () => {};
 
 export function useLiveStore(store: LiveStore | null): LiveSnapshot | null {

@@ -1,7 +1,7 @@
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useState } from 'react';
 import type { InteractionDef, InteractionStatus, LeaderRow, StudentView, TeacherView } from '../shared/protocol.ts';
 import { JoinBadge } from './JoinBadge.tsx';
-import { useCurrentLive } from './store.ts';
+import { remainingSeconds, useCurrentLive } from './store.ts';
 import { C } from './theme.ts';
 
 export type Resolved = {
@@ -56,10 +56,9 @@ export function useResolved(id: string, fallback?: InteractionDef): Resolved | n
   return fallback ? { def: fallback, role: 'static', status: 'idle' } : null;
 }
 
-// 伺服器與本機時鐘可能不同步，以本機第一次看到 openedAt 的時間起算
+// 用伺服器時間計算剩餘秒數：時鐘不同步或重連後都正確
 export function useCountdown(openedAt: number | undefined, seconds: number, running: boolean): number {
-  const seenRef = useRef<{ openedAt?: number; at: number }>({ at: 0 });
-  if (seenRef.current.openedAt !== openedAt) seenRef.current = { openedAt, at: Date.now() };
+  const offset = useCurrentLive()?.offset ?? 0;
   const [, tick] = useState(0);
   useEffect(() => {
     if (!running) return;
@@ -72,7 +71,7 @@ export function useCountdown(openedAt: number | undefined, seconds: number, runn
     return () => cancelAnimationFrame(raf);
   }, [running]);
   if (openedAt === undefined) return seconds;
-  return Math.max(0, seconds - (Date.now() - seenRef.current.at) / 1000);
+  return remainingSeconds(openedAt, seconds, Date.now(), offset);
 }
 
 const OPTION_COLORS = [C.accent, C.warn, C.good, C.bad, '#8b5cf6', '#0ea5e9'];

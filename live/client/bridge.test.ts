@@ -21,7 +21,7 @@ const notes = ['封面講稿', 'Demo 講稿', undefined, undefined];
 
 test('navFromPresenter 一般頁', () => {
   assert.deepEqual(navFromPresenter(deck, notes, { index: 0, stepIndex: 2 }), {
-    pageId: 'cover', step: 2, teacherOnly: false, title: 'cover', note: '封面講稿',
+    pageId: 'cover', step: 2, teacherOnly: false, title: 'cover', note: '封面講稿', index: 0, total: 4,
   });
 });
 
