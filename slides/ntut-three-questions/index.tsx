@@ -1,6 +1,6 @@
 import type { DesignSystem, Page, SlideMeta, SlideTransition } from '@open-slide/core';
-import { Step, Steps, useSlidePageNumber } from '@open-slide/core';
-import type { ReactNode } from 'react';
+import { Step, Steps, useIsActivePage, useSlidePageNumber } from '@open-slide/core';
+import { type ReactNode, useEffect, useRef } from 'react';
 
 export const design: DesignSystem = {
   palette: { bg: '#f2f3f5', text: '#1d2129', accent: '#2f7bf6' },
@@ -444,28 +444,109 @@ const S1: Page = () => (
   <SectionDivider no="01" title="思維：三個問題" time="09:00–09:50" sub="先不談工具，先談你怎麼問" />
 );
 
+// Slido Present mode:跟著後台目前啟用的那一題,即時顯示結果。
+// 換頁會卸載頁面元件,iframe 若跟著頁面重建每次要等 5–6 秒,
+// 所以 iframe 掛在 body 上常駐;用 popover 進 top layer,全螢幕播放時才看得到。
+const SLIDO_S1 = 'foRgVyUkDkqswYiUu3C6JR';
+const WALL_W = 1640;
+const WALL_H = 820;
+const walls = new Map<string, HTMLDivElement>();
+
+const getWall = (event: string) => {
+  let holder = walls.get(event);
+  if (holder) return holder;
+  holder = document.createElement('div');
+  holder.popover = 'manual';
+  Object.assign(holder.style, {
+    position: 'fixed',
+    inset: 'auto',
+    left: '0',
+    top: '0',
+    margin: '0',
+    padding: '0',
+    border: '0',
+    background: 'transparent',
+    width: `${WALL_W}px`,
+    height: `${WALL_H}px`,
+    transformOrigin: '0 0',
+    pointerEvents: 'none',
+    visibility: 'hidden',
+    borderRadius: `${design.radius}px`,
+    overflow: 'hidden',
+  });
+  const frame = document.createElement('iframe');
+  frame.src = `https://wall.sli.do/event/${event}`;
+  frame.title = 'Slido 投票結果';
+  Object.assign(frame.style, { width: '100%', height: '100%', border: '0', background: panel });
+  holder.appendChild(frame);
+  document.body.appendChild(holder);
+  // 一直保持 open,只切 visibility;關閉 popover 會變 display:none,Slido 再出現時會彈出設定選單
+  holder.showPopover();
+  walls.set(event, holder);
+  return holder;
+};
+
+const SlidoWall = ({ event }: { event: string }) => {
+  const active = useIsActivePage();
+  const ref = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    getWall(event);
+  }, [event]);
+
+  useEffect(() => {
+    if (!active) return;
+    const holder = getWall(event);
+    // 全螢幕元素晚於 popover 進 top layer 會蓋過它,重新 show 一次回到最上層
+    const raise = () => {
+      if (!document.fullscreenElement) return;
+      holder.hidePopover();
+      holder.showPopover();
+    };
+    let raf = 0;
+    const place = () => {
+      const r = ref.current?.getBoundingClientRect();
+      if (r) holder.style.transform = `translate(${r.left}px, ${r.top}px) scale(${r.width / WALL_W})`;
+      // Slido 會搶走鍵盤焦點,方向鍵就翻不了頁
+      const focused = document.activeElement;
+      if (focused instanceof HTMLElement && holder.contains(focused)) focused.blur();
+      raf = requestAnimationFrame(place);
+    };
+    raise();
+    holder.style.visibility = 'visible';
+    place();
+    document.addEventListener('fullscreenchange', raise);
+    return () => {
+      cancelAnimationFrame(raf);
+      document.removeEventListener('fullscreenchange', raise);
+      holder.style.visibility = 'hidden';
+    };
+  }, [active, event]);
+
+  return (
+    <div
+      ref={ref}
+      style={{
+        width: WALL_W,
+        height: WALL_H,
+        borderRadius: 'var(--osd-radius)',
+        background: panel,
+        display: 'flex',
+        flexDirection: 'column',
+        alignItems: 'center',
+        justifyContent: 'center',
+        gap: 24,
+      }}
+    >
+      <Pill color="var(--osd-accent)">Slido 即時投票</Pill>
+      <div style={{ fontSize: 36, color: muted }}>播放時顯示即時結果</div>
+    </div>
+  );
+};
+
 const S1Poll: Page = () => (
   <Frame section="01 思維">
-    <Pill color="var(--osd-accent)">Slido 投票</Pill>
-    <div style={{ display: 'flex', flexDirection: 'column', gap: 56, marginTop: 48 }}>
-      <div>
-        <H>上課時，你有過有問題卻沒舉手的經驗嗎？</H>
-        <div style={{ display: 'flex', gap: 24, marginTop: 28 }}>
-          <Option label="A">有</Option>
-          <Option label="B">沒有</Option>
-          <Option label="C">常常</Option>
-        </div>
-      </div>
-      <div>
-        <H>學一個新技能，你通常怎麼開始？</H>
-        <div style={{ display: 'flex', gap: 24, marginTop: 28 }}>
-          <Option label="A">找線上課從頭看</Option>
-          <Option label="B">先動手做</Option>
-          <Option label="C">問人</Option>
-          <Option label="D">問 AI</Option>
-        </div>
-      </div>
-    </div>
+    <SlidoWall event={SLIDO_S1} />
   </Frame>
 );
 
