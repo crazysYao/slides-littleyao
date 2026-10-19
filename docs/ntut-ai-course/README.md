@@ -40,5 +40,5 @@
 A–E 的案例與素材保留，觀點定下來後再挑合適的當佐證。
 
 ## 仍未決定
-- 教案初稿已完成，待講師修改([lesson-plan.md](lesson-plan.md))；之後寫簡報
+- 教案([lesson-plan.md](lesson-plan.md))與簡報第一版(`slides/ntut-three-questions/`)已完成
 - 最終主題定案後才寫教案與簡報
