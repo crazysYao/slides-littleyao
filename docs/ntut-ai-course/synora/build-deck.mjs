@@ -186,7 +186,7 @@ const flowRow = (y, label, parts) => {
   return out;
 };
 
-const threePills = (y, items) => items.flatMap(([color, label], i) => pill([80, 190, 340][i], y, label, C[color]));
+const threePills = (y, items) => items.flatMap(([color, label], i) => pill([80, 190, 390][i], y, label, C[color]));
 
 const tinted = (items) => items.map(([from, content, tint]) => [from, content, tint && C[tint]]);
 
@@ -236,14 +236,14 @@ const layouts = {
   three: (p) => [H(76, p.heading), ...cards(170, 150, colored(p.cards))],
   question: (p) => {
     const color = C[p.color];
-    const [bs, y] = bubbles(196, [['ai', p.ai], ['me', p.me, color]]);
+    const [bs, y] = bubbles(196, p.bubbles ? tinted(p.bubbles) : [['ai', p.ai], ['me', p.me, color]]);
     return [...pill(PAD, 76, p.tag, color), text(PAD, 116, CW, p.question, { size: 48, color, bold: true }), ...bs, note(y + 16, p.note)];
   },
   rows: (p) => [H(76, p.heading), ...colored(p.rows).flatMap((r, i) => numRow(170 + i * 72, ...r))],
   taskRows: (p) => [...taskHeader(p.tag, p.heading), ...colored(p.rows).flatMap((r, i) => numRow(200 + i * 72, ...r))],
   task: (p) => [...taskHeader(p.tag, p.heading), list(190, p.items, true)],
   voteReveal: (p) => {
-    const [bs, y] = bubbles(160, p.options.map((o) => ['me', o]));
+    const [bs, y] = bubbles(160, tinted(p.options.map((o) => ['me', ...[o].flat()])));
     const els = [...pill(PAD, 76, p.tag, C.accent), text(PAD, 112, CW, p.question, { size: 30, bold: true }), ...bs];
     return p.answer ? [...els, note(y + 20, p.answer)] : els;
   },
@@ -266,7 +266,6 @@ const layouts = {
     H(116, p.heading),
     ...term(200, ...p.term),
     list(260, p.items),
-    text(PAD, 480, CW, p.footnote, { size: 14, color: C.muted }),
   ],
   mcpAgent: (p) => [
     ...pill(PAD, 76, p.tag[1], C[p.tag[0]]),

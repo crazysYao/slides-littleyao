@@ -52,7 +52,7 @@ A–E 的案例與素材保留，觀點定下來後再挑合適的當佐證。
 
 ## 進度
 - [x] 教案 [lesson-plan.md](lesson-plan.md)
-- [x] Synora deck 產生器(51 頁：35 頁內容＋Demo＋9 題搶答＋2 個排行榜＋4 頁揭曉拆頁)
+- [x] Synora deck 產生器(53 頁：36 頁內容＋Demo＋10 題搶答＋2 個排行榜＋4 頁揭曉拆頁；2026-10-20 依 attention-review 修正後重推)
 - [x] 建立 Synora 專案並 push、設定上課日 11/26
 - [x] 教案「課前準備」改寫為 Synora 操作
 - [x] 安裝 Synora 官方 Claude Code Plugin(0.8.8)並完成 OAuth 登入，`doctor` ready(2026-10-19)
