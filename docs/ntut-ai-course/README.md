@@ -44,7 +44,8 @@ A–E 的案例與素材保留，觀點定下來後再挑合適的當佐證。
 - 舊版 open-slide 簡報＋自製互動系統(`live/`)保存在分支 `backup/ntut-live-f4b9be9`
   - 內容來源：`slides/ntut-three-questions/content.tsx`(頁面)與 `teacher-slides/ntut-three-questions/index.tsx`(Demo 頁、講稿、搶答正解)
   - 取用：`git show backup/ntut-live-f4b9be9:slides/ntut-three-questions/content.tsx`
-- Synora deck 產生器：[synora/build-deck.mjs](synora/build-deck.mjs)，改內容就改這支再重推
+- 簡報內容核心：[synora/content.mjs](synora/content.mjs)，每頁文字、講稿、投票與搶答都在這裡，改字只改這支
+- 版面產生器：[synora/build-deck.mjs](synora/build-deck.mjs)，只管排版，讀 content.mjs 產生 deck
   - 產生：`node synora/build-deck.mjs /tmp/deck.json`(需 Node 22+)
   - 重推前先 `pull` 線上版比對，避免蓋掉在 Synora 編輯器裡做的手動修改
 - Synora 專案 ID `2eb9c054-226a-4337-86e3-93c0d970d29d`，學員加入碼 `AIF3FUEC`
@@ -54,5 +55,7 @@ A–E 的案例與素材保留，觀點定下來後再挑合適的當佐證。
 - [x] Synora deck 產生器(53 頁：36 頁內容＋Demo＋10 題搶答＋2 個排行榜＋4 頁揭曉拆頁；2026-10-20 依 attention-review 修正後重推)
 - [x] 建立 Synora 專案並 push、設定上課日 11/26
 - [x] 教案「課前準備」改寫為 Synora 操作
+- [x] 安裝 Synora 官方 Claude Code Plugin(0.8.8)並完成 OAuth 登入，`doctor` ready(2026-10-19)
+- [ ] 學員存取仍是 `draft`：classroom-preflight 判定 blocked，待決定開放時間
 - [ ] 講師在 Synora 編輯器逐頁檢查、改字
 - [ ] 真實課堂互動(投票、搶答計分)尚未在 Presenter／Student 實測
