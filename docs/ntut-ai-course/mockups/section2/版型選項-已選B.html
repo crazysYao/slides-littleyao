@@ -1,0 +1,71 @@
+<style>
+  .slide{aspect-ratio:16/9;background:#fffaf2;color:#2a2a2a;border-radius:8px;padding:5% 6%;box-sizing:border-box;display:flex;flex-direction:column;gap:4%;font-family:system-ui,"PingFang TC",sans-serif;overflow:hidden}
+  .slide .tag{font-size:12px;color:#b5562b;font-weight:600}
+  .slide h4{margin:0;font-size:20px}
+  .formula{display:flex;align-items:center;gap:8px;font-size:15px;font-weight:600}
+  .chip{padding:4px 10px;border-radius:999px;background:#ffe3cf;color:#8a3a14}
+  .chip.b{background:#dbeafe;color:#1e3a8a}
+  .chip.t{background:#2a2a2a;color:#fff}
+  .story{background:#fff;border:1px solid #eadfcf;border-radius:8px;padding:10px 12px;font-size:13px;line-height:1.6}
+  .def{font-size:14px;border-left:4px solid #b5562b;padding-left:10px}
+  .row{display:flex;gap:4%;flex:1}
+  .row>div{flex:1}
+  .big{font-size:22px;font-weight:700;text-align:center;margin:auto}
+  .muted{color:#888;font-size:12px}
+  .pair{display:flex;gap:10px;margin-bottom:8px}
+  .pair .story{flex:1}
+</style>
+
+<h2>一個關鍵字，投影片要怎麼呈現？</h2>
+<p class="subtitle">以 Prompt 為例。三種版型會套用到全部五個詞。點選你喜歡的，也可以在終端機說要混搭。</p>
+
+<div class="options">
+  <div class="option" data-choice="a" onclick="toggleSelect(this)">
+    <div class="letter">A</div>
+    <div class="content">
+      <h3>一頁三段：公式 → 故事 → 定義</h3>
+      <p>一頁講完一個詞，從上往下講。資訊最完整，但一頁字比較多。</p>
+      <div class="slide" style="margin-top:10px">
+        <div class="tag">02 關鍵字 · Prompt</div>
+        <div class="formula"><span class="chip">好問題</span>×<span class="chip b">優化思維</span>=<span class="chip t">Prompt Engineering</span></div>
+        <div class="story">🧋 「一杯奶茶」→「半糖少冰」→「半糖少冰，珍珠換椰果」<br>不滿意就再調一次。</div>
+        <div class="def"><b>Prompt</b>：你給 AI 的指令。反覆把它調得更好，就是 Prompt Engineering。</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="option" data-choice="b" onclick="toggleSelect(this)">
+    <div class="letter">B</div>
+    <div class="content">
+      <h3>兩頁拆開：先講故事，再揭曉名詞</h3>
+      <p>第一頁只放生活情境，讓學員先猜。翻頁才出現名詞和公式。比較有懸念，但頁數會變成兩倍。</p>
+      <div class="row" style="margin-top:10px">
+        <div class="slide">
+          <div class="tag">第 1 頁 · 情境</div>
+          <h4>點一杯飲料，為什麼有人總是點到想要的？</h4>
+          <div class="story">🧋 「一杯奶茶」<br>「半糖少冰」<br>「半糖少冰，珍珠換椰果」</div>
+          <div class="muted">在 AI 世界，這件事叫什麼？</div>
+        </div>
+        <div class="slide">
+          <div class="tag">第 2 頁 · 揭曉</div>
+          <div class="big">Prompt</div>
+          <div class="formula" style="justify-content:center"><span class="chip">好問題</span>×<span class="chip b">優化思維</span>=<span class="chip t">Prompt Engineering</span></div>
+          <div class="def">你給 AI 的指令。越調越好，就是工程。</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="option" data-choice="c" onclick="toggleSelect(this)">
+    <div class="letter">C</div>
+    <div class="content">
+      <h3>左右對照：生活 ⇄ AI</h3>
+      <p>左邊生活場景，右邊同一件事在 AI 上長怎樣。學員直接看到「原來是同一回事」，公式放頂端。</p>
+      <div class="slide" style="margin-top:10px">
+        <div class="formula"><span class="chip">好問題</span>×<span class="chip b">優化思維</span>=<span class="chip t">Prompt Engineering</span></div>
+        <div class="pair"><div class="story"><b>🧋 點飲料</b><br>一杯奶茶<br>→ 半糖少冰，珍珠換椰果</div><div class="story"><b>🤖 問 AI</b><br>怎麼學 Python？<br>→ 我會 Excel，想三個月做出自動化報表…</div></div>
+        <div class="def"><b>Prompt</b>：你給 AI 的指令。</div>
+      </div>
+    </div>
+  </div>
+</div>

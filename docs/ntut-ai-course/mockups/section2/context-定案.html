@@ -1,0 +1,80 @@
+<style>
+  .slide{aspect-ratio:16/9;background:#fffaf2;color:#2a2a2a;border-radius:8px;padding:5% 6%;box-sizing:border-box;display:flex;flex-direction:column;gap:5%;font-family:system-ui,"PingFang TC",sans-serif;overflow:hidden}
+  .slide .tag{font-size:12px;color:#b5562b;font-weight:600}
+  .slide h4{margin:0;font-size:17px}
+  .formula{display:flex;align-items:center;gap:8px;font-size:14px;font-weight:600;justify-content:center}
+  .chip{padding:4px 10px;border-radius:999px;background:#fef3c7;color:#92400e}
+  .chip.b{background:#dbeafe;color:#1e3a8a}
+  .chip.t{background:#2a2a2a;color:#fff}
+  .def{font-size:13px;border-left:4px solid #b5562b;padding-left:10px}
+  .big{font-size:22px;font-weight:700;text-align:center}
+  .muted{color:#888;font-size:11px}
+  .classes{display:flex;gap:4px;align-items:flex-end;flex:1}
+  .cls{flex:1;border-radius:4px;background:#b5562b;color:#fff;font-size:10px;text-align:center;padding:3px 0}
+  .grid{display:grid;grid-template-columns:repeat(3,1fr);gap:3%;margin-bottom:12px}
+  .cmp{display:flex;gap:6%;flex:1}
+  .col{flex:1;display:flex;flex-direction:column;gap:4px}
+  .col .lbl{font-size:11px;font-weight:600;color:#666}
+  .blk{border-radius:4px;font-size:10px;padding:3px 6px;color:#fff}
+  .m{background:#b5562b}.e{background:#2563eb}.h{background:#059669}
+  .tie{display:grid;grid-template-columns:1fr 1fr;gap:6px;font-size:11px}
+  .tie div{background:#fff;border:1px solid #eadfcf;border-radius:6px;padding:5px 7px;line-height:1.5}
+  .notes{background:#f6f6f6;border-radius:8px;padding:12px 16px;font-size:14px;line-height:1.8;color:#333}
+  .notes b{color:#b5562b}
+</style>
+
+<h2>Context v3：兩個情境 ＋ 一頁揭曉</h2>
+<p class="subtitle">情境一講「記憶會遞減」，情境二講「注意力要集中」。兩個都留在「上課」這個主題裡，揭曉頁再一起扣回來。</p>
+
+<div class="grid">
+  <div class="slide">
+    <div class="tag">頁 1 · 情境一：記憶遞減</div>
+    <h4>第八堂剛下課。早上第一堂教了什麼？</h4>
+    <div class="classes">
+      <div class="cls" style="height:12%;opacity:.15">1</div><div class="cls" style="height:18%;opacity:.22">2</div>
+      <div class="cls" style="height:25%;opacity:.3">3</div><div class="cls" style="height:33%;opacity:.4">4</div>
+      <div class="cls" style="height:44%;opacity:.52">5</div><div class="cls" style="height:58%;opacity:.66">6</div>
+      <div class="cls" style="height:76%;opacity:.82">7</div><div class="cls" style="height:100%">8</div>
+    </div>
+  </div>
+
+  <div class="slide">
+    <div class="tag">頁 2 · 情境二：一次一件事</div>
+    <h4>同樣 50 分鐘，哪一堂你記得比較多？</h4>
+    <div class="cmp">
+      <div class="col">
+        <div class="lbl">A 老師：跳來跳去</div>
+        <div class="blk m">微積分</div><div class="blk e">英文單字</div><div class="blk h">歷史</div>
+        <div class="blk m">微積分</div><div class="blk e">英文單字</div><div class="blk h">歷史</div>
+      </div>
+      <div class="col">
+        <div class="lbl">B 老師：只講一件事</div>
+        <div class="blk m">微積分：極限</div><div class="blk m">微積分：極限</div><div class="blk m">微積分：極限</div>
+        <div class="blk m">微積分：極限</div><div class="blk m">微積分：極限</div><div class="blk m">微積分：極限</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="slide">
+    <div class="tag">頁 3 · 揭曉</div>
+    <div class="big">Context（上下文）</div>
+    <div class="formula"><span class="chip">好奇心</span>×<span class="chip b">優化思維</span></div>
+    <div class="tie">
+      <div><b>為什麼？</b><br>情境一：聊太久，前面被擠掉<br>情境二：主題混雜，注意力被分走</div>
+      <div><b>有沒有更好的？</b><br>一個對話只做一件事（解耦）<br>做完整理重點，開新對話</div>
+    </div>
+    <div class="def">AI 在這段對話裡看得到的所有內容。它會遞減，也會被雜訊分心。</div>
+  </div>
+</div>
+
+<div class="notes">
+  <b>講稿 · 頁 1（情境一，約 1.5 分）</b><br>
+  一天八堂課，第八堂剛下課你還記得最後的重點；第七堂大概記得；早上第一堂，可能只剩老師穿什麼衣服。越早的，被後面越多東西蓋過去。<br><br>
+  <b>講稿 · 頁 2（情境二，約 1.5 分）</b><br>
+  再想像兩堂課，一樣 50 分鐘。A 老師五分鐘講微積分、五分鐘跳英文單字、再跳歷史，然後又跳回微積分。B 老師整整 50 分鐘只講「極限」這一個觀念。下課後，哪一堂你記得比較多？<br>
+  A 老師每次切換，你的腦袋都要重新進入狀態，三科都只聽懂一點點。B 老師讓你只專心在一件事上。<br><br>
+  <b>講稿 · 頁 3（揭曉，約 2 分）</b><br>
+  你跟 AI 的整段對話，就叫 Context，上下文。這兩個情境，AI 都會發生。<br>
+  <b>為什麼</b>它會答得越來越差？一是聊太久，你一開始講的背景被擠到「第一堂課」去了（情境一）。二是你在同一個對話裡，一下問報告、一下問履歷、一下問旅遊，它的注意力被分散了（情境二）。<br>
+  <b>有沒有更好的做法？</b>工程師有個詞叫「解耦」：一個模組只做一件事，彼此不互相干擾，壞了也只要修那一塊。用在 AI 上，就是<b>一個對話只做一件事</b>。做完把重點整理好，換一件事就開新對話，讓它永遠像 B 老師的學生一樣專心。
+</div>

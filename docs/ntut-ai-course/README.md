@@ -57,5 +57,6 @@ A–E 的案例與素材保留，觀點定下來後再挑合適的當佐證。
 - [x] 教案「課前準備」改寫為 Synora 操作
 - [x] 安裝 Synora 官方 Claude Code Plugin(0.8.8)並完成 OAuth 登入，`doctor` ready(2026-10-19)
 - [ ] 學員存取仍是 `draft`：classroom-preflight 判定 blocked，待決定開放時間
+- [ ] 第二節關鍵字改版(情境 → 揭曉)：Prompt、Context 已定案，Skill／MCP／Agent 待續，見 [設計稿](../superpowers/specs/2026-10-20-ntut-section2-terms-design.md)
 - [ ] 講師在 Synora 編輯器逐頁檢查、改字
 - [ ] 真實課堂互動(投票、搶答計分)尚未在 Presenter／Student 實測
