@@ -162,7 +162,7 @@ export const pages = [
     notes: '09:30 實作(15)。範本解壓縮後，用 Obsidian「開啟資料夾作為 vault」打開。',
     tag: '實作 · 15 分鐘',
     heading: '寫你的知識庫',
-    file: [VAULT_URL, '我的知識庫(範本).zip', '4 KB', 'zip'],
+    file: [VAULT_URL, '我的知識庫(範本).zip', '2 KB', 'zip'],
     items: ['解壓縮，用 Obsidian 開啟這個資料夾', '每個資料夾至少寫一則，一件事一則、盡量有數字', '不知道寫什麼？先寫課堂作業和打工'],
   },
   {
