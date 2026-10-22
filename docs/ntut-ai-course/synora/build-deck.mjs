@@ -175,6 +175,8 @@ const copycard = (y, title, content) => el('copycard', { x: PAD, y, width: CW, h
 const fileDownload = (y, [fileUrl, fileName, fileSize, fileType]) =>
   el('fileDownload', { x: PAD, y, width: CW, height: 110, fileUrl, fileName, fileSize, fileType });
 
+const wordcloud = (question, maxWords) => el('wordcloud', { x: PAD, y: 54, width: CW, height: 476, question, maxWords });
+
 const webProject = (question) =>
   el('webProject', { x: PAD, y: 54, width: CW, height: 476, question, enabledMethods: ['upload', 'url'], showVoting: true, peerVoteCount: 3 });
 
@@ -306,6 +308,8 @@ const layouts = {
     ...card(PAD + CW / 2 + 10, 160, CW / 2 - 10, 110, C[p.card[0]], p.card[1], p.card[2]),
     note(300, p.note),
   ],
+  linkTask: (p) => [...taskHeader(p.tag, p.heading), link(PAD, 190, CW, p.link), list(330, p.items, true)],
+  wordcloud: (p) => [wordcloud(p.question, p.maxWords)],
   links: (p) => [
     ...taskHeader(p.tag, p.heading),
     ...p.links.map((l, i) => link(PAD + i * (CW / 2 + 10), 200, CW / 2 - 10, l)),
