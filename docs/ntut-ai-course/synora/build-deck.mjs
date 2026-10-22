@@ -305,11 +305,19 @@ const layouts = {
     ...p.flows.flatMap(([label, parts], i) => flowRow(190 + i * 52, label, parts)),
     ...p.terms.flatMap(([name, body], i) => term(370 + i * 40, name, body)),
   ],
-  skillTemplate: (p) => [
-    ...taskHeader(p.tag, p.heading),
-    box(PAD, 190, CW, 200, C.dark, 14),
-    ...p.lines.map(([color, s], i) => text(PAD + 28, 212 + i * 40, CW - 56, s, { size: 18, color: C[color] })),
-  ],
+  // lines 第三欄是範例，有範例時每行下面多一行灰字
+  skillTemplate: (p) => {
+    const gap = p.lines.some((l) => l[2]) ? 62 : 40;
+    return [
+      ...taskHeader(p.tag, p.heading),
+      box(PAD, 190, CW, 200, C.dark, 14),
+      ...p.lines.flatMap(([color, s, example], i) => [
+        text(PAD + 28, 212 + i * gap, CW - 56, s, { size: 18, color: C[color] }),
+        ...(example ? [text(PAD + 28, 238 + i * gap, CW - 56, example, { size: 15, color: C.darkSub })] : []),
+      ]),
+      ...(p.note ? [note(410, p.note)] : []),
+    ];
+  },
   // ── 版面變化：時間軸、左右分割、大編號步驟、資料夾磚、前後對照、深色提問 ──
   timeline: (p) => {
     const gap = CW / p.rows.length;
@@ -420,6 +428,7 @@ const layouts = {
           text(x + 22, 346, w - 44, body, { size: 17, color: C.muted }),
         ];
       }),
+      ...(p.note ? [note(482, p.note)] : []),
     ];
   },
   grid: (p) => {
