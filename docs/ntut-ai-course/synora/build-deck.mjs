@@ -165,6 +165,19 @@ const quiz = (id, question, options, correct) =>
     speedDecay: 0.02,
   });
 
+const link = (x, y, width, [linkUrl, linkLabel, linkDesc]) =>
+  el('link', { x, y, width, height: 110, linkUrl, linkLabel, linkDesc, linkColor: C.accent, linkIcon: 'open_in_new', linkImage: '' });
+
+const checkpoint = (y, question, buttonLabel) => el('checkpoint', { x: PAD, y, width: CW, height: 530 - y, question, buttonLabel });
+
+const copycard = (y, title, content) => el('copycard', { x: PAD, y, width: CW, height: 530 - y, title, content, copied: false });
+
+const fileDownload = (y, [fileUrl, fileName, fileSize, fileType]) =>
+  el('fileDownload', { x: PAD, y, width: CW, height: 110, fileUrl, fileName, fileSize, fileType });
+
+const webProject = (question) =>
+  el('webProject', { x: PAD, y: 54, width: CW, height: 476, question, enabledMethods: ['upload', 'url'], showVoting: true, peerVoteCount: 3 });
+
 const leaderboard = () =>
   el('leaderboard', { x: PAD, y: 54, width: CW, height: 476, lbMode: 'personal', lbTopN: 10, lbShowGroups: true, interactiveType: '' });
 
@@ -287,6 +300,15 @@ const layouts = {
     box(PAD, 190, CW, 200, C.dark, 14),
     ...p.lines.map(([color, s], i) => text(PAD + 28, 212 + i * 40, CW - 56, s, { size: 18, color: C[color] })),
   ],
+  links: (p) => [
+    ...taskHeader(p.tag, p.heading),
+    ...p.links.map((l, i) => link(PAD + i * (CW / 2 + 10), 200, CW / 2 - 10, l)),
+    note(340, p.note),
+  ],
+  taskCheck: (p) => [...taskHeader(p.tag, p.heading), list(190, p.items, true), checkpoint(200 + textH(p.items.join('\n'), 20, CW) + 20, ...p.check)],
+  taskDownload: (p) => [...taskHeader(p.tag, p.heading), fileDownload(190, p.file), list(330, p.items, true)],
+  copyPrompt: (p) => [...taskHeader(p.tag, p.heading), copycard(190, p.cardTitle, p.prompt)],
+  webProject: (p) => [webProject(p.question)],
   closing: (p) => [
     text(80, 140, 800, p.kicker, { size: 18, color: C.muted }),
     text(80, 190, 800, p.before, { size: 48, bold: true }),
