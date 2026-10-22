@@ -435,18 +435,14 @@ export const pages = [
   },
   {
     id: 's3-deploy',
-    layout: 'steps',
+    layout: 'linkTask',
     section: '03 上線',
     title: '加分題：上線',
-    notes: '11:33 加分題(7)。判斷時刻：選 Vercel 是因為上架快。Vercel Drop 入口課前實測。',
+    notes: '11:33 加分題(7)。判斷時刻：選 Vercel 是因為上架快。Vercel Drop 網址 vercel.com/drop，課前實際上線一次。',
     tag: '加分題 · 7 分鐘',
     heading: '上線：Vercel',
-    items: [
-      ['登入', '註冊並登入\nVercel'],
-      ['拖上去', '用 Vercel Drop\n拖 site 資料夾'],
-      ['拿網址', 'xxx.vercel.app\n手機也打得開'],
-      ['來不及？', '下一頁直接\n上傳 site 資料夾'],
-    ],
+    link: ['https://vercel.com/drop', 'Vercel Drop', '登入後，把 site 資料夾拖進這個頁面'],
+    items: ['註冊並登入 Vercel', '打開上面的 Vercel Drop，拖進 site 資料夾', '拿到 xxx.vercel.app 網址，手機也打得開', '來不及？下一頁直接上傳 site 資料夾'],
   },
   {
     id: 's3-showcase',

@@ -150,7 +150,7 @@
     - 2026-10-22 查 OpenCode Zen 文件：有十多個 $0 模型(如 Big Pickle、DeepSeek V4.1 Flash Free)，但多數標示「限時免費」；文件寫使用需登入取得 API key，是否能免登入要實機確認
   - [ ] 開啟 vault 資料夾的實際操作
   - [ ] Mac、Windows 各一台乾淨電腦，從零安裝並計時
-- [ ] 確認 Vercel Drop 的入口網址與免費方案限制，實際上線一次
+- [ ] Vercel Drop 實際上線一次(入口 `https://vercel.com/drop` 已確認可開，簡報上線頁已放連結)；免費方案限制待確認
 - [x] 範本 vault：[topic-f-vault/我的知識庫](topic-f-vault/我的知識庫)，zip 以 UTF-8 檔名打包(Windows 解壓不亂碼)，簡報連到 GitHub raw 下載
 - [ ] 常見問題頁(下載連結與範本已改成學員在 Synora 畫面直接點，不需 QR code；開場兩個網站仍需投影)
 - [ ] Synora 投票與搶答題目
