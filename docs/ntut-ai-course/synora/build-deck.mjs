@@ -300,6 +300,12 @@ const layouts = {
     box(PAD, 190, CW, 200, C.dark, 14),
     ...p.lines.map(([color, s], i) => text(PAD + 28, 212 + i * 40, CW - 56, s, { size: 18, color: C[color] })),
   ],
+  goal: (p) => [
+    H(76, p.heading),
+    link(PAD, 160, CW / 2 - 10, p.link),
+    ...card(PAD + CW / 2 + 10, 160, CW / 2 - 10, 110, C[p.card[0]], p.card[1], p.card[2]),
+    note(300, p.note),
+  ],
   links: (p) => [
     ...taskHeader(p.tag, p.heading),
     ...p.links.map((l, i) => link(PAD + i * (CW / 2 + 10), 200, CW / 2 - 10, l)),
