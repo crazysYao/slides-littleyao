@@ -129,7 +129,9 @@
 
 ## 簡報(Synora)
 - 專案「筆記變作品：AI Agent × 知識庫 × 個人網站」，ID `de37b7f0-b4f1-4597-aff0-f3103ae4a90a`，學員加入碼 `AIJ3FPVG`
-  - 34 頁，2026-10-22 首次推送；學員存取仍是 `draft`、未設上課日
+  - 35 頁，2026-10-22 推送；學員存取仍是 `draft`、未設上課日
+  - classroom-preflight(2026-10-22)：只有「學員存取尚未發布」一項 blocked，其餘通過
+  - 用到 Synora 原生互動：安裝頁連結、環境檢查「完成確認」(看還有幾人卡住，代替助教巡場)、範本下載、Prompt ①② 複製卡片、作品牆(上傳 site 資料夾或貼 Vercel 網址，可互投)
   - 與已採用主題的專案(`2eb9c054-…`)各自獨立
 - 內容：[synora/topic-f-content.mjs](synora/topic-f-content.mjs)，版面共用 [synora/build-deck.mjs](synora/build-deck.mjs)
   - 產生：`node synora/build-deck.mjs /tmp/deck-f.json synora/topic-f-content.mjs`(需 Node 22+)
@@ -139,9 +141,10 @@
 - [ ] 用這套流程重做自己的單頁版網站(開場右邊那個)，順便完成下面的實測
 - [ ] OpenCode Desktop 實測
   - [ ] 不登入能否直接用免費模型；11/26 當天免費模型名單
+    - 2026-10-22 查 OpenCode Zen 文件：有十多個 $0 模型(如 Big Pickle、DeepSeek V4.1 Flash Free)，但多數標示「限時免費」；文件寫使用需登入取得 API key，是否能免登入要實機確認
   - [ ] 開啟 vault 資料夾的實際操作
   - [ ] Mac、Windows 各一台乾淨電腦，從零安裝並計時
 - [ ] 確認 Vercel Drop 的入口網址與免費方案限制，實際上線一次
-- [ ] 範本 vault 與下載連結
-- [ ] 常見問題頁與 QR code(下載連結、範本、常見問題、開場兩個網站)
+- [x] 範本 vault：[topic-f-vault/我的知識庫](topic-f-vault/我的知識庫)，zip 以 UTF-8 檔名打包(Windows 解壓不亂碼)，簡報連到 GitHub raw 下載
+- [ ] 常見問題頁(下載連結與範本已改成學員在 Synora 畫面直接點，不需 QR code；開場兩個網站仍需投影)
 - [ ] Synora 投票與搶答題目

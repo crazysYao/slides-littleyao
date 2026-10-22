@@ -4,6 +4,8 @@
 
 export const brand = '筆記變作品';
 
+const VAULT_URL = 'https://github.com/crazysYao/slides-littleyao/raw/main/docs/ntut-ai-course/topic-f-vault/knowledge-vault-template.zip';
+
 const PILLS = [
   ['why', '知識庫'],
   ['whyNot', 'Agent'],
@@ -61,17 +63,17 @@ export const pages = [
   },
   {
     id: 's1-install',
-    layout: 'taskRows',
+    layout: 'links',
     section: '01 資料',
     title: '安裝：先按下載',
-    notes: '09:03 安裝(4)。放下載連結 QR code。請大家先按下載，安裝的同時聽下一段。不用終端機、不用裝 Node.js。',
+    notes: '09:03 安裝(4)。學員在自己的 Synora 畫面直接點連結下載。請大家先按下載，安裝的同時聽下一段。不用終端機、不用裝 Node.js。',
     tag: '安裝 · 4 分鐘',
     heading: '先按下載，邊聽邊裝',
-    rows: [
-      ['accent', 'Obsidian', 'obsidian.md/download，不用註冊'],
-      ['accent', 'OpenCode', 'opencode.ai/download，選 Desktop 版'],
-      ['muted', '不用裝', '終端機、Node.js 都不需要'],
+    links: [
+      ['https://obsidian.md/download', 'Obsidian', '筆記軟體，不用註冊'],
+      ['https://opencode.ai/download', 'OpenCode Desktop', '選 Desktop 版，不用終端機'],
     ],
+    note: '在你自己的 Synora 畫面點連結下載；終端機、Node.js 都不用裝。',
   },
   {
     id: 's1-install-os',
@@ -110,18 +112,18 @@ export const pages = [
   },
   {
     id: 's1-check',
-    layout: 'task',
+    layout: 'taskCheck',
     section: '01 資料',
     title: '環境檢查：兩個綠燈',
-    notes: '09:20 環境檢查(10)。同系統兩兩一組。放常見問題 QR code。時間到不等人，沒好的人先用網頁版免費 AI，休息時間再補裝。',
+    notes: '09:20 環境檢查(10)。看完成確認的人數，就知道還有幾個人卡住。同系統兩兩一組。時間到不等人，沒好的人先用網頁版免費 AI，休息時間再補裝。',
+    check: ['兩個綠燈都亮了嗎？', '兩個都綠燈了'],
     tag: '環境檢查 · 10 分鐘',
     heading: '兩個綠燈',
     items: [
       'Obsidian 建立 vault，例如「我的知識庫」',
       'OpenCode Desktop 開啟這個資料夾',
       '打「你好」，有回話就是綠燈',
-      '同系統的人坐一起，綠燈的人幫隔壁',
-      '卡住先用網頁版免費 AI，休息時間再補裝',
+      '卡住了？同系統的隔壁同學幫你；還不行就先用網頁版 AI',
     ],
   },
   {
@@ -154,13 +156,14 @@ export const pages = [
   },
   {
     id: 's1-task-vault',
-    layout: 'task',
+    layout: 'taskDownload',
     section: '01 資料',
     title: '實作：寫你的知識庫',
-    notes: '09:30 實作(15)。放範本 vault 下載 QR code。',
+    notes: '09:30 實作(15)。範本解壓縮後，用 Obsidian「開啟資料夾作為 vault」打開。',
     tag: '實作 · 15 分鐘',
     heading: '寫你的知識庫',
-    items: ['下載範本 vault(掃 QR code)', '每個資料夾至少寫一則', '一件事一則，盡量有數字', '不知道寫什麼？先寫課堂作業和打工'],
+    file: [VAULT_URL, '我的知識庫(範本).zip', '4 KB', 'zip'],
+    items: ['解壓縮，用 Obsidian 開啟這個資料夾', '每個資料夾至少寫一則，一件事一則、盡量有數字', '不知道寫什麼？先寫課堂作業和打工'],
   },
   {
     id: 's1-poll-note',
@@ -226,18 +229,15 @@ export const pages = [
   },
   {
     id: 's2-prompt-1',
-    layout: 'skillTemplate',
+    layout: 'copyPrompt',
     section: '02 Agent',
     title: 'Prompt ①：Agent 訪問你',
-    notes: '10:23 實作(12)。這一次給完整 Prompt，照貼就好，先感受 Agent 會動手。',
+    notes: '10:23 實作(12)。這一次給完整 Prompt，學員在自己畫面按複製，貼進 OpenCode，先感受 Agent 會動手。',
     tag: '實作 · 12 分鐘 · 完整版',
     heading: 'Prompt ①：讓 Agent 訪問你',
-    lines: [
-      ['bg', '請讀這個資料夾裡所有 .md 筆記。你是求職顧問，'],
-      ['bg', '一次問我一個問題，幫我補齊缺的細節：'],
-      ['why', '我負責什麼、用了什麼工具、有沒有數字成果。'],
-      ['better', '我回答後，把答案寫回對應的筆記。問完 5 題就停。'],
-    ],
+    cardTitle: '照貼就好',
+    prompt:
+      '請讀這個資料夾裡所有 .md 筆記。你是求職顧問，一次問我一個問題，幫我補齊缺的細節：我負責什麼、用了什麼工具、有沒有數字成果。\n我回答後，把答案寫回對應的筆記。問完 5 題就停。',
   },
   {
     id: 's2-demo-site',
@@ -250,18 +250,15 @@ export const pages = [
   },
   {
     id: 's2-prompt-2',
-    layout: 'skillTemplate',
+    layout: 'copyPrompt',
     section: '02 Agent',
     title: 'Prompt ②：做出網站 v1',
-    notes: '10:40 實作(12)。這一次是填空版，空格要自己想。打開方式：Obsidian 對 site 資料夾按右鍵，在檔案管理員中顯示，雙擊 index.html。',
+    notes: '10:40 實作(12)。這一次是填空版，複製後要先把三個空格換成自己的答案再送出。打開方式：Obsidian 對 site 資料夾按右鍵，在檔案管理員中顯示，雙擊 index.html。',
     tag: '實作 · 12 分鐘 · 填空版',
     heading: 'Prompt ②：做出網站 v1',
-    lines: [
-      ['bg', '讀這個資料夾的所有筆記，做一個給 ＿＿ 看的個人網站，'],
-      ['bg', '風格是 ＿＿，最想讓對方記住的一件事是 ＿＿。'],
-      ['whyNot', '只能用筆記裡的內容，不要編造經歷。'],
-      ['better', '存成 site/index.html，CSS 寫在同一檔，手機看也要好看。'],
-    ],
+    cardTitle: '複製後，先填好三個空格再送出',
+    prompt:
+      '讀這個資料夾的所有筆記，做一個給＿＿看的個人網站，風格是＿＿，最想讓對方記住的一件事是＿＿。\n只能用筆記裡的內容，不要編造經歷。\n存成 site/index.html，CSS 寫在同一個檔案，手機看也要好看。',
   },
   {
     id: 's2-poll-v1',
@@ -339,7 +336,15 @@ export const pages = [
     notes: '11:33 加分題(7)。判斷時刻：選 Vercel 是因為上架快。Vercel Drop 入口課前實測。',
     tag: '加分題 · 7 分鐘',
     heading: '上線：Vercel',
-    items: ['註冊並登入 Vercel', '用 Vercel Drop 把 site 資料夾拖上去', '拿到 xxx.vercel.app 網址', '把網址傳給隔壁，請他用手機打開'],
+    items: ['註冊並登入 Vercel', '用 Vercel Drop 把 site 資料夾拖上去', '拿到 xxx.vercel.app 網址', '沒時間上線也沒關係：下一頁直接上傳 site 資料夾'],
+  },
+  {
+    id: 's3-showcase',
+    layout: 'webProject',
+    section: '03 上線',
+    title: '交出你的網站',
+    notes: '有上線的貼網址，沒上線的上傳整個 site 資料夾。開放互相投票，收尾前看一下最多票的作品。',
+    question: '交出你的網站：貼上 Vercel 網址，或上傳整個 site 資料夾',
   },
   {
     id: 's3-my-prompt',
