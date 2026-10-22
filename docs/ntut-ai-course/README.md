@@ -5,7 +5,7 @@
 |---|---|---|---|
 | A | 問對問題的人：AI 時代最值錢的能力 | 需求定案稿 | [topic-a-ask-better-questions.md](topic-a-ask-better-questions.md) |
 | B | 用工程師的腦袋學任何東西 | 需求定案稿 | [topic-b-engineer-mindset-learning.md](topic-b-engineer-mindset-learning.md) |
-| F | 筆記變作品：AI Agent × 知識庫 × 個人網站(Obsidian＋OpenCode Desktop＋Vercel) | 候選，教案細節定稿(2026-10-22) | [topic-f-agent-knowledge-resume.md](topic-f-agent-knowledge-resume.md) |
+| F | 筆記變作品：AI Agent × 知識庫 × 個人網站(Obsidian＋OpenCode Desktop＋Vercel) | 候選，教案定稿，Synora deck 已建(2026-10-22) | [topic-f-agent-knowledge-resume.md](topic-f-agent-knowledge-resume.md) |
 | C–E | 見下方 | 已快速評估，未採用 | — |
 | **採用** | 為什麼、為什麼不、有沒有更好的：AI 時代的提問力 | 主題＋時間表已定稿 | [core-viewpoint.md](core-viewpoint.md) |
 

@@ -127,6 +127,14 @@
 - **11:50 QA(10)**
 - 帶走：個人網站定稿(有上線就是一個網址)＋知識庫＋自己的指令
 
+## 簡報(Synora)
+- 專案「筆記變作品：AI Agent × 知識庫 × 個人網站」，ID `de37b7f0-b4f1-4597-aff0-f3103ae4a90a`，學員加入碼 `AIJ3FPVG`
+  - 34 頁，2026-10-22 首次推送；學員存取仍是 `draft`、未設上課日
+  - 與已採用主題的專案(`2eb9c054-…`)各自獨立
+- 內容：[synora/topic-f-content.mjs](synora/topic-f-content.mjs)，版面共用 [synora/build-deck.mjs](synora/build-deck.mjs)
+  - 產生：`node synora/build-deck.mjs /tmp/deck-f.json synora/topic-f-content.mjs`(需 Node 22+)
+  - 重推前先 `pull` 線上版，把 slides 放進拉下來的檔案再推，保留 `_saveSeq`
+
 ## 講師課前準備
 - [ ] 用這套流程重做自己的單頁版網站(開場右邊那個)，順便完成下面的實測
 - [ ] OpenCode Desktop 實測

@@ -1,7 +1,9 @@
 // 產生北科大課程的 Synora deck.json：只管版面，文字內容在 content.mjs。
-// 用法：node build-deck.mjs <輸出路徑>
+// 用法：node build-deck.mjs <輸出路徑> [內容檔，預設 ./content.mjs]
 import { writeFileSync } from 'node:fs';
-import { pages } from './content.mjs';
+import { pathToFileURL } from 'node:url';
+
+const { pages, brand = '提問力' } = await import(process.argv[3] ? pathToFileURL(process.argv[3]).href : './content.mjs');
 
 const W = 960;
 const PAD = 70;
@@ -58,7 +60,7 @@ const header = (section) => [
   box(0, 0, W, 44, C.panel),
   box(0, 44, W, 1, C.line),
   box(PAD, 18, 8, 8, '#22c55e', 4),
-  text(PAD + 16, 10, 400, `提問力 · ${section}`, { size: 13, color: C.muted, height: 24 }),
+  text(PAD + 16, 10, 400, `${brand} · ${section}`, { size: 13, color: C.muted, height: 24 }),
 ];
 
 const H = (y, content, size = 36) => text(PAD, y, CW, content, { size, bold: true });
@@ -186,7 +188,14 @@ const flowRow = (y, label, parts) => {
   return out;
 };
 
-const threePills = (y, items) => items.flatMap(([color, label], i) => pill([80, 190, 390][i], y, label, C[color]));
+const threePills = (y, items) => {
+  let x = 80;
+  return items.flatMap(([color, label]) => {
+    const els = pill(x, y, label, C[color]);
+    x += els[0].width + 18;
+    return els;
+  });
+};
 
 const tinted = (items) => items.map(([from, content, tint]) => [from, content, tint && C[tint]]);
 
@@ -323,6 +332,6 @@ const slides = pages.flatMap(expand).map((p, i) => {
 });
 
 const out = process.argv[2];
-if (!out) throw new Error('用法：node build-deck.mjs <輸出路徑>');
+if (!out) throw new Error('用法：node build-deck.mjs <輸出路徑> [內容檔]');
 writeFileSync(out, `${JSON.stringify({ sections: [], slides }, null, 2)}\n`);
 console.log(`${slides.length} 頁 → ${out}`);
