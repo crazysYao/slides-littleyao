@@ -6,10 +6,33 @@ export const brand = '筆記變作品';
 
 const VAULT_URL = 'https://github.com/crazysYao/slides-littleyao/raw/main/docs/ntut-ai-course/topic-f-vault/knowledge-vault-template.zip';
 
+const YELLOW = '#f5b400';
+const INK = '#16161a';
+
+// 黃黑求職風(參考 Pinterest「簡報設計」的日系招募簡報)：黃色只當填色，上面一律放黑字
+export const palette = {
+  bg: '#fbfaf7',
+  text: INK,
+  accent: YELLOW,
+  muted: '#62646b',
+  line: '#ebe7de',
+  why: YELLOW,
+  whyNot: INK,
+  better: YELLOW,
+  dark: INK,
+  darkSub: '#c9c6bd',
+  ink: { [YELLOW]: INK },
+  hue: { [YELLOW]: INK },
+  bgFor: { cover: YELLOW, divider: YELLOW },
+  dot: YELLOW,
+  titleBar: YELLOW,
+  mark: YELLOW,
+};
+
 const PILLS = [
-  ['why', '知識庫'],
-  ['whyNot', 'Agent'],
-  ['better', '個人網站'],
+  ['text', '知識庫'],
+  ['text', 'Agent'],
+  ['text', '個人網站'],
 ];
 
 export const pages = [
@@ -332,7 +355,7 @@ export const pages = [
     heading: 'Prompt ③：三問，自己補完',
     lines: [
       ['why', '為什麼你把 ＿＿＿＿＿＿？'],
-      ['whyNot', '為什麼不選 ＿＿＿＿＿＿？'],
+      ['bg', '為什麼不選 ＿＿＿＿＿＿？'],
       ['better', '有沒有更好的 ＿＿＿＿＿＿？'],
     ],
   },

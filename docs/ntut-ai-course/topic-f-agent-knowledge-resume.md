@@ -136,6 +136,7 @@
   - classroom-preflight(2026-10-22)：只有「學員存取尚未發布」一項 blocked，其餘通過
   - 用到 Synora 原生互動：安裝頁連結、環境檢查「完成確認」(看還有幾人卡住，代替助教巡場)、範本下載、Prompt ①② 複製卡片、作品牆(上傳 site 資料夾或貼 Vercel 網址，可互投)
   - 與已採用主題的專案(`2eb9c054-…`)各自獨立
+  - 視覺：黃黑求職風(參考 Pinterest「簡報設計」的日系招募簡報)；黃色只當填色，上面一律黑字；封面與章節頁全黃底；配色在 `topic-f-content.mjs` 的 `palette`
 - 內容：[synora/topic-f-content.mjs](synora/topic-f-content.mjs)，版面共用 [synora/build-deck.mjs](synora/build-deck.mjs)
   - 產生：`node synora/build-deck.mjs /tmp/deck-f.json synora/topic-f-content.mjs`(需 Node 22+)
   - 重推前先 `pull` 線上版，把 slides 放進拉下來的檔案再推，保留 `_saveSeq`
