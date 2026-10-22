@@ -50,15 +50,13 @@ export const pages = [
   },
   {
     id: 's1-goal',
-    layout: 'compare',
+    layout: 'goal',
     section: '01 資料',
     title: '終點長這樣',
-    notes: '09:00 先秀終點(3)。左邊打開 hi.littleyao.me/zh，右邊打開課前用今天流程重做的單頁版。不要說左邊是用今天的流程做的。',
+    notes: '09:00 先秀終點(3)。左邊打開 hi.littleyao.me/zh，右邊打開課前用今天流程重做的單頁版。不要說左邊是用今天的流程做的。右邊的單頁版做好後，改成連結。',
     heading: '終點長這樣',
-    cards: [
-      ['accent', '講師的網站', 'hi.littleyao.me/zh\n之後可以一直長大的樣子'],
-      ['better', '今天的版本', '用今天的流程做的單頁網站\n3 小時做得到'],
-    ],
+    link: ['https://hi.littleyao.me/zh', '講師的網站', '之後可以一直長大的樣子'],
+    card: ['better', '今天的版本', '3 小時做得到的單頁網站'],
     note: '今天的目標是右邊；左邊是之後可以繼續長的方向。',
   },
   {
