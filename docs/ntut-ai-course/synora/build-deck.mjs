@@ -364,6 +364,45 @@ const layouts = {
       }),
     ];
   },
+  // 藍圖：上方三節、中間五格流程(含 Agent ⇄ 知識庫回圈)、下方三個 Prompt
+  blueprint: (p) => {
+    const nw = 118;
+    const gap = (CW - nw * 5) / 4;
+    const nx = (i) => PAD + i * (nw + gap);
+    const fills = { key: C.accent, opt: C.line };
+    return [
+      H(76, p.heading),
+      ...p.sections.flatMap(([label, time, from, to]) => {
+        const x = nx(from);
+        const w = nx(to) + nw - x;
+        return [
+          box(x, 152, w, 4, C.text, 2),
+          text(x, 162, w, label, { size: 15, bold: true, height: 22 }),
+          text(x, 184, w, time, { size: 12, color: C.muted, height: 18 }),
+        ];
+      }),
+      ...p.nodes.flatMap(([title, sub, kind], i) => [
+        box(nx(i), 222, nw, 92, fills[kind] ?? C.panel, 12),
+        text(nx(i), 236, nw, title, { size: 18, color: kind === 'key' ? ink(C.accent) : C.text, bold: true, align: 'center', height: 26 }),
+        text(nx(i), 266, nw, sub, { size: 12, color: kind === 'key' ? ink(C.accent) : C.muted, align: 'center', height: 40 }),
+      ]),
+      ...p.arrows.flatMap((label, i) => [
+        text(nx(i) + nw, 238, gap, label, { size: 12, color: C.muted, align: 'center', height: 18 }),
+        text(nx(i) + nw, 254, gap, '→', { size: 22, bold: true, align: 'center', height: 30 }),
+      ]),
+      text(nx(1), 326, nx(2) + nw - nx(1), p.loop, { size: 13, bold: true, align: 'center', height: 22 }),
+      ...p.prompts.flatMap(([name, desc], i) => {
+        const w = (CW - 24) / 3;
+        const x = PAD + i * (w + 12);
+        return [
+          box(x, 380, w, 46, C.dark, 10),
+          text(x + 14, 393, 90, name, { size: 14, color: C.accent, bold: true, height: 22 }),
+          text(x + 100, 393, w - 112, desc, { size: 14, color: C.panel, height: 22 }),
+        ];
+      }),
+      note(456, p.note),
+    ];
+  },
   blanks: (p) => {
     const gap = 18;
     const w = (CW - gap * 2) / 3;
