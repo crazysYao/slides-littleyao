@@ -364,6 +364,25 @@ const layouts = {
       }),
     ];
   },
+  blanks: (p) => {
+    const gap = 18;
+    const w = (CW - gap * 2) / 3;
+    return [
+      H(76, p.heading),
+      box(PAD, 150, CW, 96, C.dark, 14),
+      ...p.prompt.map((line, i) => text(PAD + 28, 166 + i * 32, CW - 56, line, { size: 19, color: C.panel })),
+      ...p.items.flatMap(([title, body], i) => {
+        const x = PAD + i * (w + gap);
+        return [
+          box(x, 266, w, 200, C.panel, 14),
+          box(x + 22, 286, 40, 40, C.accent, 20),
+          text(x + 22, 293, 40, String(i + 1), { size: 20, color: ink(C.accent), bold: true, align: 'center', height: 28 }),
+          text(x + 76, 292, w - 98, title, { size: 21, bold: true }),
+          text(x + 22, 346, w - 44, body, { size: 17, color: C.muted }),
+        ];
+      }),
+    ];
+  },
   grid: (p) => {
     const gap = 20;
     const w = (CW - gap * 2) / 3;
