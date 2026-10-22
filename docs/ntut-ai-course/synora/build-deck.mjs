@@ -3,7 +3,7 @@
 import { writeFileSync } from 'node:fs';
 import { pathToFileURL } from 'node:url';
 
-const { pages, brand = '提問力' } = await import(process.argv[3] ? pathToFileURL(process.argv[3]).href : './content.mjs');
+const { pages, brand = '提問力', palette = {} } = await import(process.argv[3] ? pathToFileURL(process.argv[3]).href : './content.mjs');
 
 const W = 960;
 const PAD = 70;
@@ -21,7 +21,12 @@ const C = {
   better: '#10b981',
   dark: '#1d2129',
   darkSub: '#b8bcc4',
+  ...palette,
 };
+
+// 主題可覆寫：ink＝某填色上的文字色，hue＝某顏色拿來當文字時改用的色，bgFor＝特定版型的底色
+const ink = (fill) => C.ink?.[fill] ?? '#fff';
+const hue = (color) => C.hue?.[color] ?? color;
 
 const LH = 1.5;
 
@@ -59,17 +64,20 @@ const textH = (content, size, width) => Math.ceil(lineCount(content, size, width
 const header = (section) => [
   box(0, 0, W, 44, C.panel),
   box(0, 44, W, 1, C.line),
-  box(PAD, 18, 8, 8, '#22c55e', 4),
+  box(PAD, 18, 8, 8, C.dot ?? '#22c55e', 4),
   text(PAD + 16, 10, 400, `${brand} · ${section}`, { size: 13, color: C.muted, height: 24 }),
 ];
 
-const H = (y, content, size = 36) => text(PAD, y, CW, content, { size, bold: true });
+const H = (y, content, size = 36) => {
+  const title = text(PAD, y, CW, content, { size, bold: true });
+  return C.titleBar ? [title, box(PAD, y + size * LH + 2, 48, 6, C.titleBar, 3)] : title;
+};
 
 const note = (y, content) => text(PAD, y, CW, content, { size: 20, color: C.muted });
 
 const pill = (x, y, content, color) => {
   const w = Math.ceil(textWidth(content, 15)) + 32;
-  return [box(x, y, w, 30, color, 15), text(x, y + 5, w, content, { size: 15, color: '#fff', bold: true, align: 'center', height: 22 })];
+  return [box(x, y, w, 30, color, 15), text(x, y + 5, w, content, { size: 15, color: ink(color), bold: true, align: 'center', height: 22 })];
 };
 
 // 聊天氣泡：回傳 [元素, 下一個 y]
@@ -83,7 +91,7 @@ const bubble = (y, from, content, tint) => {
   const x = me ? PAD + CW - w : PAD + 42;
   const els = [
     box(x, y, w, h, me ? (tint ?? C.accent) : C.panel, 18),
-    text(x + 18, y + 13, inner, content, { size, color: me ? '#fff' : C.text }),
+    text(x + 18, y + 13, inner, content, { size, color: me ? ink(tint ?? C.accent) : C.text }),
   ];
   if (!me) {
     els.unshift(box(PAD, y + h - 32, 32, 32, C.text, 16), text(PAD, y + h - 26, 32, 'AI', { size: 12, color: '#fff', bold: true, align: 'center', height: 20 }));
@@ -104,7 +112,7 @@ const bubbles = (y, items, gap = 14) => {
 const card = (x, y, w, h, color, title, body) => [
   box(x, y, w, h, C.panel, 14),
   box(x, y, w, 6, color, 3),
-  text(x + 24, y + 26, w - 48, title, { size: 21, color, bold: true }),
+  text(x + 24, y + 26, w - 48, title, { size: 21, color: hue(color), bold: true }),
   text(x + 24, y + 64, w - 48, body, { size: 18 }),
 ];
 
@@ -117,12 +125,12 @@ const cards = (y, h, items) => {
 const numRow = (y, color, q, body) => [
   box(PAD, y, CW, 56, C.panel, 12),
   box(PAD, y, 6, 56, color),
-  text(PAD + 26, y + 14, 220, q, { size: 21, color, bold: true, height: 30 }),
+  text(PAD + 26, y + 14, 220, q, { size: 21, color: hue(color), bold: true, height: 30 }),
   text(PAD + 250, y + 15, CW - 270, body, { size: 19, height: 28 }),
 ];
 
 const term = (y, name, body) => [
-  text(PAD, y, 120, name, { size: 20, color: C.accent, bold: true, height: 30 }),
+  text(PAD, y, 120, name, { size: 20, color: hue(C.accent), bold: true, height: 30 }),
   text(PAD + 130, y, CW - 130, body, { size: 20, height: 30 }),
 ];
 
@@ -133,7 +141,7 @@ const taskHeader = (tag, title) => [...pill(PAD, 76, tag, C.text), H(118, title)
 
 const agendaRow = (y, no, title, time, desc) => [
   box(PAD, y, CW, 84, C.panel, 12),
-  text(PAD + 24, y + 20, 70, no, { size: 32, color: C.accent, bold: true, height: 44 }),
+  text(PAD + 24, y + 20, 70, no, { size: 32, color: hue(C.accent), bold: true, height: 44 }),
   text(PAD + 110, y + 12, 400, title, { size: 24, bold: true, height: 34 }),
   text(PAD + 520, y + 18, 200, time, { size: 15, color: C.muted, height: 24 }),
   text(PAD + 110, y + 48, 600, desc, { size: 17, color: C.muted, height: 26 }),
@@ -185,7 +193,7 @@ const leaderboard = () =>
 
 const node = (x, y, label, strong) => {
   const w = Math.ceil(textWidth(label, 17)) + 28;
-  return [[box(x, y, w, 38, strong ? C.accent : C.panel, 8), text(x, y + 8, w, label, { size: 17, color: strong ? '#fff' : C.text, bold: true, align: 'center', height: 24 })], x + w];
+  return [[box(x, y, w, 38, strong ? C.accent : C.panel, 8), text(x, y + 8, w, label, { size: 17, color: strong ? ink(C.accent) : C.text, bold: true, align: 'center', height: 24 })], x + w];
 };
 const flowRow = (y, label, parts) => {
   const out = [text(PAD, y + 9, 150, label, { size: 17, bold: true, height: 26 })];
@@ -227,7 +235,7 @@ const layouts = {
   ],
   agenda: (p) => [H(76, p.heading), ...p.rows.flatMap((r, i) => agendaRow(150 + i * 100, ...r))],
   divider: (p) => [
-    text(80, 110, 800, p.no, { size: 80, color: C.accent, bold: true }),
+    text(80, 110, 800, p.no, { size: 80, color: hue(C.accent), bold: true }),
     text(80, 240, 800, p.heading, { size: 55, bold: true }),
     text(80, 330, 800, p.time, { size: 18, color: C.muted }),
     text(80, 380, 800, p.sub, { size: 20 }),
@@ -253,7 +261,7 @@ const layouts = {
       ? [
           text(80, 160, 800, p.before, { size: 55, color: C.muted, bold: true }),
           text(80, 250, 520, p.lead, { size: 55, bold: true }),
-          text(80 + 55 * [...p.lead].length, 250, 400, p.punch, { size: 55, color: C.accent, bold: true }),
+          text(80 + 55 * [...p.lead].length, 250, 400, p.punch, { size: 55, color: hue(C.accent), bold: true }),
         ]
       : [text(80, 200, 800, p.before, { size: 55, color: C.muted, bold: true })],
   compare: (p) => [H(76, p.heading), ...cards(160, 150, colored(p.cards)), note(350, p.note)],
@@ -261,7 +269,7 @@ const layouts = {
   question: (p) => {
     const color = C[p.color];
     const [bs, y] = bubbles(196, p.bubbles ? tinted(p.bubbles) : [['ai', p.ai], ['me', p.me, color]]);
-    return [...pill(PAD, 76, p.tag, color), text(PAD, 116, CW, p.question, { size: 48, color, bold: true }), ...bs, note(y + 16, p.note)];
+    return [...pill(PAD, 76, p.tag, color), text(PAD, 116, CW, p.question, { size: 48, color: hue(color), bold: true }), ...bs, note(y + 16, p.note)];
   },
   rows: (p) => [H(76, p.heading), ...colored(p.rows).flatMap((r, i) => numRow(170 + i * 72, ...r))],
   taskRows: (p) => [...taskHeader(p.tag, p.heading), ...colored(p.rows).flatMap((r, i) => numRow(200 + i * 72, ...r))],
@@ -325,7 +333,8 @@ const layouts = {
     ...(p.lead
       ? [
           text(80, 270, 800, p.lead, { size: 48, bold: true }),
-          text(80 + 48 * [...p.lead].length, 270, 240, p.punch, { size: 48, color: C.accent, bold: true }),
+          ...(C.mark ? [box(80 + 48 * [...p.lead].length, 270 + 40, 48 * [...p.punch].length, 26, C.mark)] : []),
+          text(80 + 48 * [...p.lead].length, 270, 240, p.punch, { size: 48, color: hue(C.accent), bold: true }),
         ]
       : []),
     ...threePills(430, p.pills),
@@ -359,8 +368,8 @@ const slides = pages.flatMap(expand).map((p, i) => {
   slideId = p.id;
   seq = 0;
   const body = () => layouts[p.layout](p);
-  const elements = p.section ? [...header(p.section), ...body()] : body();
-  return { id: p.id, slideNumber: i + 1, title: p.title, description: '', background: DARK.has(p.layout) ? C.dark : C.bg, notes: p.notes, elements };
+  const elements = (p.section ? [...header(p.section), ...body()] : body()).flat();
+  return { id: p.id, slideNumber: i + 1, title: p.title, description: '', background: C.bgFor?.[p.layout] ?? (DARK.has(p.layout) ? C.dark : C.bg), notes: p.notes, elements };
 });
 
 const out = process.argv[2];
