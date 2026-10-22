@@ -178,6 +178,9 @@ const link = (x, y, width, [linkUrl, linkLabel, linkDesc]) =>
 
 const checkpoint = (y, question, buttonLabel) => el('checkpoint', { x: PAD, y, width: CW, height: 530 - y, question, buttonLabel });
 
+const opentext = (y, question, placeholder) =>
+  el('opentext', { x: PAD, y, width: CW, height: 530 - y, question, placeholder, maxLength: 300 });
+
 const copycard = (y, title, content) => el('copycard', { x: PAD, y, width: CW, height: 530 - y, title, content, copied: false });
 
 const fileDownload = (y, [fileUrl, fileName, fileSize, fileType]) =>
@@ -423,6 +426,7 @@ const layouts = {
     ...p.links.map((l, i) => link(PAD + i * (CW / 2 + 10), 200, CW / 2 - 10, l)),
     note(340, p.note),
   ],
+  ask: (p) => [H(76, p.heading), opentext(160, ...p.ask)],
   taskCheck: (p) => [...taskHeader(p.tag, p.heading), list(190, p.items, true), checkpoint(200 + textH(p.items.join('\n'), 20, CW) + 20, ...p.check)],
   taskDownload: (p) => [...taskHeader(p.tag, p.heading), fileDownload(190, p.file), list(330, p.items, true)],
   copyPrompt: (p) => [...taskHeader(p.tag, p.heading), copycard(190, p.cardTitle, p.prompt)],
