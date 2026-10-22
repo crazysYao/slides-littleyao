@@ -310,6 +310,106 @@ const layouts = {
     box(PAD, 190, CW, 200, C.dark, 14),
     ...p.lines.map(([color, s], i) => text(PAD + 28, 212 + i * 40, CW - 56, s, { size: 18, color: C[color] })),
   ],
+  // ── 版面變化：時間軸、左右分割、大編號步驟、資料夾磚、前後對照、深色提問 ──
+  timeline: (p) => {
+    const gap = CW / p.rows.length;
+    return [
+      H(76, p.heading),
+      box(PAD, 268, CW, 4, C.text, 2),
+      ...p.rows.flatMap(([no, title, time, desc], i) => {
+        const x = PAD + i * gap;
+        return [
+          text(x, 210, gap - 20, time, { size: 16, color: C.muted, height: 26 }),
+          box(x, 242, 56, 56, C.accent, 28),
+          text(x, 256, 56, no, { size: 20, color: ink(C.accent), bold: true, align: 'center', height: 30 }),
+          text(x, 320, gap - 30, title, { size: 24, bold: true }),
+          text(x, 362, gap - 30, desc, { size: 17, color: C.muted }),
+        ];
+      }),
+    ];
+  },
+  split: (p) => {
+    let y = 120;
+    const rows = p.items.flatMap((s, i) => {
+      const h = Math.max(36, textH(s, 21, 430));
+      const els = [
+        box(400, y, 36, 36, C.accent, 18),
+        text(400, y + 6, 36, String(i + 1), { size: 17, color: ink(C.accent), bold: true, align: 'center', height: 26 }),
+        text(456, y + 2, 430, s, { size: 21 }),
+      ];
+      y += h + 30;
+      return els;
+    });
+    return [
+      box(0, 45, 340, 495, C.accent),
+      text(48, 110, 260, p.kicker, { size: 16, color: ink(C.accent), bold: true, height: 26 }),
+      text(48, 150, 260, p.heading, { size: 36, color: ink(C.accent), bold: true }),
+      ...rows,
+    ];
+  },
+  steps: (p) => {
+    const gap = 18;
+    const w = (CW - gap * (p.items.length - 1)) / p.items.length;
+    return [
+      ...(p.tag ? taskHeader(p.tag, p.heading) : [H(76, p.heading)]),
+      ...p.items.flatMap(([title, body], i) => {
+        const x = PAD + i * (w + gap);
+        const y = p.tag ? 210 : 170;
+        return [
+          box(x, y, w, 250, C.panel, 14),
+          text(x + 22, y + 20, w - 44, String(i + 1).padStart(2, '0'), { size: 44, color: C.accent, bold: true, height: 60 }),
+          text(x + 22, y + 92, w - 44, title, { size: 21, bold: true }),
+          text(x + 22, y + 92 + textH(title, 21, w - 44) + 8, w - 44, body, { size: 17, color: C.muted }),
+        ];
+      }),
+    ];
+  },
+  grid: (p) => {
+    const gap = 20;
+    const w = (CW - gap * 2) / 3;
+    return [
+      H(76, p.heading),
+      ...p.tiles.flatMap(([title, desc], i) => {
+        const x = PAD + (i % 3) * (w + gap);
+        const y = 160 + Math.floor(i / 3) * 170;
+        return [
+          box(x, y, 90, 18, C.accent, 6),
+          box(x, y + 12, w, 136, C.panel, 10),
+          text(x + 22, y + 36, w - 44, title, { size: 22, bold: true }),
+          text(x + 22, y + 74, w - 44, desc, { size: 16, color: C.muted }),
+        ];
+      }),
+    ];
+  },
+  beforeAfter: (p) => {
+    const w = 360;
+    const [bl, bt, bb] = p.before;
+    const [al, at, ab] = p.after;
+    const R = PAD + CW - w;
+    return [
+      H(76, p.heading),
+      box(PAD, 170, w, 220, C.line, 14),
+      text(PAD + 26, 190, w - 52, bl, { size: 15, color: C.muted, bold: true, height: 24 }),
+      text(PAD + 26, 222, w - 52, bt, { size: 23, color: C.muted, bold: true }),
+      text(PAD + 26, 270, w - 52, bb, { size: 17, color: C.muted }),
+      text(PAD + w, 252, CW - 2 * w, '→', { size: 40, bold: true, align: 'center', height: 56 }),
+      box(R - 4, 166, w + 8, 228, C.accent, 17),
+      box(R, 170, w, 220, C.panel, 14),
+      text(R + 26, 190, w - 52, al, { size: 15, color: hue(C.accent), bold: true, height: 24 }),
+      text(R + 26, 222, w - 52, at, { size: 23, bold: true }),
+      text(R + 26, 270, w - 52, ab, { size: 17 }),
+      note(420, p.note),
+    ];
+  },
+  darkQuestion: (p) => {
+    const [bs, y] = bubbles(120 + textH(p.question, 52, CW) + 24, tinted(p.bubbles));
+    return [
+      ...pill(PAD, 76, p.tag, C.accent),
+      text(PAD, 120, CW, p.question, { size: 52, color: C.accent, bold: true }),
+      ...bs,
+      text(PAD, y + 20, CW, p.note, { size: 21, color: C.darkSub }),
+    ];
+  },
   goal: (p) => [
     H(76, p.heading),
     link(PAD, 160, CW / 2 - 10, p.link),
@@ -345,7 +445,7 @@ const layouts = {
   ],
 };
 
-const DARK = new Set(['break', 'qa']);
+const DARK = new Set(['break', 'qa', 'darkQuestion']);
 
 // 搶答組每題展開成一頁，講稿附正解
 const expand = (p) =>
