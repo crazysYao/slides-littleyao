@@ -570,6 +570,106 @@ const layouts = {
       ...side,
     ];
   },
+  iconSplit: (p) => {
+    const X = 370;
+    const RW = W - PAD - X;
+    const gap = 14;
+    const cw = (RW - gap) / 2;
+    const ch = 96;
+    const rows = Math.ceil(p.cards.length / 2);
+    const darkH = p.dark ? (p.dark[3] ? 104 : 80) : 0;
+    const total = (p.link ? 124 : 0) + rows * (ch + gap) + darkH;
+    let y = Math.max(64, Math.round((45 + 540 - total) / 2));
+    const out = [
+      box(0, 45, 340, 495, C.accent),
+      text(48, 110, 260, p.kicker, { size: 16, color: ink(C.accent), bold: true, height: 26 }),
+      text(48, 150, 260, p.heading, { size: 36, color: ink(C.accent), bold: true }),
+    ];
+    if (p.tagline) out.push(text(48, 160 + textH(p.heading, 36, 260), 260, p.tagline, { size: 17, color: ink(C.accent), bold: true }));
+    if (p.link) {
+      out.push(link(X, y, RW, p.link));
+      y += 124;
+    }
+    p.cards.forEach(([icon, title, desc], i) => {
+      const wide = i === p.cards.length - 1 && p.cards.length % 2 === 1;
+      const x = wide || i % 2 === 0 ? X : X + cw + gap;
+      const w = wide ? RW : cw;
+      const cy = y + Math.floor(i / 2) * (ch + gap);
+      out.push(
+        box(x, cy, w, ch, C.panel, 12),
+        text(x + 16, cy + 12, 40, icon, { size: 26, height: 36 }),
+        text(x + 16, cy + 48, w - 32, title, { size: 17, bold: true, height: 24 }),
+        text(x + 16, cy + 72, w - 32, desc, { size: 13, color: C.muted, height: 20 }),
+      );
+    });
+    y += rows * (ch + gap);
+    if (p.dark) {
+      const [icon, title, desc, chips] = p.dark;
+      out.push(
+        box(X, y, RW, darkH, C.dark, 12),
+        text(X + 16, y + 14, 40, icon, { size: 26, height: 36 }),
+        text(X + 62, y + 14, RW - 78, title, { size: 17, color: '#fff', bold: true, height: 24 }),
+        text(X + 62, y + 42, RW - 78, desc, { size: 13, color: C.darkSub, height: 20 }),
+      );
+      let cx = X + 62;
+      for (const c of chips ?? []) {
+        const els = pill(cx, y + 66, c, C.accent);
+        out.push(...els);
+        cx += els[0].width + 8;
+      }
+    }
+    return out;
+  },
+  iconLinks: (p) => {
+    const gap = 20;
+    const cw = (CW - gap) / 2;
+    const [icon, title, desc] = p.dark;
+    return [
+      ...taskHeader(p.tag, p.heading),
+      ...p.links.flatMap(([ic, url, label, d], i) => {
+        const x = PAD + i * (cw + gap);
+        return [{ ...link(x, 220, cw, [url, `${ic} ${label}`, d]), linkIcon: 'download' }];
+      }),
+      box(PAD, 366, CW, 76, C.dark, 12),
+      text(PAD + 20, 382, 40, icon, { size: 26, height: 36 }),
+      text(PAD + 66, 380, CW - 86, title, { size: 19, color: '#fff', bold: true, height: 28 }),
+      text(PAD + 66, 410, CW - 86, desc, { size: 14, color: C.darkSub, height: 22 }),
+    ];
+  },
+  whoDoes: (p) => {
+    const gap = 24;
+    const cw = (CW - gap) / 2;
+    const col = (x, c, on) => {
+      const out = on ? [box(x - 3, 177, cw + 6, 286, C.accent, 15)] : [];
+      out.push(
+        box(x, 180, cw, 280, on ? C.panel : C.line, 12),
+        text(x + 18, 194, cw - 150, `${c.icon} ${c.name}`, { size: 20, bold: true, height: 30 }),
+        ...pill(x + cw - 18 - (Math.ceil(textWidth(c.count, 15)) + 32), 196, c.count, on ? C.accent : C.dark),
+      );
+      c.steps.forEach(([who, t], i) => {
+        const y = 240 + i * 42;
+        const ai = who === 'AI';
+        out.push(
+          box(x + 18, y + 2, 34, 22, ai ? (on ? C.accent : C.panel) : C.dark, 6),
+          text(x + 18, y + 4, 34, who, { size: 12, color: ai ? (on ? ink(C.accent) : C.text) : '#fff', bold: true, align: 'center', height: 18 }),
+          text(x + 62, y, cw - 80, t, { size: 15, height: 38 }),
+        );
+      });
+      return out;
+    };
+    const [lead, punch] = p.bottom;
+    const lw = Math.ceil(textWidth(lead, 20));
+    const pw = Math.ceil(textWidth(punch, 20)) + 12;
+    return [
+      H(62, p.heading, 30),
+      ...pill(PAD, 128, `任務：${p.task}`, C.dark),
+      ...col(PAD, p.left, false),
+      ...col(PAD + cw + gap, p.right, true),
+      text(PAD, 482, lw, lead, { size: 20, bold: true, height: 30 }),
+      box(PAD + lw, 482, pw, 30, C.mark ?? C.accent, 4),
+      text(PAD + lw + 6, 482, pw, punch, { size: 20, color: ink(C.mark ?? C.accent), bold: true, height: 30 }),
+    ];
+  },
   qa: (p) => [
     text(0, 170, W, p.heading, { size: 75, color: '#fff', bold: true, align: 'center' }),
     text(0, 300, W, p.sub, { size: 24, color: C.darkSub, align: 'center' }),
