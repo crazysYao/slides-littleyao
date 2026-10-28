@@ -524,6 +524,52 @@ const layouts = {
       text(0, 410, W, p.sub, { size: 22, color: C.muted, align: 'center', height: 34 }),
     ];
   },
+  loop: (p) => {
+    const [cx, cy, r] = [400, 335, 135];
+    const nw = 136;
+    const at = (deg) => [cx + r * Math.cos((deg * Math.PI) / 180), cy + r * Math.sin((deg * Math.PI) / 180)];
+    const arc = (from, to) => {
+      const [x1, y1] = at(from);
+      const [x2, y2] = at(to);
+      return `<path d="M${x1.toFixed(1)} ${y1.toFixed(1)} A${r} ${r} 0 0 1 ${x2.toFixed(1)} ${y2.toFixed(1)}" stroke="${C.text}" stroke-width="2.5" fill="none" marker-end="url(#ar)"/>`;
+    };
+    const svgContent = `<svg xmlns="http://www.w3.org/2000/svg" width="${W}" height="540" viewBox="0 0 ${W} 540" preserveAspectRatio="none"><defs><marker id="ar" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0L10 5L0 10z" fill="${C.text}"/></marker></defs><circle cx="${cx}" cy="${cy}" r="${r}" fill="none" stroke="${C.line}" stroke-width="20"/>${[-90, 0, 90, 180].map((d) => arc(d + 32, d + 90 - 30)).join('')}<path d="M172 ${cy - r} L${cx - nw / 2 - 6} ${cy - r}" stroke="${C.text}" stroke-width="2.5" marker-end="url(#ar)"/></svg>`;
+    const centers = [at(-90), at(0), at(90), at(180)];
+    const nodes = p.steps.flatMap(([title, sub], i) => {
+      const [x, y] = centers[i];
+      const last = i === p.steps.length - 1;
+      const fill = last ? C.dark : C.accent;
+      return [
+        box(x - nw / 2, y - 32, nw, 64, fill, 10),
+        text(x - nw / 2, y - 24, nw, title, { size: 19, color: last ? '#fff' : ink(fill), bold: true, align: 'center', height: 28 }),
+        text(x - nw / 2, y + 4, nw, sub, { size: 12, color: last ? C.darkSub : ink(fill), align: 'center', height: 18 }),
+      ];
+    });
+    const RX = 630;
+    const RW = W - PAD - RX;
+    let y = 150;
+    const side = [text(RX, 122, RW, p.cardsTitle, { size: 13, color: C.muted, bold: true, height: 20 })];
+    for (const [title, body] of p.cards) {
+      const h = 46 + textH(body, 14, RW - 32);
+      side.push(
+        box(RX, y, RW, h, C.dark, 10),
+        text(RX + 16, y + 12, RW - 32, title, { size: 16, color: '#fff', bold: true, height: 24 }),
+        text(RX + 16, y + 38, RW - 32, body, { size: 14, color: '#fff' }),
+      );
+      y += h + 12;
+    }
+    const cmp = p.compare.join('\n');
+    side.push(box(RX, y + 4, 5, textH(cmp, 14, RW - 20) + 34, C.accent), text(RX + 16, y + 4, RW - 16, p.compareTitle, { size: 14, bold: true, height: 22 }), text(RX + 16, y + 28, RW - 16, cmp, { size: 14 }));
+    return [
+      el('svg', { x: 0, y: 0, width: W, height: 540, svgContent, src: "", label: "" }),
+      H(62, p.heading, 30),
+      box(PAD, cy - r - 26, 102, 52, C.dark, 26),
+      text(PAD, cy - r - 13, 102, p.start, { size: 17, color: '#fff', bold: true, align: 'center', height: 26 }),
+      ...nodes,
+      text(cx - 80, cy - 24, 160, p.center, { size: 15, color: C.muted, bold: true, align: 'center', height: 48 }),
+      ...side,
+    ];
+  },
   qa: (p) => [
     text(0, 170, W, p.heading, { size: 75, color: '#fff', bold: true, align: 'center' }),
     text(0, 300, W, p.sub, { size: 24, color: C.darkSub, align: 'center' }),
