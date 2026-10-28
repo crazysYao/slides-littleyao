@@ -506,6 +506,24 @@ const layouts = {
       : []),
     ...threePills(430, p.pills),
   ],
+  bigPrompt: (p) => {
+    const w = Math.ceil(textWidth(p.prompt, 48)) + 96;
+    return [
+      text(0, 170, W, p.caption, { size: 18, color: C.muted, align: 'center', height: 28 }),
+      box((W - w) / 2, 220, w, 110, C.dark, 28),
+      text((W - w) / 2, 246, w, p.prompt, { size: 48, color: '#fff', bold: true, align: 'center', height: 72 }),
+    ];
+  },
+  reveal: (p) => {
+    const w = Math.ceil(textWidth(p.punch, 54)) + 32;
+    return [
+      text(0, 120, W, p.ask, { size: 22, color: C.muted, bold: true, align: 'center', height: 34 }),
+      text(0, 190, W, p.lead, { size: 54, bold: true, align: 'center', height: 81 }),
+      box((W - w) / 2, 282, w, 84, C.mark ?? C.accent, 8),
+      text(0, 282, W, p.punch, { size: 54, color: ink(C.mark ?? C.accent), bold: true, align: 'center', height: 81 }),
+      text(0, 410, W, p.sub, { size: 22, color: C.muted, align: 'center', height: 34 }),
+    ];
+  },
   qa: (p) => [
     text(0, 170, W, p.heading, { size: 75, color: '#fff', bold: true, align: 'center' }),
     text(0, 300, W, p.sub, { size: 24, color: C.darkSub, align: 'center' }),
