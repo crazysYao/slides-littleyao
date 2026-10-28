@@ -69,7 +69,7 @@ export const pages = [
   {
     id: 's1-goal',
     layout: 'goal',
-    section: '01 資料',
+    section: '01 發現問題',
     title: '終點長這樣',
     notes: '09:00 先秀終點(3)。左邊打開 hi.littleyao.me/zh，右邊打開課前用今天流程重做的單頁版。不要說左邊是用今天的流程做的。右邊的單頁版做好後，改成連結。',
     heading: '終點長這樣',
@@ -94,7 +94,7 @@ export const pages = [
       ['知識庫', 'Obsidian\n五個資料夾', 'key'],
       ['Agent', 'OpenCode\n任何 Agent 都行', 'key'],
       ['個人網站', 'site/\nindex.html'],
-      ['v2 → v3', '讀者審稿\n第一直覺', 'opt'],
+      ['v2 → v3', '讀者審稿\n第一直覺'],
     ],
     arrows: ['寫筆記', '讀筆記', '寫出', '驗證'],
     loop: '↺ 不滿意就把落差講具體，再跑一輪',
@@ -110,7 +110,7 @@ export const pages = [
   {
     id: 's1-synora',
     layout: 'steps',
-    section: '01 資料',
+    section: '01 發現問題',
     title: '這個網頁怎麼用',
     notes: '開場先教 Synora 學員畫面怎麼用：今天的下載連結、複製卡片、投票都在這裡。加入碼 AIJ3FPVG。講過的頁面可以自己切回去看。',
     heading: '這個網頁怎麼用？',
@@ -132,7 +132,7 @@ export const pages = [
   },
   {
     id: 's1-install',
-    section: '01 資料',
+    section: '01 發現問題',
     title: '安裝：先按下載',
     notes: '09:03 安裝(4)。學員在自己的 Synora 畫面直接點連結下載。請大家先按下載，安裝的同時聽下一段。不用終端機、不用裝 Node.js。',
     layout: 'iconLinks',
@@ -147,7 +147,7 @@ export const pages = [
   {
     id: 's1-install-os',
     layout: 'compare',
-    section: '01 資料',
+    section: '01 發現問題',
     title: '安裝：Mac／Windows 選哪個',
     notes: 'Mac 看晶片；Windows 一般選 x64，ARM 機種才選 ARM64。',
     heading: '下載哪個版本？',
@@ -160,7 +160,7 @@ export const pages = [
   {
     id: 's1-problem',
     layout: 'bigPrompt',
-    section: '01 資料',
+    section: '01 發現問題',
     title: '發現問題：幫我寫自我介紹',
     notes: '09:07 發現問題(3)。切到 AI 畫面，只打「幫我寫自我介紹」，不給任何資料。現場出狀況就放事先產生的結果截圖。',
     caption: '講師現場只打這一句',
@@ -169,7 +169,7 @@ export const pages = [
   {
     id: 's1-problem-poll',
     layout: 'poll',
-    section: '01 資料',
+    section: '01 發現問題',
     title: '投票：這在講你嗎',
     notes: '唸出 AI 的結果再開投票。長條圖一面倒時接：所以這是在座每一個人的自我介紹。',
     question: '這段自我介紹在講你嗎？',
@@ -178,7 +178,7 @@ export const pages = [
   {
     id: 's1-problem-reveal',
     layout: 'reveal',
-    section: '01 資料',
+    section: '01 發現問題',
     title: '揭曉：空泛是我造成的',
     notes: '先口頭問「問題出在誰？AI 不夠強嗎？」再翻到這頁。收尾：覺得哪裡怪怪的，就是發現問題，接下一頁迴圈。',
     ask: '問題出在誰？',
@@ -189,13 +189,13 @@ export const pages = [
   {
     ...LOOP,
     id: 's1-loop',
-    section: '01 資料',
+    section: '01 發現問題',
     title: '問題迴圈',
     notes: '09:10 問題迴圈(7)。\n0:00–1:00 回到剛剛的自我介紹：問題不是 AI 爛，是我們講得不夠具體，這就是發現問題。\n1:00–3:00 沿著圖走一圈：具體描述 → 執行 → 驗證 → 優化；第一節在具體描述、第二節在執行、第三節在驗證與優化。\n3:00–4:30 青之蘆葦①：選拔最後，葦人講不好，還是把自己怎麼進球講給福田聽，因此被看見。對應具體描述。\n4:30–5:30 青之蘆葦②：升上 A 隊才發現「言語化的次元不一樣」，每一輪講得更細，就前進一階。對應優化。\n5:30–7:00 右下對照：「不好看」vs「標題太小、看不出我會什麼」。寫履歷、準備面試也是同一個迴圈。',
   },
   {
     id: 's1-obsidian',
-    section: '01 資料',
+    section: '01 發現問題',
     title: '介紹 Obsidian',
     notes: '09:17 介紹 Obsidian(3)。講到 🔗 可切講師 vault 秀關係圖 5 秒；最後扣回：這就是迴圈裡「具體描述」的倉庫。重點是最後一點：檔案在自己電腦、任何 AI 都讀得懂，資料主控權在自己手上。',
     layout: 'iconSplit',
@@ -213,7 +213,7 @@ export const pages = [
   {
     id: 's1-check',
     layout: 'task',
-    section: '01 資料',
+    section: '01 發現問題',
     title: '環境檢查：兩個綠燈',
     notes: '09:20 環境檢查(10)。同系統兩兩一組。時間到不等人，沒好的人先用網頁版免費 AI，休息時間再補裝。',
     tag: '環境檢查 · 10 分鐘',
@@ -228,7 +228,7 @@ export const pages = [
   {
     id: 's1-folders',
     layout: 'grid',
-    section: '01 資料',
+    section: '01 發現問題',
     title: '知識庫的五個資料夾',
     notes: '範本 vault 每個資料夾都有一則範例。',
     heading: '知識庫的五個資料夾',
@@ -243,7 +243,7 @@ export const pages = [
   {
     id: 's1-good-note',
     layout: 'blanks',
-    section: '01 資料',
+    section: '01 發現問題',
     title: '好筆記的三個要素',
     notes: '一件事一則，盡量有數字。上面這則筆記，就是例子一右邊那段自我介紹的原料。懶得打字的人，可以把舊履歷、作品頁截圖丟給 AI 讀出來，再請它照三個要素整理成筆記；Agent 看不懂圖的話，改用網頁版聊天 AI 讀截圖。',
     heading: '好筆記的三個要素',
@@ -258,7 +258,7 @@ export const pages = [
   {
     id: 's1-task-vault',
     layout: 'taskDownload',
-    section: '01 資料',
+    section: '01 發現問題',
     title: '實作：寫你的知識庫',
     notes: '09:30 實作(15)。範本解壓縮後，用 Obsidian「開啟資料夾作為 vault」打開。',
     tag: '實作 · 15 分鐘',
@@ -269,7 +269,7 @@ export const pages = [
   {
     id: 's1-poll-note',
     layout: 'poll',
-    section: '01 資料',
+    section: '01 發現問題',
     title: '投票：哪一則最像網站素材',
     notes: '09:45 投票(5)。公布後點出：有角色、有數字的那則最好用。',
     question: '哪一則筆記最像網站素材？',
@@ -297,7 +297,7 @@ export const pages = [
   },
   {
     id: 's2-what-agent',
-    section: '02 Agent',
+    section: '02 執行',
     title: 'Agent 是什麼',
     notes: '10:00 先講清楚 Agent 是什麼，再進暖身搶答。今天示範用 OpenCode，換成任何 Agent 都一樣。',
     layout: 'iconSplit',
@@ -315,7 +315,7 @@ export const pages = [
   {
     id: 's2-quiz-warmup',
     layout: 'quizSet',
-    section: '02 Agent',
+    section: '02 執行',
     label: '暖身搶答',
     firstNote: '10:00 暖身搶答(5)。',
     items: [
@@ -325,7 +325,7 @@ export const pages = [
   },
   {
     id: 's2-agent',
-    section: '02 Agent',
+    section: '02 執行',
     title: '聊天 AI vs Agent',
     notes: '10:05 講解(8)。今天示範用 OpenCode，換成 Claude Code、Codex、Gemini CLI 等任何 Agent，流程都一樣。不講選 OpenCode 的理由。',
     layout: 'whoDoes',
@@ -359,7 +359,7 @@ export const pages = [
   {
     id: 's2-demo-interview',
     layout: 'split',
-    section: '02 Agent',
+    section: '02 執行',
     title: 'Demo：Agent 訪問你',
     notes: '10:13 講師 Demo(10)。左邊 OpenCode、右邊 Obsidian 並排，讓大家看著筆記變多。',
     kicker: '講師 Demo',
@@ -369,7 +369,7 @@ export const pages = [
   {
     id: 's2-prompt-1',
     layout: 'copyPrompt',
-    section: '02 Agent',
+    section: '02 執行',
     title: 'Prompt ①：Agent 訪問你',
     notes: '10:23 實作(12)。這一次給完整 Prompt，學員在自己畫面按複製，貼進 OpenCode，先感受 Agent 會動手。',
     tag: '實作 · 12 分鐘 · 完整版',
@@ -381,7 +381,7 @@ export const pages = [
   {
     id: 's2-demo-site',
     layout: 'blanks',
-    section: '02 Agent',
+    section: '02 執行',
     title: 'Demo：三個空格',
     notes: '10:35 講師 Demo(3)。示範怎麼想三個空格：誰會看、什麼風格、最想讓對方記住什麼。風格下一頁去 Pinterest 找。',
     heading: 'Demo：Prompt ② 的三個空格',
@@ -394,7 +394,7 @@ export const pages = [
   },
   {
     id: 's2-style',
-    section: '02 Agent',
+    section: '02 執行',
     title: '找風格：Pinterest',
     notes: '10:38 找風格(3)。風格說不出來很正常，先用看的。Agent 不一定看得懂圖，所以要把喜歡的地方翻成文字。',
     layout: 'iconSplit',
@@ -410,7 +410,7 @@ export const pages = [
   {
     id: 's2-style-cloud',
     layout: 'wordcloud',
-    section: '02 Agent',
+    section: '02 執行',
     title: '文字雲：你的風格',
     notes: '10:41 文字雲(1)。大家同時送出，看全班的風格分布；撞詞很正常，同一個詞也能做出不同網站。',
     question: '用一個詞告訴我：你想要的網站風格？',
@@ -419,7 +419,7 @@ export const pages = [
   {
     id: 's2-prompt-2',
     layout: 'copyPrompt',
-    section: '02 Agent',
+    section: '02 執行',
     title: 'Prompt ②：做出網站 v1',
     notes: '10:42 實作(10)。這一次是填空版，複製後要先把三個空格換成自己的答案再送出。打開方式：Obsidian 對 site 資料夾按右鍵，在檔案管理員中顯示，雙擊 index.html。',
     tag: '實作 · 12 分鐘 · 填空版',
@@ -431,7 +431,7 @@ export const pages = [
   {
     id: 's2-poll-v1',
     layout: 'poll',
-    section: '02 Agent',
+    section: '02 執行',
     title: '投票：v1 幾分',
     notes: '10:52 投票(3)。第三節開場回頭看。',
     question: '你給自己的網站 v1 打幾分？',
