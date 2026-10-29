@@ -305,11 +305,19 @@ const layouts = {
     ...p.flows.flatMap(([label, parts], i) => flowRow(190 + i * 52, label, parts)),
     ...p.terms.flatMap(([name, body], i) => term(370 + i * 40, name, body)),
   ],
-  skillTemplate: (p) => [
-    ...taskHeader(p.tag, p.heading),
-    box(PAD, 190, CW, 200, C.dark, 14),
-    ...p.lines.map(([color, s], i) => text(PAD + 28, 212 + i * 40, CW - 56, s, { size: 18, color: C[color] })),
-  ],
+  // lines 第三欄是範例，有範例時每行下面多一行灰字
+  skillTemplate: (p) => {
+    const gap = p.lines.some((l) => l[2]) ? 62 : 40;
+    return [
+      ...taskHeader(p.tag, p.heading),
+      box(PAD, 190, CW, 200, C.dark, 14),
+      ...p.lines.flatMap(([color, s, example], i) => [
+        text(PAD + 28, 212 + i * gap, CW - 56, s, { size: 18, color: C[color] }),
+        ...(example ? [text(PAD + 28, 238 + i * gap, CW - 56, example, { size: 15, color: C.darkSub })] : []),
+      ]),
+      ...(p.note ? [note(410, p.note)] : []),
+    ];
+  },
   // ── 版面變化：時間軸、左右分割、大編號步驟、資料夾磚、前後對照、深色提問 ──
   timeline: (p) => {
     const gap = CW / p.rows.length;
@@ -420,6 +428,7 @@ const layouts = {
           text(x + 22, 346, w - 44, body, { size: 17, color: C.muted }),
         ];
       }),
+      ...(p.note ? [note(482, p.note)] : []),
     ];
   },
   grid: (p) => {
@@ -497,6 +506,170 @@ const layouts = {
       : []),
     ...threePills(430, p.pills),
   ],
+  bigPrompt: (p) => {
+    const w = Math.ceil(textWidth(p.prompt, 48)) + 96;
+    return [
+      text(0, 170, W, p.caption, { size: 18, color: C.muted, align: 'center', height: 28 }),
+      box((W - w) / 2, 220, w, 110, C.dark, 28),
+      text((W - w) / 2, 246, w, p.prompt, { size: 48, color: '#fff', bold: true, align: 'center', height: 72 }),
+    ];
+  },
+  reveal: (p) => {
+    const w = Math.ceil(textWidth(p.punch, 54)) + 32;
+    return [
+      text(0, 120, W, p.ask, { size: 22, color: C.muted, bold: true, align: 'center', height: 34 }),
+      text(0, 190, W, p.lead, { size: 54, bold: true, align: 'center', height: 81 }),
+      box((W - w) / 2, 282, w, 84, C.mark ?? C.accent, 8),
+      text(0, 282, W, p.punch, { size: 54, color: ink(C.mark ?? C.accent), bold: true, align: 'center', height: 81 }),
+      text(0, 410, W, p.sub, { size: 22, color: C.muted, align: 'center', height: 34 }),
+    ];
+  },
+  loop: (p) => {
+    const [cx, cy, r] = [400, 335, 135];
+    const nw = 136;
+    const at = (deg) => [cx + r * Math.cos((deg * Math.PI) / 180), cy + r * Math.sin((deg * Math.PI) / 180)];
+    const arc = (from, to) => {
+      const [x1, y1] = at(from);
+      const [x2, y2] = at(to);
+      return `<path d="M${x1.toFixed(1)} ${y1.toFixed(1)} A${r} ${r} 0 0 1 ${x2.toFixed(1)} ${y2.toFixed(1)}" stroke="${C.text}" stroke-width="2.5" fill="none" marker-end="url(#ar)"/>`;
+    };
+    const svgContent = `<svg xmlns="http://www.w3.org/2000/svg" width="${W}" height="540" viewBox="0 0 ${W} 540" preserveAspectRatio="none"><defs><marker id="ar" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0L10 5L0 10z" fill="${C.text}"/></marker></defs><circle cx="${cx}" cy="${cy}" r="${r}" fill="none" stroke="${C.line}" stroke-width="20"/>${[-90, 0, 90, 180].map((d) => arc(d + 32, d + 90 - 30)).join('')}<path d="M172 ${cy - r} L${cx - nw / 2 - 6} ${cy - r}" stroke="${C.text}" stroke-width="2.5" marker-end="url(#ar)"/></svg>`;
+    const centers = [at(-90), at(0), at(90), at(180)];
+    const nodes = p.steps.flatMap(([title, sub], i) => {
+      const [x, y] = centers[i];
+      const last = i === p.steps.length - 1;
+      const fill = last ? C.dark : C.accent;
+      return [
+        box(x - nw / 2, y - 32, nw, 64, fill, 10),
+        text(x - nw / 2, y - 24, nw, title, { size: 19, color: last ? '#fff' : ink(fill), bold: true, align: 'center', height: 28 }),
+        text(x - nw / 2, y + 4, nw, sub, { size: 12, color: last ? C.darkSub : ink(fill), align: 'center', height: 18 }),
+      ];
+    });
+    const RX = 630;
+    const RW = W - PAD - RX;
+    let y = 150;
+    const side = [text(RX, 122, RW, p.cardsTitle, { size: 13, color: C.muted, bold: true, height: 20 })];
+    for (const [title, body] of p.cards) {
+      const h = 46 + textH(body, 14, RW - 32);
+      side.push(
+        box(RX, y, RW, h, C.dark, 10),
+        text(RX + 16, y + 12, RW - 32, title, { size: 16, color: '#fff', bold: true, height: 24 }),
+        text(RX + 16, y + 38, RW - 32, body, { size: 14, color: '#fff' }),
+      );
+      y += h + 12;
+    }
+    const cmp = p.compare.join('\n');
+    side.push(box(RX, y + 4, 5, textH(cmp, 14, RW - 20) + 34, C.accent), text(RX + 16, y + 4, RW - 16, p.compareTitle, { size: 14, bold: true, height: 22 }), text(RX + 16, y + 28, RW - 16, cmp, { size: 14 }));
+    return [
+      el('svg', { x: 0, y: 0, width: W, height: 540, svgContent, src: "", label: "" }),
+      H(62, p.heading, 30),
+      box(PAD, cy - r - 26, 102, 52, C.dark, 26),
+      text(PAD, cy - r - 13, 102, p.start, { size: 17, color: '#fff', bold: true, align: 'center', height: 26 }),
+      ...nodes,
+      text(cx - 80, cy - 24, 160, p.center, { size: 15, color: C.muted, bold: true, align: 'center', height: 48 }),
+      ...side,
+    ];
+  },
+  iconSplit: (p) => {
+    const X = 370;
+    const RW = W - PAD - X;
+    const gap = 14;
+    const cw = (RW - gap) / 2;
+    const ch = 96;
+    const rows = Math.ceil(p.cards.length / 2);
+    const darkH = p.dark ? (p.dark[3] ? 104 : 80) : 0;
+    const total = (p.link ? 124 : 0) + rows * (ch + gap) + darkH;
+    let y = Math.max(64, Math.round((45 + 540 - total) / 2));
+    const out = [
+      box(0, 45, 340, 495, C.accent),
+      text(48, 110, 260, p.kicker, { size: 16, color: ink(C.accent), bold: true, height: 26 }),
+      text(48, 150, 260, p.heading, { size: 36, color: ink(C.accent), bold: true }),
+    ];
+    if (p.tagline) out.push(text(48, 160 + textH(p.heading, 36, 260), 260, p.tagline, { size: 17, color: ink(C.accent), bold: true }));
+    if (p.link) {
+      out.push(link(X, y, RW, p.link));
+      y += 124;
+    }
+    p.cards.forEach(([icon, title, desc], i) => {
+      const wide = i === p.cards.length - 1 && p.cards.length % 2 === 1;
+      const x = wide || i % 2 === 0 ? X : X + cw + gap;
+      const w = wide ? RW : cw;
+      const cy = y + Math.floor(i / 2) * (ch + gap);
+      out.push(
+        box(x, cy, w, ch, C.panel, 12),
+        text(x + 16, cy + 12, 40, icon, { size: 26, height: 36 }),
+        text(x + 16, cy + 48, w - 32, title, { size: 17, bold: true, height: 24 }),
+        text(x + 16, cy + 72, w - 32, desc, { size: 13, color: C.muted, height: 20 }),
+      );
+    });
+    y += rows * (ch + gap);
+    if (p.dark) {
+      const [icon, title, desc, chips] = p.dark;
+      out.push(
+        box(X, y, RW, darkH, C.dark, 12),
+        text(X + 16, y + 14, 40, icon, { size: 26, height: 36 }),
+        text(X + 62, y + 14, RW - 78, title, { size: 17, color: '#fff', bold: true, height: 24 }),
+        text(X + 62, y + 42, RW - 78, desc, { size: 13, color: C.darkSub, height: 20 }),
+      );
+      let cx = X + 62;
+      for (const c of chips ?? []) {
+        const els = pill(cx, y + 66, c, C.accent);
+        out.push(...els);
+        cx += els[0].width + 8;
+      }
+    }
+    return out;
+  },
+  iconLinks: (p) => {
+    const gap = 20;
+    const cw = (CW - gap) / 2;
+    const [icon, title, desc] = p.dark;
+    return [
+      ...taskHeader(p.tag, p.heading),
+      ...p.links.flatMap(([ic, url, label, d], i) => {
+        const x = PAD + i * (cw + gap);
+        return [{ ...link(x, 220, cw, [url, `${ic} ${label}`, d]), linkIcon: 'download' }];
+      }),
+      box(PAD, 366, CW, 76, C.dark, 12),
+      text(PAD + 20, 382, 40, icon, { size: 26, height: 36 }),
+      text(PAD + 66, 380, CW - 86, title, { size: 19, color: '#fff', bold: true, height: 28 }),
+      text(PAD + 66, 410, CW - 86, desc, { size: 14, color: C.darkSub, height: 22 }),
+    ];
+  },
+  whoDoes: (p) => {
+    const gap = 24;
+    const cw = (CW - gap) / 2;
+    const col = (x, c, on) => {
+      const out = on ? [box(x - 3, 177, cw + 6, 286, C.accent, 15)] : [];
+      out.push(
+        box(x, 180, cw, 280, on ? C.panel : C.line, 12),
+        text(x + 18, 194, cw - 150, `${c.icon} ${c.name}`, { size: 20, bold: true, height: 30 }),
+        ...pill(x + cw - 18 - (Math.ceil(textWidth(c.count, 15)) + 32), 196, c.count, on ? C.accent : C.dark),
+      );
+      c.steps.forEach(([who, t], i) => {
+        const y = 240 + i * 42;
+        const ai = who === 'AI';
+        out.push(
+          box(x + 18, y + 2, 34, 22, ai ? (on ? C.accent : C.panel) : C.dark, 6),
+          text(x + 18, y + 4, 34, who, { size: 12, color: ai ? (on ? ink(C.accent) : C.text) : '#fff', bold: true, align: 'center', height: 18 }),
+          text(x + 62, y, cw - 80, t, { size: 15, height: 38 }),
+        );
+      });
+      return out;
+    };
+    const [lead, punch] = p.bottom;
+    const lw = Math.ceil(textWidth(lead, 20));
+    const pw = Math.ceil(textWidth(punch, 20)) + 12;
+    return [
+      H(62, p.heading, 30),
+      ...pill(PAD, 128, `任務：${p.task}`, C.dark),
+      ...col(PAD, p.left, false),
+      ...col(PAD + cw + gap, p.right, true),
+      text(PAD, 482, lw, lead, { size: 20, bold: true, height: 30 }),
+      box(PAD + lw, 482, pw, 30, C.mark ?? C.accent, 4),
+      text(PAD + lw + 6, 482, pw, punch, { size: 20, color: ink(C.mark ?? C.accent), bold: true, height: 30 }),
+    ];
+  },
   qa: (p) => [
     text(0, 170, W, p.heading, { size: 75, color: '#fff', bold: true, align: 'center' }),
     text(0, 300, W, p.sub, { size: 24, color: C.darkSub, align: 'center' }),
