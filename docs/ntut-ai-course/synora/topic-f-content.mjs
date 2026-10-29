@@ -62,8 +62,8 @@ export const pages = [
     title: '封面',
     notes: '開場：今天下課，你會帶走一個自己的個人網站。',
     date: '北科大 AI 新秀課 · 2026.11.26',
-    heading: '筆記變作品',
-    subtitle: 'AI Agent × 知識庫 × 個人網站',
+    heading: '讓 AI 一開口就懂你',
+    subtitle: '建一個個人知識庫 → 讓 Agent 做出你的網站',
     pills: PILLS,
   },
   {
