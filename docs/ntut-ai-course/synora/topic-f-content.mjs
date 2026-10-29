@@ -1,8 +1,8 @@
-// 主題候選 F「筆記變作品」的簡報內容：每頁文字、講稿、投票與搶答。版面共用 build-deck.mjs。
+// 主題候選 F「讓 AI 一開口就懂你」的簡報內容：每頁文字、講稿、投票與搶答。版面共用 build-deck.mjs。
 // 產生：node build-deck.mjs <輸出路徑> topic-f-content.mjs
 // 教案見 ../topic-f-agent-knowledge-resume.md
 
-export const brand = '筆記變作品';
+export const brand = '讓 AI 一開口就懂你';
 
 const VAULT_URL = 'https://github.com/crazysYao/slides-littleyao/raw/main/docs/ntut-ai-course/topic-f-vault/knowledge-vault-template.zip';
 
