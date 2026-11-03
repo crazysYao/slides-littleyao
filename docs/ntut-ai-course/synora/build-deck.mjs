@@ -360,14 +360,20 @@ const layouts = {
     const w = (CW - gap * (p.items.length - 1)) / p.items.length;
     return [
       ...(p.tag ? taskHeader(p.tag, p.heading) : [H(76, p.heading)]),
-      ...p.items.flatMap(([title, body], i) => {
+      // 第三欄可放示意圖：220×120 的 SVG 內容，畫在卡片下半
+      ...p.items.flatMap(([title, body, pic], i) => {
         const x = PAD + i * (w + gap);
-        const y = p.tag ? 210 : 170;
+        const y = p.tag ? 210 : pic ? 150 : 170;
+        const pw = w - 44;
+        const ph = Math.round((pw * 140) / 232);
         return [
-          box(x, y, w, 250, C.panel, 14),
+          box(x, y, w, pic ? 200 + ph : 250, C.panel, 14),
           text(x + 22, y + 20, w - 44, String(i + 1).padStart(2, '0'), { size: 44, color: C.accent, bold: true, height: 60 }),
           text(x + 22, y + 92, w - 44, title, { size: 21, bold: true }),
           text(x + 22, y + 92 + textH(title, 21, w - 44) + 8, w - 44, body, { size: 17, color: C.muted }),
+          ...(pic
+            ? [el('svg', { x: x + 22, y: y + 186, width: pw, height: ph, src: '', label: '', svgContent: `<svg xmlns="http://www.w3.org/2000/svg" width="${pw}" height="${ph}" viewBox="-6 -10 232 140" font-family="sans-serif">${pic}</svg>` })]
+            : []),
         ];
       }),
     ];
@@ -399,7 +405,7 @@ const layouts = {
         text(nx(i) + nw, 254, gap, '→', { size: 22, bold: true, align: 'center', height: 30 }),
       ]),
       text(nx(1), 326, nx(2) + nw - nx(1), p.loop, { size: 13, bold: true, align: 'center', height: 22 }),
-      ...p.prompts.flatMap(([name, desc], i) => {
+      ...(p.prompts ?? []).flatMap(([name, desc], i) => {
         const w = (CW - 24) / 3;
         const x = PAD + i * (w + 12);
         return [
@@ -408,7 +414,7 @@ const layouts = {
           text(x + 100, 393, w - 112, desc, { size: 14, color: C.panel, height: 22 }),
         ];
       }),
-      note(456, p.note),
+      note(p.prompts ? 456 : 380, p.note),
     ];
   },
   blanks: (p) => {
@@ -548,8 +554,9 @@ const layouts = {
     const RX = 630;
     const RW = W - PAD - RX;
     let y = 150;
-    const side = [text(RX, 122, RW, p.cardsTitle, { size: 13, color: C.muted, bold: true, height: 20 })];
-    for (const [title, body] of p.cards) {
+    // core：分步揭露的第一頁，只放迴圈，右側卡片留到下一頁
+    const side = p.core ? [] : [text(RX, 122, RW, p.cardsTitle, { size: 13, color: C.muted, bold: true, height: 20 })];
+    for (const [title, body] of p.core ? [] : p.cards) {
       const h = 46 + textH(body, 14, RW - 32);
       side.push(
         box(RX, y, RW, h, C.dark, 10),
@@ -559,7 +566,7 @@ const layouts = {
       y += h + 12;
     }
     const cmp = p.compare.join('\n');
-    side.push(box(RX, y + 4, 5, textH(cmp, 14, RW - 20) + 34, C.accent), text(RX + 16, y + 4, RW - 16, p.compareTitle, { size: 14, bold: true, height: 22 }), text(RX + 16, y + 28, RW - 16, cmp, { size: 14 }));
+    if (!p.core) side.push(box(RX, y + 4, 5, textH(cmp, 14, RW - 20) + 34, C.accent), text(RX + 16, y + 4, RW - 16, p.compareTitle, { size: 14, bold: true, height: 22 }), text(RX + 16, y + 28, RW - 16, cmp, { size: 14 }));
     return [
       el('svg', { x: 0, y: 0, width: W, height: 540, svgContent, src: "", label: "" }),
       H(62, p.heading, 30),
@@ -620,20 +627,26 @@ const layouts = {
     }
     return out;
   },
+  // links 是多列：每列一個陣列，同列平分寬度
   iconLinks: (p) => {
-    const gap = 20;
-    const cw = (CW - gap) / 2;
+    const gap = 16;
+    const rowH = 96;
     const [icon, title, desc] = p.dark;
+    const darkY = 196 + p.links.length * (rowH + 12) + 4;
     return [
       ...taskHeader(p.tag, p.heading),
-      ...p.links.flatMap(([ic, url, label, d], i) => {
-        const x = PAD + i * (cw + gap);
-        return [{ ...link(x, 220, cw, [url, `${ic} ${label}`, d]), linkIcon: 'download' }];
+      ...p.links.flatMap((row, r) => {
+        const cw = (CW - gap * (row.length - 1)) / row.length;
+        return row.map(([ic, url, label, d], i) => ({
+          ...link(PAD + i * (cw + gap), 196 + r * (rowH + 12), cw, [url, `${ic} ${label}`, d]),
+          height: rowH,
+          linkIcon: 'download',
+        }));
       }),
-      box(PAD, 366, CW, 76, C.dark, 12),
-      text(PAD + 20, 382, 40, icon, { size: 26, height: 36 }),
-      text(PAD + 66, 380, CW - 86, title, { size: 19, color: '#fff', bold: true, height: 28 }),
-      text(PAD + 66, 410, CW - 86, desc, { size: 14, color: C.darkSub, height: 22 }),
+      box(PAD, darkY, CW, 76, C.dark, 12),
+      text(PAD + 20, darkY + 16, 40, icon, { size: 26, height: 36 }),
+      text(PAD + 66, darkY + 14, CW - 86, title, { size: 19, color: '#fff', bold: true, height: 28 }),
+      text(PAD + 66, darkY + 44, CW - 86, desc, { size: 14, color: C.darkSub, height: 22 }),
     ];
   },
   whoDoes: (p) => {
