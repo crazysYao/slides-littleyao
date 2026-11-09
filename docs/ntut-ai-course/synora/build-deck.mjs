@@ -378,6 +378,10 @@ const layouts = {
       }),
     ];
   },
+  picture: (p) => [
+    H(62, p.heading, 30),
+    el('svg', { x: PAD, y: 130, width: CW, height: 390, src: '', label: '', svgContent: `<svg xmlns="http://www.w3.org/2000/svg" width="${CW}" height="390" viewBox="0 0 820 390" font-family="sans-serif">${p.svg}</svg>` }),
+  ],
   // 藍圖：上方三節、中間五格流程(含 Agent ⇄ 知識庫回圈)、下方三個 Prompt
   blueprint: (p) => {
     const nw = 118;

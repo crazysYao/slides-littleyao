@@ -5,9 +5,9 @@
 |---|---|---|---|
 | A | 問對問題的人：AI 時代最值錢的能力 | 需求定案稿 | [topic-a-ask-better-questions.md](topic-a-ask-better-questions.md) |
 | B | 用工程師的腦袋學任何東西 | 需求定案稿 | [topic-b-engineer-mindset-learning.md](topic-b-engineer-mindset-learning.md) |
-| F | 讓 AI 一開口就懂你：個人知識庫 × AI Agent × 個人網站(Obsidian＋Claude Code 示範，學員可接自己的 Agent) | 候選，教案定稿，Synora deck 已建(2026-10-22) | [topic-f-agent-knowledge-resume.md](topic-f-agent-knowledge-resume.md) |
+| F | 讓 AI 一開口就懂你：個人知識庫 × AI Agent × 個人網站(Obsidian＋Claude Code 示範，學員可接自己的 Agent) | **採用**(2026-11-09 講師確認)，教案定稿，Synora deck 已建 | [topic-f-agent-knowledge-resume.md](topic-f-agent-knowledge-resume.md) |
 | C–E | 見下方 | 已快速評估，未採用 | — |
-| **採用** | 為什麼、為什麼不、有沒有更好的：AI 時代的提問力 | 主題＋時間表已定稿 | [core-viewpoint.md](core-viewpoint.md) |
+| 備案 | 為什麼、為什麼不、有沒有更好的：AI 時代的提問力 | 主題＋時間表已定稿，2026-11-09 改列備案 | [core-viewpoint.md](core-viewpoint.md) |
 
 ## 跨主題已定案
 - 時間骨架：50＋休10＋55＋休10＋55，含 QA 10 分鐘
