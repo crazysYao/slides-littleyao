@@ -495,6 +495,31 @@ const layouts = {
   ],
   linkTask: (p) => [...taskHeader(p.tag, p.heading), link(PAD, 190, CW, p.link), list(330, p.items, true)],
   wordcloud: (p) => [wordcloud(p.question, p.maxWords)],
+  scale: (p) => [el('scale', { x: PAD, y: 54, width: CW, height: 476, question: p.question, min: p.min, max: p.max, step: 1, labelLeft: p.labelLeft, labelRight: p.labelRight })],
+  truefalse: (p) => [el('truefalse', { x: PAD, y: 54, width: CW, height: 476, question: p.question, answer: p.answer, trueLabel: '對', falseLabel: '不對', points: 5, speedBonus: true, speedDecay: 0.02 })],
+  bricks: (p) => {
+    const gap = 16;
+    const w = (CW - gap) / 2;
+    const h = 134;
+    return [
+      H(62, p.heading, 30),
+      ...p.cards.flatMap(([title, before, after], i) => {
+        const x = PAD + (i % 2) * (w + gap);
+        const y = 126 + Math.floor(i / 2) * (h + gap);
+        return [
+          box(x, y, w, h, C.panel, 12),
+          box(x, y, 6, h, C.accent),
+          text(x + 24, y + 14, w - 44, title, { size: 20, bold: true, height: 30 }),
+          text(x + 24, y + 48, w - 44, `以前：${before}`, { size: 14, color: C.muted, height: 22 }),
+          text(x + 24, y + 74, w - 44, `現在：${after}`, { size: 16, bold: true, height: 48 }),
+        ];
+      }),
+      box(PAD, 436, CW, 88, C.dark, 12),
+      text(PAD + 24, 450, CW - 48, p.ask, { size: 22, color: '#fff', bold: true, height: 32 }),
+      text(PAD + 24, 488, CW - 48, p.write, { size: 17, color: C.darkSub, height: 26 }),
+    ];
+  },
+  meme: (p) => [H(62, p.heading, 30), el('image', { x: (W - p.width) / 2, y: 130, width: p.width, height: 390, src: p.src, objectFit: 'contain' })],
   links: (p) => [
     ...taskHeader(p.tag, p.heading),
     ...p.links.map((l, i) => link(PAD + i * (CW / 2 + 10), 200, CW / 2 - 10, l)),
@@ -569,8 +594,8 @@ const layouts = {
       );
       y += h + 12;
     }
-    const cmp = p.compare.join('\n');
-    if (!p.core) side.push(box(RX, y + 4, 5, textH(cmp, 14, RW - 20) + 34, C.accent), text(RX + 16, y + 4, RW - 16, p.compareTitle, { size: 14, bold: true, height: 22 }), text(RX + 16, y + 28, RW - 16, cmp, { size: 14 }));
+    const cmp = p.compare?.join('\n');
+    if (!p.core && cmp) side.push(box(RX, y + 4, 5, textH(cmp, 14, RW - 20) + 34, C.accent), text(RX + 16, y + 4, RW - 16, p.compareTitle, { size: 14, bold: true, height: 22 }), text(RX + 16, y + 28, RW - 16, cmp, { size: 14 }));
     return [
       el('svg', { x: 0, y: 0, width: W, height: 540, svgContent, src: "", label: "" }),
       H(62, p.heading, 30),
