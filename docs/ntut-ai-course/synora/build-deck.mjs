@@ -443,12 +443,13 @@ const layouts = {
   },
   grid: (p) => {
     const gap = 20;
-    const w = (CW - gap * 2) / 3;
+    const cols = p.tiles.length === 4 ? 2 : 3;
+    const w = (CW - gap * (cols - 1)) / cols;
     return [
       H(76, p.heading),
       ...p.tiles.flatMap(([title, desc], i) => {
-        const x = PAD + (i % 3) * (w + gap);
-        const y = 160 + Math.floor(i / 3) * 170;
+        const x = PAD + (i % cols) * (w + gap);
+        const y = 160 + Math.floor(i / cols) * 170;
         return [
           box(x, y, 90, 18, C.accent, 6),
           box(x, y + 12, w, 136, C.panel, 10),
@@ -499,24 +500,45 @@ const layouts = {
   truefalse: (p) => [el('truefalse', { x: PAD, y: 54, width: CW, height: 476, question: p.question, answer: p.answer, trueLabel: '對', falseLabel: '不對', points: 5, speedBonus: true, speedDecay: 0.02 })],
   bricks: (p) => {
     const gap = 16;
-    const w = (CW - gap) / 2;
-    const h = 134;
+    const cols = p.cards.length === 3 ? 3 : 2;
+    const w = (CW - gap * (cols - 1)) / cols;
+    const h = cols === 3 ? 210 : 134;
+    const top = cols === 3 ? 146 : 126;
     return [
       H(62, p.heading, 30),
       ...p.cards.flatMap(([title, before, after], i) => {
-        const x = PAD + (i % 2) * (w + gap);
-        const y = 126 + Math.floor(i / 2) * (h + gap);
+        const x = PAD + (i % cols) * (w + gap);
+        const y = top + Math.floor(i / cols) * (h + gap);
+        const b = `以前：${before}`;
+        const by = y + 48 + textH(b, 14, w - 44) + 12;
         return [
           box(x, y, w, h, C.panel, 12),
           box(x, y, 6, h, C.accent),
           text(x + 24, y + 14, w - 44, title, { size: 20, bold: true, height: 30 }),
-          text(x + 24, y + 48, w - 44, `以前：${before}`, { size: 14, color: C.muted, height: 22 }),
-          text(x + 24, y + 74, w - 44, `現在：${after}`, { size: 16, bold: true, height: 48 }),
+          text(x + 24, y + 48, w - 44, b, { size: 14, color: C.muted }),
+          text(x + 24, by, w - 44, `現在：${after}`, { size: cols === 3 ? 18 : 16, bold: true }),
         ];
       }),
       box(PAD, 436, CW, 88, C.dark, 12),
       text(PAD + 24, 450, CW - 48, p.ask, { size: 22, color: '#fff', bold: true, height: 32 }),
       text(PAD + 24, 488, CW - 48, p.write, { size: 17, color: C.darkSub, height: 26 }),
+    ];
+  },
+  pair: (p) => {
+    const gap = 20;
+    const w = (CW - gap) / 2;
+    const h = Math.round((w * p.ratio[1]) / p.ratio[0]);
+    return [
+      H(62, p.heading, 30),
+      ...p.images.flatMap(([label, src], i) => {
+        const x = PAD + i * (w + gap);
+        return [
+          text(x, 128, w, label, { size: 17, color: i ? C.text : C.muted, bold: true, height: 26 }),
+          box(x - 2, 162, w + 4, h + 4, i ? C.accent : C.line, 10),
+          el('image', { x, y: 164, width: w, height: h, src, objectFit: 'cover' }),
+        ];
+      }),
+      ...(p.note ? [note(164 + h + 22, p.note)] : []),
     ];
   },
   meme: (p) => [H(62, p.heading, 30), el('image', { x: (W - p.width) / 2, y: 130, width: p.width, height: 390, src: p.src, objectFit: 'contain' })],
@@ -526,7 +548,11 @@ const layouts = {
     note(340, p.note),
   ],
   taskCheck: (p) => [...taskHeader(p.tag, p.heading), list(190, p.items, true), checkpoint(200 + textH(p.items.join('\n'), 20, CW) + 20, ...p.check)],
-  taskDownload: (p) => [...taskHeader(p.tag, p.heading), fileDownload(190, p.file), list(330, p.items, true)],
+  taskDownload: (p) => [
+    ...taskHeader(p.tag, p.heading),
+    fileDownload(190, p.file),
+    ...(p.cards ? [...cards(316, 116, colored(p.cards)), note(450, p.note)] : [list(330, p.items, true)]),
+  ],
   copyPrompt: (p) => [...taskHeader(p.tag, p.heading), copycard(190, p.cardTitle, p.prompt)],
   webProject: (p) => [webProject(p.question)],
   closing: (p) => [
