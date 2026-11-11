@@ -52,7 +52,7 @@ A–E 的案例與素材保留，觀點定下來後再挑合適的當佐證。
 - Synora 專案 ID `2eb9c054-226a-4337-86e3-93c0d970d29d`，學員加入碼 `AIF3FUEC`
 
 ## 進度
-主題 F(採用)：本機 56 頁，尚未推上 Synora，進度見 [topic-f 教案的「接手進度」](topic-f-agent-knowledge-resume.md)。以下是三問備案的進度。
+主題 F(採用)：本機 62 頁，尚未推上 Synora，進度見 [topic-f 教案的「接手進度」](topic-f-agent-knowledge-resume.md)。以下是三問備案的進度。
 
 - [x] 教案 [lesson-plan.md](lesson-plan.md)
 - [x] Synora deck 產生器(53 頁：36 頁內容＋Demo＋10 題搶答＋2 個排行榜＋4 頁揭曉拆頁；2026-10-20 依 attention-review 修正後重推)
