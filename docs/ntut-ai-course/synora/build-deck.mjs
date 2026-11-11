@@ -306,16 +306,18 @@ const layouts = {
     ...p.terms.flatMap(([name, body], i) => term(370 + i * 40, name, body)),
   ],
   // lines 第三欄是範例，有範例時每行下面多一行灰字
+  // copy＝[標題, 內容]：骨架只放要填的行，下方放複製卡取代 note
   skillTemplate: (p) => {
-    const gap = p.lines.some((l) => l[2]) ? 62 : 40;
+    const gap = p.lines.some((l) => l[2]) ? (p.copy ? 54 : 62) : 40;
+    const boxH = p.copy ? p.lines.length * gap + 24 : 200;
     return [
       ...taskHeader(p.tag, p.heading),
-      box(PAD, 190, CW, 200, C.dark, 14),
+      box(PAD, 190, CW, boxH, C.dark, 14),
       ...p.lines.flatMap(([color, s, example], i) => [
         text(PAD + 28, 212 + i * gap, CW - 56, s, { size: 18, color: C[color] }),
         ...(example ? [text(PAD + 28, 238 + i * gap, CW - 56, example, { size: 15, color: C.darkSub })] : []),
       ]),
-      ...(p.note ? [note(410, p.note)] : []),
+      ...(p.copy ? [copycard(190 + boxH + 12, ...p.copy)] : p.note ? [note(410, p.note)] : []),
     ];
   },
   // ── 版面變化：時間軸、左右分割、大編號步驟、資料夾磚、前後對照、深色提問 ──
@@ -498,12 +500,13 @@ const layouts = {
   wordcloud: (p) => [wordcloud(p.question, p.maxWords)],
   scale: (p) => [el('scale', { x: PAD, y: 54, width: CW, height: 476, question: p.question, min: p.min, max: p.max, step: 1, labelLeft: p.labelLeft, labelRight: p.labelRight })],
   truefalse: (p) => [el('truefalse', { x: PAD, y: 54, width: CW, height: 476, question: p.question, answer: p.answer, trueLabel: '對', falseLabel: '不對', points: 5, speedBonus: true, speedDecay: 0.02 })],
+  // copy＝「現在」那句改成複製卡，卡片拉高
   bricks: (p) => {
     const gap = 16;
     const cols = p.cards.length === 3 ? 3 : 2;
     const w = (CW - gap * (cols - 1)) / cols;
-    const h = cols === 3 ? 210 : 134;
-    const top = cols === 3 ? 146 : 126;
+    const h = p.copy ? 300 : cols === 3 ? 210 : 134;
+    const top = p.copy ? 126 : cols === 3 ? 146 : 126;
     return [
       H(62, p.heading, 30),
       ...p.cards.flatMap(([title, before, after], i) => {
@@ -516,7 +519,9 @@ const layouts = {
           box(x, y, 6, h, C.accent),
           text(x + 24, y + 14, w - 44, title, { size: 20, bold: true, height: 30 }),
           text(x + 24, y + 48, w - 44, b, { size: 14, color: C.muted }),
-          text(x + 24, by, w - 44, `現在：${after}`, { size: cols === 3 ? 18 : 16, bold: true }),
+          p.copy
+            ? el('copycard', { x: x + 16, y: by, width: w - 28, height: y + h - 12 - by, title: p.copy, content: after.replace(/^「|」$/g, ''), copied: false })
+            : text(x + 24, by, w - 44, `現在：${after}`, { size: cols === 3 ? 18 : 16, bold: true }),
         ];
       }),
       box(PAD, 436, CW, 88, C.dark, 12),
@@ -554,6 +559,21 @@ const layouts = {
     ...(p.cards ? [...cards(316, 116, colored(p.cards)), note(450, p.note)] : [list(330, p.items, true)]),
   ],
   copyPrompt: (p) => [...taskHeader(p.tag, p.heading), copycard(190, p.cardTitle, p.prompt)],
+  copyPair: (p) => {
+    const gap = 20;
+    const w = (CW - gap) / 2;
+    return [
+      ...taskHeader(p.tag, p.heading),
+      ...p.cards.map(([title, content], i) => el('copycard', { x: PAD + i * (w + gap), y: 190, width: w, height: 340, title, content, copied: false })),
+    ];
+  },
+  opentext: (p) => [
+    H(62, p.heading, 30),
+    el('opentext', { x: PAD, y: 130, width: CW, height: 400, question: p.question, placeholder: p.placeholder, maxLength: p.maxLength }),
+  ],
+  // 作品牆用 homework 的元件 id 對應，所以 homework 給固定 id
+  homework: (p) => [el('homework', { id: p.hwId, x: PAD, y: 54, width: CW, height: 476, title: p.hwTitle, description: p.description, submissionMode: '', modeLabel: '全功能' })],
+  showcase: (p) => [el('showcase', { x: PAD, y: 54, width: CW, height: 476, title: p.wallTitle, linkedHomeworkId: p.hwId, showVoting: true, peerVoteCount: 3, focusMode: false, points: 5 })],
   webProject: (p) => [webProject(p.question)],
   closing: (p) => [
     text(80, 140, 800, p.kicker, { size: 18, color: C.muted }),
