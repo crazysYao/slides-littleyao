@@ -122,7 +122,7 @@ export const pages = [
     notes: '09:08 具體說出需求(4)，三頁依序揭曉。這是講師自己的一次經驗，不要講成男生都怎樣、女生都怎樣。講稿：我那時覺得自己很貼心，先蒐集需求、再量化程度，結果她差點當場炸開。（停一拍，讓台下笑完）',
     heading: '那天晚上',
     beats: [
-      ['ai', '好煩喔……', null, '她'],
+      ['ai', '好煩喔～', null, '她'],
       ['me', '怎麼了？有多煩？1 到 10 分。'],
     ],
     punch: '她差點當場炸開',
@@ -137,7 +137,7 @@ export const pages = [
     beats: [
       ['me', '我懂了，妳要的是聽眾。（耐心問完所有細節）'],
       ['me', '那我們來訂改善目標、行動計畫，還有可以量化的 KPI。'],
-      ['ai', '……', null, '她'],
+      ['ai', '（沉默）', null, '她'],
     ],
     punch: '結果：一樣被噴一波',
   },
@@ -190,7 +190,7 @@ export const pages = [
   },
   {
     id: 's1-interview',
-    layout: 'copyPrompt',
+    layout: 'copyFull',
     section: '01 具體描述',
     title: '讓聊天 AI 訪問你',
     notes: '貼給 ChatGPT 或 Gemini 網頁版，一題一題回答，約 10 分鐘。想不起來的就留「？」，第二節 Agent 會回來問。有舊履歷的人可以一起貼。最後 2 分鐘：把 AI 整理好的整段存成 my-site/我的基本資料.md。',
@@ -455,7 +455,7 @@ export const pages = [
   },
   {
     id: 's2-prompt-2',
-    layout: 'copyPrompt',
+    layout: 'copyFull',
     section: '02 執行',
     title: 'Prompt ②：網站 v1',
     notes: '填空版：先把三個空格換成自己的答案再送出。「給誰看」就是剛剛颱風那題。做好後在 site 資料夾裡雙擊 index.html 打開。',

@@ -253,7 +253,7 @@ const threePills = (y, items) => {
   });
 };
 
-const tinted = (items) => items.map(([from, content, tint]) => [from, content, tint && C[tint]]);
+const tinted = (items) => items.map(([from, content, tint, ...rest]) => [from, content, tint && C[tint], ...rest]);
 
 const colored = (items) => items.map(([color, ...rest]) => [C[color], ...rest]);
 
@@ -546,6 +546,8 @@ const layouts = {
   taskCheck: (p) => [...taskHeader(p.tag, p.heading), list(190, p.items, true), checkpoint(200 + textH(p.items.join('\n'), 20, CW) + 20, ...p.check)],
   taskDownload: (p) => [...taskHeader(p.tag, p.heading), fileDownload(190, p.file), list(330, p.items, true)],
   copyPrompt: (p) => [...taskHeader(p.tag, p.heading), copycard(190, p.cardTitle, p.prompt)],
+  // 長 Prompt：省掉標籤列，卡片從上方開始
+  copyFull: (p) => [H(62, p.heading, 30), copycard(120, p.cardTitle, p.prompt)],
   webProject: (p) => [webProject(p.question, p.methods)],
   closing: (p) => [
     text(80, 140, 800, p.kicker, { size: 18, color: C.muted }),
@@ -553,8 +555,8 @@ const layouts = {
     ...(p.lead
       ? [
           text(80, 270, 800, p.lead, { size: 48, bold: true }),
-          ...(C.mark ? [box(80 + 48 * [...p.lead].length, 270 + 40, 48 * [...p.punch].length, 26, C.mark)] : []),
-          text(80 + 48 * [...p.lead].length, 270, 240, p.punch, { size: 48, color: hue(C.accent), bold: true }),
+          ...(C.mark ? [box(80 + textWidth(p.lead, 48), 270 + 40, textWidth(p.punch, 48), 26, C.mark)] : []),
+          text(80 + textWidth(p.lead, 48), 270, 240, p.punch, { size: 48, color: hue(C.accent), bold: true }),
         ]
       : []),
     ...threePills(430, p.pills),
