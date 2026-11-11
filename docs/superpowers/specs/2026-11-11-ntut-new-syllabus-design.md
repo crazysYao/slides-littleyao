@@ -171,7 +171,7 @@ ask:
   - 找不到 node → 重開 OpenCode
   - Mac「無法驗證開發者」
   - 免費額度用完
-  - Vercel 404
+  - 網址打不開／要登入 → 改交沒有亂碼的正式網址、確認只上傳 site
 - 講師準備隨身碟，放兩個平台的安裝檔當離線備援
 
 ### 09:36 打招呼卡（OpenCode：新增專案 → 選桌面的 my-site）
@@ -272,7 +272,7 @@ rule: 只改 site/index.html
 npx vercel@latest deploy site --prod --yes --project 專案名稱 --create-if-missing
 最後給我沒有亂碼的正式網址（輸出裡 Aliased 那行），我用無痕視窗打開確認不用登入
 ```
-- 網址名稱：用英文名字當 Vercel 專案名稱。不走 Eric 的 `vercel link`：CLI 65.14 說明寫明 `--project` 指向新專案且帶 `--yes` 時要加 `--create-if-missing`，學員都是新專案，所以改用一行 `deploy --project … --create-if-missing`；名稱被用走時網址會多一段，以 CLI 回報為準。實際行為依課前實測確認
+- 網址名稱：用英文名字當 Vercel 專案名稱。不走 Eric 的 `vercel link`：CLI 65.14 說明寫明 `--project` 指向新專案且帶 `--yes` 時要加 `--create-if-missing`，學員都是新專案，所以改用一行 `deploy site --project … --create-if-missing`（在 my-site 跑，只上傳 site）；名稱被用走時正式網址會多一段，交的是沒有亂碼的正式網址。實際行為依課前實測確認
 - 之後要改網站：改完叫 AI 用同一個專案名稱再跑一次同一行，網址不變
 
 ### 11:44 Obsidian 示範（學員只看）
