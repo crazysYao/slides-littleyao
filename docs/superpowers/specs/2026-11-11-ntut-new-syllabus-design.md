@@ -266,8 +266,8 @@ rule: 只改 site/index.html
 ### 11:23 Vercel 上線（Prompt ④，改寫自 Eric 第 74 頁）
 ```
 用 Vercel 上線：
-1 cd site && npx vercel@latest --prod --yes
-2 網站上不能有私人手機、身分證、住址
+1 先檢查 site/index.html：有私人手機、身分證、住址就列出來，停下來等我改
+2 沒有才跑 cd site && npx vercel@latest --prod --yes
 最後給我 https://….vercel.app
 ```
 - 網址名稱：用英文名字當 Vercel 專案名稱，照 Eric 的 `vercel link --yes --project 【英文名】` 寫法；實際指令依課前實測決定
@@ -292,6 +292,7 @@ rule: 只改 site/index.html
   - 版面共用 `build-deck.mjs`
   - 視覺沿用 F 版的黃黑求職風 palette
 - **build-deck.mjs**：補上 homework、showcase layout（目前沒有）；多選用現有的 `poll(..., multiSelect)`；webProject 已有
+- 2026-11-11 對抗審查後修正：Prompt ④ 改成先檢查個資、沒有才上線
 - **網站範本**：`docs/ntut-ai-course/job-site-template/site/index.html`，加上 UTF-8 打包的 zip
 - **保底網頁**：同一個資料夾內另放一份已填好通用內容的版本
 - **畫面預覽（本次最後一步，講師要親眼看過）**

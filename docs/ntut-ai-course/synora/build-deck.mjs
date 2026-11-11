@@ -188,8 +188,6 @@ const wordcloud = (question, maxWords) => el('wordcloud', { x: PAD, y: 54, width
 const webProject = (question, enabledMethods = ['upload', 'url']) =>
   el('webProject', { x: PAD, y: 54, width: CW, height: 476, question, enabledMethods, showVoting: true, peerVoteCount: 3 });
 
-const multiChoice = (question, choices) => el('multiChoice', { x: PAD, y: 54, width: CW, height: 476, question, choices });
-
 // showcase 以 linkedHomeworkId 綁定 homework，所以 homework 的 id 由內容檔指定
 const homework = (id, y, title, description) => ({
   ...el('homework', { x: PAD, y, width: CW, height: 530 - y, title, modeLabel: '全功能', description, submissionMode: '' }),
@@ -327,7 +325,7 @@ const layouts = {
     text(80, 380, 800, p.sub, { size: 20 }),
   ],
   poll: (p) => [poll(p.id, p.question, p.options)],
-  multiChoice: (p) => [multiChoice(p.question, p.options)],
+  multiChoice: (p) => [poll(p.id, p.question, p.options, true)],
   homework: (p) => [H(62, p.heading, 30), homework(p.hwId, 130, p.title, p.description)],
   showcase: (p) => [showcase(p.title, p.linkHomework)],
   story: (p) => {

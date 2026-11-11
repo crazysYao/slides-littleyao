@@ -1,10 +1,13 @@
 // 檢查 build-deck.mjs 產出的 deck.json：作品牆連結、元素不出界、每頁有講稿；--sections 檢查三節總長。
-// 用法：node check-deck.mjs <deck.json> [--sections]
+// 用法：node check-deck.mjs <deck.json> [--sections] [--expect-pages=N]
 import { readFileSync } from 'node:fs';
 
 const [file, ...flags] = process.argv.slice(2);
 const { slides } = JSON.parse(readFileSync(file, 'utf8'));
 const errors = [];
+if (!slides?.length) errors.push('沒有任何頁面');
+const expect = flags.find((f) => f.startsWith('--expect-pages='));
+if (expect && slides.length !== Number(expect.split('=')[1])) errors.push(`頁數 ${slides.length}，應為 ${expect.split('=')[1]}`);
 
 const homeworkIds = new Set(slides.flatMap((s) => s.elements.filter((e) => e.type === 'homework').map((e) => e.id)));
 for (const s of slides) {

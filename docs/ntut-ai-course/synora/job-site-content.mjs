@@ -596,11 +596,11 @@ export const pages = [
     mockH: 150,
     mockTitle: 'OpenCode · my-site',
     mock: [
-      [['AI  ', 'm'], ['正在把 site 資料夾上線 …']],
+      [['AI  ', 'm'], ['檢查過了，沒有私人手機、身分證、住址。正在上線 …']],
       [['AI  ', 'm'], ['上線了：', 'g'], ['https://你的名字.vercel.app', 'y']],
       [['把這個網址貼到下一頁的上線牆', 'm']],
     ],
-    prompt: '用 Vercel 上線：\n1 cd site && npx vercel@latest --prod --yes\n2 網站上不能有私人手機、身分證、住址\n最後給我 https://….vercel.app',
+    prompt: '用 Vercel 上線：\n1 先檢查 site/index.html：有私人手機、身分證、住址就列出來，停下來等我改\n2 沒有才跑 cd site && npx vercel@latest --prod --yes\n最後給我 https://….vercel.app',
   },
   {
     id: 's3-live',
