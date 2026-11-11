@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>我的求職網站</title>
-<!-- 保底網頁：網站 v1 做不出來時用這份，直接手改文字也能上線 -->
+<!-- 保底網頁：網站 v1 做不出來時，用這份蓋掉 site/index.html，一樣能上線，之後再慢慢換成自己的內容 -->
 <style>
   :root {
     --bg: #fbfaf7;
@@ -13,6 +13,7 @@
     --accent: #f5b400;
     --card: #ffffff;
     --line: #ebe7de;
+    --on-ink: #ffffff;
     --font: "Noto Sans TC", "PingFang TC", "Microsoft JhengHei", system-ui, sans-serif;
   }
   * { box-sizing: border-box; }
@@ -26,7 +27,7 @@
   .hero .tag { display: inline-block; background: var(--accent); padding: 2px 12px; border-radius: 999px; font-size: 14px; font-weight: 700; }
   .hero h1 { font-size: clamp(36px, 7vw, 64px); line-height: 1.15; margin: 16px 0 12px; }
   .hero p { font-size: clamp(17px, 2.4vw, 21px); color: var(--muted); margin: 0 0 28px; max-width: 640px; }
-  .btn { display: inline-block; background: var(--ink); color: #fff; text-decoration: none; padding: 12px 24px; border-radius: 999px; font-weight: 700; }
+  .btn { display: inline-block; background: var(--ink); color: var(--on-ink); text-decoration: none; padding: 12px 24px; border-radius: 999px; font-weight: 700; }
   section { padding: 40px 0; border-top: 1px solid var(--line); }
   h2 { font-size: 26px; margin: 0 0 18px; }
   h2::after { content: ""; display: block; width: 40px; height: 5px; background: var(--accent); border-radius: 3px; margin-top: 6px; }
@@ -43,74 +44,73 @@
 </head>
 <body>
 <nav><div class="wrap">
-  <a href="#about">關於我</a><a href="#goal">方向</a><a href="#project">專題</a><a href="#exp">經歷</a><a href="#skills">技能</a><a href="#edu">學歷</a><a href="#contact">聯絡</a>
+  <a href="#about">關於我</a><a href="#goal">方向</a><a href="#edu">學歷</a><a href="#project">專題</a><a href="#exp">經歷</a><a href="#skills">技能</a><a href="#highlight">亮點</a><a href="#contact">聯絡</a>
 </div></nav>
 
 <header class="hero" id="about"><div class="wrap">
   <span class="tag" data-slot="tag">2026 應屆畢業・求職中</span>
-  <h1 data-slot="name">你的名字</h1>
-  <p data-slot="intro">一句話介紹自己：我會什麼、做過什麼。</p>
+  <h1 data-slot="name">嗨，我是應屆畢業生</h1>
+  <p data-slot="intro">喜歡把事情做完、做好，正在找第一份工作。</p>
   <a class="btn" href="#contact" data-slot="cta">跟我聯絡</a>
 </div></header>
 
 <main>
 <section id="goal"><div class="wrap">
-  <h2>我想做的工作</h2>
-  <p data-slot="goal">想做的工作，以及為什麼。</p>
+  <h2 data-slot="h-goal">我想做的工作</h2>
+  <p data-slot="goal">希望加入願意帶新人的團隊，從實作中快速成長。</p>
+</div></section>
+
+<section id="edu"><div class="wrap">
+  <h2 data-slot="h-edu">學歷</h2>
+  <p data-slot="edu">2026 年大學畢業</p>
 </div></section>
 
 <section id="project"><div class="wrap">
-  <h2>代表專題</h2>
+  <h2 data-slot="h-project">代表專題</h2>
   <div class="cards">
     <article class="card">
-      <h3 data-slot="project-title">專題名稱</h3>
-      <p class="meta" data-slot="project-role">幾人小組・我負責哪塊・用了什麼工具</p>
-      <p data-slot="project-body">做了什麼、解決了什麼問題。</p>
+      <h3 data-slot="project-title">課堂專題</h3>
+      <p class="meta" data-slot="project-role">小組合作</p>
+      <p data-slot="project-body">和組員分工完成一個完整的作品，從規劃做到發表。</p>
     </article>
     <article class="card">
-      <p class="num" data-slot="project-number">數字</p>
-      <p class="meta" data-slot="project-number-label">這個數字代表什麼</p>
+      <p class="num" data-slot="project-number">1 個</p>
+      <p class="meta" data-slot="project-number-label">從零做到完成的作品</p>
     </article>
   </div>
 </div></section>
 
 <section id="exp"><div class="wrap">
-  <h2>經歷</h2>
+  <h2 data-slot="h-exp">經歷</h2>
   <div class="cards">
     <article class="card">
-      <h3 data-slot="exp-title">打工、實習或社團</h3>
-      <p class="meta" data-slot="exp-meta">年份</p>
-      <p data-slot="exp-body">做了什麼、學到什麼。</p>
-    </article>
-    <article class="card">
-      <h3>亮點</h3>
-      <p data-slot="highlight">別人常稱讚你的一件事。</p>
+      <h3 data-slot="exp-title">社團與打工</h3>
+      <p class="meta" data-slot="exp-meta">大學期間</p>
+      <p data-slot="exp-body">學會跟不同的人合作、準時把事情交出去。</p>
     </article>
   </div>
 </div></section>
 
 <section id="skills"><div class="wrap">
-  <h2>技能</h2>
+  <h2 data-slot="h-skills">技能</h2>
   <ul class="chips" data-slot="skills">
-    <li>技能一</li><li>技能二</li><li>技能三</li>
+    <li>團隊合作</li><li>用 AI 做網站</li><li>簡報表達</li>
   </ul>
 </div></section>
 
-<section id="edu"><div class="wrap">
-  <h2>學歷</h2>
-  <p data-slot="edu">學校・科系・畢業年</p>
+<section id="highlight"><div class="wrap">
+  <h2 data-slot="h-highlight">亮點</h2>
+  <p data-slot="highlight">願意學新東西：今天用 AI 做出這個網站，並且自己上線。</p>
 </div></section>
 
 <section id="contact"><div class="wrap">
-  <h2>聯絡我</h2>
+  <h2 data-slot="h-contact">聯絡我</h2>
   <ul data-slot="contact">
-    <li>Email：<a href="mailto:hello@example.com">hello@example.com</a></li>
-    <li>GitHub：<a href="https://github.com/">github.com/your-id</a></li>
-    <li>LinkedIn：<a href="https://www.linkedin.com/">linkedin.com/in/your-id</a></li>
+    <li>Email：待補</li>
   </ul>
 </div></section>
 </main>
 
-<footer><div class="wrap" data-slot="footer">© 2026 你的名字・這個網站由我和 AI 一起做出來</div></footer>
+<footer><div class="wrap" data-slot="footer">© 2026・這個網站由我和 AI 一起做出來</div></footer>
 </body>
 </html>

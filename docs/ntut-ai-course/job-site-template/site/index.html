@@ -4,7 +4,9 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>林小晴｜前端工程師求職作品集</title>
-<!-- 求職網站範本：範例人物是虛構的。AI 只換 data-slot 標記的文字與 :root 的顏色、字體，HTML 結構不動 -->
+<!-- 求職網站範本（範例人物林小晴是虛構的）
+  可以改：<title>、帶 data-slot 的文字（ul 裡的項目可增減）、:root 的顏色與字體（只用系統字體）
+  可以整段搬動 <section> 調整順序，nav 連結要同步；其他結構不動 -->
 <style>
   :root {
     --bg: #fbfaf7;
@@ -13,6 +15,7 @@
     --accent: #f5b400;
     --card: #ffffff;
     --line: #ebe7de;
+    --on-ink: #ffffff;
     --font: "Noto Sans TC", "PingFang TC", "Microsoft JhengHei", system-ui, sans-serif;
   }
   * { box-sizing: border-box; }
@@ -26,7 +29,7 @@
   .hero .tag { display: inline-block; background: var(--accent); padding: 2px 12px; border-radius: 999px; font-size: 14px; font-weight: 700; }
   .hero h1 { font-size: clamp(36px, 7vw, 64px); line-height: 1.15; margin: 16px 0 12px; }
   .hero p { font-size: clamp(17px, 2.4vw, 21px); color: var(--muted); margin: 0 0 28px; max-width: 640px; }
-  .btn { display: inline-block; background: var(--ink); color: #fff; text-decoration: none; padding: 12px 24px; border-radius: 999px; font-weight: 700; }
+  .btn { display: inline-block; background: var(--ink); color: var(--on-ink); text-decoration: none; padding: 12px 24px; border-radius: 999px; font-weight: 700; }
   section { padding: 40px 0; border-top: 1px solid var(--line); }
   h2 { font-size: 26px; margin: 0 0 18px; }
   h2::after { content: ""; display: block; width: 40px; height: 5px; background: var(--accent); border-radius: 3px; margin-top: 6px; }
@@ -43,7 +46,7 @@
 </head>
 <body>
 <nav><div class="wrap">
-  <a href="#about">關於我</a><a href="#goal">方向</a><a href="#project">專題</a><a href="#exp">經歷</a><a href="#skills">技能</a><a href="#edu">學歷</a><a href="#contact">聯絡</a>
+  <a href="#about">關於我</a><a href="#goal">方向</a><a href="#edu">學歷</a><a href="#project">專題</a><a href="#exp">經歷</a><a href="#skills">技能</a><a href="#highlight">亮點</a><a href="#contact">聯絡</a>
 </div></nav>
 
 <header class="hero" id="about"><div class="wrap">
@@ -55,12 +58,17 @@
 
 <main>
 <section id="goal"><div class="wrap">
-  <h2>我想做的工作</h2>
+  <h2 data-slot="h-goal">我想做的工作</h2>
   <p data-slot="goal">前端工程師。我喜歡做「使用者一看就會用」的介面，也想在團隊裡學會怎麼把需求拆小、準時上線。</p>
 </div></section>
 
+<section id="edu"><div class="wrap">
+  <h2 data-slot="h-edu">學歷</h2>
+  <p data-slot="edu">國立臺北科技大學 資訊工程系・2026 畢業</p>
+</div></section>
+
 <section id="project"><div class="wrap">
-  <h2>代表專題</h2>
+  <h2 data-slot="h-project">代表專題</h2>
   <div class="cards">
     <article class="card">
       <h3 data-slot="project-title">餐廳訂位網站</h3>
@@ -75,34 +83,30 @@
 </div></section>
 
 <section id="exp"><div class="wrap">
-  <h2>經歷</h2>
+  <h2 data-slot="h-exp">經歷</h2>
   <div class="cards">
     <article class="card">
       <h3 data-slot="exp-title">程式社 活動組長</h3>
       <p class="meta" data-slot="exp-meta">2024–2025</p>
       <p data-slot="exp-body">辦了 3 場工作坊，共 200 人參加；學到怎麼排時程、怎麼跟講者溝通。</p>
     </article>
-    <article class="card">
-      <h3>亮點</h3>
-      <p data-slot="highlight">同學常說我「講得很清楚」：專題報告時，被老師拿來當示範。</p>
-    </article>
   </div>
 </div></section>
 
 <section id="skills"><div class="wrap">
-  <h2>技能</h2>
+  <h2 data-slot="h-skills">技能</h2>
   <ul class="chips" data-slot="skills">
     <li>HTML / CSS</li><li>React</li><li>Git</li><li>Figma</li><li>用 AI 做原型</li>
   </ul>
 </div></section>
 
-<section id="edu"><div class="wrap">
-  <h2>學歷</h2>
-  <p data-slot="edu">國立臺北科技大學 資訊工程系・2026 畢業</p>
+<section id="highlight"><div class="wrap">
+  <h2 data-slot="h-highlight">亮點</h2>
+  <p data-slot="highlight">同學常說我「講得很清楚」：專題報告時，被老師拿來當示範。</p>
 </div></section>
 
 <section id="contact"><div class="wrap">
-  <h2>聯絡我</h2>
+  <h2 data-slot="h-contact">聯絡我</h2>
   <ul data-slot="contact">
     <li>Email：<a href="mailto:hello@example.com">hello@example.com</a></li>
     <li>GitHub：<a href="https://github.com/">github.com/your-id</a></li>

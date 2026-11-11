@@ -31,7 +31,7 @@ const hue = (color) => C.hue?.[color] ?? color;
 const LH = 1.5;
 
 // 中英混排的粗估寬度：全形字 1em，半形 0.55em
-const textWidth = (s, size) => [...s].reduce((w, ch) => w + (ch.charCodeAt(0) > 0x2e80 ? size : size * 0.55), 0);
+const textWidth = (s, size) => [...s].reduce((w, ch) => w + (ch.charCodeAt(0) > 0x2e80 || ch === '…' ? size : size * 0.55), 0);
 const lineCount = (s, size, width) => s.split('\n').reduce((n, l) => n + Math.max(1, Math.ceil(textWidth(l, size) / width)), 0);
 
 let slideId;
@@ -273,7 +273,7 @@ const layouts = {
     text(80, 330, 800, p.time, { size: 18, color: C.muted }),
     text(80, 380, 800, p.sub, { size: 20 }),
   ],
-  poll: (p) => [poll(p.id, p.question, p.options, p.multiSelect)],
+  poll: (p) => [poll(p.id, p.question, p.options)],
   multiChoice: (p) => [multiChoice(p.question, p.options)],
   homework: (p) => [H(62, p.heading, 30), homework(p.hwId, 130, p.title, p.description)],
   showcase: (p) => [showcase(p.title, p.linkHomework)],
@@ -281,7 +281,7 @@ const layouts = {
     const [bs, y] = bubbles(150, tinted(p.beats));
     if (!p.punch) return [H(76, p.heading), ...bs];
     const pw = Math.ceil(textWidth(p.punch, 26)) + 24;
-    return [H(76, p.heading), ...bs, box(PAD, y + 14, pw, 44, C.mark ?? C.accent, 6), text(PAD + 12, y + 20, pw, p.punch, { size: 26, color: ink(C.mark ?? C.accent), bold: true, height: 39 })];
+    return [H(76, p.heading), ...bs, box(PAD, y + 14, pw, 44, C.mark ?? C.accent, 6), text(PAD + 12, y + 16, pw, p.punch, { size: 26, color: ink(C.mark ?? C.accent), bold: true, height: 39 })];
   },
   siteMock: (p) => {
     const gap = 120;
