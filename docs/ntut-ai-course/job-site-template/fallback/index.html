@@ -1,0 +1,116 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>我的求職網站</title>
+<!-- 保底網頁：網站 v1 做不出來時用這份，直接手改文字也能上線 -->
+<style>
+  :root {
+    --bg: #fbfaf7;
+    --ink: #16161a;
+    --muted: #62646b;
+    --accent: #f5b400;
+    --card: #ffffff;
+    --line: #ebe7de;
+    --font: "Noto Sans TC", "PingFang TC", "Microsoft JhengHei", system-ui, sans-serif;
+  }
+  * { box-sizing: border-box; }
+  body { margin: 0; background: var(--bg); color: var(--ink); font-family: var(--font); line-height: 1.7; }
+  a { color: inherit; }
+  .wrap { max-width: 960px; margin: 0 auto; padding: 0 20px; }
+  nav { position: sticky; top: 0; background: var(--bg); border-bottom: 1px solid var(--line); z-index: 1; }
+  nav .wrap { display: flex; gap: 18px; overflow-x: auto; padding-top: 12px; padding-bottom: 12px; font-size: 14px; white-space: nowrap; }
+  nav a { text-decoration: none; color: var(--muted); }
+  .hero { padding: 72px 0 56px; }
+  .hero .tag { display: inline-block; background: var(--accent); padding: 2px 12px; border-radius: 999px; font-size: 14px; font-weight: 700; }
+  .hero h1 { font-size: clamp(36px, 7vw, 64px); line-height: 1.15; margin: 16px 0 12px; }
+  .hero p { font-size: clamp(17px, 2.4vw, 21px); color: var(--muted); margin: 0 0 28px; max-width: 640px; }
+  .btn { display: inline-block; background: var(--ink); color: #fff; text-decoration: none; padding: 12px 24px; border-radius: 999px; font-weight: 700; }
+  section { padding: 40px 0; border-top: 1px solid var(--line); }
+  h2 { font-size: 26px; margin: 0 0 18px; }
+  h2::after { content: ""; display: block; width: 40px; height: 5px; background: var(--accent); border-radius: 3px; margin-top: 6px; }
+  .cards { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 16px; }
+  .card { background: var(--card); border: 1px solid var(--line); border-radius: 14px; padding: 20px; }
+  .card h3 { margin: 0 0 6px; font-size: 19px; }
+  .card .meta { color: var(--muted); font-size: 14px; margin: 0 0 10px; }
+  .num { font-size: 32px; font-weight: 800; line-height: 1.1; }
+  ul { margin: 0; padding-left: 20px; }
+  .chips { display: flex; flex-wrap: wrap; gap: 8px; padding: 0; list-style: none; }
+  .chips li { background: var(--card); border: 1px solid var(--line); border-radius: 999px; padding: 4px 14px; font-size: 15px; }
+  footer { padding: 32px 0 48px; color: var(--muted); font-size: 14px; }
+</style>
+</head>
+<body>
+<nav><div class="wrap">
+  <a href="#about">關於我</a><a href="#goal">方向</a><a href="#project">專題</a><a href="#exp">經歷</a><a href="#skills">技能</a><a href="#edu">學歷</a><a href="#contact">聯絡</a>
+</div></nav>
+
+<header class="hero" id="about"><div class="wrap">
+  <span class="tag" data-slot="tag">2026 應屆畢業・求職中</span>
+  <h1 data-slot="name">你的名字</h1>
+  <p data-slot="intro">一句話介紹自己：我會什麼、做過什麼。</p>
+  <a class="btn" href="#contact" data-slot="cta">跟我聯絡</a>
+</div></header>
+
+<main>
+<section id="goal"><div class="wrap">
+  <h2>我想做的工作</h2>
+  <p data-slot="goal">想做的工作，以及為什麼。</p>
+</div></section>
+
+<section id="project"><div class="wrap">
+  <h2>代表專題</h2>
+  <div class="cards">
+    <article class="card">
+      <h3 data-slot="project-title">專題名稱</h3>
+      <p class="meta" data-slot="project-role">幾人小組・我負責哪塊・用了什麼工具</p>
+      <p data-slot="project-body">做了什麼、解決了什麼問題。</p>
+    </article>
+    <article class="card">
+      <p class="num" data-slot="project-number">數字</p>
+      <p class="meta" data-slot="project-number-label">這個數字代表什麼</p>
+    </article>
+  </div>
+</div></section>
+
+<section id="exp"><div class="wrap">
+  <h2>經歷</h2>
+  <div class="cards">
+    <article class="card">
+      <h3 data-slot="exp-title">打工、實習或社團</h3>
+      <p class="meta" data-slot="exp-meta">年份</p>
+      <p data-slot="exp-body">做了什麼、學到什麼。</p>
+    </article>
+    <article class="card">
+      <h3>亮點</h3>
+      <p data-slot="highlight">別人常稱讚你的一件事。</p>
+    </article>
+  </div>
+</div></section>
+
+<section id="skills"><div class="wrap">
+  <h2>技能</h2>
+  <ul class="chips" data-slot="skills">
+    <li>技能一</li><li>技能二</li><li>技能三</li>
+  </ul>
+</div></section>
+
+<section id="edu"><div class="wrap">
+  <h2>學歷</h2>
+  <p data-slot="edu">學校・科系・畢業年</p>
+</div></section>
+
+<section id="contact"><div class="wrap">
+  <h2>聯絡我</h2>
+  <ul data-slot="contact">
+    <li>Email：<a href="mailto:hello@example.com">hello@example.com</a></li>
+    <li>GitHub：<a href="https://github.com/">github.com/your-id</a></li>
+    <li>LinkedIn：<a href="https://www.linkedin.com/">linkedin.com/in/your-id</a></li>
+  </ul>
+</div></section>
+</main>
+
+<footer><div class="wrap" data-slot="footer">© 2026 你的名字・這個網站由我和 AI 一起做出來</div></footer>
+</body>
+</html>
