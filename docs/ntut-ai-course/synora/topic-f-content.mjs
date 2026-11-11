@@ -92,7 +92,7 @@ const PIC_SITES = browser(0, 'A', `<rect x="1" y="28" width="388" height="311" f
 <text x="195" y="275" font-size="42" font-weight="900" fill="#d0121b" text-anchor="middle">半小時到</text>`);
 const jpg = (name) => `data:image/jpeg;base64,${readFileSync(new URL(`./assets/${name}.jpg`, import.meta.url)).toString('base64')}`;
 const ROOF_PHOTO =readFileSync(new URL('./assets/roof-home.jpg', import.meta.url)).toString('base64');
-const PIC_ROOF = `<image width="820" height="390" preserveAspectRatio="xMidYMid slice" href="data:image/jpeg;base64,${ROOF_PHOTO}"/>`;
+const PIC_ROOF = `<image width="820" height="390" preserveAspectRatio="xMidYMid meet" href="data:image/jpeg;base64,${ROOF_PHOTO}"/>`;
 
 const CONFIDENCE = {
   layout: 'scale',
@@ -369,7 +369,7 @@ export const pages = [
     id: 's1-roof',
     layout: 'picture',
     section: '01 發現問題',
-    title: '照片：我家的屋頂',
+    title: '照片：我家的屋頂(原圖)',
     notes: '2:10–3:20「我小時候颱風來，我家屋頂真的被風吹走了。站在家裡抬頭，直接看到天空，雨就這樣下進屋裡。如果那天是你家，你要打給誰？A 的舉手。B 的舉手。」\n舉手時還有人選 A：「屋頂都沒了，你還在看居住哲學。」\n這張是我家的屋頂照片。',
     heading: '那天，抬頭就是天空',
     svg: PIC_ROOF,
