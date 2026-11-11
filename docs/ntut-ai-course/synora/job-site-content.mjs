@@ -67,13 +67,13 @@ export const pages = [
   },
   {
     id: 's1-goal',
-    layout: 'goal',
+    layout: 'goalShot',
     section: '開始之前',
     title: '終點長這樣',
     notes: '09:00 秀終點(2)。打開講師用今天流程做的上線網址，切手機畫面給大家看。課前把連結換成自己的 vercel.app 網址。',
     heading: '今天下課，你會有一個這樣的網址',
     link: ['https://hi.littleyao.me/zh', '講師的網站', '課前換成今天流程做的 vercel.app 版'],
-    card: ['better', '今天的版本', '一頁式求職網站\n每個人都有公開網址'],
+    shot: '講師網站的手機畫面',
     note: '3 小時後，大家的網址會一起出現在作品牆上。',
   },
   {
@@ -166,10 +166,10 @@ export const pages = [
     steps: LOOP_STEPS,
     center: '一輪不夠\n就再跑一輪',
     cardsTitle: '今天三站',
-    cards: [
-      ['第一節｜說清楚你是誰', '我的基本資料.md（發現問題 → ①）'],
-      ['第二節｜讓 Agent 做出網站', '網站 v1（②）'],
-      ['第三節｜改好、上線', '手機上的 vercel.app（③ → ↺）'],
+    shots: [
+      ['第一節｜說清楚你是誰（發現問題 → ①）', '我的基本資料.md'],
+      ['第二節｜讓 Agent 做出網站（②）', '網站 v1'],
+      ['第三節｜改好、上線（③ → ↺）', '手機上的 vercel.app'],
     ],
     compareTitle: '下課帶走',
     compare: ['一個公開網址', '一份關於你的資料', '一個用得到任何地方的問題迴圈'],
@@ -213,17 +213,24 @@ export const pages = [
         ['', 'https://opencode.ai/download', '② OpenCode Desktop', '再裝這個，.dmg 拖進「應用程式」'],
       ],
     ],
-    dark: ['', '裝完 Node，把 OpenCode 整個關掉再開', '不重開，它會找不到 node'],
+    dark: ['alert', '裝完 Node，把 OpenCode 整個關掉再開', '不重開，它會找不到 node'],
   },
   {
     id: 's1-install-win',
-    layout: 'copyPrompt',
+    layout: 'copyMock',
     section: '工具一次到位',
     title: '安裝：Windows',
     notes: '開始鍵輸入 PowerShell → 右鍵貼上 → Enter。winget 不能用的電腦，改走上一頁的官方安裝檔。跳出藍色警告：其他資訊 → 仍要執行。',
     tag: '安裝 · Windows',
     heading: '安裝：Windows 一行就好',
     cardTitle: '複製 → 開始鍵輸入 PowerShell → 右鍵貼上 → Enter',
+    mockTitle: 'Windows PowerShell',
+    mock: [
+      [['PS C:\\Users\\你> '], ['在這裡按右鍵貼上 → Enter', 'y']],
+      [['正在安裝 Node.js …  '], ['完成', 'g']],
+      [['正在安裝 OpenCode Desktop …  '], ['完成', 'g']],
+      [['全部裝好：關掉 PowerShell，再打開一次', 'm']],
+    ],
     prompt: 'winget install --id OpenJS.NodeJS.LTS -e; winget install --id SST.OpenCodeDesktop -e',
   },
   {
@@ -244,13 +251,20 @@ export const pages = [
   },
   {
     id: 's1-hello',
-    layout: 'copyPrompt',
+    layout: 'copyMock',
     section: '工具一次到位',
     title: 'OpenCode 打招呼＝檢查點',
     notes: '09:36 打招呼卡＝全班檢查點(4)。OpenCode 左邊「新增專案」→ 選桌面的 my-site → 貼上 → 傳送 → 看懂再按「允許一次」。看到模型名稱、看到 我的基本資料.md、看到 node 版本號，三個都過就舉手。講師示範修最常見的錯：沒選對資料夾、node 找不到要重開。沒過的留給助教。',
     tag: '全班檢查點 · 三個都過就舉手',
-    heading: 'OpenCode 上工：開 my-site、打招呼',
+    heading: 'OpenCode 上工：三個都過就舉手',
     cardTitle: '打招呼 → 複製 → 貼到 OpenCode → 傳送',
+    mockTitle: 'OpenCode · my-site',
+    mock: [
+      [['你  ', 'm'], ['1 你是哪個模型？看得到哪些檔案？ 2 node 是什麼版本？']],
+      [['需要權限 · Bash  node --version   ', 'm'], ['[ 允許一次 ]', 'y']],
+      [['AI  ', 'm'], ['我是 Gemini Flash Lite，看得到：我的基本資料.md', 'g']],
+      [['AI  ', 'm'], ['node 是 v22，可以開始了。', 'g']],
+    ],
     prompt: '1 你是哪個模型？看得到哪些檔案？\n2 node 是什麼版本？沒有的話告訴我，先不要裝',
   },
   {
@@ -290,13 +304,20 @@ export const pages = [
   },
   {
     id: 's1-vercel-login',
-    layout: 'copyPrompt',
+    layout: 'copyMock',
     section: '工具一次到位',
     title: '叫 OpenCode 登入 Vercel',
     notes: '一律用 npx，不要 npm i -g（Mac 會要管理員密碼）。第一次跑 npx 要下載，約 30–60 秒。最後 1 分鐘拋懸念：休息後，換 AI 反過來訪問你。',
     tag: '上線前準備',
     heading: '叫 OpenCode 幫你登入 Vercel',
     cardTitle: '登入 → 複製 → 貼到 OpenCode → 傳送 → 瀏覽器按授權',
+    mockTitle: 'OpenCode · my-site',
+    mock: [
+      [['AI  ', 'm'], ['Vercel CLI 已可用，版本號出來了。']],
+      [['AI  ', 'm'], ['請打開這個網址登入：', 'g'], ['https://vercel.com/…', 'y']],
+      [['你  ', 'm'], ['（瀏覽器按授權，回到 OpenCode）']],
+      [['AI  ', 'm'], ['登入成功。', 'g']],
+    ],
     prompt: '1 跑 npx vercel@latest --version，看到版本號就好\n2 跑 npx vercel@latest login，把網址給我，我在瀏覽器登入',
   },
   {
@@ -340,7 +361,7 @@ export const pages = [
     heading: '同一個任務，誰在動手？',
     task: '幫我的基本資料補上數字成果',
     left: {
-      icon: '',
+      icon: 'chat',
       name: '聊天 AI',
       count: '你動手 4 次',
       steps: [
@@ -350,7 +371,7 @@ export const pages = [
       ],
     },
     right: {
-      icon: '',
+      icon: 'bot',
       name: 'Agent',
       count: '你動手 1 次',
       steps: [
@@ -427,9 +448,9 @@ export const pages = [
     heading: '風格說不出來？\n先去看',
     link: ['https://www.pinterest.com/search/pins/?q=personal%20website%20design', 'Pinterest：personal website design', '滑一滑，挑 1–2 個你喜歡的個人網站'],
     cards: [
-      ['01', '挑 1–2 個', '你最喜歡的設計'],
-      ['02', '用三個詞說出來', '例：留白多、深色、大標題'],
-      ['03', '這三個詞 = Prompt ② 的「風格」空格', 'Agent 不一定看得懂圖，要翻成文字＝具體描述'],
+      ['eye', '挑 1–2 個', '你最喜歡的設計'],
+      ['tag', '用三個詞說出來', '例：留白多、深色、大標題'],
+      ['pen', '這三個詞 = Prompt ② 的「風格」空格', 'Agent 不一定看得懂圖，要翻成文字＝具體描述'],
     ],
   },
   {
@@ -565,13 +586,20 @@ export const pages = [
   },
   {
     id: 's3-deploy',
-    layout: 'copyPrompt',
+    layout: 'copyMock',
     section: '03 上線',
     title: 'Prompt ④：Vercel 上線',
     notes: '11:23 Vercel 上線(16)。登入第一節已完成，這裡只剩上線。專案名稱用英文名字（指令依課前實測調整）。之後改網站：改完叫 AI 再跑一次 --prod，網址不變。AI 執行前會問，看懂再允許。',
     tag: '全班實作 · 16 分鐘',
     heading: 'Prompt ④：讓網站上線',
     cardTitle: '上線 → 複製 → 貼到 OpenCode → 傳送',
+    mockH: 150,
+    mockTitle: 'OpenCode · my-site',
+    mock: [
+      [['AI  ', 'm'], ['正在把 site 資料夾上線 …']],
+      [['AI  ', 'm'], ['上線了：', 'g'], ['https://你的名字.vercel.app', 'y']],
+      [['把這個網址貼到下一頁的上線牆', 'm']],
+    ],
     prompt: '用 Vercel 上線：\n1 cd site && npx vercel@latest --prod --yes\n2 網站上不能有私人手機、身分證、住址\n最後給我 https://….vercel.app',
   },
   {
