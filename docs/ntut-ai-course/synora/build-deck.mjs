@@ -81,7 +81,7 @@ const pill = (x, y, content, color) => {
 };
 
 // 聊天氣泡：回傳 [元素, 下一個 y]
-const bubble = (y, from, content, tint) => {
+const bubble = (y, from, content, tint, label = 'AI') => {
   const size = 19;
   const maxInner = 560;
   const inner = Math.min(maxInner, Math.ceil(textWidth(content, size)) + 4);
@@ -94,15 +94,15 @@ const bubble = (y, from, content, tint) => {
     text(x + 18, y + 13, inner, content, { size, color: me ? ink(tint ?? C.accent) : C.text }),
   ];
   if (!me) {
-    els.unshift(box(PAD, y + h - 32, 32, 32, C.text, 16), text(PAD, y + h - 26, 32, 'AI', { size: 12, color: '#fff', bold: true, align: 'center', height: 20 }));
+    els.unshift(box(PAD, y + h - 32, 32, 32, C.text, 16), text(PAD, y + h - 26, 32, label, { size: 12, color: '#fff', bold: true, align: 'center', height: 20 }));
   }
   return [els, y + h];
 };
 
 const bubbles = (y, items, gap = 14) => {
   const out = [];
-  for (const [from, content, tint] of items) {
-    const [els, next] = bubble(y, from, content, tint);
+  for (const [from, content, tint, label] of items) {
+    const [els, next] = bubble(y, from, content, tint, label);
     out.push(...els);
     y = next + gap;
   }
@@ -185,8 +185,41 @@ const fileDownload = (y, [fileUrl, fileName, fileSize, fileType]) =>
 
 const wordcloud = (question, maxWords) => el('wordcloud', { x: PAD, y: 54, width: CW, height: 476, question, maxWords });
 
-const webProject = (question) =>
-  el('webProject', { x: PAD, y: 54, width: CW, height: 476, question, enabledMethods: ['upload', 'url'], showVoting: true, peerVoteCount: 3 });
+const webProject = (question, enabledMethods = ['upload', 'url']) =>
+  el('webProject', { x: PAD, y: 54, width: CW, height: 476, question, enabledMethods, showVoting: true, peerVoteCount: 3 });
+
+const multiChoice = (question, choices) => el('multiChoice', { x: PAD, y: 54, width: CW, height: 476, question, choices });
+
+// showcase 以 linkedHomeworkId 綁定 homework，所以 homework 的 id 由內容檔指定
+const homework = (id, y, title, description) => ({
+  ...el('homework', { x: PAD, y, width: CW, height: 530 - y, title, modeLabel: '全功能', description, submissionMode: '' }),
+  id,
+});
+
+const showcase = (title, linkedHomeworkId) =>
+  el('showcase', { x: PAD, y: 54, width: CW, height: 476, title, points: 5, focusMode: false, showVoting: true, peerVoteCount: 3, linkedHomeworkId });
+
+// 假網站的手機畫面：hero 色塊＋條列＋按鈕
+const phone = (x, y, w, site) => {
+  const h = 540 - 20 - y;
+  const heroH = 120;
+  const out = [
+    text(x, y - 32, w, site.name, { size: 20, bold: true, align: 'center', height: 30 }),
+    box(x, y, w, h, C.dark, 22),
+    box(x + 8, y + 8, w - 16, h - 16, C.panel, 16),
+    box(x + 8, y + 8, w - 16, heroH, site.heroColor ?? C.line, 16),
+    text(x + 24, y + 22, w - 48, site.hero, { size: site.heroSize ?? 20, color: site.heroInk ?? C.text, bold: true }),
+  ];
+  let ly = y + 8 + heroH + 14;
+  for (const line of site.lines) {
+    out.push(text(x + 24, ly, w - 48, line, { size: 15, color: C.muted }));
+    ly += textH(line, 15, w - 48) + 8;
+  }
+  if (site.cta) {
+    out.push(box(x + 24, y + h - 70, w - 48, 46, C.accent, 23), text(x + 24, y + h - 58, w - 48, site.cta, { size: 18, color: ink(C.accent), bold: true, align: 'center', height: 26 }));
+  }
+  return out;
+};
 
 const leaderboard = () =>
   el('leaderboard', { x: PAD, y: 54, width: CW, height: 476, lbMode: 'personal', lbTopN: 10, lbShowGroups: true, interactiveType: '' });
@@ -240,7 +273,21 @@ const layouts = {
     text(80, 330, 800, p.time, { size: 18, color: C.muted }),
     text(80, 380, 800, p.sub, { size: 20 }),
   ],
-  poll: (p) => [poll(p.id, p.question, p.options)],
+  poll: (p) => [poll(p.id, p.question, p.options, p.multiSelect)],
+  multiChoice: (p) => [multiChoice(p.question, p.options)],
+  homework: (p) => [H(62, p.heading, 30), homework(p.hwId, 130, p.title, p.description)],
+  showcase: (p) => [showcase(p.title, p.linkHomework)],
+  story: (p) => {
+    const [bs, y] = bubbles(150, tinted(p.beats));
+    if (!p.punch) return [H(76, p.heading), ...bs];
+    const pw = Math.ceil(textWidth(p.punch, 26)) + 24;
+    return [H(76, p.heading), ...bs, box(PAD, y + 14, pw, 44, C.mark ?? C.accent, 6), text(PAD + 12, y + 20, pw, p.punch, { size: 26, color: ink(C.mark ?? C.accent), bold: true, height: 39 })];
+  },
+  siteMock: (p) => {
+    const gap = 120;
+    const w = (CW - gap) / 2;
+    return [H(62, p.heading, 30), ...p.sites.flatMap((site, i) => phone(PAD + i * (w + gap), 160, w, site)), text(PAD + w, 300, gap, 'vs', { size: 32, color: C.muted, bold: true, align: 'center', height: 48 })];
+  },
   quiz: (p) => [quiz(p.id, p.question, p.options, p.correct)],
   leaderboard: () => [leaderboard()],
   list: (p) => [H(76, p.heading), list(160, p.items)],
@@ -499,7 +546,7 @@ const layouts = {
   taskCheck: (p) => [...taskHeader(p.tag, p.heading), list(190, p.items, true), checkpoint(200 + textH(p.items.join('\n'), 20, CW) + 20, ...p.check)],
   taskDownload: (p) => [...taskHeader(p.tag, p.heading), fileDownload(190, p.file), list(330, p.items, true)],
   copyPrompt: (p) => [...taskHeader(p.tag, p.heading), copycard(190, p.cardTitle, p.prompt)],
-  webProject: (p) => [webProject(p.question)],
+  webProject: (p) => [webProject(p.question, p.methods)],
   closing: (p) => [
     text(80, 140, 800, p.kicker, { size: 18, color: C.muted }),
     text(80, 190, 800, p.before, { size: 48, bold: true }),
