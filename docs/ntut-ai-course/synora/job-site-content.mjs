@@ -246,7 +246,7 @@ export const pages = [
       ['找不到 node', '把 OpenCode 關掉重開'],
       ['Mac 無法驗證開發者', '系統設定 → 隱私權與安全性\n→ 強制打開'],
       ['免費額度用完', '換另一個 Flash Lite\n或換回內建模型'],
-      ['Vercel 404', '確認是在 site 資料夾裡上線'],
+      ['網址打不開／要登入', '改交沒有亂碼的正式網址\n確認只上傳 site'],
     ],
   },
   {
@@ -586,21 +586,14 @@ export const pages = [
   },
   {
     id: 's3-deploy',
-    layout: 'copyMock',
+    layout: 'copyFull',
     section: '03 上線',
     title: 'Prompt ④：Vercel 上線',
-    notes: '11:23 Vercel 上線(16)。登入第一節已完成，這裡只剩上線。專案名稱用英文名字；名稱被別人用走時網址會多一段，以 AI 回報的為準（指令依課前實測調整）。之後改網站：改完叫 AI 用同一個專案名稱再跑一次這行，網址不變。AI 執行前會問，看懂再允許。',
+    notes: '11:23 Vercel 上線(16)。登入第一節已完成，這裡只剩上線。專案名稱用英文名字；名稱被別人用走時正式網址會多一段；要交的是沒有亂碼的正式網址，帶亂碼的是單次部署網址，可能要登入才看得到（指令依課前實測調整）。之後改網站：改完叫 AI 用同一個專案名稱再跑一次這行，網址不變。AI 執行前會問，看懂再允許。',
     tag: '全班實作 · 16 分鐘',
     heading: 'Prompt ④：讓網站上線',
     cardTitle: '上線 → 複製 → 貼到 OpenCode → 傳送',
-    mockH: 124,
-    mockTitle: 'OpenCode · my-site',
-    mock: [
-      [['AI  ', 'm'], ['沒有私人資料。專案名稱用 lin-xiaoqing 可以嗎？']],
-      [['你  ', 'm'], ['OK']],
-      [['AI  ', 'm'], ['上線了：', 'g'], ['https://lin-xiaoqing.vercel.app', 'y'], ['  → 貼到下一頁上線牆', 'm']],
-    ],
-    prompt: '用 Vercel 上線：\n1 先檢查 site/index.html：有私人手機、身分證、住址就列出來，停下來等我改\n2 專案名稱用 ＿＿（我的英文名字，例：lin-xiaoqing），先告訴我專案名稱，等我說 OK\n3 我說 OK 才進 site 資料夾跑：\nnpx vercel@latest deploy --prod --yes --project 專案名稱 --create-if-missing\n最後給我 https://….vercel.app',
+    prompt: '用 Vercel 上線：\n1 先檢查 site/index.html：有私人手機、身分證、住址就列出來，停下來等我改\n2 專案名稱用 ＿＿（我的英文名字，例：lin-xiaoqing）；先跑 npx vercel@latest project ls，同名專案已存在就告訴我；再告訴我專案名稱，等我說 OK\n3 我說 OK 才在 my-site 資料夾跑（只上傳 site）：\nnpx vercel@latest deploy site --prod --yes --project 專案名稱 --create-if-missing\n最後給我沒有亂碼的正式網址（輸出裡 Aliased 那行），我用無痕視窗打開確認不用登入',
   },
   {
     id: 's3-live',

@@ -267,10 +267,10 @@ rule: 只改 site/index.html
 ```
 用 Vercel 上線：
 1 先檢查 site/index.html：有私人手機、身分證、住址就列出來，停下來等我改
-2 專案名稱用 ＿＿（我的英文名字，例：lin-xiaoqing），先告訴我專案名稱，等我說 OK
-3 我說 OK 才進 site 資料夾跑：
-npx vercel@latest deploy --prod --yes --project 專案名稱 --create-if-missing
-最後給我 https://….vercel.app
+2 專案名稱用 ＿＿（我的英文名字，例：lin-xiaoqing）；先跑 npx vercel@latest project ls，同名專案已存在就告訴我；再告訴我專案名稱，等我說 OK
+3 我說 OK 才在 my-site 資料夾跑（只上傳 site）：
+npx vercel@latest deploy site --prod --yes --project 專案名稱 --create-if-missing
+最後給我沒有亂碼的正式網址（輸出裡 Aliased 那行），我用無痕視窗打開確認不用登入
 ```
 - 網址名稱：用英文名字當 Vercel 專案名稱。不走 Eric 的 `vercel link`：CLI 65.14 說明寫明 `--project` 指向新專案且帶 `--yes` 時要加 `--create-if-missing`，學員都是新專案，所以改用一行 `deploy --project … --create-if-missing`；名稱被用走時網址會多一段，以 CLI 回報為準。實際行為依課前實測確認
 - 之後要改網站：改完叫 AI 用同一個專案名稱再跑一次同一行，網址不變
@@ -294,7 +294,7 @@ npx vercel@latest deploy --prod --yes --project 專案名稱 --create-if-missing
   - 版面共用 `build-deck.mjs`
   - 視覺沿用 F 版的黃黑求職風 palette
 - **build-deck.mjs**：補上 homework、showcase layout（目前沒有）；多選用現有的 `poll(..., multiSelect)`；webProject 已有
-- 2026-11-11 對抗審查後修正：Prompt ④ 改成先檢查個資、先確認專案名稱，學員說 OK 才 link＋上線
+- 2026-11-11 對抗審查後修正：Prompt ④ 改成先檢查個資、先查同名專案並確認專案名稱，學員說 OK 才從 my-site 用 `deploy site --project … --create-if-missing` 只上傳 site；交沒有亂碼的正式網址並用無痕視窗確認
 - **網站範本**：`docs/ntut-ai-course/job-site-template/site/index.html`，加上 UTF-8 打包的 zip
 - **保底網頁**：同一個資料夾內另放一份已填好通用內容的版本
 - **畫面預覽（本次最後一步，講師要親眼看過）**
@@ -338,7 +338,8 @@ npx vercel@latest deploy --prod --yes --project 專案名稱 --create-if-missing
 - [ ] 乾淨 Mac（沒有 brew、沒有 Node）：走官方安裝檔 → OpenCode → 打招呼卡
 - [ ] 在 OpenCode 裡跑 `npx vercel@latest login`：網址會不會顯示、會不會自動開瀏覽器、授權完會不會回到 OpenCode
 - [ ] 用全新 Email 註冊 Vercel Hobby：記錄要不要手機、信用卡、GitHub，總共花多久
-- [ ] 確認 `deploy --prod --yes --project 名稱 --create-if-missing` 能建立新專案、產生的網址格式、名稱被用走時的網址
+- [ ] 確認 `deploy site --prod --yes --project 名稱 --create-if-missing` 能建立新專案、產生的網址格式、名稱被用走時的網址
+- [ ] 用沒登入的手機分別打開正式網址與帶亂碼的部署網址，確認哪個要登入（Deployment Protection 預設值）
 - [ ] 用 OpenCode 內建免費模型跑「訪問 → v1 → 上線」，決定主廚 Key 段落留不留
 - [ ] 用 Flash Lite 跑一次網站 v1：計次數、計時間、看會不會截斷；連續跑到額度用完，看會發生什麼、換 NVIDIA 要多久
 - [ ] 在學校網路或手機熱點，測 AI Studio、NVIDIA、Vercel 連不連得上
