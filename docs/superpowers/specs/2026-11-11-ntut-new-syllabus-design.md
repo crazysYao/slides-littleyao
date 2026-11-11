@@ -268,11 +268,12 @@ rule: 只改 site/index.html
 用 Vercel 上線：
 1 先檢查 site/index.html：有私人手機、身分證、住址就列出來，停下來等我改
 2 專案名稱用 ＿＿（我的英文名字，例：lin-xiaoqing），先告訴我專案名稱，等我說 OK
-3 我說 OK 才跑：cd site && npx vercel@latest link --yes --project 專案名稱 && npx vercel@latest --prod --yes
+3 我說 OK 才進 site 資料夾跑：
+npx vercel@latest deploy --prod --yes --project 專案名稱 --create-if-missing
 最後給我 https://….vercel.app
 ```
-- 網址名稱：用英文名字當 Vercel 專案名稱，照 Eric 的 `vercel link --yes --project 【英文名】` 寫法；實際指令依課前實測決定
-- 之後要改網站：改完叫 AI 再跑一次 `--prod`，網址不變
+- 網址名稱：用英文名字當 Vercel 專案名稱。不走 Eric 的 `vercel link`：CLI 65.14 說明寫明 `--project` 指向新專案且帶 `--yes` 時要加 `--create-if-missing`，學員都是新專案，所以改用一行 `deploy --project … --create-if-missing`；名稱被用走時網址會多一段，以 CLI 回報為準。實際行為依課前實測確認
+- 之後要改網站：改完叫 AI 用同一個專案名稱再跑一次同一行，網址不變
 
 ### 11:44 Obsidian 示範（學員只看）
 - 講師打開自己的 Obsidian 關係圖：筆記連成一張網
@@ -337,7 +338,7 @@ rule: 只改 site/index.html
 - [ ] 乾淨 Mac（沒有 brew、沒有 Node）：走官方安裝檔 → OpenCode → 打招呼卡
 - [ ] 在 OpenCode 裡跑 `npx vercel@latest login`：網址會不會顯示、會不會自動開瀏覽器、授權完會不會回到 OpenCode
 - [ ] 用全新 Email 註冊 Vercel Hobby：記錄要不要手機、信用卡、GitHub，總共花多久
-- [ ] 確認 `--project` 指定專案名稱的指令與產生的網址格式
+- [ ] 確認 `deploy --prod --yes --project 名稱 --create-if-missing` 能建立新專案、產生的網址格式、名稱被用走時的網址
 - [ ] 用 OpenCode 內建免費模型跑「訪問 → v1 → 上線」，決定主廚 Key 段落留不留
 - [ ] 用 Flash Lite 跑一次網站 v1：計次數、計時間、看會不會截斷；連續跑到額度用完，看會發生什麼、換 NVIDIA 要多久
 - [ ] 在學校網路或手機熱點，測 AI Studio、NVIDIA、Vercel 連不連得上

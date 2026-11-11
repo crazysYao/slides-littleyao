@@ -56,7 +56,7 @@
 - [ ] 乾淨 Mac（無 brew、無 Node）：官方安裝檔 → OpenCode → 打招呼卡
 - [ ] OpenCode 裡跑 `npx vercel@latest login`：網址是否顯示、是否自動開瀏覽器、授權後是否回到 OpenCode
 - [ ] 全新 Email 註冊 Vercel Hobby：是否要手機、信用卡、GitHub，總耗時
-- [ ] 確認 `--project` 指定專案名稱的指令與網址格式，改寫 Prompt ④
+- [ ] 確認 `deploy --prod --yes --project 名稱 --create-if-missing` 能建立新專案、網址格式、名稱被用走時的網址，結果回寫 Prompt ④
 - [ ] OpenCode 內建免費模型跑「訪問 → v1 → 上線」，決定主廚 Key 兩頁去留
 - [ ] Flash Lite 跑網站 v1：次數、時間、會不會截斷；跑到額度用完，看換 NVIDIA 要多久
 - [ ] 學校網路或熱點：AI Studio、NVIDIA、Vercel 連得上
