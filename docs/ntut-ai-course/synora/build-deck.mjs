@@ -687,15 +687,15 @@ const layouts = {
       ...p.links.flatMap((row, r) => {
         const cw = (CW - gap * (row.length - 1)) / row.length;
         return row.map(([ic, url, label, d], i) => ({
-          ...link(PAD + i * (cw + gap), 196 + r * (rowH + 12), cw, [url, `${ic} ${label}`, d]),
+          ...link(PAD + i * (cw + gap), 196 + r * (rowH + 12), cw, [url, ic ? `${ic} ${label}` : label, d]),
           height: rowH,
           linkIcon: 'download',
         }));
       }),
       box(PAD, darkY, CW, 76, C.dark, 12),
-      text(PAD + 20, darkY + 16, 40, icon, { size: 26, height: 36 }),
-      text(PAD + 66, darkY + 14, CW - 86, title, { size: 19, color: '#fff', bold: true, height: 28 }),
-      text(PAD + 66, darkY + 44, CW - 86, desc, { size: 14, color: C.darkSub, height: 22 }),
+      ...(icon ? [text(PAD + 20, darkY + 16, 40, icon, { size: 26, height: 36 })] : []),
+      text(PAD + (icon ? 66 : 24), darkY + 14, CW - 86, title, { size: 19, color: '#fff', bold: true, height: 28 }),
+      text(PAD + (icon ? 66 : 24), darkY + 44, CW - 86, desc, { size: 14, color: C.darkSub, height: 22 }),
     ];
   },
   whoDoes: (p) => {
@@ -705,7 +705,7 @@ const layouts = {
       const out = on ? [box(x - 3, 177, cw + 6, 286, C.accent, 15)] : [];
       out.push(
         box(x, 180, cw, 280, on ? C.panel : C.line, 12),
-        text(x + 18, 194, cw - 150, `${c.icon} ${c.name}`, { size: 20, bold: true, height: 30 }),
+        text(x + 18, 194, cw - 150, c.icon ? `${c.icon} ${c.name}` : c.name, { size: 20, bold: true, height: 30 }),
         ...pill(x + cw - 18 - (Math.ceil(textWidth(c.count, 15)) + 32), 196, c.count, on ? C.accent : C.dark),
       );
       c.steps.forEach(([who, t], i) => {

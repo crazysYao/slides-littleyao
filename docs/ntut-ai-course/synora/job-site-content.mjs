@@ -209,11 +209,11 @@ export const pages = [
     notes: '09:28 安裝(8)。先裝 Node，再裝 OpenCode。Mac 點連結下載官方安裝檔；已經有 Homebrew 的人可以用 brew install node; brew install --cask opencode-desktop。Windows 看下一頁。等的時候：裝好的打勾、幫隔壁。助教在台下巡。',
     links: [
       [
-        ['🟢', 'https://nodejs.org/zh-tw/download', '① Node.js（LTS）', '先裝這個，下載 .pkg 一路下一步'],
-        ['🤖', 'https://opencode.ai/download', '② OpenCode Desktop', '再裝這個，.dmg 拖進「應用程式」'],
+        ['', 'https://nodejs.org/zh-tw/download', '① Node.js（LTS）', '先裝這個，下載 .pkg 一路下一步'],
+        ['', 'https://opencode.ai/download', '② OpenCode Desktop', '再裝這個，.dmg 拖進「應用程式」'],
       ],
     ],
-    dark: ['⚠️', '裝完 Node，把 OpenCode 整個關掉再開', '不重開，它會找不到 node'],
+    dark: ['', '裝完 Node，把 OpenCode 整個關掉再開', '不重開，它會找不到 node'],
   },
   {
     id: 's1-install-win',
@@ -340,7 +340,7 @@ export const pages = [
     heading: '同一個任務，誰在動手？',
     task: '幫我的基本資料補上數字成果',
     left: {
-      icon: '💬',
+      icon: '',
       name: '聊天 AI',
       count: '你動手 4 次',
       steps: [
@@ -350,7 +350,7 @@ export const pages = [
       ],
     },
     right: {
-      icon: '🤖',
+      icon: '',
       name: 'Agent',
       count: '你動手 1 次',
       steps: [
@@ -393,7 +393,7 @@ export const pages = [
         heroColor: YELLOW,
         heroSize: 26,
         lines: ['新北、桃園，2 小時內到場', '上週颱風後，3 小時補好（前後對照照）'],
-        cta: '📞 立即撥打',
+        cta: '立即撥打',
       },
     ],
   },
@@ -425,11 +425,11 @@ export const pages = [
     notes: '10:25 找風格＋文字雲(4)。風格說不出來很正常，先用看的。Agent 不一定看得懂圖，所以要把喜歡的地方翻成文字。',
     kicker: '找風格 · 3 分鐘',
     heading: '風格說不出來？\n先去看',
-    link: ['https://www.pinterest.com/search/pins/?q=personal%20website%20design', '📌 Pinterest：personal website design', '滑一滑，挑 1–2 個你喜歡的個人網站'],
+    link: ['https://www.pinterest.com/search/pins/?q=personal%20website%20design', 'Pinterest：personal website design', '滑一滑，挑 1–2 個你喜歡的個人網站'],
     cards: [
-      ['👀', '挑 1–2 個', '你最喜歡的設計'],
-      ['🏷️', '用三個詞說出來', '例：留白多、深色、大標題'],
-      ['✍️', '這三個詞 = Prompt ② 的「風格」空格', 'Agent 不一定看得懂圖，要翻成文字＝具體描述'],
+      ['01', '挑 1–2 個', '你最喜歡的設計'],
+      ['02', '用三個詞說出來', '例：留白多、深色、大標題'],
+      ['03', '這三個詞 = Prompt ② 的「風格」空格', 'Agent 不一定看得懂圖，要翻成文字＝具體描述'],
     ],
   },
   {
