@@ -187,6 +187,7 @@
   - [x] 交作業＋作品牆：第一直覺後交(第 53 頁)，v1→v3 對照後秀牆(第 57 頁)；時間從引玉的緩衝扣
   - [x] 問老師的 AI：介紹 Obsidian 之後(第 18 頁)；時間從基本資料 Prompt 扣 3 分
   - [x] 一整頁 vs 小筆記：Prompt ① 前(第 35 頁)；時間從 Prompt ① 扣 1 分
+- 2026-11-11 下一步：Eric 其餘互動的取捨＋icon 去 AI 味，規格待講師過目，見 [spec](../superpowers/specs/2026-11-11-ntut-topic-f-interactions-icons-design.md)
 
 ## 講師課前準備
 - [ ] 用這套流程重做自己的單頁版網站(開場右邊那個)，順便完成下面的實測
