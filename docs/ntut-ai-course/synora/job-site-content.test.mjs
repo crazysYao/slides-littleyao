@@ -33,3 +33,33 @@ test('第一節分鐘數加總 50', () => {
   const sum = content.pages.slice(0, end).reduce((a, p) => a + Number(p.notes?.match(/^\d\d:\d\d [^(（]*[(（](\d+)[)）]/)?.[1] ?? 0), 0);
   assert.equal(sum, 50);
 });
+
+const S2 = ['s2', 's2-quiz-warmup-1', 's2-quiz-warmup-2', 's2-quiz-warmup-3', 's2-typhoon', 's2-typhoon-poll', 's2-typhoon-reveal',
+  's2-style', 's2-style-poll', 's2-prompt-2', 's2-rescue', 's2-v1-poll',
+  's2-skill-1', 's2-skill-2', 's2-skill-3', 's2-skill-4', 's2-skill-5', 's2-skill-6', 's2-skill-7',
+  's2-skill-make', 's2-skill-save', 's2-skill-upload', 'break2'];
+const minutes = (from, to) =>
+  content.pages
+    .slice(content.pages.findIndex((x) => x.id === from), content.pages.findIndex((x) => x.id === to))
+    .reduce((a, p) => a + Number((p.notes ?? p.firstNote)?.match(/^\d\d:\d\d [^(（]*[(（](\d+)[)）]/)?.[1] ?? 0), 0);
+
+test('第二節頁序', () => assert.deepEqual(ids.slice(S1.length, S1.length + S2.length), S2));
+
+test('第一、二節沒有舊工具鏈字眼', () => scan(content.pages.slice(0, content.pages.findIndex((x) => x.id === 'break2') + 1)));
+
+test('Prompt ② 是 Canvas 版', () => {
+  const p = page('s2-prompt-2').prompt;
+  for (const s of ['Canvas', '給誰看', '風格', '最想讓對方記住的一件事', '單一 HTML', '不要放身分證、住址、私人手機']) assert.ok(p.includes(s), s);
+});
+
+test('Skill Prompt 輸出三欄且不重做網站', () => {
+  const p = page('s2-skill-make').prompt;
+  for (const s of ['名稱', '說明', '指示', '不要重做網站']) assert.ok(p.includes(s), s);
+});
+
+test('咖啡店七頁照順序', () => {
+  const order = content.pages.filter((p) => p.layout === 'skillSlide').map((p) => p.slide);
+  assert.deepEqual(order, ['s1-what', 's2-compare', 's2-compare-b', 's3-folder', 's4-skillmd', 's5-flow', 's6-uses']);
+});
+
+test('第二節分鐘數加總 50', () => assert.equal(minutes('s2', 'break2'), 50));

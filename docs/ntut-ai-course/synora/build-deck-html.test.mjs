@@ -60,7 +60,7 @@ const here = dirname(fileURLToPath(import.meta.url));
 const INTERACTIVE = new Set(['poll', 'quiz', 'link', 'copycard', 'fileDownload', 'wordcloud', 'webProject', 'homework', 'showcase']);
 const FULLSIZE = new Set(['poll', 'quiz', 'wordcloud', 'webProject', 'showcase']);
 // 舊產生器沒有後來新增的版型，比對時先拿掉這些頁
-const NEW_LAYOUTS = ['styleGallery'];
+const NEW_LAYOUTS = ['styleGallery', 'skillSlide'];
 const oldDeck = () => {
   const dir = mkdtempSync(join(tmpdir(), 'deck-'));
   const out = join(dir, 'old.json');
@@ -76,10 +76,10 @@ const strip = (e, keepBox) => {
   return keepBox ? { ...rest, x, y, width, height } : rest;
 };
 
-test('全份：47 頁，原生互動元件與舊產生器一致', () => {
+test('全份：54 頁，原生互動元件與舊產生器一致', () => {
   const all = buildDeck(content).slides;
   const old = oldDeck().slides;
-  assert.equal(all.length, 47);
+  assert.equal(all.length, 54);
   const oldIds = new Set(old.map((s) => s.id));
   const now = all.filter((s) => oldIds.has(s.id));
   assert.equal(now.length, old.length);
@@ -108,6 +108,6 @@ test('全份：copycard 標題', () => {
   const titles = Object.fromEntries(buildDeck(content).slides.flatMap((s) => s.elements.filter((e) => e.type === 'copycard').map((e) => [s.id, e.title])));
   assert.deepEqual(titles, {
     's1-interview': '讓 AI 訪問你', 's1-prompt-1': '照貼就好',
-    's2-prompt-2': '複製後，先填好三個空格再送出', 's3-deploy': '上線',
+    's2-prompt-2': '複製後，先填好三個空格再送出', 's2-skill-make': '整理成 Skill', 's3-deploy': '上線',
   });
 });

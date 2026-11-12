@@ -2,9 +2,9 @@
 // 產生：node build-deck-html.mjs <輸出路徑> job-site-content.mjs
 // 設計見 ../../superpowers/specs/2026-11-12-ntut-speak-clearly-syllabus-design.md；講稿開頭「HH:MM 名稱(分)」是該環節的第一頁
 
-export const brand = '讓 AI 一開口就懂你';
+import { skillNotes } from './html-skill.mjs';
 
-const TEMPLATE_URL = 'https://github.com/crazysYao/slides-littleyao/raw/main/docs/ntut-ai-course/job-site-template/job-site-template.zip';
+export const brand = '讓 AI 一開口就懂你';
 
 const YELLOW = '#f5b400';
 const INK = '#16161a';
@@ -41,6 +41,17 @@ const LOOP_STEPS = [
   ['③ 驗證', '結果對不對？'],
   ['↺ 優化', '把落差講得更具體'],
 ];
+
+// 咖啡店 Skill 章節 7 頁：畫面與講稿都來自 ../skill-chapter/slides（見 html-skill.mjs）
+const SKILL_TITLES = ['AI 也需要工作手冊嗎？', '沒有 Skill', '有 Skill', '打開 AI 的工作手冊', 'SKILL.md 的內容', '從一句話到完成任務', 'Skill 不只能做咖啡'];
+const SKILL_PAGES = Object.keys(skillNotes).map((slide, i, all) => ({
+  id: `s2-skill-${i + 1}`,
+  layout: 'skillSlide',
+  section: '',
+  title: SKILL_TITLES[i],
+  notes: `${i === 0 ? '10:34 Skill(5)。' : ''}${skillNotes[slide]}${i === all.length - 1 ? '\n\n省額度第二招：把做法寫成手冊，就不用每次重打一大段。' : ''}`,
+  slide,
+}));
 
 export const pages = [
   {
@@ -268,61 +279,31 @@ export const pages = [
   {
     id: 's2',
     layout: 'divider',
-    title: '第二節：執行',
-    notes: '10:00–10:55。',
+    title: '第二節：做出來',
+    notes: '10:00–10:50。',
     no: '02',
-    heading: '執行',
-    time: '10:00–10:55',
-    sub: '收穫：補齊的基本資料＋網站 v1',
+    heading: '做出來',
+    time: '10:00–10:50',
+    sub: '收穫：網站 v1＋一個自己做的 Skill',
   },
   {
     id: 's2-quiz-warmup',
     layout: 'quizSet',
-    section: '02 執行',
+    section: '02 做出來',
     label: '暖身搶答',
-    firstNote: '10:00 暖身搶答(4)。考第一節的親身經歷。',
+    firstNote: '10:00 暖身搶答(3)。考第一節的三個例子。',
     items: [
       ['「幫我寫自我介紹」為什麼寫得很空泛？', ['我什麼都沒說，AI 只能猜', 'AI 不夠聰明', '要付費版才會寫', '網路太慢'], 0],
+      ['「一杯奶茶」→「半糖少冰」→「珍珠換椰果」，一次次把點餐單調得更好，叫什麼？', ['提示詞工程', '重新開機', '付費升級', '換一家店'], 0],
       ['聊天 AI 什麼時候會追問你？', ['你要它問的時候', '每次都會', '付費版才會', '永遠不會'], 0],
-      ['女朋友說「好煩喔」，講師哪一步做錯了？', ['兩步都錯：先量化，再給 KPI', '只有量化錯了', '只有 KPI 錯了', '都沒錯'], 0],
     ],
-  },
-  {
-    id: 's2-agent',
-    layout: 'whoDoes',
-    section: '02 執行',
-    title: '聊天 AI vs Agent',
-    notes: '10:04 聊天視窗 vs Agent(5)。聊天視窗是改不完的循環：說要改哪、整份重給、複製存檔、打開來看。Agent 講一句，它自己讀、改、回報。',
-    heading: '同一個任務，誰在動手？',
-    task: '幫我的基本資料補上數字成果',
-    left: {
-      icon: 'chat',
-      name: '聊天 AI',
-      count: '你動手 4 次',
-      steps: [
-        ['你', '複製資料，貼進對話框送出'],
-        ['AI', '回你一段改好的文字'],
-        ['你', '貼回檔案存檔，打開來看，再來一次'],
-      ],
-    },
-    right: {
-      icon: 'bot',
-      name: 'Agent',
-      count: '你動手 1 次',
-      steps: [
-        ['你', '說一句話，交代任務'],
-        ['AI', '自己讀檔、改好檔案'],
-        ['AI', '回報：「已補上 3 個專題的數字成果，請確認」'],
-      ],
-    },
-    bottom: ['差別不在誰比較聰明，而在', '誰去碰你的檔案'],
   },
   {
     id: 's2-typhoon',
     layout: 'siteMock',
     section: '02 給誰看',
     title: '颱風天：你會打給誰',
-    notes: '10:21 先想清楚給誰看(4)。開頭承接：剛才是說清楚你要什麼，現在是想清楚誰在看。情境：颱風過後，你家屋頂被吹掉一塊，雨還在下。你搜「屋頂 緊急修繕」，跳出這兩個師傅的網站。課前用 AI 做兩個假網站截圖替換，不用真實店家。',
+    notes: '10:03 給誰看(4)。開頭承接：剛才是說清楚你要什麼，現在是想清楚誰在看。情境：颱風過後，你家屋頂被吹掉一塊，雨還在下。你搜「屋頂 緊急修繕」，跳出這兩個師傅的網站。課前用 AI 做兩個假網站截圖替換，不用真實店家。',
     heading: '颱風過後屋頂破洞，雨還在下，你會打給誰？',
     sites: [
       {
@@ -364,9 +345,9 @@ export const pages = [
   {
     id: 's2-style',
     layout: 'styleGallery',
-    section: '02 執行',
+    section: '02 做出來',
     title: '找風格：8 種挑一個',
-    notes: '10:25 找風格＋投票(4)。風格說不出來很正常，先用看的。這 8 種都有名字，叫得出名字，AI 就做得出來。挑一個，它的名字就填進 Prompt ② 的「風格」空格。想看大圖和說明，點下面的 WPORT UI 風格。',
+    notes: '10:07 找風格(4)。風格說不出來很正常，先用看的。這 8 種都有名字，叫得出名字，AI 就做得出來。挑一個，它的名字就填進 Prompt ② 的「風格」空格。想看大圖和說明，點下面的 WPORT UI 風格。',
     heading: '挑一個風格：叫得出名字，AI 就做得出來',
     who: '林小晴',
     styles: [['A', 'Bento Grid'], ['B', 'Liquid Glass'], ['C', 'Neo-brutalism'], ['D', 'Claymorphism'], ['E', 'Aurora Dark'], ['F', 'Swiss Editorial'], ['G', 'Y2K Chrome'], ['H', 'Retro Pixel']],
@@ -375,69 +356,89 @@ export const pages = [
   {
     id: 's2-style-poll',
     layout: 'poll',
-    section: '02 執行',
+    section: '02 做出來',
     title: '投票：你挑哪個風格',
     notes: '大家同時投，看全班的風格分布；撞風格很正常，同一個風格也能做出不同網站。',
     question: '你挑了哪一個風格？',
     options: ['A Bento Grid', 'B Liquid Glass', 'C Neo-brutalism', 'D Claymorphism', 'E Aurora Dark', 'F Swiss Editorial', 'G Y2K Chrome', 'H Retro Pixel'],
   },
   {
-    id: 's2-template',
-    layout: 'taskDownload',
-    section: '02 執行',
-    title: '下載網站範本',
-    notes: '10:29 網站 v1(14)。範本已經寫好版型和手機版，AI 只換內容。8 分鐘還沒做出來的，用 zip 裡的 fallback/index.html 蓋掉 site/index.html（可以叫 Agent 做），一樣往下走。等的時候先在紙上寫：你猜 v1 會長怎樣？',
-    tag: '全班實作 · 14 分鐘',
-    heading: '先下載範本，放進 my-site',
-    file: [TEMPLATE_URL, '求職網站範本.zip', '5 KB', 'zip'],
-    items: ['解壓縮，把 site 和 fallback 兩個資料夾拖進桌面的 my-site', '複製下一頁的 Prompt ②，先填好三個空格', '等 AI 的時候：在紙上寫下你猜 v1 會長怎樣'],
-  },
-  {
     id: 's2-prompt-2',
     layout: 'copyFull',
-    section: '02 執行',
+    section: '02 做出來',
     title: 'Prompt ②：網站 v1',
-    notes: '填空版：先把三個空格換成自己的答案再送出。「給誰看」就是剛剛颱風那題。做好後在 site 資料夾裡雙擊 index.html 打開。',
-    tag: '全班實作 · 填空版',
+    notes: '10:11 網站 v1(20)。在訪問你的同一個對話貼上，先把三個空格換成自己的答案再送出。「給誰看」就是剛剛颱風那題，「風格」填你剛剛投的那一個。送出後 AI 會開一個網頁預覽。從貼出去開始算 8 分鐘，還沒出來就照下一頁處理。等的時候先在紙上寫：你猜 v1 會長怎樣？',
+    tag: '全班實作 · 20 分鐘',
     heading: 'Prompt ②：做出網站 v1',
     cardTitle: '複製後，先填好三個空格再送出',
     prompt:
-      '讀 我的基本資料.md，把 site/index.html 範本裡的範例內容換成我的。\n給誰看：＿＿　最想讓對方記住的一件事：＿＿　風格：＿＿（8 種挑一個，例：Bento Grid）\nrule:\n- 直接改 site/index.html，不要整份重新輸出；只改 <title>、帶 data-slot 的文字、:root 的顏色和字體\n- 依「給誰看」整段搬動 <section> 調順序（nav 同步）、改標題寫法；依「風格」只改顏色和字體\n- 只用我的資料，沒有的寫「？」，不要編',
+      '請用 Canvas（Claude 用 Artifact）幫我做一個個人求職網站，輸出成單一 HTML 檔。\n\n給誰看：＿＿（例如：面試官、客戶、社團學弟妹）\n風格：＿＿（填找風格投票選到的風格名稱）\n最想讓對方記住的一件事：＿＿\n\nrule:\n- 只用上面整理好的「我的基本資料」，沒有的就不要寫，不要編經歷、數字或獎項\n- 資料裡標「？」的地方直接略過，不要補\n- HTML、CSS、JavaScript 全部寫在同一個檔案，不引用外部圖片\n- 手機看也要好看，第一眼就看得出我是誰、想做什麼工作\n- 不要放身分證、住址、私人手機',
   },
   {
-    id: 's2-v1-upload',
-    layout: 'homework',
-    section: '02 執行',
-    title: '上傳網站 v1 截圖',
-    notes: '10:43 截圖牆(8)。先上傳，下一頁一起看網站牆，每人投 3 票。',
-    heading: '上傳你的網站 v1',
-    hwId: 'job-v1-up',
-    description: '瀏覽器按 F12 切到手機畫面，用 Win＋Shift＋S（Mac：Cmd＋Shift＋4）截一張上傳，再寫一句：你最滿意哪個地方？',
+    id: 's2-rescue',
+    layout: 'rows',
+    section: '02 做出來',
+    title: '卡住了怎麼辦',
+    notes: '這頁留在畫面上當救援卡。8 分鐘是從你貼出 Prompt ② 那一刻算起。換工具時流程完全一樣，只是要先把基本資料副本貼進去。',
+    heading: '卡住了，照這張做',
+    rows: [
+      ['accent', '8 分鐘還沒出來', '開新對話，貼上基本資料副本，再貼 Prompt ②'],
+      ['dark', '額度用完了', '換 ChatGPT 或 Claude，貼上基本資料副本接著做'],
+      ['muted', '沒有 Canvas', '沒有 Google 帳號也一樣：改用 ChatGPT 或 Claude，Prompt 不用改'],
+    ],
   },
   {
-    id: 's2-v1-wall',
-    layout: 'showcase',
-    section: '02 執行',
-    title: '網站牆',
-    notes: '看大家的 v1，每人投 3 票。點出：版型很像，因為用同一份範本；第三節開始會越改越不一樣。',
-    linkHomework: 'job-v1-up',
-  },
-  {
-    id: 's2-poll-v1',
+    id: 's2-v1-poll',
     layout: 'poll',
-    section: '02 執行',
-    title: '投票：v1 幾分',
-    notes: '10:51 v1 滿意度(4)。第三節開場回頭看。',
-    question: '你的網站 v1 打幾分？',
-    options: ['1–2 分：還很陽春', '3 分：堪用', '4–5 分：可以給人看了'],
+    section: '02 做出來',
+    title: '投票：v1 做好了嗎',
+    notes: '10:31 v1 好了嗎(3)。選「卡住了」的舉手，助教先過去。做好的人先截一張 v1 的畫面留著，第三節改完可以對照。',
+    question: '你的網站 v1 做好了嗎？',
+    options: ['做好了', '快好了', '卡住了'],
+  },
+  ...SKILL_PAGES,
+  {
+    id: 's2-skill-make',
+    layout: 'copyFull',
+    section: '02 Skill',
+    title: '做自己的 Skill',
+    notes: '10:39 做自己的 Skill(8)。在做網站的那個對話貼上。AI 會把你剛剛填的三個空格和規則整理成三欄：名稱、說明、指示。這三欄對應剛剛咖啡店第 5 頁：名稱和說明是 Metadata，指示是 Instructions，裡面的規則是 Rules。今天大家用的聊天 AI 不會自己去書架找手冊，所以要你親手遞給它；下一頁教你怎麼收好。',
+    tag: '全班實作 · 8 分鐘',
+    heading: '把剛剛的做法，整理成你的 Skill',
+    cardTitle: '整理成 Skill → 複製 → 貼在做網站的對話',
+    prompt:
+      '把我們剛剛做網站的做法，整理成一份可以重複使用的 Skill。只整理，不要重做網站。\n分三欄輸出：\n\n名稱：英文小寫，單字用 - 連接（例如 my-job-site）\n說明：一句話，說明什麼時候該用這份 Skill\n指示：\n- 給誰看：（用我剛剛填的答案）\n- 風格：（用我剛剛填的答案）\n- 最想讓對方記住的一件事：（用我剛剛填的答案）\n- 規則：只用我提供的基本資料，不編造；手機看也要好看；不放身分證、住址、私人手機',
+  },
+  {
+    id: 's2-skill-save',
+    layout: 'compare',
+    section: '02 Skill',
+    title: '把 Skill 收好',
+    notes: '所有人都先做左邊：把三欄存成文字，放在基本資料副本旁邊。用個人 Google 帳號登入 Gemini 的人，再多做右邊這一步，把它建成真的 Skill；之後在任何對話打斜線加名稱就能叫出來。學校帳號、未滿 18 歲、或找不到這個入口的，做左邊就夠了。做完確認一次：叫出來，請它先不要做，告訴你它會照哪些規則做。',
+    heading: '把你的 Skill 收好',
+    cards: [
+      ['accent', '所有人：存成文字', '把三欄整段複製\n貼到基本資料副本旁邊'],
+      ['dark', 'Gemini 個人帳號：再多做一步', '自訂 → Skills → 建立 → 手動建立\n把名稱、說明、指示貼進去'],
+    ],
+    note: '確認：打「/名稱」，加一句「先不要做，告訴我你會照哪些規則做」',
+  },
+  {
+    id: 's2-skill-upload',
+    layout: 'homework',
+    section: '02 Skill',
+    title: '上傳你的 Skill',
+    notes: '10:47 上傳 Skill(3)。把三欄文字貼上來；有建成 Gemini Skill 的人可以附一張畫面截圖。來不及的休息時間補。這是你今天帶走的第二樣東西。',
+    heading: '上傳你的 Skill',
+    hwId: 'job-skill-up',
+    description: '把「名稱、說明、指示」三欄貼上來。有建成 Gemini Skill 的人，可以再附一張畫面截圖。',
   },
   {
     id: 'break2',
     layout: 'break',
     title: '休息',
-    notes: '休息 10:55–11:05。',
+    notes: '休息 10:50–11:00。',
     heading: '休息 10 分鐘',
-    back: '11:05',
+    back: '11:00',
   },
 
   // ── 第三節 ──
