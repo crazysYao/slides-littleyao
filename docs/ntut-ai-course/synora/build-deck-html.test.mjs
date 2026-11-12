@@ -76,13 +76,13 @@ const strip = (e, keepBox) => {
   return keepBox ? { ...rest, x, y, width, height } : rest;
 };
 
-test('全份：50 頁，原生互動元件與舊產生器一致', () => {
+test('全份：47 頁，原生互動元件與舊產生器一致', () => {
   const all = buildDeck(content).slides;
   const old = oldDeck().slides;
-  assert.equal(all.length, 50);
+  assert.equal(all.length, 47);
   const oldIds = new Set(old.map((s) => s.id));
   const now = all.filter((s) => oldIds.has(s.id));
-  assert.equal(now.length, all.length - 1);
+  assert.equal(now.length, old.length);
   assert.deepEqual(now.map((s) => [s.id, s.notes]), old.map((s) => [s.id, s.notes]));
   for (const s of all) for (const e of s.elements) assert.ok(e.x >= 0 && e.y >= 0 && e.x + e.width <= 960 && e.y + e.height <= 540, `${s.id} ${e.id} 出界`);
   now.forEach((s, i) => {
@@ -93,22 +93,21 @@ test('全份：50 頁，原生互動元件與舊產生器一致', () => {
   });
 });
 
-test('全份：只有 3 頁循環動畫', () => {
+test('全份：沒有循環動畫頁', () => {
   const loops = buildDeck(content).slides.filter((s) => /infinite/.test(s.elements[0].html)).map((s) => s.id);
-  assert.deepEqual(loops, ['s1-install-win', 's1-hello', 's1-vercel-login']);
+  assert.deepEqual(loops, []);
 });
 
 test('全份：截圖佔位 svg 數量', () => {
   const svgs = Object.fromEntries(buildDeck(content).slides.map((s) => [s.id, s.elements.filter((e) => e.type === 'svg').length]));
   assert.equal(svgs['s1-goal'], 1);
-  assert.equal(svgs['s1-roadmap'], 3);
   assert.equal(svgs['s2-typhoon'], 2);
 });
 
 test('全份：copycard 標題', () => {
   const titles = Object.fromEntries(buildDeck(content).slides.flatMap((s) => s.elements.filter((e) => e.type === 'copycard').map((e) => [s.id, e.title])));
   assert.deepEqual(titles, {
-    's1-interview': '讓 AI 訪問你', 's1-install-win': '安裝 · Windows', 's1-hello': '打招呼', 's1-vercel-login': '登入',
-    's2-prompt-1': '照貼就好', 's2-prompt-2': '複製後，先填好三個空格再送出', 's3-deploy': '上線',
+    's1-interview': '讓 AI 訪問你', 's1-prompt-1': '照貼就好',
+    's2-prompt-2': '複製後，先填好三個空格再送出', 's3-deploy': '上線',
   });
 });

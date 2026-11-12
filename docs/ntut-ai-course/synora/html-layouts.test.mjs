@@ -5,7 +5,234 @@ import { makeNative } from './native.mjs';
 import { pages, palette } from './job-site-content.mjs';
 import { esc } from './html-kit.mjs';
 
-const page = (id) => pages.find((x) => x.id === id);
+// 這幾頁已不在簡報裡，版型還留著；物件原樣取自改版前的內容檔，讓版型測試繼續有對象
+const FIXTURES = {
+  "s1-install-win": {
+    "id": "s1-install-win",
+    "layout": "copyMock",
+    "section": "工具一次到位",
+    "title": "安裝：Windows",
+    "notes": "開始鍵輸入 PowerShell → 右鍵貼上 → Enter。winget 不能用的電腦，改走上一頁的官方安裝檔。跳出藍色警告：其他資訊 → 仍要執行。",
+    "tag": "安裝 · Windows",
+    "heading": "安裝：Windows 一行就好",
+    "cardTitle": "複製 → 開始鍵輸入 PowerShell → 右鍵貼上 → Enter",
+    "mockTitle": "Windows PowerShell",
+    "mock": [
+      [
+        [
+          "PS C:\\Users\\你> "
+        ],
+        [
+          "在這裡按右鍵貼上 → Enter",
+          "y"
+        ]
+      ],
+      [
+        [
+          "正在安裝 Node.js …  "
+        ],
+        [
+          "完成",
+          "g"
+        ]
+      ],
+      [
+        [
+          "正在安裝 OpenCode Desktop …  "
+        ],
+        [
+          "完成",
+          "g"
+        ]
+      ],
+      [
+        [
+          "全部裝好：關掉 PowerShell，再打開一次",
+          "m"
+        ]
+      ]
+    ],
+    "prompt": "winget install --id OpenJS.NodeJS.LTS -e; winget install --id SST.OpenCodeDesktop -e"
+  },
+  "s1-hello": {
+    "id": "s1-hello",
+    "layout": "copyMock",
+    "section": "工具一次到位",
+    "title": "OpenCode 打招呼＝檢查點",
+    "notes": "09:36 打招呼卡＝全班檢查點(4)。OpenCode 左邊「新增專案」→ 選桌面的 my-site → 貼上 → 傳送 → 看懂再按「允許一次」。看到模型名稱、看到 我的基本資料.md、看到 node 版本號，三個都過就舉手。講師示範修最常見的錯：沒選對資料夾、node 找不到要重開。沒過的留給助教。",
+    "tag": "全班檢查點 · 三個都過就舉手",
+    "heading": "OpenCode 上工：三個都過就舉手",
+    "cardTitle": "打招呼 → 複製 → 貼到 OpenCode → 傳送",
+    "mockTitle": "OpenCode · my-site",
+    "mock": [
+      [
+        [
+          "你  ",
+          "m"
+        ],
+        [
+          "1 你是哪個模型？看得到哪些檔案？ 2 node 是什麼版本？"
+        ]
+      ],
+      [
+        [
+          "需要權限 · Bash  node --version   ",
+          "m"
+        ],
+        [
+          "[ 允許一次 ]",
+          "y"
+        ]
+      ],
+      [
+        [
+          "AI  ",
+          "m"
+        ],
+        [
+          "我是 Gemini Flash Lite，看得到：我的基本資料.md",
+          "g"
+        ]
+      ],
+      [
+        [
+          "AI  ",
+          "m"
+        ],
+        [
+          "node 是 v22，可以開始了。",
+          "g"
+        ]
+      ]
+    ],
+    "prompt": "1 你是哪個模型？看得到哪些檔案？\n2 node 是什麼版本？沒有的話告訴我，先不要裝"
+  },
+  "s1-vercel-login": {
+    "id": "s1-vercel-login",
+    "layout": "copyMock",
+    "section": "工具一次到位",
+    "title": "叫 OpenCode 登入 Vercel",
+    "notes": "一律用 npx，不要 npm i -g（Mac 會要管理員密碼）。第一次跑 npx 要下載，約 30–60 秒。最後 1 分鐘拋懸念：休息後，換 AI 反過來訪問你。",
+    "tag": "上線前準備",
+    "heading": "叫 OpenCode 幫你登入 Vercel",
+    "cardTitle": "登入 → 複製 → 貼到 OpenCode → 傳送 → 瀏覽器按授權",
+    "mockTitle": "OpenCode · my-site",
+    "mock": [
+      [
+        [
+          "AI  ",
+          "m"
+        ],
+        [
+          "Vercel CLI 已可用，版本號出來了。"
+        ]
+      ],
+      [
+        [
+          "AI  ",
+          "m"
+        ],
+        [
+          "請打開這個網址登入：",
+          "g"
+        ],
+        [
+          "https://vercel.com/…",
+          "y"
+        ]
+      ],
+      [
+        [
+          "你  ",
+          "m"
+        ],
+        [
+          "（瀏覽器按授權，回到 OpenCode）"
+        ]
+      ],
+      [
+        [
+          "AI  ",
+          "m"
+        ],
+        [
+          "登入成功。",
+          "g"
+        ]
+      ]
+    ],
+    "prompt": "1 跑 npx vercel@latest --version，看到版本號就好\n2 跑 npx vercel@latest login，把網址給我，我在瀏覽器登入"
+  },
+  "s1-aistudio": {
+    "id": "s1-aistudio",
+    "layout": "linkTask",
+    "section": "工具一次到位",
+    "tag": "申請主廚 · 3 分鐘",
+    "heading": "申請 AI Studio Key，選 Flash Lite",
+    "title": "申請 AI Studio Key",
+    "notes": "用個人 Gmail，不要用學校帳號（學校帳號可能被管理員關掉 AI Studio）。Flash Lite 每分鐘 15 次、每天 500 次，每人各算各的。上課當天再看一次 AI Studio 的額度頁。",
+    "link": [
+      "https://aistudio.google.com/api-keys",
+      "AI Studio API Keys",
+      "用個人 Gmail 登入"
+    ],
+    "items": [
+      "用個人 Gmail 登入，按「建立 API 金鑰」",
+      "回 OpenCode 輸入 /connect，選 Google，貼上 Key",
+      "模型選 Gemini Flash Lite"
+    ]
+  },
+  "s1-roadmap": {
+    "id": "s1-roadmap",
+    "layout": "loop",
+    "section": "今天的脈絡",
+    "title": "今天的脈絡",
+    "notes": "09:12 今天的脈絡(2)。沿著迴圈走一圈，右邊三站依序講：第一節說清楚你是誰、第二節讓 Agent 做出網站、第三節改好上線。課前把三站換成成品截圖（我的基本資料.md、網站 v1、手機上的 vercel.app）。",
+    "heading": "今天 3 小時，我們跑一圈問題迴圈",
+    "start": "發現問題",
+    "steps": [
+      [
+        "① 具體描述",
+        "現在的狀況＋感受"
+      ],
+      [
+        "② 執行",
+        "交給 AI 動手"
+      ],
+      [
+        "③ 驗證",
+        "結果對不對？"
+      ],
+      [
+        "↺ 優化",
+        "把落差講得更具體"
+      ]
+    ],
+    "center": "一輪不夠\n就再跑一輪",
+    "cardsTitle": "今天三站",
+    "shots": [
+      [
+        "第一節｜說清楚你是誰（發現問題 → ①）",
+        "我的基本資料.md"
+      ],
+      [
+        "第二節｜讓 Agent 做出網站（②）",
+        "網站 v1"
+      ],
+      [
+        "第三節｜改好、上線（③ → ↺）",
+        "手機上的 vercel.app"
+      ]
+    ],
+    "compareTitle": "下課帶走",
+    "compare": [
+      "一個公開網址",
+      "一份關於你的資料",
+      "一個用得到任何地方的問題迴圈"
+    ]
+  }
+};
+const page = (id) => FIXTURES[id] ?? pages.find((x) => x.id === id);
 const run = (id) => {
   const p = page(id);
   return [p, layouts[p.layout](p, { palette, n: makeNative(p.id, palette.accent) })];
