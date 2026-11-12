@@ -299,7 +299,7 @@
 - `job-site-syllabus.md` 的時間表與課前準備清單改寫：刪掉安裝、Key、Vercel CLI 的實測項，換成本文件的〈課前必測〉
 - `README.md` 狀態說明
 - 本次不推送 Synora 遠端，也不開放學員入口（目前是草稿）；推送與開放都另外由講師下指令
-- PR #41 還沒合併；要等它進 main 再從 main 開實作分支
+- PR #41 未合併時，實作分支疊在 `crazysYao/ntut-interview-5q` 上；它合併後用 `git rebase --onto origin/main ff68d5e` 移回 main，再開 PR
 
 ## Claude 的判斷（講師未逐項明說）
 - Context 整段排在 v2 之後（11:23），因為 v2 留在原對話之後，揭曉完要馬上開新對話才接得上。講師 2026-11-12 看過整份時間表後同意
@@ -311,7 +311,7 @@
 - 面試自介練習不上傳
 - Skill Prompt、面試自介 Prompt 的文字
 - `job-site-template/`（林小晴範本、保底網頁、zip）保留在 repo，不再連結
-- 實作分支從 PR #41 合併後的 main 開出；`crazysYao/ntut-gemini-canvas` 上的兩份設計 commit 不帶過來
+- 實作分支先疊在 PR #41 的分支上，合併後移回 main 才開 PR；`crazysYao/ntut-gemini-canvas` 上的兩份設計 commit 不帶過來
 - Vercel 示範與 Obsidian 示範各自的分鐘數（4 與 6）
 
 ## 審查紀錄
