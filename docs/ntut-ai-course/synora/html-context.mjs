@@ -23,7 +23,11 @@ const ctxClasses = (p, { palette: P }) => ({
     `<div class="in" style="position:absolute;left:44px;right:44px;top:360px;font-size:22px;font-weight:700;line-height:1.6;border-left:6px solid ${P.accent};padding-left:14px;--d:.7s">${esc(p.note)}</div>`,
 });
 
-const msgHtml = ([kind, label, text]) => `<div class="cm k-${kind}"><b>${esc(label)}</b><small>${esc(text)}</small></div>`;
+// 跳脫與訊息組字各只有一份原始碼：伺服端先畫的那一步和瀏覽器端重畫用的是同一段，兩邊才不會畫得不一樣
+const E_SRC = String.raw`function(s){return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;').replace(/\n/g,'<br>')}`;
+const M_SRC = `function(msgs,E){return msgs.map(function(m){return '<div class="cm k-'+m[0]+'"><b>'+E(m[1])+'</b><small>'+E(m[2])+'</small></div>'}).join('')}`;
+const E = new Function(`return ${E_SRC}`)();
+const M = new Function(`return ${M_SRC}`)();
 const dotsHtml = (n, i) => Array.from({ length: n }, (_, k) => `<i class="${k <= i ? 'on' : ''}"></i>`).join('');
 
 const ctxWindow = (p, { palette: P }) => {
@@ -50,23 +54,23 @@ const ctxWindow = (p, { palette: P }) => {
   const data = JSON.stringify(p.steps).replace(/</g, '\\u003c');
   const script =
     `(function(){var S=JSON.parse(document.getElementById('cw-data').textContent),i=${full};` +
-    `var E=function(s){return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;')};` +
+    `var E=${E_SRC};var M=${M_SRC};` +
     `var $=function(id){return document.getElementById(id)};` +
-    `function draw(){var s=S[i];$('cw-st').innerHTML=s.msgs.map(function(m){return '<div class="cm k-'+m[0]+'"><b>'+E(m[1])+'</b><small>'+E(m[2])+'</small></div>'}).join('');` +
-    `$('cw-used').textContent=s.used+'%';$('cw-fill').style.width=s.used+'%';$('cw-ev').textContent=s.event;` +
+    `function draw(){var s=S[i];$('cw-st').innerHTML=M(s.msgs,E);` +
+    `$('cw-used').textContent=s.used+'%';$('cw-fill').style.width=s.used+'%';$('cw-ev').innerHTML=E(s.event);` +
     `$('cw-dots').innerHTML=S.map(function(_,k){return '<i class="'+(k<=i?'on':'')+'"></i>'}).join('');` +
     `$('cw-next').disabled=i===S.length-1}` +
     `$('cw-next').onclick=function(){if(i<S.length-1){i++;draw()}};$('cw-reset').onclick=function(){i=0;draw()};` +
     `var still=window.__SYNORA_CAPTURE__||(window.matchMedia&&window.matchMedia('(prefers-reduced-motion: reduce)').matches);` +
-    `if(!still){i=0;draw()}})()`;
+    `if(!still){i=0}draw()})()`;
   return {
     body:
       `<style>${css}</style>` +
       title(p.heading) +
       `<div class="cw"><div class="cw-h">${esc(p.capLabel)}<span id="cw-used">${s.used}%</span></div>` +
       `<div class="cw-bar"><i id="cw-fill" style="width:${s.used}%"></i></div>` +
-      `<div class="cw-st" id="cw-st">${s.msgs.map(msgHtml).join('')}</div></div>` +
-      `<div class="cw-side"><div class="cw-ev"><small>這一步</small><span id="cw-ev">${esc(s.event)}</span></div>` +
+      `<div class="cw-st" id="cw-st">${M(s.msgs, E)}</div></div>` +
+      `<div class="cw-side"><div class="cw-ev"><small>這一步</small><span id="cw-ev">${E(s.event)}</span></div>` +
       `<div class="cw-dots" id="cw-dots">${dotsHtml(p.steps.length, full)}</div>` +
       `<div class="cw-btn"><button id="cw-next" data-act="next">下一步</button><button id="cw-reset" data-act="reset">重設</button></div>` +
       `<div class="cw-note">${esc(p.disclaimer)}</div></div>` +

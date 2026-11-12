@@ -48,3 +48,24 @@ test('ctxClasses：八格，狀態寫進 class', () => {
   assert.equal((body.match(/class="cls /g) ?? []).length, 8);
   assert.equal((body.match(/cls lost/g) ?? []).length, 2);
 });
+
+test('ctxWindow：換行與特殊字元在有沒有 JS 時畫出來一樣', () => {
+  const tricky = { ...win, steps: [{ used: 100, event: '第一行\n第二行 </script> & "引號"', msgs: [['me', 'A&B', '上\n下']] }] };
+  const { body } = contextLayouts.ctxWindow(tricky, { palette: P });
+  // 內嵌資料可還原，而且沒有被內容裡的 </script> 截斷
+  const json = body.match(/<script type="application\/json" id="cw-data">([\s\S]*?)<\/script>/)[1];
+  assert.deepEqual(JSON.parse(json), tricky.steps);
+  assert.equal((body.match(/<script/g) ?? []).length, 2);
+  // 伺服端先畫的那一步
+  const stat = noScript(body);
+  assert.match(stat, /第一行<br>第二行 &lt;\/script&gt; &amp; &quot;引號&quot;/);
+  assert.match(stat, /<b>A&amp;B<\/b><small>上<br>下<\/small>/);
+  // 瀏覽器端用同一份跳脫與組字函式重畫，事件文字也走 innerHTML
+  const script = body.match(/<script>([\s\S]*?)<\/script>/)[1];
+  const fn = (name) => new Function(`${script.match(new RegExp(`var ${name}=(function[\\s\\S]*?\\});`))[0]}return ${name}`)();
+  const E = fn('E');
+  const M = fn('M');
+  assert.equal(E(tricky.steps[0].event), '第一行<br>第二行 &lt;/script&gt; &amp; &quot;引號&quot;');
+  assert.ok(stat.includes(M(tricky.steps[0].msgs, E)));
+  assert.match(script, /\$\('cw-ev'\)\.innerHTML=E\(/);
+});
