@@ -73,3 +73,277 @@ export const layouts = {
     return { body, natives: [n.copycard(COPY.x, COPY.y, COPY.w, COPY.h, label, p.prompt)], loop: true };
   },
 };
+
+// ── 其餘版型 ──────────────────────────────────────────
+
+const ICONS = {
+  chat: '<path d="M4 5h16v11H9l-5 4z"/><path d="M8 9h8M8 12h5"/>',
+  bot: '<path d="M12 8V4H8"/><rect x="4" y="8" width="16" height="12" rx="2"/><path d="M2 14h2M20 14h2M15 13v2M9 13v2"/>',
+  alert: '<path d="M12 3l10 18H2z"/><path d="M12 10v4M12 17.5v.01"/>',
+  eye: '<path d="M2 12s4-7 10-7 10 7 10 7-4 7-10 7S2 12 2 12z"/><circle cx="12" cy="12" r="3"/>',
+  tag: '<path d="M3 3h8l10 10-8 8L3 11z"/><circle cx="7.5" cy="7.5" r="1.5"/>',
+  pen: '<path d="M4 20h4L20 8l-4-4L4 16z"/><path d="M14 6l4 4"/>',
+};
+const icon = (name, size, bg, fg) =>
+  ICONS[name]
+    ? `<span style="flex:0 0 ${size}px;width:${size}px;height:${size}px;border-radius:50%;background:${bg};display:inline-flex;align-items:center;justify-content:center"><svg width="${size * 0.62}" height="${size * 0.62}" viewBox="0 0 24 24" fill="none" stroke="${fg}" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round">${ICONS[name]}</svg></span>`
+    : '';
+const abs = (style, inner, i = 0, base) => `<div class="in" style="position:absolute;${style};${d(i, base)}">${inner}</div>`;
+const tagPill = (P, s) => `<div class="in" style="position:absolute;left:44px;top:56px;font-size:13px;font-weight:700;color:#fff;background:${P.dark};border-radius:99px;padding:4px 12px">${esc(s)}</div>`;
+const taskTitle = (s) => `<h1 class="t in" style="top:88px;${d(0, 0.08)}">${esc(s)}</h1>`;
+const numCards = (P, items, top, h) =>
+  `<div style="position:absolute;left:44px;right:44px;top:${top}px;display:grid;grid-template-columns:repeat(${items.length},1fr);gap:16px">${items
+    .map(
+      (s, i) =>
+        `<div class="card in" style="${d(i, 0.3)};height:${h}px"><div style="width:34px;height:34px;border-radius:17px;background:${P.accent};color:${P.text};font-weight:900;font-size:18px;display:flex;align-items:center;justify-content:center;margin-bottom:12px">${i + 1}</div><p style="color:${P.text};font-size:18px">${esc(s)}</p></div>`,
+    )
+    .join('')}</div>`;
+const mark = (P, s, size) => `<span style="background:${P.accent};color:${P.text};padding:0 .2em;border-radius:6px">${esc(s)}</span>`;
+const centerCol = (inner) => `<div style="position:absolute;left:60px;right:60px;top:0;bottom:0;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;gap:18px">${inner}</div>`;
+const lineIn = (i, style, inner, base = 0.1) => `<div class="in" style="${d(i, base, 0.15)};${style}">${inner}</div>`;
+// 複製卡頁：標籤＋標題 → 膠囊步驟 → 原生複製卡
+const copyPage = (p, { palette: P, n }) => {
+  const { label, steps } = splitSteps(p.cardTitle, p.tag);
+  const top = steps.length ? 186 : 150;
+  return {
+    body: tagPill(P, p.tag) + taskTitle(p.heading) + (steps.length ? `<div style="position:absolute;left:0;right:0;top:34px">${chips(steps, 0.2)}</div>` : ''),
+    natives: [n.copycard(44, top, 872, 520 - top, label, p.prompt)],
+  };
+};
+// 假網站手機畫面（原生 svg）
+const phoneSvg = (P, site, w, h) => {
+  const t = (x, y, s, size, color, bold) => `<text x="${x}" y="${y}" font-size="${size}" fill="${color}" font-family="sans-serif"${bold ? ' font-weight="bold"' : ''}>${String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;')}</text>`;
+  const heroH = 120;
+  let out = `<rect width="${w}" height="${h}" rx="22" fill="${P.dark}"/><rect x="8" y="8" width="${w - 16}" height="${h - 16}" rx="16" fill="#fff"/><rect x="8" y="8" width="${w - 16}" height="${heroH}" rx="16" fill="${site.heroColor ?? P.line}"/>`;
+  const hs = site.heroSize ?? 20;
+  site.hero.split('\n').forEach((l, i) => (out += t(24, 40 + i * hs * 1.4, l, hs, P.text, true)));
+  let y = 8 + heroH + 30;
+  for (const l of site.lines) { out += t(24, y, l, 14, P.muted); y += 28; }
+  if (site.cta) out += `<rect x="24" y="${h - 70}" width="${w - 48}" height="46" rx="23" fill="${P.accent}"/><text x="${w / 2}" y="${h - 41}" font-size="18" font-weight="bold" fill="${P.text}" text-anchor="middle" font-family="sans-serif">${site.cta}</text>`;
+  return out;
+};
+
+Object.assign(layouts, {
+  divider: (p, { palette: P }) => ({
+    body:
+      abs(`left:80px;top:100px;font-size:96px;font-weight:900;line-height:1;color:${P.text}`, esc(p.no)) +
+      abs(`left:80px;right:80px;top:226px;font-size:56px;font-weight:900;line-height:1.25;color:${P.text}`, esc(p.heading), 1) +
+      abs(`left:80px;top:330px;font-size:16px;font-weight:700;letter-spacing:.1em;color:#fff;background:${P.dark};border-radius:99px;padding:4px 14px`, esc(p.time), 2) +
+      abs(`left:80px;right:80px;top:380px;font-size:22px;font-weight:700;color:${P.text}`, esc(p.sub), 3),
+  }),
+
+  bigPrompt: (p, { palette: P }) => ({
+    body: centerCol(
+      lineIn(0, `font-size:20px;font-weight:700;color:${P.muted}`, esc(p.caption)) +
+        lineIn(1, `background:${P.dark};color:#fff;border-radius:28px;padding:22px 56px;font-size:48px;font-weight:900;box-shadow:0 14px 30px ${P.text}40`, esc(p.prompt)),
+    ),
+  }),
+
+  reveal: (p, { palette: P }) => ({
+    body: centerCol(
+      lineIn(0, `font-size:22px;font-weight:700;color:${P.muted}`, esc(p.ask)) +
+        lineIn(1, `font-size:54px;font-weight:900;line-height:1.3`, esc(p.lead)) +
+        lineIn(2, `font-size:54px;font-weight:900;line-height:1.3`, mark(P, p.punch)) +
+        lineIn(3, `font-size:22px;color:${P.muted}`, esc(p.sub)),
+    ),
+  }),
+
+  // 對話：她（左）／我（右）的氣泡，最後一句結論打上黃底
+  story: (p, { palette: P }) => ({
+    body:
+      title(p.heading) +
+      `<div style="position:absolute;left:44px;right:44px;top:130px;display:flex;flex-direction:column;gap:16px">${p.beats
+        .map(([from, s, , label = 'AI'], i) => {
+          const me = from === 'me';
+          const bubble = `<div style="max-width:620px;padding:14px 20px;border-radius:18px;font-size:21px;line-height:1.5;${me ? `background:${P.dark};color:#fff` : `background:#fff;border:1.5px solid ${P.line}`}">${esc(s)}</div>`;
+          const who = `<span style="flex:0 0 40px;height:40px;border-radius:20px;background:${me ? P.accent : P.dark};color:${me ? P.text : '#fff'};font-size:14px;font-weight:700;display:flex;align-items:center;justify-content:center">${me ? '我' : esc(label)}</span>`;
+          return `<div class="in" style="${d(i, 0.15, 0.25)};display:flex;align-items:flex-end;gap:12px;${me ? 'flex-direction:row-reverse' : ''}">${who}${bubble}</div>`;
+        })
+        .join('')}${p.punch ? `<div class="in" style="${d(p.beats.length, 0.15, 0.25)};margin-top:10px;font-size:28px;font-weight:900">${mark(P, p.punch)}</div>` : ''}</div>`,
+  }),
+
+  three: (p, { palette: P }) => ({
+    body:
+      title(p.heading) +
+      `<div style="position:absolute;left:44px;right:44px;top:140px;display:grid;grid-template-columns:repeat(${p.cards.length},1fr);gap:18px">${p.cards
+        .map(([c, t, b], i) => `<div class="card in" style="${d(i, 0.2)};border-top-color:${fill(P, c)};min-height:220px"><h3>${esc(t)}</h3><p>${esc(b)}</p></div>`)
+        .join('')}</div>`,
+  }),
+
+  compare: (p, { palette: P }) => ({
+    body:
+      title(p.heading) +
+      `<div style="position:absolute;left:44px;right:44px;top:140px;display:grid;grid-template-columns:1fr 1fr;gap:18px">${p.cards
+        .map(([c, t, b], i) => `<div class="card in${c === 'dark' ? ' dark' : ''}" style="${d(i, 0.2)};min-height:220px"><h3>${esc(t)}</h3><p style="font-size:21px">${esc(b)}</p></div>`)
+        .join('')}</div>` +
+      abs(`left:44px;right:44px;top:400px;font-size:20px;font-weight:700;border-left:6px solid ${P.accent};padding-left:14px`, esc(p.note), 3),
+  }),
+
+  grid: (p, { palette: P }) => ({
+    body:
+      title(p.heading) +
+      `<div style="position:absolute;left:44px;right:44px;top:124px;display:grid;grid-template-columns:repeat(3,1fr);gap:14px">${p.tiles
+        .map(([t, b], i) => `<div class="card in" style="${d(i, 0.15, 0.06)};height:184px;padding:16px 18px"><h3 style="font-size:20px">${esc(t)}</h3><p style="font-size:16px;line-height:1.6">${esc(b)}</p></div>`)
+        .join('')}</div>`,
+  }),
+
+  // 編號步驟：卡片之間用箭頭串起來
+  steps: (p, { palette: P }) => ({
+    body:
+      title(p.heading) +
+      `<div style="position:absolute;left:44px;right:44px;top:150px;display:flex;align-items:stretch;gap:10px">${p.items
+        .map(
+          ([t, b], i) =>
+            (i ? `<div class="in" style="${d(i, 0.15, 0.15)};align-self:center;font-size:28px;font-weight:900">→</div>` : '') +
+            `<div class="card in" style="${d(i, 0.15, 0.15)};flex:1;min-height:260px"><div style="font-size:44px;font-weight:900;color:${P.accent};line-height:1">${i + 1}</div><h3 style="margin-top:12px">${esc(t)}</h3><p>${esc(b)}</p></div>`,
+        )
+        .join('')}</div>`,
+  }),
+
+  // 問題迴圈：左邊四步繞一圈，右邊今天三站（截圖框留原生）＋下課帶走
+  loop: (p, { palette: P, n }) => {
+    const [cx, cy, r] = [250, 320, 128];
+    const pos = [[cx, cy - r], [cx + r, cy], [cx, cy + r], [cx - r, cy]];
+    const nodes = p.steps
+      .map(([t, s], i) => {
+        const [x, y] = pos[i];
+        const last = i === p.steps.length - 1;
+        return `<div class="in" style="${d(i, 0.25, 0.12)};position:absolute;left:${x - 66}px;top:${y - 30}px;width:132px;height:60px;border-radius:10px;background:${last ? P.dark : P.accent};color:${last ? '#fff' : P.text};text-align:center;padding-top:6px"><b style="font-size:18px">${esc(t)}</b><div style="font-size:11px;opacity:.8">${esc(s)}</div></div>`;
+      })
+      .join('');
+    const RX = 560;
+    const RW = 916 - RX;
+    const shots = p.shots.map(([t], i) => abs(`left:${RX}px;top:${142 + i * 84}px;width:${RW}px;font-size:13px;font-weight:700`, esc(t), i, 0.4)).join('');
+    const cmpTop = 142 + p.shots.length * 84 + 4;
+    return {
+      body:
+        title(p.heading) +
+        `<svg class="in" style="position:absolute;left:0;top:0;${d(0, 0.1)}" width="960" height="540"><circle cx="${cx}" cy="${cy}" r="${r}" fill="none" stroke="${P.line}" stroke-width="18"/><circle cx="${cx}" cy="${cy}" r="${r}" fill="none" stroke="${P.text}" stroke-width="2" stroke-dasharray="6 8"/></svg>` +
+        abs(`left:44px;top:${cy - r - 22}px;font-size:15px;font-weight:700;color:#fff;background:${P.dark};border-radius:99px;padding:6px 14px`, esc(p.start), 0, 0.15) +
+        nodes +
+        abs(`left:${cx - 80}px;top:${cy - 24}px;width:160px;text-align:center;font-size:15px;font-weight:700;color:${P.muted}`, esc(p.center), 4, 0.25) +
+        abs(`left:${RX}px;top:118px;font-size:13px;font-weight:700;color:${P.muted};letter-spacing:.1em`, esc(p.cardsTitle), 0, 0.35) +
+        shots +
+        abs(`left:${RX}px;top:${cmpTop}px;width:${RW}px;border-left:5px solid ${P.accent};padding-left:12px;font-size:14px;line-height:1.6`, `<b>${esc(p.compareTitle)}</b><br>${p.compare.map(esc).join('<br>')}`, 3, 0.4),
+      natives: p.shots.map(([, cap], i) => n.shotFrame(RX, 142 + i * 84 + 22, RW, 52, cap, P.muted, P.text)),
+    };
+  },
+
+  split: (p, { palette: P }) => ({
+    body:
+      abs(`left:44px;top:150px;font-size:14px;font-weight:700;color:#fff;background:${P.dark};border-radius:99px;padding:4px 12px`, esc(p.kicker)) +
+      abs(`left:44px;top:196px;width:330px;font-size:40px;font-weight:900;line-height:1.3`, esc(p.heading), 1) +
+      `<div style="position:absolute;left:410px;right:44px;top:110px;display:flex;flex-direction:column;gap:14px">${p.items
+        .map((s, i) => `<div class="card in" style="${d(i, 0.3)};border-top:none;border-left:6px solid ${P.accent};display:flex;gap:16px;align-items:center"><b style="font-size:30px;color:${P.text}">${i + 1}</b><p style="color:${P.text};font-size:19px">${esc(s)}</p></div>`)
+        .join('')}</div>`,
+  }),
+
+  // 同一個任務兩欄對照：聊天 AI（你動手）vs Agent（AI 動手）
+  whoDoes: (p, { palette: P }) => {
+    const col = (side, dark, i) =>
+      `<div class="card in${dark ? ' dark' : ''}" style="${d(i, 0.25, 0.2)};flex:1;padding:16px 20px"><div style="display:flex;align-items:center;gap:12px;margin-bottom:10px">${icon(side.icon, 40, dark ? P.accent : P.dark, dark ? P.text : '#fff')}<h3 style="margin:0">${esc(side.name)}</h3><span style="margin-left:auto;font-size:14px;font-weight:700;background:${dark ? P.accent : P.line};color:${P.text};border-radius:99px;padding:3px 10px">${esc(side.count)}</span></div>${side.steps
+        .map(([who, s]) => `<div style="display:flex;gap:10px;margin-top:8px;font-size:16px;line-height:1.5"><b style="flex:0 0 30px;color:${dark ? P.accent : P.text}">${esc(who)}</b><span style="color:${dark ? P.darkSub : P.text}">${esc(s)}</span></div>`)
+        .join('')}</div>`;
+    const [lead, punch] = p.bottom;
+    return {
+      body:
+        title(p.heading, 0) +
+        abs(`left:44px;top:110px;font-size:14px;font-weight:700;color:#fff;background:${P.dark};border-radius:99px;padding:4px 12px`, esc(`任務：${p.task}`), 1) +
+        `<div style="position:absolute;left:44px;right:44px;top:150px;display:flex;gap:20px">${col(p.left, false, 0)}${col(p.right, true, 1)}</div>` +
+        abs(`left:44px;top:478px;font-size:21px;font-weight:700`, `${esc(lead)}${mark(P, punch)}`, 4),
+    };
+  },
+
+  // 左：引言＋標題；右：原生連結＋三張圖示卡
+  iconSplit: (p, { palette: P, n }) => ({
+    body:
+      abs(`left:44px;top:120px;font-size:14px;font-weight:700;color:#fff;background:${P.dark};border-radius:99px;padding:4px 12px`, esc(p.kicker)) +
+      abs(`left:44px;top:166px;width:300px;font-size:38px;font-weight:900;line-height:1.3`, esc(p.heading), 1) +
+      `<div style="position:absolute;left:380px;right:44px;top:250px;display:grid;grid-template-columns:repeat(${p.cards.length},1fr);gap:12px">${p.cards
+        .map(([ic, t, b], i) => `<div class="card in" style="${d(i, 0.3)};height:250px;padding:16px">${icon(ic, 40, P.accent, P.text)}<h3 style="font-size:18px;margin-top:12px">${esc(t)}</h3><p style="font-size:15px;line-height:1.6">${esc(b)}</p></div>`)
+        .join('')}</div>`,
+    natives: [n.link(380, 120, 536, 110, p.link)],
+  }),
+
+  // 填空骨架：深色編輯框裡逐行，範例小字
+  skillTemplate: (p, { palette: P }) => ({
+    body:
+      tagPill(P, p.tag) +
+      taskTitle(p.heading) +
+      `<div class="win in" style="left:44px;top:170px;width:872px;height:220px;${d(1)}"><div class="tb"><i></i><i></i><i></i>OpenCode</div><div class="scr" style="font-size:18px;line-height:1.7">${p.lines
+        .map(([c, s, ex]) => `<div style="color:${c === 'why' ? P.accent : '#e8e6df'};margin-top:8px">${esc(s)}</div>${ex ? `<div style="font-size:14px;color:${P.darkSub}">${esc(ex)}</div>` : ''}`)
+        .join('')}</div></div>` +
+      (p.note ? abs(`left:44px;right:44px;top:416px;font-size:20px;font-weight:700;border-left:6px solid ${P.accent};padding-left:14px`, esc(p.note), 3) : ''),
+  }),
+
+  break: (p, { palette: P }) => ({
+    body: centerCol(
+      lineIn(0, `font-size:64px;font-weight:900;color:#fff`, esc(p.heading)) +
+        lineIn(1, `font-size:22px;font-weight:700;color:${P.text};background:${P.accent};border-radius:99px;padding:6px 22px`, esc(`${p.back} 回來`)),
+    ),
+  }),
+
+  qa: (p, { palette: P }) => ({
+    body: centerCol(lineIn(0, `font-size:80px;font-weight:900;color:#fff`, esc(p.heading)) + lineIn(1, `font-size:24px;color:${P.darkSub}`, esc(p.sub))),
+  }),
+
+  closing: (p, { palette: P }) => ({
+    body: centerCol(
+      lineIn(0, `font-size:18px;font-weight:700;color:${P.muted};letter-spacing:.1em`, esc(p.kicker)) +
+        lineIn(1, `font-size:40px;font-weight:900`, esc(p.before)) +
+        lineIn(2, `font-size:58px;font-weight:900`, `${esc(p.lead)}${mark(P, p.punch)}`) +
+        lineIn(3, 'display:flex;gap:14px', p.pills.map(([c, s]) => `<span style="background:${fill(P, c)};color:${onFill(P, c)};font-size:16px;font-weight:700;border-radius:99px;padding:6px 18px">${esc(s)}</span>`).join('')),
+    ),
+  }),
+
+  // ── 疊原生元件的版型 ──
+  goalShot: (p, { palette: P, n }) => ({
+    body: title(p.heading) + abs(`left:44px;top:300px;width:420px;font-size:20px;line-height:1.6;color:${P.muted};border-left:6px solid ${P.accent};padding-left:14px`, esc(p.note), 2),
+    natives: [n.link(44, 160, 420, 110, p.link), n.shotFrame(490, 140, 426, 370, p.shot, P.muted, P.text)],
+  }),
+
+  iconLinks: (p, { palette: P, n }) => {
+    const [ic, t, b] = p.dark;
+    const rowH = 96;
+    const darkY = 186 + p.links.length * (rowH + 12) + 6;
+    const natives = p.links.flatMap((row, r) => {
+      const cw = (872 - 16 * (row.length - 1)) / row.length;
+      return row.map(([i2, url, label, desc], i) => n.link(44 + i * (cw + 16), 186 + r * (rowH + 12), cw, rowH, [url, i2 ? `${i2} ${label}` : label, desc], 'download'));
+    });
+    return {
+      body:
+        tagPill(P, p.tag) +
+        taskTitle(p.heading) +
+        `<div class="card dark in" style="position:absolute;left:44px;right:44px;top:${darkY}px;${d(2)};display:flex;gap:16px;align-items:center;padding:18px 22px">${icon(ic, 44, P.accent, P.text)}<div><h3 style="margin:0 0 4px;font-size:21px">${esc(t)}</h3><p style="font-size:16px">${esc(b)}</p></div></div>`,
+      natives,
+    };
+  },
+
+  copyFull: copyPage,
+  copyPrompt: copyPage,
+
+  taskDownload: (p, { palette: P, n }) => ({
+    body: tagPill(P, p.tag) + taskTitle(p.heading) + numCards(P, p.items, 290, 200),
+    natives: [n.fileDownload(44, 160, 872, 110, p.file)],
+  }),
+
+  siteMock: (p, { palette: P, n }) => {
+    const w = 340;
+    const h = 330;
+    return {
+      body:
+        `<h1 class="t in" style="font-size:28px">${esc(p.heading)}</h1>` +
+        p.sites.map((s, i) => abs(`left:${i ? 576 : 44}px;top:150px;width:${w}px;text-align:center;font-size:20px;font-weight:900`, esc(s.name), i, 0.2)).join('') +
+        abs(`left:384px;top:330px;width:192px;text-align:center;font-size:36px;font-weight:900;color:${P.muted}`, 'vs', 2, 0.3),
+      natives: p.sites.map((s, i) => n.svg(i ? 576 : 44, 190, w, h, phoneSvg(P, s, w, h))),
+    };
+  },
+
+  homework: (p, { n }) => ({ body: title(p.heading), natives: [n.homework(p.hwId, 70, 130, 820, 400, p.title, p.description)] }),
+  poll: (p, { n }) => ({ body: '', natives: [n.poll(p.question, p.options)] }),
+  multiChoice: (p, { n }) => ({ body: '', natives: [n.poll(p.question, p.options, true)] }),
+  quiz: (p, { n }) => ({ body: '', natives: [n.quiz(p.question, p.options, p.correct)] }),
+  wordcloud: (p, { n }) => ({ body: '', natives: [n.wordcloud(p.question, p.maxWords)] }),
+  showcase: (p, { n }) => ({ body: '', natives: [n.showcase(p.title, p.linkHomework)] }),
+  webProject: (p, { n }) => ({ body: '', natives: [n.webProject(p.question, p.methods)] }),
+});

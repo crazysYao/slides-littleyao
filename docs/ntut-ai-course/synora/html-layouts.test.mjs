@@ -46,10 +46,12 @@ test('copyMock：複製卡在畫面內且不壓到示意視窗', () => {
 
 // 頁面裡所有要給人看的字串（排除設定欄位、顏色代號、交給原生元件的欄位）
 const SKIP = new Set(['id', 'layout', 'section', 'title', 'notes']);
+// 說話者代號、圖示名稱是設定，不是要顯示的字
+const CONFIG = new Set(['ai', 'me', 'chat', 'bot', 'alert', 'eye', 'tag', 'pen']);
 const visibleStrings = (p, skip = []) => {
   const out = [];
   const walk = (v) => {
-    if (typeof v === 'string') { if (!(v in palette)) out.push(v); }
+    if (typeof v === 'string') { if (!(v in palette) && !CONFIG.has(v)) out.push(v); }
     else if (Array.isArray(v)) v.forEach(walk);
     else if (v && typeof v === 'object') Object.values(v).forEach(walk);
   };
@@ -72,4 +74,29 @@ test('linkTask：只有一個原生 link，網址與內容檔相同', () => {
   const [p, r] = run('s1-aistudio');
   assert.deepEqual(r.natives.map((e) => e.type), ['link']);
   assert.equal(r.natives[0].linkUrl, p.link[0]);
+});
+
+const STATIC = ['divider', 'story', 'reveal', 'bigPrompt', 'three', 'compare', 'grid', 'steps', 'loop', 'split', 'whoDoes', 'iconSplit', 'skillTemplate', 'break', 'qa', 'closing'];
+const NATIVE_ONLY = { goalShot: ['link'], iconLinks: ['links'], iconSplit: ['link'], taskDownload: ['file'], copyFull: ['prompt', 'cardTitle'], copyPrompt: ['prompt', 'cardTitle'], siteMock: ['sites'], loop: ['shots'] };
+
+test('靜態版型：所有頁文字齊全、不循環', () => {
+  for (const p of pages.filter((x) => STATIC.includes(x.layout))) {
+    const r = layouts[p.layout](p, { palette, n: makeNative(p.id, palette.accent) });
+    assertAllShown(p, r, NATIVE_ONLY[p.layout]);
+    assert.ok(!r.loop, p.id);
+  }
+});
+
+test('loop：三站截圖框是原生 svg，標題在 HTML', () => {
+  const [p, r] = run('s1-roadmap');
+  assert.equal(r.natives.filter((e) => e.type === 'svg').length, 3);
+  for (const [t] of p.shots) assert.ok(r.body.includes(esc(t)));
+});
+
+test('原生版型：每個要給人看的字在 HTML 或原生元件裡', () => {
+  for (const p of pages.filter((x) => ['goalShot', 'iconLinks', 'copyFull', 'copyPrompt', 'taskDownload', 'siteMock', 'homework'].includes(x.layout))) {
+    const r = layouts[p.layout](p, { palette, n: makeNative(p.id, palette.accent) });
+    const all = r.body + JSON.stringify(r.natives);
+    for (const s of visibleStrings(p, ['cardTitle', 'hwId'])) assert.ok(r.body.includes(esc(s)) || all.includes(JSON.stringify(s).slice(1, -1)) || s.split('\n').every((l) => all.includes(l)), `${p.id} 少了「${s}」`);
+  }
 });

@@ -48,3 +48,57 @@ test('版型不存在時丟錯並帶出頁 id', () => {
   const bad = { ...fakeContent, pages: [{ id: 's-x', layout: 'nope', title: 't', notes: 'n' }] };
   assert.throws(() => buildDeck(bad, { layouts }), /s-x.*nope/);
 });
+
+import { execFileSync } from 'node:child_process';
+import { readFileSync, mkdtempSync } from 'node:fs';
+import { tmpdir } from 'node:os';
+import { join, dirname } from 'node:path';
+import { fileURLToPath } from 'node:url';
+import * as content from './job-site-content.mjs';
+
+const here = dirname(fileURLToPath(import.meta.url));
+const INTERACTIVE = new Set(['poll', 'quiz', 'link', 'copycard', 'fileDownload', 'wordcloud', 'webProject', 'homework', 'showcase']);
+const FULLSIZE = new Set(['poll', 'quiz', 'wordcloud', 'webProject', 'showcase']);
+const oldDeck = () => {
+  const out = join(mkdtempSync(join(tmpdir(), 'deck-')), 'old.json');
+  execFileSync(process.execPath, [join(here, 'build-deck.mjs'), out, join(here, 'job-site-content.mjs')]);
+  return JSON.parse(readFileSync(out, 'utf8'));
+};
+const strip = (e, keepBox) => {
+  const { id, x, y, width, height, ...rest } = e;
+  if (e.type === 'copycard') delete rest.title;
+  return keepBox ? { ...rest, x, y, width, height } : rest;
+};
+
+test('全份：51 頁，原生互動元件與舊產生器一致', () => {
+  const now = buildDeck(content).slides;
+  const old = oldDeck().slides;
+  assert.equal(now.length, 51);
+  assert.deepEqual(now.map((s) => [s.id, s.notes]), old.map((s) => [s.id, s.notes]));
+  now.forEach((s, i) => {
+    const pick2 = (els) => els.filter((e) => INTERACTIVE.has(e.type)).map((e) => strip(e, FULLSIZE.has(e.type)));
+    assert.deepEqual(pick2(s.elements), pick2(old[i].elements), s.id);
+    assert.equal(s.elements[0].type, 'html', s.id);
+    for (const e of s.elements) assert.ok(e.x >= 0 && e.y >= 0 && e.x + e.width <= 960 && e.y + e.height <= 540, `${s.id} ${e.id} 出界`);
+  });
+});
+
+test('全份：只有 3 頁循環動畫', () => {
+  const loops = buildDeck(content).slides.filter((s) => /infinite/.test(s.elements[0].html)).map((s) => s.id);
+  assert.deepEqual(loops, ['s1-install-win', 's1-hello', 's1-vercel-login']);
+});
+
+test('全份：截圖佔位 svg 數量', () => {
+  const svgs = Object.fromEntries(buildDeck(content).slides.map((s) => [s.id, s.elements.filter((e) => e.type === 'svg').length]));
+  assert.equal(svgs['s1-goal'], 1);
+  assert.equal(svgs['s1-roadmap'], 3);
+  assert.equal(svgs['s2-typhoon'], 2);
+});
+
+test('全份：copycard 標題', () => {
+  const titles = Object.fromEntries(buildDeck(content).slides.flatMap((s) => s.elements.filter((e) => e.type === 'copycard').map((e) => [s.id, e.title])));
+  assert.deepEqual(titles, {
+    's1-interview': '讓 AI 訪問你', 's1-install-win': '安裝 · Windows', 's1-hello': '打招呼', 's1-vercel-login': '登入',
+    's2-prompt-1': '照貼就好', 's2-prompt-2': '複製後，先填好三個空格再送出', 's3-deploy': '上線',
+  });
+});
