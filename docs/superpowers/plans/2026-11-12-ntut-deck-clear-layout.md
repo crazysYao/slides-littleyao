@@ -2,6 +2,8 @@
 
 > **For agentic workers:** REQUIRED SUB-SKILL: Use superpowers:subagent-driven-development (recommended) or superpowers:executing-plans to implement this plan task-by-task. Steps use checkbox (`- [ ]`) syntax for tracking.
 
+> 2026-11-12 更新：講師刪除第 6 頁 `s1-problem-poll`，簡報現為 **50 頁**。本文的 51 頁與頁碼為改版當時的紀錄；循環示意頁現在是第 14、16、20 頁，檢查指令改用 `--expect-pages=50`。
+
 **Goal:** 為 `job-site-content.mjs` 另寫一支產生器，輸出「每頁一塊滿版 HTML 底圖＋原生互動元件疊上」的 51 頁 Synora deck，套用典範頁的清楚版面與動畫。
 
 **Architecture:** `html-kit.mjs` 放共用 CSS、跳脫與膠囊拆解；`native.mjs` 放原生互動元件的建構函式（從 `build-deck.mjs` 複製，不 import，因為它載入即執行）；`html-layouts.mjs` 每個版型回傳 `{ body, natives }`；`build-deck-html.mjs` 組裝成 deck JSON。共用的 `build-deck.mjs` 不動。
