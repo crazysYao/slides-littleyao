@@ -338,7 +338,7 @@ npx vercel@latest deploy site --prod --yes --project 專案名稱 --create-if-mi
 - [ ] 乾淨 Mac（沒有 brew、沒有 Node）：走官方安裝檔 → OpenCode → 打招呼卡
 - [ ] 在 OpenCode 裡跑 `npx vercel@latest login`：網址會不會顯示、會不會自動開瀏覽器、授權完會不會回到 OpenCode
 - [ ] 用全新 Email 註冊 Vercel Hobby：記錄要不要手機、信用卡、GitHub，總共花多久
-- [x] 確認 `deploy site --prod --yes --project 名稱 --create-if-missing` 能建立新專案、產生的網址格式、名稱被用走時的網址（2026-11-12 實測通過，結果見教案「實測」段）
+- [x] 確認 `deploy site --prod --yes --project 名稱 --create-if-missing` 能建立新專案、產生的網址格式、名稱被用走時的網址（2026-11-12 用講師已登入的帳號實測通過，結果見教案「實測」段；全新帳號註冊與 login 另列兩項，尚未測）
 - [ ] 用沒登入的手機分別打開正式網址與帶亂碼的部署網址，確認哪個要登入（Deployment Protection 預設值）（2026-11-12 已用無登入請求與無痕瀏覽器環境實測：正式網址免登入，部署網址要登入；實機手機還沒測）
 - [ ] 用 OpenCode 內建免費模型跑「訪問 → v1 → 上線」，決定主廚 Key 段落留不留
 - [ ] 用 Flash Lite 跑一次網站 v1：計次數、計時間、看會不會截斷；連續跑到額度用完，看會發生什麼、換 NVIDIA 要多久

@@ -57,6 +57,7 @@
 - [ ] OpenCode 裡跑 `npx vercel@latest login`：網址是否顯示、是否自動開瀏覽器、授權後是否回到 OpenCode
 - [ ] 全新 Email 註冊 Vercel Hobby：是否要手機、信用卡、GitHub，總耗時
 - [x] 確認 `deploy site --prod --yes --project 名稱 --create-if-missing`（在 my-site 跑）能建立新專案、網址格式、名稱被用走時的網址，結果回寫 Prompt ④
+  - 範圍：只驗證這行部署指令本身，用講師已登入的帳號跑；全新帳號註冊與 OpenCode 內 `vercel login` 是上面另外兩項，還沒測，全新帳號從註冊到上線的整段流程要等那兩項做完才算驗證
   - 2026-11-12 實測（Vercel CLI 65.14.0，測試 my-site 內放 `site/index.html` 與假的 `我的基本資料.md`）：指令一次成功，輸出有 `✓ Created`、`Production`（帶亂碼的部署網址）、`▲ Aliased`（正式網址）三行
   - 正式網址格式：`https://<專案名稱>.vercel.app`
   - 名稱被別人用走（測 `my-site`）：一樣建立成功，正式網址變成 `https://my-site-xi-ochre.vercel.app` 這種多一段的形式，仍以 Aliased 那行為準
