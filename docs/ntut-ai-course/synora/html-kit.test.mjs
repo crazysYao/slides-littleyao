@@ -47,3 +47,11 @@ test('pageHtml：loop 頁才帶 infinite', () => {
 test('pageHtml：loop 頁截圖時動作格顯示亮起狀態', () => {
   assert.match(pageHtml({ brand: 'B', section: 'S', palette: {}, body: '', loop: true }), /\.cap \.slot\{background:/);
 });
+
+test('pageHtml：loop 每行的關鍵影格從 0 開始、輪末歸 0', () => {
+  const h = pageHtml({ brand: 'B', section: 'S', palette: {}, body: '', loop: true });
+  for (let i = 1; i <= 5; i++) {
+    assert.match(h, new RegExp(`\\.ln\\.r${i}\\{animation:r${i} 9s`));
+    assert.match(h, new RegExp(`@keyframes r${i}\\{0%,[\\d.]+%\\{opacity:0\\}[\\d.]+%,92%\\{opacity:1\\}96%,100%\\{opacity:0\\}\\}`));
+  }
+});

@@ -8,10 +8,11 @@ const seg = ([t, c]) => (c === 'y' ? `<span class="slot">${esc(t)}</span>` : c ?
 const mockRow = (line, i, last) => {
   const segs = typeof line === 'string' ? [[line]] : line;
   if (last && segs.length === 1 && segs[0][1] === 'm') {
-    return `<span class="done ln" style="animation-delay:${(2.8 + i * 0.7).toFixed(1)}s">${esc(segs[0][0])}</span>`;
+    return `<span class="done ln r${i}">${esc(segs[0][0])}</span>`;
   }
   const html = segs.map(seg).join('');
-  return i === 0 ? `<div>${html}</div>` : `<div class="ln" style="animation-delay:${(2.8 + (i - 1) * 0.7).toFixed(1)}s">${html}</div>`;
+  // 每行用自己的 9 秒時間軸（r1、r2…），每一輪都重新逐行出現；第一行一開始就在
+  return i === 0 ? `<div>${html}</div>` : `<div class="ln r${i}">${html}</div>`;
 };
 
 const COPY = { x: 44, y: 160, w: 330, h: 350 };

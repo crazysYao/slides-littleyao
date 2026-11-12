@@ -100,3 +100,11 @@ test('原生版型：每個要給人看的字在 HTML 或原生元件裡', () =>
     for (const s of visibleStrings(p, ['cardTitle', 'hwId'])) assert.ok(r.body.includes(esc(s)) || all.includes(JSON.stringify(s).slice(1, -1)) || s.split('\n').every((l) => all.includes(l)), `${p.id} 少了「${s}」`);
   }
 });
+
+test('copyMock：每輪都重新逐行出現（不靠 animation-delay，每行有自己的時間軸）', () => {
+  for (const id of ['s1-install-win', 's1-hello', 's1-vercel-login']) {
+    const [p, r] = run(id);
+    assert.doesNotMatch(r.body, /animation-delay/, id);
+    for (let i = 1; i < p.mock.length; i++) assert.match(r.body, new RegExp(`class="[^"]*\\bln r${i}\\b`), `${id} 第 ${i} 行`);
+  }
+});

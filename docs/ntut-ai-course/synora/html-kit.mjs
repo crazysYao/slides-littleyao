@@ -48,12 +48,12 @@ h1.t{position:absolute;left:44px;right:44px;top:58px;font-size:33px;font-weight:
 // 只有操作示意頁用：貼上格亮起 → 訊息逐行出現 → 完成提示，9 秒一輪
 const loopCss = (P) => `
 .slot{display:inline-block;vertical-align:middle;margin-left:6px;height:28px;border:2px dashed ${P.accent};border-radius:5px;padding:0 9px;font:700 14px/24px 'PingFang TC','Noto Sans TC',sans-serif;color:${P.accent};animation:slot 9s cubic-bezier(.34,1.56,.64,1) infinite}
-.ln{opacity:0;animation:show 9s steps(1) infinite}
+.ln{opacity:0}
+${[1, 2, 3, 4, 5].map((i) => { const a = ((2.8 + 0.7 * (i - 1)) / 9) * 100; return `.ln.r${i}{animation:r${i} 9s linear infinite}\n@keyframes r${i}{0%,${a.toFixed(1)}%{opacity:0}${(a + 1).toFixed(1)}%,92%{opacity:1}96%,100%{opacity:0}}`; }).join('\n')}
 .arw{animation:nudge 1.2s cubic-bezier(.34,1.56,.64,1) infinite}
 @keyframes slot{0%,20%{background:transparent;transform:scale(1)}24%{transform:scale(1.12);background:${P.accent};border-style:solid;color:${P.text}}28%,92%{transform:none;background:${P.accent};border-style:solid;color:${P.text}}100%{background:transparent;border-style:dashed}}
 .cap .slot{background:${P.accent};border-style:solid;color:${P.text}}
 @media (prefers-reduced-motion:reduce){.slot{background:${P.accent};border-style:solid;color:${P.text}}}
-@keyframes show{0%{opacity:0}1%,92%{opacity:1}100%{opacity:0}}
 @keyframes nudge{0%,100%{transform:none}50%{transform:translateX(7px)}}
 `;
 
