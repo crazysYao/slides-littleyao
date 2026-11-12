@@ -2,9 +2,9 @@
 
 > **For agentic workers:** REQUIRED SUB-SKILL: Use superpowers:subagent-driven-development (recommended) or superpowers:executing-plans to implement this plan task-by-task. Steps use checkbox (`- [ ]`) syntax for tracking.
 
-> 2026-11-12 更新：講師刪除第 6 頁 `s1-problem-poll`，簡報現為 **50 頁**。本文的 51 頁與頁碼為改版當時的紀錄；循環示意頁現在是第 14、16、20 頁，檢查指令改用 `--expect-pages=50`。
+> 2026-11-12 更新：講師刪除第 6 頁 `s1-problem-poll`，簡報現為 **50 頁**。本文頁數、頁碼與驗收指令已全部改為現況（改版當時為 51 頁，循環示意頁原為第 15、17、21 頁）。
 
-**Goal:** 為 `job-site-content.mjs` 另寫一支產生器，輸出「每頁一塊滿版 HTML 底圖＋原生互動元件疊上」的 51 頁 Synora deck，套用典範頁的清楚版面與動畫。
+**Goal:** 為 `job-site-content.mjs` 另寫一支產生器，輸出「每頁一塊滿版 HTML 底圖＋原生互動元件疊上」的 50 頁 Synora deck，套用典範頁的清楚版面與動畫。
 
 **Architecture:** `html-kit.mjs` 放共用 CSS、跳脫與膠囊拆解；`native.mjs` 放原生互動元件的建構函式（從 `build-deck.mjs` 複製，不 import，因為它載入即執行）；`html-layouts.mjs` 每個版型回傳 `{ body, natives }`；`build-deck-html.mjs` 組裝成 deck JSON。共用的 `build-deck.mjs` 不動。
 
@@ -24,7 +24,7 @@ SCRATCH=/private/tmp/claude-501/-Users-yao-orca-workspaces-slides-littleyao-----
 - 畫布 960×540；每頁第一個元件是 `type: 'html'`、`x:0,y:0,width:960,height:540`，id 為 `${slideId}-bg`
 - 配色只用 `job-site-content.mjs` 匯出的 `palette`；黃 `#f5b400` 只當填色、上面放黑字
 - 文字、講稿、題目、頁數、頁序不變；唯一文字變動是膠囊拆解與複製卡標題（見 Task 1、Task 3）
-- 只有第 15、17、21 頁（`s1-install-win`、`s1-hello`、`s1-vercel-login`）可以有 `infinite` 動畫；其他頁進場動畫總長 ≤ 1 秒
+- 只有第 14、16、20 頁（`s1-install-win`、`s1-hello`、`s1-vercel-login`）可以有 `infinite` 動畫；其他頁進場動畫總長 ≤ 1 秒
 - `prefers-reduced-motion: reduce` 與 `window.__SYNORA_CAPTURE__ === true` 時顯示最終狀態
 - HTML 只用系統字體、不載入任何外部資源（無 `http` 的 `<link>`、`<script src>`、`url(http`）
 - 截圖佔位框（`s1-goal`、`s1-roadmap` 三站、`s2-typhoon` 兩個假網站）維持原生 `svg` 元件
@@ -146,7 +146,7 @@ test('版型不存在時丟錯並帶出頁 id', () => { assert.throws(() => buil
 - [ ] **Step 4: 跑測試確認通過**：Task 1、Task 2 測試全 PASS
 - [ ] **Step 5: Commit** `feat: 求職網站簡報 HTML 產生器骨架`
 
-### Task 3: 操作頁 copyMock（第 15、17、21 頁）
+### Task 3: 操作頁 copyMock（第 14、16、20 頁）
 
 **Files:**
 - Modify: `docs/ntut-ai-course/synora/html-layouts.mjs`
@@ -272,14 +272,14 @@ test('全份：copycard 標題', () => {
 
 ```bash
 $NODE build-deck-html.mjs $SCRATCH/deck-html.json job-site-content.mjs
-$NODE check-deck.mjs $SCRATCH/deck-html.json --sections --expect-pages=51
+$NODE check-deck.mjs $SCRATCH/deck-html.json --sections --expect-pages=50
 $NODE $SY doctor $SCRATCH/deck-html.json --check-assets --json
 $NODE $SY media-inspect --file=$SCRATCH/deck-html.json --json
 $NODE $SY layout $SCRATCH/deck-html.json $SCRATCH/full-layout --view=both --json
 $NODE $SY render $SCRATCH/deck-html.json $SCRATCH/full-render --view=both --json
 $NODE --test *.test.mjs
 ```
-Expected: `OK：51 頁`、doctor ok、media-inspect `count: 0`、layout 無問題、測試全過
+Expected: `OK：50 頁`、doctor ok、media-inspect `count: 0`、layout 無問題、測試全過
 
 - [ ] **Step 2: 逐張看 102 張截圖**（講師端＋學員端），修到沒有裁字、空白、遮擋
 - [ ] **Step 3: 更新教案「檔案」段，commit** `docs: 教案改用 HTML 產生器`
@@ -289,5 +289,5 @@ Expected: `OK：51 頁`、doctor ok、media-inspect `count: 0`、layout 無問�
 ### Task 9: 推 Synora 與實機驗證
 
 - [ ] **Step 1:** `SY inspect aef695ce-dd63-4375-a02a-d134f3100159`：`saveSeq` 仍為 2 才繼續；不是 2 → `pull` 比對差異，停下問講師
-- [ ] **Step 2:** `pull` → 把 `slides`、`sections` 換成新 deck（保留遠端 `_saveSeq`）→ `push --dry-run`（Expected：51 頁、`expectedSaveSeq` 2）→ `push` → `inspect` 讀回 51 頁
-- [ ] **Step 3:** 講師端與學員端實際打開，確認切到第 15 頁動畫會播、其他頁進場會播、互動元件可操作、換頁不受影響。無法開學員端時，在報告標成未驗證
+- [ ] **Step 2:** `pull` → 把 `slides`、`sections` 換成新 deck（保留遠端 `_saveSeq`）→ `push --dry-run`（Expected：50 頁、`expectedSaveSeq` 2）→ `push` → `inspect` 讀回 50 頁
+- [ ] **Step 3:** 講師端與學員端實際打開，確認切到第 14 頁動畫會播、其他頁進場會播、互動元件可操作、換頁不受影響。無法開學員端時，在報告標成未驗證
