@@ -453,4 +453,7 @@ node $SYN/check-deck.mjs $OUT/deck-job.json --sections --expect-pages=58
 - 兩張照片的 PNG 原檔與 JPEG 都在 repo
 
 ## 執行紀錄
-（Task 1 的探針結果寫在這裡）
+### Task 1 探針（2026-11-12，Synora runtime 0.9.3 本機檢視器，簡報畫面）
+- `CLICK=yes`：HTML 元件在 `sandbox="allow-scripts allow-forms"` 的 iframe 裡執行；Playwright 實際點按鈕，數字從 0 變成 1
+- `DATA_URI=ok`：內嵌 88 KB 的 JPEG（寬 1200），`doctor` 回 `ok: true`，圖片 `naturalWidth` 是 1200
+- 只在本機檢視器驗過；正式站的簡報模式要等推送後由講師點一次確認
