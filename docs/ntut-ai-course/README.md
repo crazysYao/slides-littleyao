@@ -5,9 +5,10 @@
 |---|---|---|---|
 | A | 問對問題的人：AI 時代最值錢的能力 | 需求定案稿 | [topic-a-ask-better-questions.md](topic-a-ask-better-questions.md) |
 | B | 用工程師的腦袋學任何東西 | 需求定案稿 | [topic-b-engineer-mindset-learning.md](topic-b-engineer-mindset-learning.md) |
-| F | 讓 AI 一開口就懂你：個人知識庫 × AI Agent × 個人網站(Obsidian＋Claude Code 示範，學員可接自己的 Agent) | 候選，教案定稿，Synora deck 已建(2026-10-22) | [topic-f-agent-knowledge-resume.md](topic-f-agent-knowledge-resume.md) |
+| F | 讓 AI 一開口就懂你：個人知識庫 × AI Agent × 個人網站(Obsidian＋Claude Code 示範，學員可接自己的 Agent) | 封存(2026-11-11)，由新課綱取代；Synora 專案改名待講師指示 | [topic-f-agent-knowledge-resume.md](topic-f-agent-knowledge-resume.md) |
 | C–E | 見下方 | 已快速評估，未採用 | — |
-| **採用** | 為什麼、為什麼不、有沒有更好的：AI 時代的提問力 | 主題＋時間表已定稿 | [core-viewpoint.md](core-viewpoint.md) |
+| — | 為什麼、為什麼不、有沒有更好的：AI 時代的提問力 | 封存(2026-11-11)，由新課綱取代；Synora 專案改名待講師指示 | [core-viewpoint.md](core-viewpoint.md) |
+| **採用** | 讓 AI 一開口就懂你(求職網站上線版)：F 版骨架 × Eric 新竹版互動，全班上線 Vercel | 課綱與本機簡報已完成，Synora 專案未建 | [job-site-syllabus.md](job-site-syllabus.md) |
 
 ## 跨主題已定案
 - 時間骨架：50＋休10＋55＋休10＋55，含 QA 10 分鐘
@@ -40,7 +41,11 @@
 
 A–E 的案例與素材保留，觀點定下來後再挑合適的當佐證。
 
-## 簡報現況(2026-10-19)
+## 簡報現況(2026-11-11，新課綱)
+- 內容檔 [synora/job-site-content.mjs](synora/job-site-content.mjs)，版面共用 `build-deck.mjs`；產生與檢查指令見 [job-site-syllabus.md](job-site-syllabus.md)
+- 只在本機產生與預覽，**尚未建立 Synora 專案**
+
+## 簡報現況(2026-10-19，已封存的提問力)
 - 簡報改在 **Synora** 製作，不再用 open-slide 的 `slides/ntut-three-questions/`
 - 舊版 open-slide 簡報＋自製互動系統(`live/`)保存在分支 `backup/ntut-live-f4b9be9`
   - 內容來源：`slides/ntut-three-questions/content.tsx`(頁面)與 `teacher-slides/ntut-three-questions/index.tsx`(Demo 頁、講稿、搶答正解)

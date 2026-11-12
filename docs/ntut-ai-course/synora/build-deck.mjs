@@ -31,7 +31,7 @@ const hue = (color) => C.hue?.[color] ?? color;
 const LH = 1.5;
 
 // 中英混排的粗估寬度：全形字 1em，半形 0.55em
-const textWidth = (s, size) => [...s].reduce((w, ch) => w + (ch.charCodeAt(0) > 0x2e80 ? size : size * 0.55), 0);
+const textWidth = (s, size) => [...s].reduce((w, ch) => w + (ch.charCodeAt(0) > 0x2e80 || ch === '…' ? size : size * 0.55), 0);
 const lineCount = (s, size, width) => s.split('\n').reduce((n, l) => n + Math.max(1, Math.ceil(textWidth(l, size) / width)), 0);
 
 let slideId;
@@ -81,7 +81,7 @@ const pill = (x, y, content, color) => {
 };
 
 // 聊天氣泡：回傳 [元素, 下一個 y]
-const bubble = (y, from, content, tint) => {
+const bubble = (y, from, content, tint, label = 'AI') => {
   const size = 19;
   const maxInner = 560;
   const inner = Math.min(maxInner, Math.ceil(textWidth(content, size)) + 4);
@@ -94,15 +94,15 @@ const bubble = (y, from, content, tint) => {
     text(x + 18, y + 13, inner, content, { size, color: me ? ink(tint ?? C.accent) : C.text }),
   ];
   if (!me) {
-    els.unshift(box(PAD, y + h - 32, 32, 32, C.text, 16), text(PAD, y + h - 26, 32, 'AI', { size: 12, color: '#fff', bold: true, align: 'center', height: 20 }));
+    els.unshift(box(PAD, y + h - 32, 32, 32, C.text, 16), text(PAD, y + h - 26, 32, label, { size: 12, color: '#fff', bold: true, align: 'center', height: 20 }));
   }
   return [els, y + h];
 };
 
 const bubbles = (y, items, gap = 14) => {
   const out = [];
-  for (const [from, content, tint] of items) {
-    const [els, next] = bubble(y, from, content, tint);
+  for (const [from, content, tint, label] of items) {
+    const [els, next] = bubble(y, from, content, tint, label);
     out.push(...els);
     y = next + gap;
   }
@@ -185,8 +185,39 @@ const fileDownload = (y, [fileUrl, fileName, fileSize, fileType]) =>
 
 const wordcloud = (question, maxWords) => el('wordcloud', { x: PAD, y: 54, width: CW, height: 476, question, maxWords });
 
-const webProject = (question) =>
-  el('webProject', { x: PAD, y: 54, width: CW, height: 476, question, enabledMethods: ['upload', 'url'], showVoting: true, peerVoteCount: 3 });
+const webProject = (question, enabledMethods = ['upload', 'url']) =>
+  el('webProject', { x: PAD, y: 54, width: CW, height: 476, question, enabledMethods, showVoting: true, peerVoteCount: 3 });
+
+// showcase 以 linkedHomeworkId 綁定 homework，所以 homework 的 id 由內容檔指定
+const homework = (id, y, title, description) => ({
+  ...el('homework', { x: PAD, y, width: CW, height: 530 - y, title, modeLabel: '全功能', description, submissionMode: '' }),
+  id,
+});
+
+const showcase = (title, linkedHomeworkId) =>
+  el('showcase', { x: PAD, y: 54, width: CW, height: 476, title, points: 5, focusMode: false, showVoting: true, peerVoteCount: 3, linkedHomeworkId });
+
+// 假網站的手機畫面：hero 色塊＋條列＋按鈕
+const phone = (x, y, w, site) => {
+  const h = 540 - 20 - y;
+  const heroH = 120;
+  const out = [
+    text(x, y - 32, w, site.name, { size: 20, bold: true, align: 'center', height: 30 }),
+    box(x, y, w, h, C.dark, 22),
+    box(x + 8, y + 8, w - 16, h - 16, C.panel, 16),
+    box(x + 8, y + 8, w - 16, heroH, site.heroColor ?? C.line, 16),
+    text(x + 24, y + 22, w - 48, site.hero, { size: site.heroSize ?? 20, color: site.heroInk ?? C.text, bold: true }),
+  ];
+  let ly = y + 8 + heroH + 14;
+  for (const line of site.lines) {
+    out.push(text(x + 24, ly, w - 48, line, { size: 15, color: C.muted }));
+    ly += textH(line, 15, w - 48) + 8;
+  }
+  if (site.cta) {
+    out.push(box(x + 24, y + h - 70, w - 48, 46, C.accent, 23), text(x + 24, y + h - 58, w - 48, site.cta, { size: 18, color: ink(C.accent), bold: true, align: 'center', height: 26 }));
+  }
+  return out;
+};
 
 const leaderboard = () =>
   el('leaderboard', { x: PAD, y: 54, width: CW, height: 476, lbMode: 'personal', lbTopN: 10, lbShowGroups: true, interactiveType: '' });
@@ -220,9 +251,62 @@ const threePills = (y, items) => {
   });
 };
 
-const tinted = (items) => items.map(([from, content, tint]) => [from, content, tint && C[tint]]);
+const tinted = (items) => items.map(([from, content, tint, ...rest]) => [from, content, tint && C[tint], ...rest]);
 
 const colored = (items) => items.map(([color, ...rest]) => [C[color], ...rest]);
+
+
+// 線條圖示（Eric 新竹版風格）：24×24 路徑，畫在圓底上；不在表內的字串照舊當文字畫
+const ICONS = {
+  chat: '<path d="M4 5h16v11H9l-5 4z"/><path d="M8 9h8M8 12h5"/>',
+  bot: '<path d="M12 8V4H8"/><rect x="4" y="8" width="16" height="12" rx="2"/><path d="M2 14h2M20 14h2M15 13v2M9 13v2"/>',
+  alert: '<path d="M12 3l10 18H2z"/><path d="M12 10v4M12 17.5v.01"/>',
+  eye: '<path d="M2 12s4-7 10-7 10 7 10 7-4 7-10 7S2 12 2 12z"/><circle cx="12" cy="12" r="3"/>',
+  tag: '<path d="M3 3h8l10 10-8 8L3 11z"/><circle cx="7.5" cy="7.5" r="1.5"/>',
+  pen: '<path d="M4 20h4L20 8l-4-4L4 16z"/><path d="M14 6l4 4"/>',
+};
+const svgEl = (x, y, width, height, body) =>
+  el('svg', { x, y, width, height, src: '', label: '', svgContent: `<svg xmlns="http://www.w3.org/2000/svg" width="${width}" height="${height}" viewBox="0 0 ${width} ${height}">${body}</svg>` });
+const lineIcon = (x, y, size, name, fill = C.accent) => [
+  box(x, y, size, size, fill, size / 2),
+  el('svg', {
+    x, y, width: size, height: size, src: '', label: '',
+    svgContent: `<svg xmlns="http://www.w3.org/2000/svg" width="${size}" height="${size}" viewBox="-7 -7 38 38" fill="none" stroke="${ink(fill)}" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">${ICONS[name]}</svg>`,
+  }),
+];
+const glyph = (x, y, size, name, fill) => (ICONS[name] ? lineIcon(x, y, size, name, fill) : text(x, y + 2, 40, name, { size: 26, height: 36 }));
+
+const esc = (s) => s.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+
+// 示意畫面（Eric 第 20、24 頁）：深色視窗＋逐行文字；每行是字串或 [文字, 色鍵] 片段陣列
+const MOCK_COLORS = { y: '#f5b400', g: '#8fd19e', m: '#9a9890' };
+const mockWin = (x, y, w, h, title, lines) => {
+  const rows = lines
+    .map((line, i) => {
+      const segs = typeof line === 'string' ? [[line]] : line;
+      const spans = segs.map(([t, c]) => `<tspan fill="${MOCK_COLORS[c] ?? '#e8e6df'}">${esc(t)}</tspan>`).join('');
+      return `<text x="16" y="${58 + i * 24}" font-size="14" font-family="ui-monospace,Menlo,Consolas,monospace">${spans}</text>`;
+    })
+    .join('');
+  const tag = '示意畫面';
+  return svgEl(
+    x, y, w, h,
+    `<rect width="${w}" height="${h}" rx="12" fill="${C.dark}"/><rect width="${w}" height="32" rx="12" fill="#2a2a30"/><rect y="20" width="${w}" height="12" fill="#2a2a30"/>` +
+      [0, 1, 2].map((i) => `<circle cx="${18 + i * 16}" cy="16" r="5" fill="#55555c"/>`).join('') +
+      `<text x="70" y="21" font-size="12" fill="#b8b6ae" font-family="sans-serif">${esc(title)}</text>` +
+      `<rect x="${w - 86}" y="7" width="74" height="18" rx="4" fill="${C.accent}"/><text x="${w - 49}" y="20" font-size="11" fill="${ink(C.accent)}" text-anchor="middle" font-family="sans-serif">${tag}</text>` +
+      rows,
+  );
+};
+
+// 截圖圖框：課前把它換成真的截圖
+const shotFrame = (x, y, w, h, caption) =>
+  svgEl(
+    x, y, w, h,
+    `<rect x="1" y="1" width="${w - 2}" height="${h - 2}" rx="10" fill="#fff" stroke="${C.muted}" stroke-width="2" stroke-dasharray="8 6"/>` +
+      `<text x="${w / 2}" y="${h / 2 - 2}" font-size="15" fill="${C.text}" text-anchor="middle" font-family="sans-serif" font-weight="bold">${esc(caption)}</text>` +
+      `<text x="${w / 2}" y="${h / 2 + 20}" font-size="12" fill="${C.muted}" text-anchor="middle" font-family="sans-serif">課前放入截圖</text>`,
+  );
 
 // ── 版型：content.mjs 每頁的 layout 對應到這裡 ──────────
 
@@ -241,6 +325,20 @@ const layouts = {
     text(80, 380, 800, p.sub, { size: 20 }),
   ],
   poll: (p) => [poll(p.id, p.question, p.options)],
+  multiChoice: (p) => [poll(p.id, p.question, p.options, true)],
+  homework: (p) => [H(62, p.heading, 30), homework(p.hwId, 130, p.title, p.description)],
+  showcase: (p) => [showcase(p.title, p.linkHomework)],
+  story: (p) => {
+    const [bs, y] = bubbles(150, tinted(p.beats));
+    if (!p.punch) return [H(76, p.heading), ...bs];
+    const pw = Math.ceil(textWidth(p.punch, 26)) + 24;
+    return [H(76, p.heading), ...bs, box(PAD, y + 14, pw, 44, C.mark ?? C.accent, 6), text(PAD + 12, y + 16, pw, p.punch, { size: 26, color: ink(C.mark ?? C.accent), bold: true, height: 39 })];
+  },
+  siteMock: (p) => {
+    const gap = 120;
+    const w = (CW - gap) / 2;
+    return [H(62, p.heading, 30), ...p.sites.flatMap((site, i) => phone(PAD + i * (w + gap), 160, w, site)), text(PAD + w, 300, gap, 'vs', { size: 32, color: C.muted, bold: true, align: 'center', height: 48 })];
+  },
   quiz: (p) => [quiz(p.id, p.question, p.options, p.correct)],
   leaderboard: () => [leaderboard()],
   list: (p) => [H(76, p.heading), list(160, p.items)],
@@ -499,15 +597,23 @@ const layouts = {
   taskCheck: (p) => [...taskHeader(p.tag, p.heading), list(190, p.items, true), checkpoint(200 + textH(p.items.join('\n'), 20, CW) + 20, ...p.check)],
   taskDownload: (p) => [...taskHeader(p.tag, p.heading), fileDownload(190, p.file), list(330, p.items, true)],
   copyPrompt: (p) => [...taskHeader(p.tag, p.heading), copycard(190, p.cardTitle, p.prompt)],
-  webProject: (p) => [webProject(p.question)],
+  // 長 Prompt：省掉標籤列，卡片從上方開始
+  copyFull: (p) => [H(62, p.heading, 30), copycard(120, p.cardTitle, p.prompt)],
+  // 示意畫面在上、複製卡在下
+  copyMock: (p) => {
+    const mh = p.mockH ?? 190;
+    return [H(62, p.heading, 30), mockWin(PAD, 124, CW, mh, p.mockTitle, p.mock), copycard(124 + mh + 12, p.cardTitle, p.prompt)];
+  },
+  goalShot: (p) => [H(76, p.heading), link(PAD, 160, CW / 2 - 10, p.link), shotFrame(PAD + CW / 2 + 10, 160, CW / 2 - 10, 300, p.shot), text(PAD, 300, CW / 2 - 10, p.note, { size: 20, color: C.muted })],
+  webProject: (p) => [webProject(p.question, p.methods)],
   closing: (p) => [
     text(80, 140, 800, p.kicker, { size: 18, color: C.muted }),
     text(80, 190, 800, p.before, { size: 48, bold: true }),
     ...(p.lead
       ? [
           text(80, 270, 800, p.lead, { size: 48, bold: true }),
-          ...(C.mark ? [box(80 + 48 * [...p.lead].length, 270 + 40, 48 * [...p.punch].length, 26, C.mark)] : []),
-          text(80 + 48 * [...p.lead].length, 270, 240, p.punch, { size: 48, color: hue(C.accent), bold: true }),
+          ...(C.mark ? [box(80 + textWidth(p.lead, 48), 270 + 40, textWidth(p.punch, 48), 26, C.mark)] : []),
+          text(80 + textWidth(p.lead, 48), 270, 240, p.punch, { size: 48, color: hue(C.accent), bold: true }),
         ]
       : []),
     ...threePills(430, p.pills),
@@ -556,7 +662,11 @@ const layouts = {
     let y = 150;
     // core：分步揭露的第一頁，只放迴圈，右側卡片留到下一頁
     const side = p.core ? [] : [text(RX, 122, RW, p.cardsTitle, { size: 13, color: C.muted, bold: true, height: 20 })];
-    for (const [title, body] of p.core ? [] : p.cards) {
+    for (const [title, caption] of p.shots ?? []) {
+      side.push(text(RX, y, RW, title, { size: 14, bold: true, height: 22 }), shotFrame(RX, y + 24, RW, 56, caption));
+      y += 90;
+    }
+    for (const [title, body] of p.core || p.shots ? [] : p.cards) {
       const h = 46 + textH(body, 14, RW - 32);
       side.push(
         box(RX, y, RW, h, C.dark, 10),
@@ -604,7 +714,7 @@ const layouts = {
       const cy = y + Math.floor(i / 2) * (ch + gap);
       out.push(
         box(x, cy, w, ch, C.panel, 12),
-        text(x + 16, cy + 12, 40, icon, { size: 26, height: 36 }),
+        glyph(x + 16, cy + 10, 32, icon),
         text(x + 16, cy + 48, w - 32, title, { size: 17, bold: true, height: 24 }),
         text(x + 16, cy + 72, w - 32, desc, { size: 13, color: C.muted, height: 20 }),
       );
@@ -614,7 +724,7 @@ const layouts = {
       const [icon, title, desc, chips] = p.dark;
       out.push(
         box(X, y, RW, darkH, C.dark, 12),
-        text(X + 16, y + 14, 40, icon, { size: 26, height: 36 }),
+        glyph(X + 16, y + 12, 32, icon),
         text(X + 62, y + 14, RW - 78, title, { size: 17, color: '#fff', bold: true, height: 24 }),
         text(X + 62, y + 42, RW - 78, desc, { size: 13, color: C.darkSub, height: 20 }),
       );
@@ -638,15 +748,15 @@ const layouts = {
       ...p.links.flatMap((row, r) => {
         const cw = (CW - gap * (row.length - 1)) / row.length;
         return row.map(([ic, url, label, d], i) => ({
-          ...link(PAD + i * (cw + gap), 196 + r * (rowH + 12), cw, [url, `${ic} ${label}`, d]),
+          ...link(PAD + i * (cw + gap), 196 + r * (rowH + 12), cw, [url, ic ? `${ic} ${label}` : label, d]),
           height: rowH,
           linkIcon: 'download',
         }));
       }),
       box(PAD, darkY, CW, 76, C.dark, 12),
-      text(PAD + 20, darkY + 16, 40, icon, { size: 26, height: 36 }),
-      text(PAD + 66, darkY + 14, CW - 86, title, { size: 19, color: '#fff', bold: true, height: 28 }),
-      text(PAD + 66, darkY + 44, CW - 86, desc, { size: 14, color: C.darkSub, height: 22 }),
+      ...(icon ? [glyph(PAD + 20, darkY + 14, 36, icon)] : []),
+      text(PAD + (icon ? 66 : 24), darkY + 14, CW - 86, title, { size: 19, color: '#fff', bold: true, height: 28 }),
+      text(PAD + (icon ? 66 : 24), darkY + 44, CW - 86, desc, { size: 14, color: C.darkSub, height: 22 }),
     ];
   },
   whoDoes: (p) => {
@@ -656,7 +766,9 @@ const layouts = {
       const out = on ? [box(x - 3, 177, cw + 6, 286, C.accent, 15)] : [];
       out.push(
         box(x, 180, cw, 280, on ? C.panel : C.line, 12),
-        text(x + 18, 194, cw - 150, `${c.icon} ${c.name}`, { size: 20, bold: true, height: 30 }),
+        ...(ICONS[c.icon]
+          ? [lineIcon(x + 18, 190, 32, c.icon, on ? C.accent : C.dark), text(x + 58, 194, cw - 190, c.name, { size: 20, bold: true, height: 30 })]
+          : [text(x + 18, 194, cw - 150, c.icon ? `${c.icon} ${c.name}` : c.name, { size: 20, bold: true, height: 30 })]),
         ...pill(x + cw - 18 - (Math.ceil(textWidth(c.count, 15)) + 32), 196, c.count, on ? C.accent : C.dark),
       );
       c.steps.forEach(([who, t], i) => {
