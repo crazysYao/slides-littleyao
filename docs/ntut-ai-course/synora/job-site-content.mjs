@@ -135,7 +135,7 @@ export const pages = [
     notes: '09:04 加入＋登入＋兩題多選(5)。還沒加入 Synora 的現在加入。三個擇一登入，今天以 Gemini 為主；Gemini 用個人 Gmail，不要用學校帳號（學校帳號可能沒有 Canvas）。手機用 App 或瀏覽器都可以。講師用的是付費版，你們的免費額度很少，用完要等幾小時，今天會教怎麼省著用。登入卡住的舉手，助教會過去；接下來兩題邊登入邊答。',
     links: [
       [
-        ['', 'https://gemini.google.com', 'Gemini（今天的主線）', '用個人 Gmail 登入'],
+        ['', 'https://gemini.google.com', 'Gemini（主線）', '用個人 Gmail 登入'],
         ['', 'https://chatgpt.com', 'ChatGPT', '備用'],
         ['', 'https://claude.ai', 'Claude', '備用'],
       ],
