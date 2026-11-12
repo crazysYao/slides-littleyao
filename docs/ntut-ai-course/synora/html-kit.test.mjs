@@ -43,3 +43,7 @@ test('pageHtml：有 reduced-motion、capture、無外部資源、非 loop 頁�
 test('pageHtml：loop 頁才帶 infinite', () => {
   assert.match(pageHtml({ brand: 'B', section: 'S', palette: {}, body: '', loop: true }), /infinite/);
 });
+
+test('pageHtml：loop 頁截圖時動作格顯示亮起狀態', () => {
+  assert.match(pageHtml({ brand: 'B', section: 'S', palette: {}, body: '', loop: true }), /\.cap \.slot\{background:/);
+});
