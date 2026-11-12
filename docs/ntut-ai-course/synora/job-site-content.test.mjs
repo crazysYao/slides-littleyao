@@ -169,3 +169,13 @@ test('總體審查修正：上傳前先提醒個資、登入頁講到 Skills、�
   // 示意圖在每個人的裝置上各自從第一步開始
   assert.match(page('s3-ctx-window').notes, /大螢幕/);
 });
+
+test('對抗審查修正：換工具也不行時有出路，v1 上牆要標明是 v1', () => {
+  // 換了 ChatGPT／Claude 還是沒有網頁預覽時，救援卡要給下一步，不能讓學員停在那裡
+  const rescue = page('s2-rescue').rows.map(([, label, body]) => `${label} ${body}`).join('\n');
+  assert.match(rescue, /換了還是不行/);
+  assert.match(rescue, /助教/);
+  // 來不及做 v2 的人交 v1，但要標明，牆上才不會把 v1 當成 v2
+  assert.match(page('s3-v2-upload').description, /還沒做出 v2[\s\S]*v1/);
+  assert.match(page('s3-v2-wall').notes, /v1/);
+});
