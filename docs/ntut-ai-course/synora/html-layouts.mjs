@@ -1,5 +1,6 @@
 // 求職網站簡報的版型：每個版型回傳 { body: HTML 片段, natives: 原生元件, loop?: 是否循環示意 }。
 import { esc, splitSteps, chips } from './html-kit.mjs';
+import { contextLayouts } from './html-context.mjs';
 
 const title = (s, d = 0) => `<h1 class="t in" style="--d:${d}s">${esc(s)}</h1>`;
 
@@ -362,3 +363,5 @@ Object.assign(layouts, {
   showcase: (p, { n }) => ({ body: '', natives: [n.showcase(p.title, p.linkHomework)] }),
   webProject: (p, { n }) => ({ body: '', natives: [n.webProject(p.question, p.methods)] }),
 });
+
+Object.assign(layouts, contextLayouts);
