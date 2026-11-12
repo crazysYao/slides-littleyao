@@ -162,74 +162,6 @@ const FIXTURES = {
       ]
     ],
     "prompt": "1 跑 npx vercel@latest --version，看到版本號就好\n2 跑 npx vercel@latest login，把網址給我，我在瀏覽器登入"
-  },
-  "s1-aistudio": {
-    "id": "s1-aistudio",
-    "layout": "linkTask",
-    "section": "工具一次到位",
-    "tag": "申請主廚 · 3 分鐘",
-    "heading": "申請 AI Studio Key，選 Flash Lite",
-    "title": "申請 AI Studio Key",
-    "notes": "用個人 Gmail，不要用學校帳號（學校帳號可能被管理員關掉 AI Studio）。Flash Lite 每分鐘 15 次、每天 500 次，每人各算各的。上課當天再看一次 AI Studio 的額度頁。",
-    "link": [
-      "https://aistudio.google.com/api-keys",
-      "AI Studio API Keys",
-      "用個人 Gmail 登入"
-    ],
-    "items": [
-      "用個人 Gmail 登入，按「建立 API 金鑰」",
-      "回 OpenCode 輸入 /connect，選 Google，貼上 Key",
-      "模型選 Gemini Flash Lite"
-    ]
-  },
-  "s1-roadmap": {
-    "id": "s1-roadmap",
-    "layout": "loop",
-    "section": "今天的脈絡",
-    "title": "今天的脈絡",
-    "notes": "09:12 今天的脈絡(2)。沿著迴圈走一圈，右邊三站依序講：第一節說清楚你是誰、第二節讓 Agent 做出網站、第三節改好上線。課前把三站換成成品截圖（我的基本資料.md、網站 v1、手機上的 vercel.app）。",
-    "heading": "今天 3 小時，我們跑一圈問題迴圈",
-    "start": "發現問題",
-    "steps": [
-      [
-        "① 具體描述",
-        "現在的狀況＋感受"
-      ],
-      [
-        "② 執行",
-        "交給 AI 動手"
-      ],
-      [
-        "③ 驗證",
-        "結果對不對？"
-      ],
-      [
-        "↺ 優化",
-        "把落差講得更具體"
-      ]
-    ],
-    "center": "一輪不夠\n就再跑一輪",
-    "cardsTitle": "今天三站",
-    "shots": [
-      [
-        "第一節｜說清楚你是誰（發現問題 → ①）",
-        "我的基本資料.md"
-      ],
-      [
-        "第二節｜讓 Agent 做出網站（②）",
-        "網站 v1"
-      ],
-      [
-        "第三節｜改好、上線（③ → ↺）",
-        "手機上的 vercel.app"
-      ]
-    ],
-    "compareTitle": "下課帶走",
-    "compare": [
-      "一個公開網址",
-      "一份關於你的資料",
-      "一個用得到任何地方的問題迴圈"
-    ]
   }
 };
 const page = (id) => FIXTURES[id] ?? pages.find((x) => x.id === id);
@@ -290,7 +222,7 @@ export const assertAllShown = (p, r, skip) => {
 };
 
 test('代表頁：cover、rows、linkTask 文字齊全、不循環', () => {
-  for (const id of ['cover', 's1-gf-3', 's1-aistudio']) {
+  for (const id of ['cover', 's1-gf-3', 's3-drop']) {
     const [p, r] = run(id);
     assertAllShown(p, r, ['link']);
     assert.ok(!r.loop, id);
@@ -298,7 +230,7 @@ test('代表頁：cover、rows、linkTask 文字齊全、不循環', () => {
 });
 
 test('linkTask：只有一個原生 link，網址與內容檔相同', () => {
-  const [p, r] = run('s1-aistudio');
+  const [p, r] = run('s3-drop');
   assert.deepEqual(r.natives.map((e) => e.type), ['link']);
   assert.equal(r.natives[0].linkUrl, p.link[0]);
 });
@@ -315,7 +247,7 @@ test('靜態版型：所有頁文字齊全、不循環', () => {
 });
 
 test('loop：三站截圖框是原生 svg，標題在 HTML', () => {
-  const [p, r] = run('s1-roadmap');
+  const [p, r] = run('s3-recap');
   assert.equal(r.natives.filter((e) => e.type === 'svg').length, 3);
   for (const [t] of p.shots) assert.ok(r.body.includes(esc(t)));
 });
@@ -334,4 +266,10 @@ test('copyMock：每輪都重新逐行出現（不靠 animation-delay，每行�
     assert.doesNotMatch(r.body, /animation-delay/, id);
     for (let i = 1; i < p.mock.length; i++) assert.match(r.body, new RegExp(`class="[^"]*\\bln r${i}\\b`), `${id} 第 ${i} 行`);
   }
+});
+
+test('skillTemplate：視窗標題可設定，沒給就寫「聊天 AI」', () => {
+  const base = { tag: 't', heading: 'h', lines: [] };
+  assert.match(layouts.skillTemplate({ ...base, app: 'Gemini' }, { palette }).body, /<\/i>Gemini</);
+  assert.match(layouts.skillTemplate(base, { palette }).body, /<\/i>聊天 AI</);
 });

@@ -63,3 +63,59 @@ test('咖啡店七頁照順序', () => {
 });
 
 test('第二節分鐘數加總 50', () => assert.equal(minutes('s2', 'break2'), 50));
+
+const S3 = ['s3', 's3-review', 's3-fix', 's3-v2-upload', 's3-v2-wall', 's3-v2-html', 's3-public',
+  's3-ctx-classes', 's3-ctx-teachers', 's3-ctx-window', 's3-ctx-reveal', 's3-newchat', 's3-drop', 's3-obsidian', 's3-recap', 'qa'];
+
+test('全份 58 頁，頁序完整', () => {
+  assert.equal(ids.length, 58);
+  assert.deepEqual(ids, [...S1, ...S2, ...S3]);
+});
+
+test('全份沒有舊工具鏈字眼（內容檔）', () => scan(content.pages));
+
+test('全份沒有舊工具鏈字眼（產出的畫面與講稿，含版型寫死的字）', () => {
+  for (const s of buildDeck(content).slides) {
+    // 內嵌照片的 base64 可能剛好拼出這些字，先拿掉
+    const out = JSON.stringify(s).replace(/data:image\/jpeg;base64,[A-Za-z0-9+/=]+/g, '');
+    for (const w of [...BANNED, ...(/^s2-skill-\d$/.test(s.id) ? [] : ['Agent'])]) assert.ok(!out.includes(w), `${s.id} 出現 ${w}`);
+  }
+});
+
+test('fix 與審稿是聊天版', () => {
+  assert.ok(text(page('s3-review')).includes('看上面這個網站'));
+  assert.ok(text(page('s3-fix')).includes('其他地方不要動'));
+});
+
+test('Context 示意圖最後一步是新對話，而且最空', () => {
+  const { steps } = page('s3-ctx-window');
+  assert.equal(steps.length, 8);
+  assert.equal(Math.max(...steps.map((s) => s.used)), steps.at(-2).used);
+  assert.ok(steps.at(-1).used < 20);
+  assert.ok(steps.at(-2).msgs.some(([kind]) => kind === 'cut'));
+  assert.doesNotMatch(JSON.stringify(steps), /token|RAG|Transformer/i);
+});
+
+test('八堂課不是固定由淡到深', () => {
+  const st = page('s3-ctx-classes').classes.map(([, s]) => s);
+  assert.equal(st.length, 8);
+  assert.ok(st.indexOf('clear') < st.lastIndexOf('faint'));
+});
+
+test('面試自介 Prompt', () => {
+  const p = page('s3-newchat').prompt;
+  for (const s of ['30 秒', '不要編造', '基本資料']) assert.ok(p.includes(s), s);
+});
+
+test('第三節分鐘數加總 57（含 QA 10 分；3 分緩衝沒有頁面）', () => {
+  const sum = content.pages
+    .slice(content.pages.findIndex((x) => x.id === 's3'))
+    .reduce((a, p) => a + Number(p.notes?.match(/^\d\d:\d\d [^(（]*[(（](\d+)[)）]/)?.[1] ?? 0), 0);
+  assert.equal(sum, 57);
+});
+
+test('作品牆連到存在的作業', () => {
+  const hw = new Set(content.pages.filter((p) => p.layout === 'homework').map((p) => p.hwId));
+  for (const p of content.pages.filter((x) => x.layout === 'showcase')) assert.ok(hw.has(p.linkHomework), p.id);
+  assert.deepEqual([...hw], ['job-skill-up', 'job-v2-up']);
+});

@@ -278,7 +278,7 @@ Object.assign(layouts, {
     body:
       tagPill(P, p.tag) +
       taskTitle(p.heading) +
-      `<div class="win in" style="left:44px;top:170px;width:872px;height:220px;${d(1)}"><div class="tb"><i></i><i></i><i></i>OpenCode</div><div class="scr" style="font-size:18px;line-height:1.7">${p.lines
+      `<div class="win in" style="left:44px;top:170px;width:872px;height:220px;${d(1)}"><div class="tb"><i></i><i></i><i></i>${esc(p.app ?? '聊天 AI')}</div><div class="scr" style="font-size:18px;line-height:1.7">${p.lines
         .map(([c, s, ex]) => `<div style="color:${c === 'why' ? P.accent : '#e8e6df'};margin-top:8px">${esc(s)}</div>${ex ? `<div style="font-size:14px;color:${P.darkSub}">${esc(ex)}</div>` : ''}`)
         .join('')}</div></div>` +
       (p.note ? abs(`left:44px;right:44px;top:416px;font-size:20px;font-weight:700;border-left:6px solid ${P.accent};padding-left:14px`, esc(p.note), 3) : ''),

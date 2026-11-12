@@ -20,7 +20,8 @@ for (const s of slides) {
 
 if (flags.includes('--sections')) {
   // 講稿開頭「HH:MM 名稱(分)」；依開始時間分到三節
-  const ranges = [['09:00', '09:50', 50], ['10:00', '10:55', 55], ['11:05', '12:00', 55]];
+  // 第三節含 QA 10 分；另有 3 分緩衝沒有頁面，所以是 57 不是 60
+  const ranges = [['09:00', '09:50', 50], ['10:00', '10:50', 50], ['11:00', '12:00', 57]];
   const sums = [0, 0, 0];
   for (const s of slides) {
     const m = s.notes?.match(/^(\d\d:\d\d) [^(（]*[(（](\d+)[)）]/);
