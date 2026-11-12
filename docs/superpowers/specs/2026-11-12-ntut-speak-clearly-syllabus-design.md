@@ -2,7 +2,7 @@
 
 - 日期：2026-11-12
 - 上課：2026-11-26（四）09:00–12:00；11/23 凍結
-- 狀態：講師 2026-11-12 逐題選定並確認整份佈局
+- 狀態：講師 2026-11-12 核准
 - 取代：[2026-11-12 Gemini Canvas 設計](https://github.com/crazysYao/slides-littleyao/blob/crazysYao/ntut-gemini-canvas/docs/superpowers/specs/2026-11-12-ntut-gemini-canvas-design.md)（只在分支 `crazysYao/ntut-gemini-canvas`，未合併）。該文件的「Gemini Canvas 事實」與 Prompt ② 參考稿仍沿用，本文件有摘錄
 - 前一版已合併的設計：[2026-11-11-ntut-new-syllabus-design.md](2026-11-11-ntut-new-syllabus-design.md)（OpenCode＋Vercel 版）
 - 改的是：[job-site-syllabus.md](../../ntut-ai-course/job-site-syllabus.md)、[job-site-content.mjs](../../ntut-ai-course/synora/job-site-content.mjs) 與它的版面、測試、頁數檢查
@@ -163,7 +163,7 @@
   7. 把工作經驗變成 AI 可以重複使用的能力（生活、辦公、工程三個情境）
 - 要補的銜接（講師同意）：這一章講的是「店員自己去書架找手冊、用咖啡機做」，但今天大家用的聊天 AI 不會自己去找手冊，所以要你親手遞給它。Gemini 的 Skills 是幫你把手冊收好，打 `/` 就能遞出去
 - 表定 5 分鐘；講稿加總約 4.5 分鐘
-- 兩張拿鐵照片是講師提供的，沒有放進 repo；來源與授權由講師確認後再放進 Synora
+- 兩張拿鐵照片是講師自己做的，可以直接用（講師 2026-11-12 確認）：`docs/ntut-ai-course/skill-chapter/assets/latte-spill.png`（沒有 Skill，對應 `s2-compare.html` 裡的 `/_blob/d8298c48…`）、`latte-heart.png`（有 Skill，對應 `s2-compare-b.html` 裡的 `/_blob/c2eff61e…`）
 
 ### 動手做自己的 Skill
 - 目的：把剛剛做網站用到的做法打包，下次不用重打；這是學員今天帶走的第三樣東西
