@@ -17,7 +17,50 @@ const mockRow = (line, i, last) => {
 const COPY = { x: 44, y: 160, w: 330, h: 350 };
 const WIN = { x: 420, y: 160, w: 496, h: 350 };
 
+const d = (i, base = 0.15, step = 0.08) => `--d:${(base + i * step).toFixed(2)}s`;
+// 內容檔用顏色代號（accent、dark、muted、text）；黃色上面一律放黑字
+const fill = (P, key) => P[key] ?? key;
+const onFill = (P, key) => (P.ink?.[fill(P, key)] ?? (key === 'accent' ? P.text : '#fff'));
+
 export const layouts = {
+  cover: (p, { palette: P }) => ({
+    body:
+      `<div class="in" style="position:absolute;left:80px;top:118px;font-size:15px;font-weight:700;letter-spacing:.12em;color:${P.text}">${esc(p.date)}</div>` +
+      `<div class="in" style="position:absolute;left:80px;top:156px;right:80px;font-size:66px;font-weight:900;line-height:1.25;color:${P.text};${d(1)}">${esc(p.heading)}</div>` +
+      `<div class="in" style="position:absolute;left:80px;top:336px;right:80px;font-size:24px;font-weight:700;color:${P.text};${d(2)}">${esc(p.subtitle)}</div>` +
+      `<div style="position:absolute;left:80px;top:400px;display:flex;gap:14px">${p.pills
+        .map(([c, label], i) => `<span class="in" style="${d(i, 0.4)};background:${fill(P, c)};color:${onFill(P, c)};font-size:16px;font-weight:700;border-radius:99px;padding:6px 18px">${esc(label)}</span>`)
+        .join('')}</div>`,
+  }),
+
+  // 條列對照：每列白卡＋左色條，左邊粗體標籤、右邊說明，依序浮上
+  rows: (p, { palette: P }) => ({
+    body:
+      title(p.heading) +
+      `<div style="position:absolute;left:44px;right:44px;top:124px;display:grid;gap:10px">${p.rows
+        .map(
+          ([c, q, body], i) =>
+            `<div class="in" style="${d(i)};display:flex;align-items:center;gap:20px;background:#fff;border:1.5px solid ${P.line};border-left:8px solid ${fill(P, c)};border-radius:8px;padding:12px 20px">` +
+            `<b style="flex:0 0 230px;font-size:21px;font-weight:900">${esc(q)}</b><span style="font-size:19px;line-height:1.5;color:${P.text}">${esc(body)}</span></div>`,
+        )
+        .join('')}</div>`,
+  }),
+
+  // 連結任務：標籤＋標題 → 原生連結 → 編號步驟卡
+  linkTask: (p, { palette: P, n }) => ({
+    body:
+      `<div class="in" style="position:absolute;left:44px;top:56px;font-size:13px;font-weight:700;color:#fff;background:${P.dark};border-radius:99px;padding:4px 12px">${esc(p.tag)}</div>` +
+      `<h1 class="t in" style="top:88px;${d(0, 0.08)}">${esc(p.heading)}</h1>` +
+      `<div style="position:absolute;left:44px;right:44px;top:290px;display:grid;grid-template-columns:repeat(${p.items.length},1fr);gap:16px">${p.items
+        .map(
+          (s, i) =>
+            `<div class="card in" style="${d(i, 0.3)};height:200px"><div style="width:34px;height:34px;border-radius:17px;background:${P.accent};color:${P.text};font-weight:900;font-size:18px;display:flex;align-items:center;justify-content:center;margin-bottom:12px">${i + 1}</div><p style="color:${P.text};font-size:18px">${esc(s)}</p></div>`,
+        )
+        .join('')}</div>`,
+    natives: [n.link(44, 160, 872, 110, p.link)],
+  }),
+
+
   // 操作頁（Eric jj-setup1）：膠囊步驟 → 左：要按的複製卡 → 箭頭 → 右：貼上後會看到的示意畫面（循環）
   copyMock: (p, { n }) => {
     const { label, steps } = splitSteps(p.cardTitle, p.tag);
