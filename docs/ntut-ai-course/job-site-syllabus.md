@@ -44,7 +44,8 @@
 
 ## 檔案
 - 簡報內容（每頁文字、講稿、Prompt 原文）：[synora/job-site-content.mjs](synora/job-site-content.mjs)
-  - 產生：`node synora/build-deck.mjs /tmp/deck-job.json synora/job-site-content.mjs`（Node 22+）
+  - 產生：`node synora/build-deck-html.mjs /tmp/deck-job.json synora/job-site-content.mjs`（Node 22+；每頁一塊 HTML 底圖含版面與動畫，互動元件為原生，設計見 [清楚版面＋動畫](../superpowers/specs/2026-11-12-ntut-deck-clear-layout-design.md)）
+  - 測試：`node --test 'synora/*.test.mjs'`
   - 檢查：`node synora/check-deck.mjs /tmp/deck-job.json --sections --expect-pages=51`，再跑 Synora 本機 `doctor /tmp/deck-job.json --json`（schema 檢查，兩個都要過）
   - Synora 專案尚未建立，等講師看過本機預覽後另外下指令
 - 網站範本：[job-site-template/site/index.html](job-site-template/site/index.html)（虛構人物林小晴）；下載用 [job-site-template.zip](job-site-template/job-site-template.zip)

@@ -1,5 +1,5 @@
-// 北科大新課綱「求職網站上線版」的簡報內容：每頁文字、講稿、投票與搶答。版面共用 build-deck.mjs。
-// 產生：node build-deck.mjs <輸出路徑> job-site-content.mjs
+// 北科大新課綱「求職網站上線版」的簡報內容：每頁文字、講稿、投票與搶答。版面在 build-deck-html.mjs。
+// 產生：node build-deck-html.mjs <輸出路徑> job-site-content.mjs
 // 設計見 ../../superpowers/specs/2026-11-11-ntut-new-syllabus-design.md；講稿開頭「HH:MM 名稱(分)」是該環節的第一頁
 
 export const brand = '讓 AI 一開口就懂你';
