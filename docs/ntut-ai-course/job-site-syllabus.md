@@ -64,7 +64,7 @@
 - [job-site-template/](job-site-template/)（林小晴範本與保底網頁）已不使用，留著沒刪
 
 ## 講師課前準備
-### 必測（結果回寫本檔與 content.mjs）
+### 必測（結果回寫本檔與 synora/job-site-content.mjs）
 - [ ] Gemini 免費帳號：能不能產生並預覽 Canvas 網頁；從訪問做到 v2 再開新對話做面試自介，額度夠不夠
 - [ ] Gemini 免費帳號與手機 App：能不能建立與使用 Skills
 - [ ] ChatGPT、Claude 免費帳號：能不能預覽單一 HTML；Claude 是否要先開啟某個設定

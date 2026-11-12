@@ -159,3 +159,13 @@ test('審查修正：講稿前後一致', () => {
   // 三欄對應咖啡店第 5 頁，畫面上要看得到
   assert.match(page('s2-skill-make').tag, /Metadata/);
 });
+
+test('總體審查修正：上傳前先提醒個資、登入頁講到 Skills、示意圖交代各自操作', () => {
+  // 反目標：上傳的作品不能出現私人手機、身分證、住址；提醒要在上傳那一頁就出現，不是上傳之後
+  assert.match(page('s3-v2-upload').description, /私人手機、身分證、住址/);
+  assert.match(page('s3-v2-upload').notes, /私人手機、身分證、住址/);
+  // 學校帳號沒有 Canvas，也不能用 Skills
+  assert.match(page('s1-login').notes, /Skills/);
+  // 示意圖在每個人的裝置上各自從第一步開始
+  assert.match(page('s3-ctx-window').notes, /大螢幕/);
+});
