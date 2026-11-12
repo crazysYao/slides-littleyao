@@ -56,8 +56,15 @@
 - [ ] 乾淨 Mac（無 brew、無 Node）：官方安裝檔 → OpenCode → 打招呼卡
 - [ ] OpenCode 裡跑 `npx vercel@latest login`：網址是否顯示、是否自動開瀏覽器、授權後是否回到 OpenCode
 - [ ] 全新 Email 註冊 Vercel Hobby：是否要手機、信用卡、GitHub，總耗時
-- [ ] 確認 `deploy site --prod --yes --project 名稱 --create-if-missing`（在 my-site 跑）能建立新專案、網址格式、名稱被用走時的網址，結果回寫 Prompt ④
-- [ ] 用沒登入的手機分別打開正式網址與帶亂碼的部署網址，確認哪個要登入
+- [x] 確認 `deploy site --prod --yes --project 名稱 --create-if-missing`（在 my-site 跑）能建立新專案、網址格式、名稱被用走時的網址，結果回寫 Prompt ④
+  - 2026-11-12 實測（Vercel CLI 65.14.0，測試 my-site 內放 `site/index.html` 與假的 `我的基本資料.md`）：指令一次成功，輸出有 `✓ Created`、`Production`（帶亂碼的部署網址）、`▲ Aliased`（正式網址）三行
+  - 正式網址格式：`https://<專案名稱>.vercel.app`
+  - 名稱被別人用走（測 `my-site`）：一樣建立成功，正式網址變成 `https://my-site-xi-ochre.vercel.app` 這種多一段的形式，仍以 Aliased 那行為準
+  - 同一個專案名稱再跑一次：網址不變、內容更新；剛跑完第一次打開可能還是舊版，重新整理即可
+  - 只上傳 site：部署檔案清單只有 `index.html`，`/我的基本資料.md` 回 404
+  - `project ls` 只列自己帳號的專案，查不到別人用走的名稱；被用走時看 Aliased 那行即可
+- [x] 用沒登入的手機分別打開正式網址與帶亂碼的部署網址，確認哪個要登入
+  - 2026-11-12 以不帶登入資訊的 HTTP 請求實測（等同無痕視窗，尚未用手機開）：正式網址回 200 直接看得到；帶亂碼的部署網址回 302 導去 Vercel 登入（新專案預設開 Vercel Authentication）
 - [ ] OpenCode 內建免費模型跑「訪問 → v1 → 上線」，決定主廚 Key 兩頁去留
 - [ ] Flash Lite 跑網站 v1：次數、時間、會不會截斷；跑到額度用完，看換 NVIDIA 要多久
 - [ ] 學校網路或熱點：AI Studio、NVIDIA、Vercel 連得上

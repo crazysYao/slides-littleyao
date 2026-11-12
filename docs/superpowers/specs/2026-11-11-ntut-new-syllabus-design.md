@@ -272,7 +272,7 @@ rule: 只改 site/index.html
 npx vercel@latest deploy site --prod --yes --project 專案名稱 --create-if-missing
 最後給我沒有亂碼的正式網址（輸出裡 Aliased 那行），我用無痕視窗打開確認不用登入
 ```
-- 網址名稱：用英文名字當 Vercel 專案名稱。不走 Eric 的 `vercel link`：CLI 65.14 說明寫明 `--project` 指向新專案且帶 `--yes` 時要加 `--create-if-missing`，學員都是新專案，所以改用一行 `deploy site --project … --create-if-missing`（在 my-site 跑，只上傳 site）；名稱被用走時正式網址會多一段，交的是沒有亂碼的正式網址。實際行為依課前實測確認
+- 網址名稱：用英文名字當 Vercel 專案名稱。不走 Eric 的 `vercel link`：CLI 65.14 說明寫明 `--project` 指向新專案且帶 `--yes` 時要加 `--create-if-missing`，學員都是新專案，所以改用一行 `deploy site --project … --create-if-missing`（在 my-site 跑，只上傳 site）；名稱被用走時正式網址會多一段，交的是沒有亂碼的正式網址（輸出裡 Aliased 那行）。2026-11-12 已實測確認
 - 之後要改網站：改完叫 AI 用同一個專案名稱再跑一次同一行，網址不變
 
 ### 11:44 Obsidian 示範（學員只看）
@@ -338,8 +338,8 @@ npx vercel@latest deploy site --prod --yes --project 專案名稱 --create-if-mi
 - [ ] 乾淨 Mac（沒有 brew、沒有 Node）：走官方安裝檔 → OpenCode → 打招呼卡
 - [ ] 在 OpenCode 裡跑 `npx vercel@latest login`：網址會不會顯示、會不會自動開瀏覽器、授權完會不會回到 OpenCode
 - [ ] 用全新 Email 註冊 Vercel Hobby：記錄要不要手機、信用卡、GitHub，總共花多久
-- [ ] 確認 `deploy site --prod --yes --project 名稱 --create-if-missing` 能建立新專案、產生的網址格式、名稱被用走時的網址
-- [ ] 用沒登入的手機分別打開正式網址與帶亂碼的部署網址，確認哪個要登入（Deployment Protection 預設值）
+- [x] 確認 `deploy site --prod --yes --project 名稱 --create-if-missing` 能建立新專案、產生的網址格式、名稱被用走時的網址（2026-11-12 實測通過，結果見教案「實測」段）
+- [x] 用沒登入的手機分別打開正式網址與帶亂碼的部署網址，確認哪個要登入（Deployment Protection 預設值）（2026-11-12 以無登入請求實測：正式網址免登入，部署網址要登入）
 - [ ] 用 OpenCode 內建免費模型跑「訪問 → v1 → 上線」，決定主廚 Key 段落留不留
 - [ ] 用 Flash Lite 跑一次網站 v1：計次數、計時間、看會不會截斷；連續跑到額度用完，看會發生什麼、換 NVIDIA 要多久
 - [ ] 在學校網路或手機熱點，測 AI Studio、NVIDIA、Vercel 連不連得上
