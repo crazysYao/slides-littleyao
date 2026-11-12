@@ -70,10 +70,10 @@ const strip = (e, keepBox) => {
   return keepBox ? { ...rest, x, y, width, height } : rest;
 };
 
-test('全份：51 頁，原生互動元件與舊產生器一致', () => {
+test('全份：50 頁，原生互動元件與舊產生器一致', () => {
   const now = buildDeck(content).slides;
   const old = oldDeck().slides;
-  assert.equal(now.length, 51);
+  assert.equal(now.length, 50);
   assert.deepEqual(now.map((s) => [s.id, s.notes]), old.map((s) => [s.id, s.notes]));
   now.forEach((s, i) => {
     const pick2 = (els) => els.filter((e) => INTERACTIVE.has(e.type)).map((e) => strip(e, FULLSIZE.has(e.type)));
