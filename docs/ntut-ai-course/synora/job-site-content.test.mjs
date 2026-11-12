@@ -179,3 +179,13 @@ test('對抗審查修正：換工具也不行時有出路，v1 上牆要標明�
   assert.match(page('s3-v2-upload').description, /還沒做出 v2[\s\S]*v1/);
   assert.match(page('s3-v2-wall').notes, /v1/);
 });
+
+test('對抗審查第 2 輪：救援不把學員的資料貼進同學的帳號', () => {
+  const p = page('s2-rescue');
+  const rescue = p.rows.map(([, label, body]) => `${label} ${body}`).join('\n');
+  // 基本資料有學經歷與聯絡方式，只能交給助教，而且要本人同意
+  assert.doesNotMatch(rescue, /同學/);
+  assert.doesNotMatch(p.notes, /同學.*帳號|帳號.*同學/);
+  assert.match(rescue, /助教/);
+  assert.match(p.notes, /同意/);
+});

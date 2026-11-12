@@ -58,6 +58,7 @@
   - 產生：`node synora/build-deck-html.mjs /tmp/deck-job.json synora/job-site-content.mjs`（Node 22+；每頁一塊 HTML 底圖，互動元件為原生）
   - 測試：`node --test 'synora/*.test.mjs'`
   - 檢查：`node synora/check-deck.mjs /tmp/deck-job.json --sections --expect-pages=58`，再跑 Synora 本機 `doctor /tmp/deck-job.json --json`（兩個都要過）
+  - 出圖：單元測試看不到版面。改到版型、咖啡店章節或 Context 兩個版型之後，一定要跑 Synora 本機 `render /tmp/deck-job.json <輸出資料夾>`，把 `s2-skill-1` 到 `s2-skill-7`、`s3-ctx-classes`、`s3-ctx-window` 逐頁看過（縮放、照片、裁字）
 - 咖啡店 Skill 章節：[skill-chapter/](skill-chapter/)（7 頁原始檔與兩張拿鐵照片），由 [synora/html-skill.mjs](synora/html-skill.mjs) 轉成簡報頁
 - Context 互動示意圖：版型在 [synora/html-context.mjs](synora/html-context.mjs)，參考檔在 [references/](references/)
 - Synora 專案「讓 AI 一開口就懂你（求職網站上線版）」id `aef695ce-dd63-4375-a02a-d134f3100159`。本次改版還沒推送，學員入口仍是草稿；推送與開放由講師另外下指令
@@ -83,3 +84,4 @@
 - [ ] 兩個假師傅網站截圖（颱風頁），不用真實店家
 - [ ] 「幫我寫自我介紹」結果截圖（網路出狀況的備案）
 - [ ] 自己的 Obsidian 關係圖可現場展示
+- [ ] 準備一個助教可以用的帳號（救援卡最後一列：換了工具還是沒有網頁預覽的學員，經本人同意後由助教代為產生，做完刪掉對話）
