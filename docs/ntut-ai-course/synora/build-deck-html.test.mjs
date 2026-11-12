@@ -50,18 +50,24 @@ test('版型不存在時丟錯並帶出頁 id', () => {
 });
 
 import { execFileSync } from 'node:child_process';
-import { readFileSync, mkdtempSync } from 'node:fs';
+import { readFileSync, mkdtempSync, writeFileSync } from 'node:fs';
 import { tmpdir } from 'node:os';
 import { join, dirname } from 'node:path';
-import { fileURLToPath } from 'node:url';
+import { fileURLToPath, pathToFileURL } from 'node:url';
 import * as content from './job-site-content.mjs';
 
 const here = dirname(fileURLToPath(import.meta.url));
 const INTERACTIVE = new Set(['poll', 'quiz', 'link', 'copycard', 'fileDownload', 'wordcloud', 'webProject', 'homework', 'showcase']);
 const FULLSIZE = new Set(['poll', 'quiz', 'wordcloud', 'webProject', 'showcase']);
+// 舊產生器沒有後來新增的版型，比對時先拿掉這些頁
+const NEW_LAYOUTS = ['styleGallery'];
 const oldDeck = () => {
-  const out = join(mkdtempSync(join(tmpdir(), 'deck-')), 'old.json');
-  execFileSync(process.execPath, [join(here, 'build-deck.mjs'), out, join(here, 'job-site-content.mjs')]);
+  const dir = mkdtempSync(join(tmpdir(), 'deck-'));
+  const out = join(dir, 'old.json');
+  const src = pathToFileURL(join(here, 'job-site-content.mjs')).href;
+  const tmp = join(dir, 'content.mjs');
+  writeFileSync(tmp, `import * as c from '${src}';\nexport * from '${src}';\nexport const pages = c.pages.filter((p) => !${JSON.stringify(NEW_LAYOUTS)}.includes(p.layout));\n`);
+  execFileSync(process.execPath, [join(here, 'build-deck.mjs'), out, tmp]);
   return JSON.parse(readFileSync(out, 'utf8'));
 };
 const strip = (e, keepBox) => {
@@ -71,10 +77,14 @@ const strip = (e, keepBox) => {
 };
 
 test('全份：50 頁，原生互動元件與舊產生器一致', () => {
-  const now = buildDeck(content).slides;
+  const all = buildDeck(content).slides;
   const old = oldDeck().slides;
-  assert.equal(now.length, 50);
+  assert.equal(all.length, 50);
+  const oldIds = new Set(old.map((s) => s.id));
+  const now = all.filter((s) => oldIds.has(s.id));
+  assert.equal(now.length, all.length - 1);
   assert.deepEqual(now.map((s) => [s.id, s.notes]), old.map((s) => [s.id, s.notes]));
+  for (const s of all) for (const e of s.elements) assert.ok(e.x >= 0 && e.y >= 0 && e.x + e.width <= 960 && e.y + e.height <= 540, `${s.id} ${e.id} 出界`);
   now.forEach((s, i) => {
     const pick2 = (els) => els.filter((e) => INTERACTIVE.has(e.type)).map((e) => strip(e, FULLSIZE.has(e.type)));
     assert.deepEqual(pick2(s.elements), pick2(old[i].elements), s.id);
