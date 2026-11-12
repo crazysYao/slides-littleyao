@@ -1,0 +1,61 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>LLM Context Window｜互動示意圖</title>
+  <style>
+    :root { --ink:#e8edf5; --muted:#9aa9ba; --bg:#08111f; --panel:#0d1b2c; --line:#25405b; --blue:#58b8ff; --violet:#a98cff; --amber:#ffc25a; --green:#61dfb3; --red:#ff7f93; }
+    * { box-sizing:border-box; } body { margin:0; background:radial-gradient(circle at 20% 0%,#162b47 0,transparent 32rem),var(--bg); color:var(--ink); font:16px/1.55 ui-sans-serif,system-ui,-apple-system,"PingFang TC","Noto Sans TC",sans-serif; }
+    main { max-width:1160px; margin:auto; padding:38px 22px 60px; } h1 { font-size:clamp(1.7rem,4vw,3rem); margin:0; letter-spacing:-.04em; } .sub { color:var(--muted); max-width:760px; margin:10px 0 26px; }
+    .topline { display:flex; justify-content:space-between; gap:20px; align-items:end; } .badge { color:var(--green); border:1px solid #2d705e; border-radius:999px; padding:5px 10px; font-size:.78rem; white-space:nowrap; }
+    .layout { display:grid; grid-template-columns:minmax(0,1.65fr) minmax(280px,.85fr); gap:18px; } .panel { background:linear-gradient(145deg,#10243a,#0a1524); border:1px solid var(--line); border-radius:18px; box-shadow:0 18px 45px #02081466; }
+    .simulation { padding:20px; } .label { font-size:.75rem; color:var(--muted); text-transform:uppercase; letter-spacing:.11em; } .window-head { display:flex; justify-content:space-between; align-items:center; margin-bottom:12px; } .capacity { color:var(--blue); font-weight:700; }
+    .context-window { min-height:474px; position:relative; border:2px solid #4baae9; border-radius:14px; padding:44px 16px 16px; overflow:hidden; background:linear-gradient(180deg,#0a1b2c,#091321); } .window-title { position:absolute; top:12px; left:16px; color:#b9e2ff; font-weight:800; } .window-note { position:absolute; top:14px; right:16px; color:var(--muted); font-size:.78rem; }
+    #stack { display:flex; flex-direction:column; justify-content:flex-end; gap:8px; min-height:408px; } .message { position:relative; border:1px solid #294b68; border-left:5px solid var(--blue); border-radius:9px; padding:9px 12px; background:#10253a; transition:.45s ease; animation:arrive .55s ease both; } .message.system { border-left-color:var(--violet); } .message.user { border-left-color:var(--amber); } .message.summary { border-left-color:var(--green); background:#0d2a28; } .message.cut { border-left-color:var(--red); color:#8794a2; background:#142030; opacity:.76; border-style:dashed; } .message strong { font-size:.78rem; display:block; color:#dceaff; } .message small { color:var(--muted); } .message .impact { position:absolute; inset:0; border-radius:8px; background:linear-gradient(90deg,transparent,var(--glow)); opacity:var(--op); pointer-events:none; }
+    .fade-top { position:absolute; left:0; right:0; top:43px; height:73px; background:linear-gradient(#091321e8,transparent); pointer-events:none; } @keyframes arrive { from { opacity:0; transform:translateY(20px); } to { opacity:1; transform:none; } }
+    .controls { display:flex; flex-wrap:wrap; gap:9px; margin-top:16px; } button { cursor:pointer; border:1px solid #3b6688; border-radius:9px; padding:9px 13px; background:#12314d; color:#e8f5ff; font:inherit; font-weight:700; } button:hover { background:#194668; } button.secondary { background:transparent; color:#b7c7d8; } button:focus-visible { outline:3px solid var(--amber); outline-offset:2px; }
+    .timeline { display:flex; gap:5px; margin:14px 0 0; } .dot { flex:1; height:5px; background:#25405b; border-radius:10px; } .dot.active { background:var(--amber); box-shadow:0 0 12px var(--amber); }
+    aside { padding:20px; } aside h2 { font-size:1.06rem; margin:0 0 10px; } .metric { padding:11px 0; border-bottom:1px solid #233b54; } .metric:last-child { border:0; } .metric b { display:block; font-size:1.35rem; } .metric span { color:var(--muted); font-size:.85rem; }
+    .legend { display:flex; flex-wrap:wrap; gap:9px; margin-top:16px; color:var(--muted); font-size:.78rem; } .legend i { width:9px; height:9px; display:inline-block; border-radius:50%; margin-right:4px; } .insight { margin-top:18px; padding:17px 20px; border-left:4px solid var(--amber); background:#211c12; border-radius:0 12px 12px 0; } .insight b { color:#ffe1a3; }
+    .explain { display:grid; grid-template-columns:repeat(3,1fr); gap:14px; margin-top:18px; } .card { padding:18px; } .card h3 { margin:0 0 7px; font-size:1rem; } .card p { margin:0; color:var(--muted); font-size:.9rem; } .n { color:var(--blue); font-family:ui-monospace,monospace; }
+    @media (max-width:800px) { .layout,.explain { grid-template-columns:1fr; } .topline { align-items:start; flex-direction:column; } .context-window { min-height:450px; } }
+  </style>
+</head>
+<body>
+<main>
+  <div class="topline"><div><div class="label">互動式概念模型</div><h1>每一次 Prompt，都重新組成一次當下的上下文</h1></div><div class="badge">技術準確版・非特定模型規格</div></div>
+  <p class="sub">按「新增 Prompt」逐步查看：模型收到的是<strong>當次 Context Window</strong>，不是一個永遠完整保存、再固定由下往上讀取的對話檔。</p>
+  <section class="layout">
+    <div class="panel simulation">
+      <div class="window-head"><div class="label">送進模型的實際輸入</div><div class="capacity" id="capacity">3,120 / 4,000 tokens</div></div>
+      <div class="context-window" aria-live="polite"><span class="window-title">當次 Context Window</span><span class="window-note">每次推理皆為新的運算</span><div id="stack"></div><div class="fade-top"></div></div>
+      <div class="controls"><button id="next">＋ 新增 Prompt</button><button id="play">▶ 播放</button><button id="reset" class="secondary">↺ 重設</button></div><div id="timeline" class="timeline" aria-label="步驟進度"></div>
+      <div class="legend"><span><i style="background:var(--violet)"></i>系統指令</span><span><i style="background:var(--blue)"></i>歷史訊息</span><span><i style="background:var(--green)"></i>摘要</span><span><i style="background:var(--amber)"></i>最新 Prompt</span><span><i style="background:var(--red)"></i>未送入當次視窗</span></div>
+    </div>
+    <aside class="panel"><h2>這一輪可用的材料</h2><div class="metric"><b id="available">全局可用上下文</b><span>應用程式可選擇提供的資料：對話、檢索結果、工具輸出、文件等。</span></div><div class="metric"><b id="included">3 個區塊被納入</b><span>只有組裝後放得進視窗的 token，才會在這次推理中可見。</span></div><div class="metric"><b id="event">起始狀態</b><span>每一步改變「當次」輸入；模型本身不會在請求間自動保留隱藏記憶。</span></div></aside>
+  </section>
+  <div class="insight" id="insight"><b>關鍵校正：</b>畫面由下往上排列是為了閱讀時間線；注意力不是固定由下往上讀取，它也不是一張固定的強度圖。</div>
+  <section class="explain">
+    <article class="panel card"><div class="n">01 / 組裝</div><h3>全局可用 ≠ 全部送入</h3><p>產品或框架會選擇訊息、RAG 檢索片段與工具結果；再受 context window token 上限約束。</p></article>
+    <article class="panel card"><div class="n">02 / 壓縮或截斷</div><h3>歷史可能被截斷或摘要</h3><p>較舊內容可能直接移出、改成摘要，或依重要性保留。不同產品與策略結果不同。</p></article>
+    <article class="panel card"><div class="n">03 / 影響</div><h3>注意力不是固定規則</h3><p>Transformer 可在已提供 token 間建立關聯；recency bias 常見但不是固定遞減，會受任務、位置、內容與模型影響。</p></article>
+  </section>
+</main>
+<script>
+const steps = [
+ {cap:'1,240 / 4,000 tokens', included:'3 個區塊被納入', event:'起始狀態', available:'全局可用上下文', insight:'<b>關鍵校正：</b>畫面由下往上排列是為了閱讀時間線；它不是模型固定的讀取方向，也不是注意力強度圖。', msgs:[['system','系統指令','你是繁體中文助理。','rgba(169,140,255,.18)',.35],['user','Prompt #1','幫我規劃一趟台南兩日旅行。','rgba(255,194,90,.3)',.9],['user','目前最新 Prompt','預算是每人 5,000 元。','rgba(255,194,90,.38)',1]]},
+ {cap:'2,380 / 4,000 tokens', included:'4 個區塊被納入', event:'新增 Prompt #2', available:'對話歷史 + 系統指令', insight:'<b>這一輪：</b>服務再次把相關訊息組裝成輸入。最新 prompt 很接近輸出位置，可能產生 recency 影響；但它不保證總是「最重要」。', msgs:[['system','系統指令','你是繁體中文助理。','rgba(169,140,255,.18)',.32],['user','Prompt #1','幫我規劃一趟台南兩日旅行。','rgba(88,184,255,.16)',.48],['user','Prompt #2','預算是每人 5,000 元。','rgba(255,194,90,.25)',.72],['user','目前最新 Prompt','我想吃牛肉湯，也要有雨備。','rgba(255,194,90,.38)',.95]]},
+ {cap:'3,120 / 4,000 tokens', included:'5 個區塊被納入', event:'新增 Prompt #3', available:'歷史 + 外部檢索結果', insight:'<b>影響力視覺化：</b>色彩亮度只是此示意圖對「可能相關性」的假設，並非模型可直接輸出的穩定注意力分數。', msgs:[['system','系統指令','你是繁體中文助理。','rgba(169,140,255,.18)',.3],['user','Prompt #1','幫我規劃一趟台南兩日旅行。','rgba(88,184,255,.15)',.42],['user','Prompt #2','預算是每人 5,000 元。','rgba(255,194,90,.24)',.7],['summary','檢索結果','今日台南降雨機率與營業資訊（由外部工具加入）。','rgba(97,223,179,.32)',.82],['user','目前最新 Prompt','請把行程排成上午、下午、晚上。','rgba(255,194,90,.4)',1]]},
+ {cap:'3,760 / 4,000 tokens', included:'摘要 + 4 個區塊被納入', event:'超過預算後的組裝策略', available:'完整歷史仍可能存在於應用端', insight:'<b>可能被截斷或摘要：</b>當空間不足，舊訊息不一定原封不動進入本輪。此例以摘要取代部分舊內容；也可能是截斷、檢索或其他策略。', msgs:[['cut','較舊歷史（應用端保留）','未原文送入本次 context window。','rgba(255,127,147,.13)',.13],['system','系統指令','你是繁體中文助理。','rgba(169,140,255,.18)',.28],['summary','對話摘要','使用者：台南兩日、每人 5,000、牛肉湯、需要雨備。','rgba(97,223,179,.32)',.86],['summary','檢索結果','今日台南降雨機率與營業資訊。','rgba(97,223,179,.22)',.64],['user','目前最新 Prompt','請把行程排成上午、下午、晚上。','rgba(255,194,90,.4)',1]]}
+];
+let index=0, timer=null;
+const stack=document.querySelector('#stack'), tl=document.querySelector('#timeline');
+function render(){ const s=steps[index]; stack.innerHTML=s.msgs.map(m=>`<div class="message ${m[0]}" style="--glow:${m[3]};--op:${m[4]}"><div class="impact"></div><strong>${m[1]}</strong><small>${m[2]}</small></div>`).join(''); document.querySelector('#capacity').textContent=s.cap; document.querySelector('#included').textContent=s.included; document.querySelector('#event').textContent=s.event; document.querySelector('#available').textContent=s.available; document.querySelector('#insight').innerHTML=s.insight; tl.innerHTML=steps.map((_,i)=>`<div class="dot ${i<=index?'active':''}"></div>`).join(''); document.querySelector('#next').disabled=index===steps.length-1; }
+function advance(){ if(index<steps.length-1){ index++; render(); } else { clearInterval(timer); timer=null; document.querySelector('#play').textContent='▶ 播放'; } }
+document.querySelector('#next').addEventListener('click',advance);
+document.querySelector('#reset').addEventListener('click',()=>{ index=0; clearInterval(timer); timer=null; document.querySelector('#play').textContent='▶ 播放'; render(); });
+document.querySelector('#play').addEventListener('click',e=>{ if(timer){clearInterval(timer);timer=null;e.currentTarget.textContent='▶ 播放';}else{if(index===steps.length-1)index=0;render();timer=setInterval(advance,1800);e.currentTarget.textContent='Ⅱ 暫停';} });
+render();
+</script>
+</body></html>

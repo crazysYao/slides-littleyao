@@ -5,7 +5,166 @@ import { makeNative } from './native.mjs';
 import { pages, palette } from './job-site-content.mjs';
 import { esc } from './html-kit.mjs';
 
-const page = (id) => pages.find((x) => x.id === id);
+// 這幾頁已不在簡報裡，版型還留著；物件原樣取自改版前的內容檔，讓版型測試繼續有對象
+const FIXTURES = {
+  "s1-install-win": {
+    "id": "s1-install-win",
+    "layout": "copyMock",
+    "section": "工具一次到位",
+    "title": "安裝：Windows",
+    "notes": "開始鍵輸入 PowerShell → 右鍵貼上 → Enter。winget 不能用的電腦，改走上一頁的官方安裝檔。跳出藍色警告：其他資訊 → 仍要執行。",
+    "tag": "安裝 · Windows",
+    "heading": "安裝：Windows 一行就好",
+    "cardTitle": "複製 → 開始鍵輸入 PowerShell → 右鍵貼上 → Enter",
+    "mockTitle": "Windows PowerShell",
+    "mock": [
+      [
+        [
+          "PS C:\\Users\\你> "
+        ],
+        [
+          "在這裡按右鍵貼上 → Enter",
+          "y"
+        ]
+      ],
+      [
+        [
+          "正在安裝 Node.js …  "
+        ],
+        [
+          "完成",
+          "g"
+        ]
+      ],
+      [
+        [
+          "正在安裝 OpenCode Desktop …  "
+        ],
+        [
+          "完成",
+          "g"
+        ]
+      ],
+      [
+        [
+          "全部裝好：關掉 PowerShell，再打開一次",
+          "m"
+        ]
+      ]
+    ],
+    "prompt": "winget install --id OpenJS.NodeJS.LTS -e; winget install --id SST.OpenCodeDesktop -e"
+  },
+  "s1-hello": {
+    "id": "s1-hello",
+    "layout": "copyMock",
+    "section": "工具一次到位",
+    "title": "OpenCode 打招呼＝檢查點",
+    "notes": "09:36 打招呼卡＝全班檢查點(4)。OpenCode 左邊「新增專案」→ 選桌面的 my-site → 貼上 → 傳送 → 看懂再按「允許一次」。看到模型名稱、看到 我的基本資料.md、看到 node 版本號，三個都過就舉手。講師示範修最常見的錯：沒選對資料夾、node 找不到要重開。沒過的留給助教。",
+    "tag": "全班檢查點 · 三個都過就舉手",
+    "heading": "OpenCode 上工：三個都過就舉手",
+    "cardTitle": "打招呼 → 複製 → 貼到 OpenCode → 傳送",
+    "mockTitle": "OpenCode · my-site",
+    "mock": [
+      [
+        [
+          "你  ",
+          "m"
+        ],
+        [
+          "1 你是哪個模型？看得到哪些檔案？ 2 node 是什麼版本？"
+        ]
+      ],
+      [
+        [
+          "需要權限 · Bash  node --version   ",
+          "m"
+        ],
+        [
+          "[ 允許一次 ]",
+          "y"
+        ]
+      ],
+      [
+        [
+          "AI  ",
+          "m"
+        ],
+        [
+          "我是 Gemini Flash Lite，看得到：我的基本資料.md",
+          "g"
+        ]
+      ],
+      [
+        [
+          "AI  ",
+          "m"
+        ],
+        [
+          "node 是 v22，可以開始了。",
+          "g"
+        ]
+      ]
+    ],
+    "prompt": "1 你是哪個模型？看得到哪些檔案？\n2 node 是什麼版本？沒有的話告訴我，先不要裝"
+  },
+  "s1-vercel-login": {
+    "id": "s1-vercel-login",
+    "layout": "copyMock",
+    "section": "工具一次到位",
+    "title": "叫 OpenCode 登入 Vercel",
+    "notes": "一律用 npx，不要 npm i -g（Mac 會要管理員密碼）。第一次跑 npx 要下載，約 30–60 秒。最後 1 分鐘拋懸念：休息後，換 AI 反過來訪問你。",
+    "tag": "上線前準備",
+    "heading": "叫 OpenCode 幫你登入 Vercel",
+    "cardTitle": "登入 → 複製 → 貼到 OpenCode → 傳送 → 瀏覽器按授權",
+    "mockTitle": "OpenCode · my-site",
+    "mock": [
+      [
+        [
+          "AI  ",
+          "m"
+        ],
+        [
+          "Vercel CLI 已可用，版本號出來了。"
+        ]
+      ],
+      [
+        [
+          "AI  ",
+          "m"
+        ],
+        [
+          "請打開這個網址登入：",
+          "g"
+        ],
+        [
+          "https://vercel.com/…",
+          "y"
+        ]
+      ],
+      [
+        [
+          "你  ",
+          "m"
+        ],
+        [
+          "（瀏覽器按授權，回到 OpenCode）"
+        ]
+      ],
+      [
+        [
+          "AI  ",
+          "m"
+        ],
+        [
+          "登入成功。",
+          "g"
+        ]
+      ]
+    ],
+    "prompt": "1 跑 npx vercel@latest --version，看到版本號就好\n2 跑 npx vercel@latest login，把網址給我，我在瀏覽器登入"
+  }
+};
+const page = (id) => FIXTURES[id] ?? pages.find((x) => x.id === id);
 const run = (id) => {
   const p = page(id);
   return [p, layouts[p.layout](p, { palette, n: makeNative(p.id, palette.accent) })];
@@ -63,7 +222,7 @@ export const assertAllShown = (p, r, skip) => {
 };
 
 test('代表頁：cover、rows、linkTask 文字齊全、不循環', () => {
-  for (const id of ['cover', 's1-gf-3', 's1-aistudio']) {
+  for (const id of ['cover', 's1-gf-3', 's3-drop']) {
     const [p, r] = run(id);
     assertAllShown(p, r, ['link']);
     assert.ok(!r.loop, id);
@@ -71,7 +230,7 @@ test('代表頁：cover、rows、linkTask 文字齊全、不循環', () => {
 });
 
 test('linkTask：只有一個原生 link，網址與內容檔相同', () => {
-  const [p, r] = run('s1-aistudio');
+  const [p, r] = run('s3-drop');
   assert.deepEqual(r.natives.map((e) => e.type), ['link']);
   assert.equal(r.natives[0].linkUrl, p.link[0]);
 });
@@ -88,7 +247,7 @@ test('靜態版型：所有頁文字齊全、不循環', () => {
 });
 
 test('loop：三站截圖框是原生 svg，標題在 HTML', () => {
-  const [p, r] = run('s1-roadmap');
+  const [p, r] = run('s3-recap');
   assert.equal(r.natives.filter((e) => e.type === 'svg').length, 3);
   for (const [t] of p.shots) assert.ok(r.body.includes(esc(t)));
 });
@@ -107,4 +266,10 @@ test('copyMock：每輪都重新逐行出現（不靠 animation-delay，每行�
     assert.doesNotMatch(r.body, /animation-delay/, id);
     for (let i = 1; i < p.mock.length; i++) assert.match(r.body, new RegExp(`class="[^"]*\\bln r${i}\\b`), `${id} 第 ${i} 行`);
   }
+});
+
+test('skillTemplate：視窗標題可設定，沒給就寫「聊天 AI」', () => {
+  const base = { tag: 't', heading: 'h', lines: [] };
+  assert.match(layouts.skillTemplate({ ...base, app: 'Gemini' }, { palette }).body, /<\/i>Gemini</);
+  assert.match(layouts.skillTemplate(base, { palette }).body, /<\/i>聊天 AI</);
 });

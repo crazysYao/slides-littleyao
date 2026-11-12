@@ -1,5 +1,7 @@
 // 求職網站簡報的版型：每個版型回傳 { body: HTML 片段, natives: 原生元件, loop?: 是否循環示意 }。
 import { esc, splitSteps, chips } from './html-kit.mjs';
+import { contextLayouts } from './html-context.mjs';
+import { skillLayouts } from './html-skill.mjs';
 
 const title = (s, d = 0) => `<h1 class="t in" style="--d:${d}s">${esc(s)}</h1>`;
 
@@ -22,6 +24,11 @@ const d = (i, base = 0.15, step = 0.08) => `--d:${(base + i * step).toFixed(2)}s
 // 內容檔用顏色代號（accent、dark、muted、text）；黃色上面一律放黑字
 const fill = (P, key) => P[key] ?? key;
 const onFill = (P, key) => (P.ink?.[fill(P, key)] ?? (key === 'accent' ? P.text : '#fff'));
+
+// 風格縮圖：引用 Eric 新竹簡報 jj-site-styles 的 8 種風格樣式
+const STYLE_CSS = `.sm { position: relative; aspect-ratio: 16 / 9; overflow: hidden; border-radius: 12px; font-size: 10px; line-height: 1.2; isolation: isolate; } .sm-page { position: relative; z-index: 1; display: grid; height: 100%; grid-template-columns: 1.1fr 1fr; grid-template-rows: 1fr auto; gap: 8px; padding: 12px 14px; } .sm-hero { display: flex; flex-direction: column; justify-content: center; gap: 6px; } .sm-name { font-size: 17px; font-weight: 800; white-space: nowrap; } .sm-sub { display: block; height: 5px; width: 70%; border-radius: 3px; background: currentColor; opacity: 0.3; } .sm-grid { display: grid; grid-template-columns: 1fr 1fr; grid-template-rows: 1fr 1fr; gap: 6px; } .sm-card { display: block; } .sm-c1 { grid-row: span 2; } .sm-btn { align-self: end; justify-self: start; padding: 4px 10px; font-size: 9px; font-weight: 700; } .sm-deco { position: absolute; pointer-events: none; } .sm-A { background: #f5f5f7; color: #1d1d1f; } .sm-A .sm-hero { border-radius: 14px; background: #fff; padding: 8px; } .sm-A .sm-card { border-radius: 12px; background: #fff; } .sm-A .sm-c3 { background: #1d1d1f; } .sm-A .sm-btn { border-radius: 999px; background: #1d1d1f; color: #fff; } .sm-B { background: linear-gradient(135deg, #7dd3fc, #a78bfa 55%, #f9a8d4); color: #0f172a; } .sm-B .sm-hero, .sm-B .sm-card { border: 1px solid rgb(255 255 255 / 0.55); border-radius: 14px; background: rgb(255 255 255 / 0.22); box-shadow: inset 0 1px 0 rgb(255 255 255 / 0.7); backdrop-filter: blur(10px); } .sm-B .sm-hero { padding: 8px; } .sm-B .sm-btn { border: 1px solid rgb(255 255 255 / 0.7); border-radius: 999px; background: rgb(255 255 255 / 0.35); } .sm-B .sm-d1 { top: -20%; right: 10%; width: 45%; height: 70%; border-radius: 50%; background: #f472b6; filter: blur(18px); opacity: 0.6; z-index: 0; } .sm-C { background: #ffde59; color: #111; } .sm-C .sm-name { transform: rotate(-2deg); font-family: "Archivo Black", sans-serif; } .sm-C .sm-card { border: 2px solid #111; background: #fff; box-shadow: 4px 4px 0 #111; } .sm-C .sm-btn { border: 2px solid #111; background: #ff5757; box-shadow: 3px 3px 0 #111; } .sm-D { background: #eef2ff; color: #3730a3; } .sm-D .sm-card, .sm-D .sm-btn { border-radius: 14px; box-shadow: 5px 5px 12px rgb(99 102 241 / 0.25), inset -3px -3px 6px rgb(0 0 0 / 0.08), inset 3px 3px 6px rgb(255 255 255 / 0.8); } .sm-D .sm-c1 { background: #c7d2fe; } .sm-D .sm-c2 { background: #fde68a; } .sm-D .sm-c3 { background: #a7f3d0; } .sm-D .sm-btn { border-radius: 999px; background: #fbcfe8; } .sm-D .sm-name { font-family: "Fredoka", "Nunito", sans-serif; } .sm-E { background: #07070b; color: #f4f4f5; } .sm-E .sm-d1 { top: -30%; left: -10%; width: 60%; height: 90%; border-radius: 50%; background: #8b5cf6; filter: blur(22px); opacity: 0.55; z-index: 0; } .sm-E .sm-d2 { bottom: -40%; left: 25%; width: 55%; height: 90%; border-radius: 50%; background: #22d3ee; filter: blur(22px); opacity: 0.45; z-index: 0; } .sm-E .sm-name { background: linear-gradient(90deg, #fff, #67e8f9); -webkit-background-clip: text; background-clip: text; color: transparent; } .sm-E .sm-card { border: 1px solid rgb(255 255 255 / 0.1); border-radius: 8px; background: rgb(17 17 24 / 0.8); } .sm-E .sm-btn { border-radius: 6px; background: #fff; color: #000; box-shadow: 0 0 12px rgb(255 255 255 / 0.4); } .sm-F { background: #f4f1ea; color: #111; } .sm-F .sm-name { color: #e63312; font-size: 20px; letter-spacing: -0.04em; } .sm-F .sm-card { border-top: 1px solid #111; background: transparent; } .sm-F .sm-btn { padding: 0; border-bottom: 1px solid #111; } .sm-G { background: radial-gradient(circle at 70% 20%, #2a1a3d, #0b0b12 70%); color: #fff; } .sm-G .sm-name { background: linear-gradient(180deg, #fff, #9ca3af 50%, #f3f4f6 60%, #6b7280); -webkit-background-clip: text; background-clip: text; color: transparent; font-family: "Unbounded", "Syne", sans-serif; } .sm-G .sm-card { border: 1px solid transparent; border-radius: 10px; background: linear-gradient(#14141f, #14141f) padding-box, linear-gradient(120deg, #ff71ce, #01cdfe, #05ffa1, #b967ff) border-box; } .sm-G .sm-btn { border-radius: 999px; background: linear-gradient(120deg, #ff71ce, #01cdfe, #b967ff); color: #0b0b12; } .sm-G .sm-d1 { top: 12%; right: 8%; width: 8px; height: 8px; background: #fff; clip-path: polygon(50% 0, 62% 38%, 100% 50%, 62% 62%, 50% 100%, 38% 62%, 0 50%, 38% 38%); } .sm-H { background: #1a1c2c; color: #f4f4f4; font-family: "Press Start 2P", ui-monospace, monospace; } .sm-H .sm-name { font-size: 11px; color: #ffcd75; } .sm-H .sm-card { background: #333c57; box-shadow: 0 -2px 0 #f4f4f4, 0 2px 0 #f4f4f4, -2px 0 0 #f4f4f4, 2px 0 0 #f4f4f4; } .sm-H .sm-c2 { background: repeating-linear-gradient(90deg, #38b764 0 6px, transparent 6px 8px) 3px 40% / 70% 5px no-repeat, #333c57; } .sm-H .sm-btn { background: #ef7d57; color: #1a1c2c; font-size: 7px; box-shadow: 0 2px 0 #b13e53; } .sm-H .sm-d1 { inset: 0; background: repeating-linear-gradient(0deg, rgb(0 0 0 / 0.25) 0 1px, transparent 1px 3px); z-index: 2; } .sg{position:absolute;left:44px;right:44px;top:120px;display:grid;grid-template-columns:repeat(4,1fr);gap:12px 14px} .st{opacity:0;animation:up .5s ease-out forwards} .st .lab{display:flex;align-items:baseline;gap:6px;margin-top:5px} .st .cd{font:800 13px 'JetBrains Mono',monospace;color:#fff;background:#0F3D38;border-radius:3px;padding:0 5px} .st .nmz{font-size:13.5px;font-weight:800;color:#0F3D38} .st .vb{font-size:11.5px;color:#38524D;margin-top:1px} .sm{box-shadow:0 4px 12px rgba(15,61,56,.12)}`;
+const styleTile = (code, who) =>
+  `<div class="sm sm-${code}"><div class="sm-page"><div class="sm-hero"><span class="sm-name">${esc(who)}</span><span class="sm-sub"></span></div><div class="sm-grid"><span class="sm-card sm-c1"></span><span class="sm-card sm-c2"></span><span class="sm-card sm-c3"></span></div><span class="sm-btn">Contact</span></div><span class="sm-deco sm-d1"></span><span class="sm-deco sm-d2"></span></div>`;
 
 export const layouts = {
   cover: (p, { palette: P }) => ({
@@ -271,7 +278,7 @@ Object.assign(layouts, {
     body:
       tagPill(P, p.tag) +
       taskTitle(p.heading) +
-      `<div class="win in" style="left:44px;top:170px;width:872px;height:220px;${d(1)}"><div class="tb"><i></i><i></i><i></i>OpenCode</div><div class="scr" style="font-size:18px;line-height:1.7">${p.lines
+      `<div class="win in" style="left:44px;top:170px;width:872px;height:220px;${d(1)}"><div class="tb"><i></i><i></i><i></i>${esc(p.app ?? '聊天 AI')}</div><div class="scr" style="font-size:18px;line-height:1.7">${p.lines
         .map(([c, s, ex]) => `<div style="color:${c === 'why' ? P.accent : '#e8e6df'};margin-top:8px">${esc(s)}</div>${ex ? `<div style="font-size:14px;color:${P.darkSub}">${esc(ex)}</div>` : ''}`)
         .join('')}</div></div>` +
       (p.note ? abs(`left:44px;right:44px;top:416px;font-size:20px;font-weight:700;border-left:6px solid ${P.accent};padding-left:14px`, esc(p.note), 3) : ''),
@@ -340,6 +347,15 @@ Object.assign(layouts, {
     };
   },
 
+  // 8 種風格縮圖＋風格字典連結（Eric 新竹版）
+  styleGallery: (p, { palette: P, n }) => ({
+    body:
+      `<style>${STYLE_CSS}.sg{position:absolute;left:44px;right:44px;top:120px;display:grid;grid-template-columns:repeat(4,1fr);gap:12px 14px}.sg .sm{box-shadow:0 4px 12px rgba(0,0,0,.12)}.sg .lab{display:flex;align-items:baseline;gap:6px;margin-top:5px}.sg .cd{font:800 13px ui-monospace,monospace;color:#fff;background:${P.dark};border-radius:3px;padding:0 5px}.sg .nmz{font-size:14px;font-weight:800;color:${P.text}}</style>` +
+      title(p.heading) +
+      `<div class="sg">${p.styles.map(([code, name], i) => `<div class="in" style="${d(i, 0.15, 0.06)}">${styleTile(code, p.who)}<div class="lab"><span class="cd">${code}</span><span class="nmz">${esc(name)}</span></div></div>`).join('')}</div>`,
+    natives: [n.link(44, 436, 872, 64, p.link)],
+  }),
+
   homework: (p, { n }) => ({ body: title(p.heading), natives: [n.homework(p.hwId, 70, 130, 820, 400, p.title, p.description)] }),
   poll: (p, { n }) => ({ body: '', natives: [n.poll(p.question, p.options)] }),
   multiChoice: (p, { n }) => ({ body: '', natives: [n.poll(p.question, p.options, true)] }),
@@ -348,3 +364,5 @@ Object.assign(layouts, {
   showcase: (p, { n }) => ({ body: '', natives: [n.showcase(p.title, p.linkHomework)] }),
   webProject: (p, { n }) => ({ body: '', natives: [n.webProject(p.question, p.methods)] }),
 });
+
+Object.assign(layouts, contextLayouts, skillLayouts);

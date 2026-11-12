@@ -1,0 +1,29 @@
+{
+  "schemaVersion": "synora-local-render/v1",
+  "view": "presenter",
+  "pages": [
+    1,
+    2,
+    3
+  ],
+  "browser": "Google Chrome",
+  "screenshots": [
+    {
+      "page": 1,
+      "view": "presenter",
+      "path": "/Users/yao/orca/workspaces/slides-littleyao/ntut-interview-5q/docs/ntut-ai-course/synora/--out=/private/tmp/claude-501/-Users-yao-orca-workspaces-slides-littleyao-------4/174e8955-6d07-4dba-adae-99fd5868a626/scratchpad/render-style/slide-p1.png"
+    },
+    {
+      "page": 2,
+      "view": "presenter",
+      "path": "/Users/yao/orca/workspaces/slides-littleyao/ntut-interview-5q/docs/ntut-ai-course/synora/--out=/private/tmp/claude-501/-Users-yao-orca-workspaces-slides-littleyao-------4/174e8955-6d07-4dba-adae-99fd5868a626/scratchpad/render-style/slide-p2.png"
+    },
+    {
+      "page": 3,
+      "view": "presenter",
+      "path": "/Users/yao/orca/workspaces/slides-littleyao/ntut-interview-5q/docs/ntut-ai-course/synora/--out=/private/tmp/claude-501/-Users-yao-orca-workspaces-slides-littleyao-------4/174e8955-6d07-4dba-adae-99fd5868a626/scratchpad/render-style/slide-p3.png"
+    }
+  ],
+  "warnings": [],
+  "runtimeVersion": "2.12.0"
+}
