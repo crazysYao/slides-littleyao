@@ -119,3 +119,43 @@ test('作品牆連到存在的作業', () => {
   for (const p of content.pages.filter((x) => x.layout === 'showcase')) assert.ok(hw.has(p.linkHomework), p.id);
   assert.deepEqual([...hw], ['job-skill-up', 'job-v2-up']);
 });
+
+// 設計文件三張時間表的 25 個環節：每個環節第一頁的講稿要用「時間 名稱(分)」開頭
+const SCHEDULE = [
+  ['s1-outline', '09:00', 4], ['s1-login', '09:04', 5], ['s1-problem', '09:09', 4], ['s1-drink', '09:13', 4], ['s1-gf-1', '09:17', 4],
+  ['s1-interview', '09:21', 15], ['s1-prompt-1', '09:36', 11], ['s1-save', '09:47', 3],
+  ['s2-quiz-warmup', '10:00', 3], ['s2-typhoon', '10:03', 4], ['s2-style', '10:07', 4], ['s2-prompt-2', '10:11', 20], ['s2-v1-poll', '10:31', 3],
+  ['s2-skill-1', '10:34', 5], ['s2-skill-make', '10:39', 8], ['s2-skill-upload', '10:47', 3],
+  ['s3-review', '11:00', 13], ['s3-v2-upload', '11:13', 8], ['s3-public', '11:21', 2], ['s3-ctx-classes', '11:23', 7], ['s3-newchat', '11:30', 6],
+  ['s3-drop', '11:36', 4], ['s3-obsidian', '11:40', 6], ['s3-recap', '11:46', 1], ['qa', '11:50', 10],
+];
+const stamp = (p) => (p.notes ?? p.firstNote ?? '').match(/^(\d\d:\d\d) [^(（]*[(（](\d+)[)）]/);
+
+test('25 個環節的時間與分鐘數逐一符合設計的時間表', () => {
+  for (const [id, time, min] of SCHEDULE) {
+    const m = stamp(page(id));
+    assert.ok(m, `${id} 的講稿沒有時間標記`);
+    assert.deepEqual([m[1], Number(m[2])], [time, min], id);
+  }
+  const marked = content.pages.filter(stamp).map((p) => p.id);
+  assert.deepEqual(marked, SCHEDULE.map(([id]) => id), '有時間標記的頁，應該剛好是這 25 頁');
+  // 前一個環節的開始時間加分鐘數，要等於下一個環節的開始時間（跨休息與緩衝除外）
+  const toMin = (t) => Number(t.slice(0, 2)) * 60 + Number(t.slice(3));
+  const gaps = { 's2-quiz-warmup': 10, 's3-review': 10, qa: 3 };
+  SCHEDULE.slice(1).forEach(([id, time], i) => {
+    const [, prevTime, prevMin] = SCHEDULE[i];
+    assert.equal(toMin(time), toMin(prevTime) + prevMin + (gaps[id] ?? 0), `${id} 的開始時間接不上前一個環節`);
+  });
+});
+
+test('審查修正：講稿前後一致', () => {
+  // Skill 是今天帶走的第三樣（基本資料、網站 v2、Skill），回顧頁也是這個順序
+  assert.match(page('s2-skill-upload').notes, /第三樣/);
+  assert.deepEqual(page('s3-recap').compare, ['一份「我的基本資料」', '網站 v2', '一個自己做的 Skill']);
+  // 09:09 到 11:30 不到三小時
+  assert.doesNotMatch(page('s3-newchat').notes, /三小時前/);
+  // 前面一路在同一個對話做，揭曉「一個對話只做一件事」時要交代為什麼
+  assert.match(page('s3-ctx-reveal').notes, /同一個對話/);
+  // 三欄對應咖啡店第 5 頁，畫面上要看得到
+  assert.match(page('s2-skill-make').tag, /Metadata/);
+});
