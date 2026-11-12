@@ -95,15 +95,6 @@ export const pages = [
     prompt: '幫我寫自我介紹',
   },
   {
-    id: 's1-problem-poll',
-    layout: 'poll',
-    section: '01 發現問題',
-    title: '投票：這在講你嗎',
-    notes: '唸出 AI 的結果再開投票。長條圖一面倒時接：所以這是在座每一個人的自我介紹。',
-    question: '這段自我介紹在講你嗎？',
-    options: ['這在講我', '不是我'],
-  },
-  {
     id: 's1-problem-reveal',
     layout: 'reveal',
     section: '01 發現問題',
