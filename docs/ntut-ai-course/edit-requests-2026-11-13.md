@@ -15,3 +15,4 @@
 ## 狀態
 
 7 項已改完（本機 62 頁、測試 73 項通過），**尚未推 Synora**，等講師看完預覽定稿。
+| 8 | 29（s2-rescue「卡住了，照這張做」） | 用 operation-demo skill 轉成操作動畫 | 已改：opDemo 版型＋assets/rescue-demo.fragment.html，四種情況依序示範（等 8 分鐘→開新對話貼副本／額度用完→換 ChatGPT／沒有 Canvas→換 Claude／還是不行→舉手）。**待講師看效果** |

@@ -1,0 +1,180 @@
+<style>
+#rsc{--line:#EDE6D8;--ink:#2B2620;--mute:#8A8275;--y:#F5B400;--yd:#D99A00;--y2:#FFF3CC;--ok:#2E8B57;--red:#D0121B;position:absolute;left:0;top:0;width:960px;height:540px}
+#rsc *{box-sizing:border-box}
+#rsc .outer{position:absolute;left:44px;top:112px;width:576px;height:288px}
+#rsc .stage{zoom:.6;position:absolute;top:0;left:0;width:960px;height:480px;background:#fff;border:1px solid var(--line);border-radius:22px;overflow:hidden;padding:26px 30px;display:flex;gap:26px;align-items:stretch}
+#rsc .stage::before{content:"";position:absolute;inset:0;background:radial-gradient(circle at 80% 40%,#FFF8E2 0,transparent 55%);pointer-events:none}
+#rsc .win{position:relative;flex:1;background:#F7F4EE;border:1px solid var(--line);border-radius:18px;display:flex;flex-direction:column;overflow:hidden}
+#rsc .tabs{display:flex;gap:6px;padding:10px 12px;background:#efebe2;border-bottom:1px solid var(--line)}
+#rsc .tab{padding:6px 14px;border-radius:999px;font-size:14px;font-weight:600;color:var(--mute);background:transparent;transition:all .25s}
+#rsc .tab.on{background:#fff;color:var(--ink);box-shadow:0 1px 3px rgba(0,0,0,.08)}
+#rsc .tab.press{background:var(--y);color:#fff}
+#rsc .newchat{margin-left:auto;padding:6px 14px;border-radius:999px;font-size:14px;font-weight:600;background:#fff;border:1px solid var(--line);color:var(--ink);transition:all .2s}
+#rsc .newchat.press{background:var(--y);color:#fff;border-color:var(--y);transform:scale(.92)}
+#rsc .msgs{position:relative;flex:1;padding:16px 18px;display:flex;flex-direction:column;gap:10px;overflow:hidden}
+#rsc .msg{max-width:78%;padding:10px 14px;border-radius:14px;font-size:15px;line-height:1.55;opacity:0;transform:translateY(8px);transition:opacity .35s,transform .35s}
+#rsc .msg.vis{opacity:1;transform:none}
+#rsc .msg.me{align-self:flex-end;background:#16161a;color:#fff}
+#rsc .msg.ai{align-self:flex-start;background:#fff;border:1px solid var(--line)}
+#rsc .msg.prev{align-self:flex-start;width:300px;background:#fff;border:2px solid var(--y);padding:0;overflow:hidden}
+#rsc .msg.prev .pb{height:16px;background:#efebe2}
+#rsc .msg.prev .pc{padding:12px 14px;font-weight:700}
+#rsc .msg.prev .pc i{display:block;height:8px;border-radius:4px;background:#ebe7de;margin-top:8px;font-style:normal}
+#rsc .spin{display:inline-block;width:14px;height:14px;border:2px solid #ddd6c8;border-top-color:var(--yd);border-radius:50%;vertical-align:-2px;margin-right:6px;animation:spin .8s linear 30}
+@keyframes spin{to{transform:rotate(360deg)}}
+#rsc .timer{font-variant-numeric:tabular-nums;font-weight:700;color:var(--red)}
+#rsc .banner{position:absolute;left:18px;right:18px;top:14px;padding:10px 14px;border-radius:12px;font-size:15px;font-weight:700;opacity:0;transform:translateY(-8px);transition:all .3s;z-index:2}
+#rsc .banner.show{opacity:1;transform:none}
+#rsc .banner.red{background:#FDECEC;color:var(--red);border:1px solid #F5C2C2}
+#rsc .banner.gray{background:#F1EFEA;color:#55524b;border:1px solid #ddd6c8}
+#rsc .inputbar{margin:0 14px 14px;padding:10px 14px;border-radius:12px;background:#fff;border:1px solid var(--line);font-size:14px;color:#bdb6a8}
+#rsc .side{position:relative;width:250px;display:flex;flex-direction:column;gap:14px}
+#rsc .memo{background:#fff;border:1px solid var(--line);border-radius:16px;padding:14px 16px;font-size:13px;line-height:1.7;box-shadow:0 8px 20px rgba(60,40,0,.08)}
+#rsc .memo b{display:block;font-size:15px;margin-bottom:4px}
+#rsc .memo .mbtn{margin-top:8px;display:inline-block;padding:4px 12px;border-radius:999px;border:1px solid var(--line);font-size:12px;color:var(--mute);transition:all .2s}
+#rsc .memo .mbtn.press{background:var(--y);color:#fff;border-color:var(--y)}
+#rsc .hand{position:relative;flex:1;border:2px dashed #ddd6c8;border-radius:16px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:8px;color:var(--mute);font-size:14px;transition:all .3s}
+#rsc .hand .em{font-size:56px;line-height:1;transform-origin:50% 90%}
+#rsc .hand.up{border-color:var(--y);background:var(--y2);color:var(--ink);font-weight:700}
+#rsc .hand.up .em{animation:wave .5s ease-in-out 4 alternate}
+@keyframes wave{from{transform:rotate(-14deg)}to{transform:rotate(14deg)}}
+#rsc .toast{position:absolute;top:16px;left:50%;transform:translate(-50%,-20px);background:var(--ink);color:#fff;font-size:15px;padding:9px 18px;border-radius:999px;opacity:0;transition:all .3s;z-index:5}
+#rsc .toast.show{opacity:1;transform:translate(-50%,0)}
+#rsc .fly{position:absolute;top:0;left:0;z-index:6;opacity:0;pointer-events:none;background:#fff;border:2px solid var(--y);border-radius:12px;padding:8px 12px;font-size:13px;font-weight:700;box-shadow:0 10px 24px rgba(200,140,0,.3);white-space:nowrap}
+#rsc .cursor{position:absolute;top:0;left:0;z-index:7;pointer-events:none;transform:translate(480px,560px)}
+#rsc .cursor svg{width:26px;height:26px;transform:translate(-3px,-2px);transition:transform .12s;filter:drop-shadow(0 2px 3px rgba(0,0,0,.25))}
+#rsc .cursor.down svg{transform:translate(-3px,-2px) scale(.85)}
+#rsc .ripple{position:absolute;z-index:6;width:16px;height:16px;margin:-8px 0 0 -8px;border-radius:50%;border:2px solid var(--y);pointer-events:none;animation:rip .5s ease-out forwards}
+@keyframes rip{to{transform:scale(3.2);opacity:0}}
+#rsc .caption{position:absolute;left:44px;top:406px;width:576px;text-align:center;font-size:15px;font-weight:700;min-height:22px;transition:opacity .25s}
+#rsc .caption.fade{opacity:0}
+#rsc .ctl{position:absolute;left:44px;top:446px;display:flex;gap:8px}
+#rsc .btn{border:1px solid var(--line);background:#fff;font:inherit;font-size:12px;padding:5px 12px;border-radius:999px;cursor:pointer;color:var(--ink)}
+#rsc .cards{position:absolute;left:644px;right:44px;top:112px;display:grid;gap:8px}
+#rsc .rc{display:flex;align-items:center;gap:10px;background:#fff;border:1.5px solid var(--line);border-radius:12px;padding:8px 12px;transition:all .3s}
+#rsc .rc .n{flex:0 0 26px;height:26px;border-radius:13px;background:var(--y);display:grid;place-items:center;font-weight:900;font-size:13px}
+#rsc .rc .tt{font-size:14px;font-weight:800}
+#rsc .rc .ss{font-size:11px;color:var(--mute);margin-top:2px;line-height:1.35}
+#rsc .rc .chk{margin-left:auto;flex:0 0 22px;height:22px;border-radius:50%;background:#E8F6EC;color:var(--ok);display:grid;place-items:center;font-size:12px;opacity:0;transform:scale(.5);transition:all .3s}
+#rsc .rc.active{border-color:var(--y);box-shadow:0 6px 18px rgba(245,180,0,.18)}
+#rsc .rc.fin .chk{opacity:1;transform:none}
+#rsc .rc:not(.active):not(.fin){opacity:.7}
+.cap #rsc .toast,.cap #rsc .fly,.cap #rsc .cursor,.cap #rsc .ripple,.cap #rsc .ctl,.cap #rsc .banner{display:none}
+@media (prefers-reduced-motion:reduce){#rsc .toast,#rsc .fly,#rsc .cursor,#rsc .ripple,#rsc .banner{display:none}}
+</style>
+<div id="rsc">
+  <div class="outer"><div class="stage" id="stage">
+    <div class="win" id="win">
+      <div class="tabs"><span class="tab on" data-app="Gemini">Gemini</span><span class="tab" data-app="ChatGPT">ChatGPT</span><span class="tab" data-app="Claude">Claude</span><span class="newchat" id="newchat">＋ 新對話</span></div>
+      <div class="msgs" id="msgs"><div class="banner" id="banner"></div></div>
+      <div class="inputbar" id="input">輸入訊息…</div>
+    </div>
+    <div class="side">
+      <div class="memo" id="memo"><b>我的基本資料（副本）</b>學校：北科大 資工系<br>想做：前端工程師<br>專題：校園二手書平台<br><span class="mbtn" id="memoBtn">複製</span></div>
+      <div class="hand" id="hand"><span class="em">✋</span><span id="handTxt">試過還是不行？</span></div>
+    </div>
+    <div class="toast" id="toast"></div>
+    <div class="fly" id="fly"></div>
+    <div class="cursor" id="cursor"><svg viewBox="0 0 24 24"><path d="M4 2l15 11.5-6.6.9 3.9 7.4-3 1.5-3.9-7.5L4 20.5z" fill="#fff" stroke="#2B2620" stroke-width="1.6" stroke-linejoin="round"/></svg></div>
+  </div></div>
+  <div class="caption" id="caption">&nbsp;</div>
+  <div class="ctl"><button class="btn" id="loopBtn">自動循環：開</button><button class="btn" id="replay">↻ 重播</button></div>
+  <div class="cards">
+    <div class="rc" data-step="1"><span class="n">1</span><div><div class="tt">8 分鐘還沒出來</div><div class="ss">開新對話 → 貼副本 → 貼 Prompt ②</div></div><span class="chk">✓</span></div>
+    <div class="rc" data-step="2"><span class="n">2</span><div><div class="tt">額度用完了</div><div class="ss">換 ChatGPT 或 Claude，貼副本接著做</div></div><span class="chk">✓</span></div>
+    <div class="rc" data-step="3"><span class="n">3</span><div><div class="tt">沒有 Canvas</div><div class="ss">改用 ChatGPT 或 Claude，Prompt 不用改</div></div><span class="chk">✓</span></div>
+    <div class="rc" data-step="4"><span class="n">4</span><div><div class="tt">換了還是不行</div><div class="ss">舉手找助教，用講師的帳號幫你產生</div></div><span class="chk">✓</span></div>
+  </div>
+</div>
+<script>
+(() => {
+const $ = (s) => document.querySelector('#rsc ' + s);
+const stage = $('#stage'), cursor = $('#cursor'), msgs = $('#msgs'), banner = $('#banner'), newchat = $('#newchat'),
+  memo = $('#memo'), memoBtn = $('#memoBtn'), hand = $('#hand'), handTxt = $('#handTxt'), toast = $('#toast'), fly = $('#fly'),
+  input = $('#input'), caption = $('#caption');
+const SCALE = 0.6;
+let runId = 0, looping = true, cx = 480, cy = 560;
+const sleep = (ms, t) => new Promise((res, rej) => setTimeout(() => (t !== runId ? rej('cancel') : res()), ms));
+const pos = (el, fx = 0.5, fy = 0.5) => { const s = stage.getBoundingClientRect(), r = el.getBoundingClientRect(); return { x: (r.left - s.left + r.width * fx) / SCALE, y: (r.top - s.top + r.height * fy) / SCALE }; };
+const place = (x, y, dur) => { cx = x; cy = y; cursor.style.transition = dur ? `transform ${dur}ms cubic-bezier(.45,.05,.25,1)` : 'none'; cursor.style.transform = `translate(${x}px,${y}px)`; };
+const move = async (t, el, fx, fy, dur = 650) => { const p = pos(el, fx, fy); place(p.x, p.y, dur); await sleep(dur, t); };
+const ripple = () => { const r = document.createElement('div'); r.className = 'ripple'; r.style.left = cx + 'px'; r.style.top = cy + 'px'; stage.appendChild(r); setTimeout(() => r.remove(), 700); };
+const click = async (t, el) => { cursor.classList.add('down'); ripple(); el && el.classList.add('press'); await sleep(160, t); cursor.classList.remove('down'); el && el.classList.remove('press'); };
+const setCap = (txt) => { caption.classList.add('fade'); setTimeout(() => { caption.textContent = txt; caption.classList.remove('fade'); }, 200); };
+const setStep = (n) => document.querySelectorAll('#rsc .rc').forEach((s) => { const k = +s.dataset.step; s.classList.toggle('active', k === n); s.classList.toggle('fin', k < n); });
+const setApp = (name) => document.querySelectorAll('#rsc .tab').forEach((x) => x.classList.toggle('on', x.dataset.app === name));
+const tab = (name) => document.querySelector(`#rsc .tab[data-app="${name}"]`);
+const clearMsgs = () => { msgs.querySelectorAll('.msg').forEach((m) => m.remove()); banner.className = 'banner'; };
+const add = async (t, cls, html) => { const m = document.createElement('div'); m.className = 'msg ' + cls; m.innerHTML = html; msgs.appendChild(m); requestAnimationFrame(() => requestAnimationFrame(() => m.classList.add('vis'))); await sleep(420, t); return m; };
+const showBanner = (cls, txt) => { banner.textContent = txt; banner.className = 'banner show ' + cls; };
+const preview = (t) => add(t, 'prev', '<div class="pb"></div><div class="pc">網站預覽 ✓<i></i><i style="width:70%"></i></div>');
+const flyTo = async (t, label, from, to) => {
+  const a = pos(from), b = pos(to, 0.4, 0.5); fly.textContent = label; fly.style.opacity = 1;
+  fly.animate([
+    { transform: `translate(${a.x}px,${a.y}px) translate(-50%,-50%) scale(.6)`, opacity: 0 },
+    { transform: `translate(${a.x}px,${a.y - 30}px) translate(-50%,-50%) scale(1)`, opacity: 1, offset: 0.2 },
+    { transform: `translate(${b.x}px,${b.y}px) translate(-50%,-50%) scale(.8)`, opacity: 1, offset: 0.85 },
+    { transform: `translate(${b.x}px,${b.y}px) translate(-50%,-50%) scale(.5)`, opacity: 0 },
+  ], { duration: 1000, easing: 'cubic-bezier(.5,0,.3,1)', fill: 'forwards' });
+  await sleep(1000, t);
+};
+const pasteCopy = async (t) => {
+  await move(t, memoBtn); await click(t, memoBtn); toast.textContent = '✓ 已複製基本資料副本'; toast.classList.add('show'); await sleep(700, t); toast.classList.remove('show');
+  await flyTo(t, '我的基本資料（副本）', memoBtn, input);
+  await add(t, 'me', '（貼上）我的基本資料…');
+};
+function reset() {
+  clearMsgs(); setApp('Gemini'); hand.classList.remove('up'); handTxt.textContent = '試過還是不行？';
+  fly.getAnimations().forEach((a) => a.cancel()); fly.style.opacity = 0; toast.classList.remove('show');
+  place(480, 560, 0); setStep(0); caption.innerHTML = '&nbsp;';
+}
+async function run() {
+  const t = ++runId; reset();
+  try {
+    await sleep(500, t);
+    // 1：8 分鐘還沒出來
+    setStep(1); setCap('情況 1：貼出 Prompt ② 已經 8 分鐘，網頁還沒出來');
+    await add(t, 'me', 'Prompt ②：幫我做一個求職網站…');
+    const wait = await add(t, 'ai', '<span class="spin"></span>產生中… <span class="timer">0:00</span>');
+    const tm = wait.querySelector('.timer');
+    for (let m = 1; m <= 8; m++) { tm.textContent = m + ':00'; await sleep(160, t); }
+    setCap('開新對話 → 先貼基本資料副本 → 再貼 Prompt ②');
+    await move(t, newchat); await click(t, newchat); clearMsgs(); await sleep(300, t);
+    await pasteCopy(t);
+    await add(t, 'me', 'Prompt ②：幫我做一個求職網站…');
+    await preview(t); await sleep(900, t);
+    // 2：額度用完了
+    setStep(2); setCap('情況 2：額度用完了，換一個聊天 AI 接著做');
+    showBanner('red', '今天的使用額度已用完'); await sleep(1100, t);
+    await move(t, tab('ChatGPT')); await click(t, tab('ChatGPT')); setApp('ChatGPT'); clearMsgs(); await sleep(300, t);
+    await pasteCopy(t);
+    await add(t, 'me', 'Prompt ②：幫我做一個求職網站…');
+    await preview(t); await sleep(900, t);
+    // 3：沒有 Canvas
+    setStep(3); setCap('情況 3：沒有 Canvas，改用 ChatGPT 或 Claude，Prompt 不用改');
+    setApp('Gemini'); clearMsgs(); showBanner('gray', '找不到 Canvas（沒有 Google 帳號）'); await sleep(1100, t);
+    await move(t, tab('Claude')); await click(t, tab('Claude')); setApp('Claude'); clearMsgs(); await sleep(300, t);
+    await pasteCopy(t);
+    await add(t, 'me', 'Prompt ②：（同一張，不用改）');
+    await preview(t); await sleep(900, t);
+    // 4：換了還是不行
+    setStep(4); setCap('情況 4：換了還是不行，舉手找助教');
+    clearMsgs(); showBanner('red', '還是沒有出現網頁預覽'); await sleep(900, t);
+    await move(t, hand, 0.5, 0.4); await click(t); hand.classList.add('up'); handTxt.textContent = '助教馬上過來';
+    await sleep(1600, t);
+    setStep(5); setCap('卡住了就從 1 往下試，最後一定有人幫你');
+    place(cx + 40, 560, 900); await sleep(3000, t);
+    if (looping) run();
+  } catch (e) { if (e !== 'cancel') console.error(e); }
+}
+function finalState() {
+  clearMsgs(); setApp('Claude');
+  ['me|（貼上）我的基本資料…', 'me|Prompt ②：幫我做一個求職網站…'].forEach((x) => { const [c, h] = x.split('|'); const m = document.createElement('div'); m.className = 'msg vis ' + c; m.innerHTML = h; msgs.appendChild(m); });
+  const p = document.createElement('div'); p.className = 'msg vis prev'; p.innerHTML = '<div class="pb"></div><div class="pc">網站預覽 ✓<i></i><i style="width:70%"></i></div>'; msgs.appendChild(p);
+  hand.classList.add('up'); handTxt.textContent = '助教馬上過來'; setStep(5); caption.textContent = '卡住了就從 1 往下試，最後一定有人幫你';
+}
+$('#replay').onclick = () => run();
+$('#loopBtn').onclick = (e) => { looping = !looping; e.target.textContent = '自動循環：' + (looping ? '開' : '關'); };
+if (window.__SYNORA_CAPTURE__ || matchMedia('(prefers-reduced-motion: reduce)').matches) finalState(); else run();
+})();
+</script>

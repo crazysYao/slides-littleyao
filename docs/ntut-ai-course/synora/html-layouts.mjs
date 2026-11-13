@@ -97,8 +97,6 @@ const icon = (name, size, bg, fg) =>
   ICONS[name]
     ? `<span style="flex:0 0 ${size}px;width:${size}px;height:${size}px;border-radius:50%;background:${bg};display:inline-flex;align-items:center;justify-content:center"><svg width="${size * 0.62}" height="${size * 0.62}" viewBox="0 0 24 24" fill="none" stroke="${fg}" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round">${ICONS[name]}</svg></span>`
     : '';
-const COPY_PASTE_DEMO = readFileSync(new URL('assets/copy-paste-demo.fragment.html', import.meta.url), 'utf8');
-
 const abs = (style, inner, i = 0, base) => `<div class="in" style="position:absolute;${style};${d(i, base)}">${inner}</div>`;
 const tagPill = (P, s) => `<div class="in" style="position:absolute;left:44px;top:56px;font-size:13px;font-weight:700;color:#fff;background:${P.dark};border-radius:99px;padding:4px 12px">${esc(s)}</div>`;
 const taskTitle = (s) => `<h1 class="t in" style="top:88px;${d(0, 0.08)}">${esc(s)}</h1>`;
@@ -350,8 +348,8 @@ Object.assign(layouts, {
   // 完成打卡（講師只看完成比例）
   checkpoint: (p, { n }) => ({ body: title(p.heading), natives: [n.checkpoint(p.question, p.buttonLabel)] }),
 
-  // 複製貼上動畫示範（講師提供的 copy-paste-demo.html 改成 960×540 片段）
-  copyPasteDemo: (p) => ({ body: title(p.heading) + COPY_PASTE_DEMO }),
+  // 操作示範動畫：assets/<demo>.fragment.html（做法見 .claude/skills/operation-demo）
+  opDemo: (p) => ({ body: title(p.heading) + readFileSync(new URL(`assets/${p.demo}.fragment.html`, import.meta.url), 'utf8') }),
 
   // 照片在左，三句故事依序出現在右，最後一句打上黃底
   photoStory: (p, { palette: P }) => ({

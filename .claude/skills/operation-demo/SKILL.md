@@ -11,7 +11,8 @@ description: 把「學員要動手操作」的投影片做成游標示範動畫�
 
 - 原始示範：`docs/ntut-ai-course/synora/assets/copy-paste-demo.source.html`（講師提供，整頁版）
 - 簡報片段：`docs/ntut-ai-course/synora/assets/copy-paste-demo.fragment.html`（縮成 960×540、CSS 全部 scope 在 `#cpd`）
-- 版型：`html-layouts.mjs` 的 `copyPasteDemo`；內容檔 `job-site-content.mjs` 的 `s1-save`
+- 版型：`html-layouts.mjs` 的 `opDemo`（內容檔寫 `layout: 'opDemo', demo: '<檔名>'`，讀 `assets/<檔名>.fragment.html`）
+- 範例：`s1-save`（copy-paste-demo，單一流程三步）、`s2-rescue`（rescue-demo，四種情況依序示範，自己手寫 scoped CSS）
 
 ## 畫面結構（960×540）
 
@@ -21,7 +22,7 @@ description: 把「學員要動手操作」的投影片做成游標示範動畫�
 | 舞台 | left 44, top 112, 576×288（原 960×480 用 `zoom:.6`） | 來源視窗（聊天 AI）→ 目的裝置（手機／電腦） |
 | 字幕 | 舞台下方 top 406 | 「步驟 N：……」逐步換字 |
 | 控制列 | top 446 | 裝置切換（手機／電腦）、自動循環、重播 |
-| 步驟卡 | right，left 644 | 三張：黃色圖示＋一句話＋說明；`active` 亮框、完成打勾 |
+| 步驟卡 | right，left 644 | 三到四張：圖示或編號＋一句話＋說明；`active` 亮框、完成打勾 |
 
 ## 動畫腳本元素
 
@@ -47,3 +48,8 @@ description: 把「學員要動手操作」的投影片做成游標示範動畫�
 2. headless Chrome 各截一張：播放中（`--virtual-time-budget=9000`）與截圖模式（注入 `window.__SYNORA_CAPTURE__=1`），兩張都不能有元素蓋住標題或跑出畫面
 3. `preview <deck> --view=both` 用 Chrome 給講師看；Safari 有已知的載入卡住問題（Synora 回報 FB-84E2881B），不要用 Safari 驗
 4. 講師看過效果才推 Synora
+
+## 注意
+
+- 舞台裡沒有定位的元素會被 `.stage::before` 的漸層蓋住變淡，側欄要加 `position:relative`
+- headless Chrome 的 `--virtual-time-budget` 對 CSS transition 不準，播放中截圖會有半透明殘影；以截圖模式和講師在真 Chrome 看到的為準

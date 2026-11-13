@@ -60,7 +60,7 @@ const here = dirname(fileURLToPath(import.meta.url));
 const INTERACTIVE = new Set(['poll', 'quiz', 'link', 'copycard', 'fileDownload', 'wordcloud', 'webProject', 'homework', 'showcase']);
 const FULLSIZE = new Set(['poll', 'quiz', 'wordcloud', 'webProject', 'showcase']);
 // 舊產生器沒有後來新增的版型，比對時先拿掉這些頁
-const NEW_LAYOUTS = ['styleGallery', 'skillSlide', 'ctxClasses', 'ctxWindow', 'siteShots', 'photo', 'photoStory', 'copyPasteDemo', 'checkpoint'];
+const NEW_LAYOUTS = ['styleGallery', 'skillSlide', 'ctxClasses', 'ctxWindow', 'siteShots', 'photo', 'photoStory', 'opDemo', 'checkpoint'];
 const oldDeck = () => {
   const dir = mkdtempSync(join(tmpdir(), 'deck-'));
   const out = join(dir, 'old.json');

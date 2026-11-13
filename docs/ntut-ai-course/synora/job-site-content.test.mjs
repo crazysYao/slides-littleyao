@@ -1,3 +1,4 @@
+import { readFileSync } from 'node:fs';
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
 import { buildDeck } from './build-deck-html.mjs';
@@ -76,7 +77,8 @@ test('Prompt ② 風格空格不再提投票', () => {
 });
 
 test('第二輪修改', () => {
-  assert.equal(page('s1-save').layout, 'copyPasteDemo');
+  assert.equal(page('s1-save').layout, 'opDemo');
+  assert.equal(page('s2-rescue').layout, 'opDemo');
   for (const id of ['s1-save-poll', 's2-v1-poll']) assert.equal(page(id).layout, 'checkpoint', id);
   assert.equal(page('s2-typhoon-video').items, undefined);
   assert.equal(page('s2-roof').layout, 'photoStory');
@@ -201,7 +203,7 @@ test('總體審查修正：上傳前先提醒個資、登入頁講到 Skills、�
 
 test('對抗審查修正：換工具也不行時有出路，v1 上牆要標明是 v1', () => {
   // 換了 ChatGPT／Claude 還是沒有網頁預覽時，救援卡要給下一步，不能讓學員停在那裡
-  const rescue = page('s2-rescue').rows.map(([, label, body]) => `${label} ${body}`).join('\n');
+  const rescue = readFileSync(new URL('assets/rescue-demo.fragment.html', import.meta.url), 'utf8');
   assert.match(rescue, /換了還是不行/);
   assert.match(rescue, /助教/);
   // 來不及做 v2 的人交 v1，但要標明，牆上才不會把 v1 當成 v2
@@ -211,7 +213,7 @@ test('對抗審查修正：換工具也不行時有出路，v1 上牆要標明�
 
 test('對抗審查第 2 輪：救援不把學員的資料貼進同學的帳號', () => {
   const p = page('s2-rescue');
-  const rescue = p.rows.map(([, label, body]) => `${label} ${body}`).join('\n');
+  const rescue = readFileSync(new URL('assets/rescue-demo.fragment.html', import.meta.url), 'utf8');
   // 基本資料有學經歷與聯絡方式，只能交給助教，而且要本人同意
   assert.doesNotMatch(rescue, /同學/);
   assert.doesNotMatch(p.notes, /同學.*帳號|帳號.*同學/);
