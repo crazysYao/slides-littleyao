@@ -62,8 +62,10 @@ test('Skill Prompt 輸出三欄且不重做網站', () => {
 test('Skill 用一句話觸發，不用打斜線', () => {
   assert.match(page('s2-skill-make').prompt, /我說什麼的時候/);
   assert.ok(page('s2-skill-make').prompt.length < 120);
-  assert.ok(!text(page('s2-skill-save')).includes('/名稱'));
-  assert.match(page('s2-skill-save').note, /幫我做求職網站/);
+  const save = readFileSync(new URL('assets/skill-save-demo.fragment.html', import.meta.url), 'utf8');
+  assert.ok(!save.includes('/名稱'));
+  assert.match(save, /幫我做求職網站/);
+  assert.equal(page('s2-skill-save').layout, 'opDemo');
 });
 
 test('短片頁先不揭露內容', () => {
