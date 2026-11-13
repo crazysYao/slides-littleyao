@@ -11,7 +11,7 @@ description: 把「學員要動手操作」的投影片做成游標示範動畫�
 
 - 原始示範：`docs/ntut-ai-course/synora/assets/copy-paste-demo.source.html`（講師提供，整頁版）
 - 簡報片段：`docs/ntut-ai-course/synora/assets/copy-paste-demo.fragment.html`（縮成 960×540、CSS 全部 scope 在 `#cpd`）
-- 版型：`html-layouts.mjs` 的 `opDemo`（內容檔寫 `layout: 'opDemo', demo: '<檔名>'`，讀 `assets/<檔名>.fragment.html`）
+- 版型：`html-layouts.mjs` 的 `opDemo`（內容檔寫 `layout: 'opDemo', demo: '<檔名>'`，讀 `assets/<檔名>.fragment.html`；要外部連結就加 `link`，原生按鈕放在右下 644,412）
 - 範例：`s1-save`（copy-paste-demo，單一流程三步）、`s2-rescue`（rescue-demo，四種情況依序示範，自己手寫 scoped CSS）
 
 ## 畫面結構（960×540）

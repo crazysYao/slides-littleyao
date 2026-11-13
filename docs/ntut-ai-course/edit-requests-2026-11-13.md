@@ -17,3 +17,4 @@
 7 項已改完（本機 62 頁、測試 73 項通過），**尚未推 Synora**，等講師看完預覽定稿。
 | 8 | 29（s2-rescue「卡住了，照這張做」） | 用 operation-demo skill 轉成操作動畫 | 已改：opDemo 版型＋assets/rescue-demo.fragment.html，四種情況依序示範（等 8 分鐘→開新對話貼副本／額度用完→換 ChatGPT／沒有 Canvas→換 Claude／還是不行→舉手）。講師已認可 |
 | 9 | 41（s2-skill-save「把你的 Skill 收好」） | 用 operation-demo skill 轉成操作動畫 | 已改：skill-save-demo（複製三欄→貼到備忘錄／Gemini 自訂→Skills→建立→手動建立→貼三欄→建立／開新對話打一句→AI 說出規則）。**待講師看效果** |
+| 10 | 43（s2-skill-find「Skill 可以去哪裡找」） | 用 operation-demo skill 轉成操作動畫 | 已改：skill-find-demo（技能市集搜「會議記錄」→點開看寫法／切到聊天 AI 問「幫我找適合…的 Skill」／複製寫法→改成 club-meeting）；SkillsMP 連結按鈕保留在右下。opDemo 版型加上可選的連結按鈕。**待講師看效果** |

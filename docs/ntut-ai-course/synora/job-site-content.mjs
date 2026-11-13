@@ -457,14 +457,13 @@ export const pages = [
   },
   {
     id: 's2-skill-find',
-    layout: 'linkTask',
+    layout: 'opDemo',
+    demo: 'skill-find-demo',
     section: '02 Skill',
     title: 'Skill 可以去哪裡找',
     notes: '約 2 分鐘，利用大家上傳 Skill 的空檔講。自己做之外，也可以找別人做好的。技能市集上的 Skill 很多是給 Claude Code 這類工具用的，今天的聊天 AI 不一定能直接裝；先逛、找靈感，照它的寫法改成你的。更簡單的方法：直接問你的 AI，請它幫你找。',
-    tag: '補充 · 約 2 分鐘',
     heading: 'Skill 可以去哪裡找？',
     link: ['https://skillsmp.com/', 'SkillsMP 技能市集', '逛別人做好的 Skill'],
-    items: ['到技能市集搜尋關鍵字，看別人怎麼寫', '直接問你的 AI：「幫我找適合＿＿的 Skill」', '找到喜歡的，照它的寫法改成你的'],
   },
   {
     id: 'break2',

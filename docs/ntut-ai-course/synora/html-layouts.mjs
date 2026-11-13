@@ -349,7 +349,10 @@ Object.assign(layouts, {
   checkpoint: (p, { n }) => ({ body: title(p.heading), natives: [n.checkpoint(p.question, p.buttonLabel)] }),
 
   // 操作示範動畫：assets/<demo>.fragment.html（做法見 .claude/skills/operation-demo）
-  opDemo: (p) => ({ body: title(p.heading) + readFileSync(new URL(`assets/${p.demo}.fragment.html`, import.meta.url), 'utf8') }),
+  opDemo: (p, { n }) => ({
+    body: title(p.heading) + readFileSync(new URL(`assets/${p.demo}.fragment.html`, import.meta.url), 'utf8'),
+    natives: p.link ? [n.link(644, 412, 272, 96, p.link)] : [],
+  }),
 
   // 照片在左，三句故事依序出現在右，最後一句打上黃底
   photoStory: (p, { palette: P }) => ({
