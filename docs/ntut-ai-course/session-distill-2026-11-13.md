@@ -23,12 +23,12 @@
 | 技能 | 狀態 | 觸發 | 內容 |
 |---|---|---|---|
 | `operation-demo` | **已建** | 操作類投影片 | 游標動畫＋步驟卡、`opDemo` 版型、截圖模式最終狀態 |
-| `deck-review-loop` | 提案 | 「開始記錄我的疑問」「記錄修改不要動工」「看是不是都解決了」 | 兩種紀錄檔（疑問／修改）、記錄模式規則、頁碼對照（Synora 頁碼 ≠ 內容檔索引）、收斂表、開預覽到指定頁 |
-| `synora-safe-push` | 提案 | 「推上去」「推 Synora」 | pull → 逐頁正規化比對 → 沿用遠端已上傳圖片 URL → 只對新圖 `media-prepare`（公開前問講師）→ dry-run 差異核對 → push → 讀回驗 saveSeq、頁數、圖片 |
+| `deck-review-loop` | **已建**（含講稿四段式） | 「開始記錄我的疑問」「記錄修改不要動工」「看是不是都解決了」 | 兩種紀錄檔（疑問／修改）、記錄模式規則、頁碼對照（Synora 頁碼 ≠ 內容檔索引）、收斂表、開預覽到指定頁 |
+| `synora-safe-push` | **已建**（附 `synora/merge-for-push.mjs`） | 「推上去」「推 Synora」 | pull → 逐頁正規化比對 → 沿用遠端已上傳圖片 URL → 只對新圖 `media-prepare`（公開前問講師）→ dry-run 差異核對 → push → 讀回驗 saveSeq、頁數、圖片 |
 | `slide-illustration` | 提案 | 「做成圖片」「示意圖」「場景圖」 | Codex 生圖 prompt 範本（場景＋配色 #F5B400/#16161A/#FBFAF7＋無文字＋虛構人物）、轉 JPEG 進 assets、`photo` 版型 |
-| `talk-track` | 提案（可併入 deck-review-loop） | 「給我講稿」「這頁怎麼講」 | 四段式＋避開清單；時間要寫明算在哪個環節 |
+| `talk-track` | 已併入 deck-review-loop | 「給我講稿」「這頁怎麼講」 | 四段式＋避開清單；時間要寫明算在哪個環節 |
 
-## 三、組合流程
+## 三、組合流程（已建成 `deck-polish` 技能）
 
 ```
 講師逐頁看預覽（Chrome、&page=N）
