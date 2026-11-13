@@ -280,3 +280,10 @@ test('goalShot：有 shotSrc 時放手機截圖，不放佔位框', () => {
   assert.ok(r.body.includes(`src="${p.shotSrc}"`));
   assert.equal(r.natives.filter((e) => e.type === 'svg').length, 0);
 });
+
+test('photo：照片放在 HTML 裡，沒有原生元件', () => {
+  const r = layouts.photo({ heading: '那天，抬頭就是天空', src: 'data:image/jpeg;base64,AAAA', alt: '屋頂' }, { palette: { muted: '#666', text: '#000', line: '#eee' }, n: {} });
+  assert.match(r.body, /<img src="data:image\/jpeg;base64,AAAA"/);
+  assert.match(r.body, /那天，抬頭就是天空/);
+  assert.deepEqual(r.natives, []);
+});

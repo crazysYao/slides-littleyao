@@ -34,7 +34,7 @@ test('第一節分鐘數加總 50', () => {
   assert.equal(sum, 50);
 });
 
-const S2 = ['s2', 's2-quiz-warmup-1', 's2-quiz-warmup-2', 's2-quiz-warmup-3', 's2-typhoon', 's2-typhoon-poll', 's2-typhoon-reveal',
+const S2 = ['s2', 's2-quiz-warmup-1', 's2-quiz-warmup-2', 's2-quiz-warmup-3', 's2-typhoon-video', 's2-roof', 's2-typhoon', 's2-typhoon-poll', 's2-typhoon-reveal',
   's2-style', 's2-style-poll', 's2-prompt-2', 's2-rescue', 's2-v1-poll',
   's2-skill-1', 's2-skill-2', 's2-skill-3', 's2-skill-4', 's2-skill-5', 's2-skill-6', 's2-skill-7',
   's2-skill-make', 's2-skill-save', 's2-skill-upload', 'break2'];
@@ -67,8 +67,8 @@ test('第二節分鐘數加總 50', () => assert.equal(minutes('s2', 'break2'), 
 const S3 = ['s3', 's3-reel', 's3-review', 's3-fix', 's3-v2-upload', 's3-v2-wall', 's3-public',
   's3-ctx-classes', 's3-ctx-teachers', 's3-ctx-window', 's3-ctx-reveal', 's3-newchat', 's3-drop', 's3-obsidian', 's3-recap', 'qa'];
 
-test('全份 58 頁，頁序完整', () => {
-  assert.equal(ids.length, 58);
+test('全份 60 頁，頁序完整', () => {
+  assert.equal(ids.length, 60);
   assert.deepEqual(ids, [...S1, ...S2, ...S3]);
 });
 

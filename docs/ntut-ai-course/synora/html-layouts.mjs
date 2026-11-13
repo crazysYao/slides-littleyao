@@ -344,6 +344,18 @@ Object.assign(layouts, {
     natives: [n.fileDownload(44, 160, 872, 110, p.file)],
   }),
 
+  // 一張照片＋標題
+  photo: (p) => ({
+    body:
+      title(p.heading) +
+      abs(
+        'left:124px;top:118px;width:712px;height:400px;border-radius:12px;overflow:hidden;box-shadow:0 10px 28px rgba(0,0,0,.2)',
+        `<img src="${p.src}" alt="${esc(p.alt)}" style="display:block;width:100%;height:100%;object-fit:cover">`,
+        1,
+      ),
+    natives: [],
+  }),
+
   // 兩個網站的真截圖並排（颱風題）
   siteShots: (p, { palette: P }) => {
     const frame = (s, i) =>
