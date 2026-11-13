@@ -77,11 +77,11 @@ test('咖啡店七頁照順序', () => {
 
 test('第二節分鐘數加總 50', () => assert.equal(minutes('s2', 'break2'), 50));
 
-const S3 = ['s3', 's3-reel', 's3-reel-reveal', 's3-review', 's3-fix', 's3-v2-upload', 's3-v2-wall', 's3-public',
+const S3 = ['s3', 's3-reel', 's3-reel-reveal', 's3-review', 's3-fix', 's3-try', 's3-v2-upload', 's3-v2-wall', 's3-public',
   's3-ctx-classes', 's3-ctx-teachers', 's3-ctx-window', 's3-ctx-reveal', 's3-newchat', 's3-drop', 's3-obsidian', 's3-recap', 'qa'];
 
-test('全份 61 頁，頁序完整', () => {
-  assert.equal(ids.length, 61);
+test('全份 62 頁，頁序完整', () => {
+  assert.equal(ids.length, 62);
   assert.deepEqual(ids, [...S1, ...S2, ...S3]);
 });
 
