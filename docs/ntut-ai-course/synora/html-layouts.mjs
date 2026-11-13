@@ -1,3 +1,4 @@
+import { readFileSync } from 'node:fs';
 // 求職網站簡報的版型：每個版型回傳 { body: HTML 片段, natives: 原生元件, loop?: 是否循環示意 }。
 import { esc, splitSteps, chips } from './html-kit.mjs';
 import { contextLayouts } from './html-context.mjs';
@@ -96,11 +97,7 @@ const icon = (name, size, bg, fg) =>
   ICONS[name]
     ? `<span style="flex:0 0 ${size}px;width:${size}px;height:${size}px;border-radius:50%;background:${bg};display:inline-flex;align-items:center;justify-content:center"><svg width="${size * 0.62}" height="${size * 0.62}" viewBox="0 0 24 24" fill="none" stroke="${fg}" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round">${ICONS[name]}</svg></span>`
     : '';
-const EASY_ICONS = {
-  copy: '<svg viewBox="0 0 24 24" fill="none" stroke="#16161a" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="8" y="8" width="12" height="13" rx="2"/><path d="M16 8V5a2 2 0 0 0-2-2H6a2 2 0 0 0-2 2v11a2 2 0 0 0 2 2h2"/></svg>',
-  phone: '<svg viewBox="0 0 24 24" fill="none" stroke="#16161a" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="6" y="2" width="12" height="20" rx="2.5"/><path d="M9 7h6M9 10.5h6M9 14h4M11 18.5h2"/></svg>',
-  tag: '<svg viewBox="0 0 24 24" fill="none" stroke="#16161a" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12V4a1 1 0 0 1 1-1h8l9 9-9 9z"/><circle cx="8" cy="8" r="1.6"/></svg>',
-};
+const COPY_PASTE_DEMO = readFileSync(new URL('assets/copy-paste-demo.fragment.html', import.meta.url), 'utf8');
 
 const abs = (style, inner, i = 0, base) => `<div class="in" style="position:absolute;${style};${d(i, base)}">${inner}</div>`;
 const tagPill = (P, s) => `<div class="in" style="position:absolute;left:44px;top:56px;font-size:13px;font-weight:700;color:#fff;background:${P.dark};border-radius:99px;padding:4px 12px">${esc(s)}</div>`;
@@ -353,15 +350,8 @@ Object.assign(layouts, {
   // 完成打卡（講師只看完成比例）
   checkpoint: (p, { n }) => ({ body: title(p.heading), natives: [n.checkpoint(p.question, p.buttonLabel)] }),
 
-  // Easy Read：一列一個動作，左邊大圖示、右邊一句話，依序出現
-  easySteps: (p, { palette: P }) => ({
-    body:
-      `<style>.es{position:absolute;left:44px;right:44px;top:122px;display:flex;flex-direction:column;gap:16px}.es .r{display:flex;align-items:center;gap:22px;background:#fff;border:1.5px solid ${P.line};border-radius:14px;padding:14px 22px}.es .ic{flex:0 0 88px;height:88px;border-radius:20px;background:${P.accent};display:flex;align-items:center;justify-content:center}.es .ic svg{width:52px;height:52px;animation:pop .6s ease-out both;animation-delay:inherit}.es .no{font:900 18px/1 sans-serif;color:${P.muted};width:22px}.es b{display:block;font-size:30px;font-weight:900;line-height:1.2}.es span{display:block;font-size:19px;color:${P.muted};margin-top:4px}@keyframes pop{0%{transform:scale(.4) rotate(-12deg)}70%{transform:scale(1.12)}100%{transform:none}}</style>` +
-      title(p.heading) +
-      `<div class="es">${p.items
-        .map(([icon, t, b], i) => `<div class="r in" style="${d(i, 0.3, 0.7)}"><span class="no">${i + 1}</span><div class="ic">${EASY_ICONS[icon]}</div><div><b>${esc(t)}</b><span>${esc(b)}</span></div></div>`)
-        .join('')}</div>`,
-  }),
+  // 複製貼上動畫示範（講師提供的 copy-paste-demo.html 改成 960×540 片段）
+  copyPasteDemo: (p) => ({ body: title(p.heading) + COPY_PASTE_DEMO }),
 
   // 照片在左，三句故事依序出現在右，最後一句打上黃底
   photoStory: (p, { palette: P }) => ({

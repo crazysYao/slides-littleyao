@@ -76,7 +76,7 @@ test('Prompt ② 風格空格不再提投票', () => {
 });
 
 test('第二輪修改', () => {
-  assert.equal(page('s1-save').layout, 'easySteps');
+  assert.equal(page('s1-save').layout, 'copyPasteDemo');
   for (const id of ['s1-save-poll', 's2-v1-poll']) assert.equal(page(id).layout, 'checkpoint', id);
   assert.equal(page('s2-typhoon-video').items, undefined);
   assert.equal(page('s2-roof').layout, 'photoStory');
