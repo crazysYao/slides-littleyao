@@ -59,7 +59,7 @@ test('Skill Prompt 輸出三欄且不重做網站', () => {
 
 test('咖啡店七頁照順序', () => {
   const order = content.pages.filter((p) => p.layout === 'skillSlide').map((p) => p.slide);
-  assert.deepEqual(order, ['s1-what', 's2-compare', 's2-compare-b', 's3-folder', 's4-skillmd', 's5-flow', 's6-uses']);
+  assert.deepEqual(order, ['s1-what', 's2-compare-b', 's2-compare', 's3-folder', 's4-skillmd', 's5-flow', 's6-uses']);
 });
 
 test('第二節分鐘數加總 50', () => assert.equal(minutes('s2', 'break2'), 50));

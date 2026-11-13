@@ -8,3 +8,4 @@
 | 2 | 24 前 | 颱風頁之前加兩頁：①外來影片片段（講師提供連結）②講師家屋頂照（ce837dd 的 roof-home.jpg） | 已加：第 24 頁短片連結（YouTube Shorts dPkhZ0ZJSuk）、第 25 頁屋頂照（新版型 photo）。簡報 60 頁，未推 Synora |
 | 3 | 24 | 颱風頁的 A／B 網站改成用 HTML 做的兩張樣張圖，講師看過再放 | 講師採用；已放進第 24 頁（新版型 siteShots，原始 HTML 在 synora/assets/typhoon-site-*.html）。未推 Synora |
 | 4 | 28 | 「你挑哪個風格」投票意義不大 | 建議刪掉；Prompt ② 卡片與講稿裡「填你剛剛投的風格」改成「填你挑的風格」。**待講師決定** |
+| 5 | 33–34（現 35–36） | 咖啡店「沒有 Skill」和「有 Skill」交換：先有、再沒有 | 已交換；兩頁講稿的銜接改寫，標題改成「有 Skill 和沒有 Skill，差在哪？」。未推 Synora |

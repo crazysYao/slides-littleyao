@@ -17,7 +17,7 @@ test('縮放在截圖模式也不會被關掉', () => {
 });
 
 test('七頁都在，順序照 deck.json', () => {
-  assert.deepEqual(Object.keys(skillSlides), ['s1-what', 's2-compare', 's2-compare-b', 's3-folder', 's4-skillmd', 's5-flow', 's6-uses']);
+  assert.deepEqual(Object.keys(skillSlides), ['s1-what', 's2-compare-b', 's2-compare', 's3-folder', 's4-skillmd', 's5-flow', 's6-uses']);
 });
 
 test('兩張照片內嵌成 JPEG', () => {

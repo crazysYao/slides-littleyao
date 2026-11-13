@@ -46,7 +46,7 @@ const LOOP_STEPS = [
 ];
 
 // 咖啡店 Skill 章節 7 頁：畫面與講稿都來自 ../skill-chapter/slides（見 html-skill.mjs）
-const SKILL_TITLES = ['AI 也需要工作手冊嗎？', '沒有 Skill', '有 Skill', '打開 AI 的工作手冊', 'SKILL.md 的內容', '從一句話到完成任務', 'Skill 不只能做咖啡'];
+const SKILL_TITLES = ['AI 也需要工作手冊嗎？', '有 Skill', '沒有 Skill', '打開 AI 的工作手冊', 'SKILL.md 的內容', '從一句話到完成任務', 'Skill 不只能做咖啡'];
 const SKILL_PAGES = Object.keys(skillNotes).map((slide, i, all) => ({
   id: `s2-skill-${i + 1}`,
   layout: 'skillSlide',
