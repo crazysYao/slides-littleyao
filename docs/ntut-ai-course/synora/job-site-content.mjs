@@ -7,6 +7,8 @@ import { skillNotes } from './html-skill.mjs';
 
 export const brand = '讓 AI 一開口就懂你';
 
+const jpg = (name) => `data:image/jpeg;base64,${readFileSync(new URL(`assets/${name}.jpg`, import.meta.url)).toString('base64')}`;
+
 const YELLOW = '#f5b400';
 const INK = '#16161a';
 
@@ -124,7 +126,7 @@ export const pages = [
     heading: '今天下課，你會做出一個這樣的網站',
     link: ['https://hi.littleyao.me/zh', '講師的網站', '課前換成用今天流程做的版本'],
     shot: '講師網站的手機畫面',
-    shotSrc: `data:image/jpeg;base64,${readFileSync(new URL('assets/goal-phone.jpg', import.meta.url)).toString('base64')}`,
+    shotSrc: jpg('goal-phone'),
     note: '3 小時後，大家的網站會一起出現在作品牆上。',
   },
   {
@@ -327,25 +329,19 @@ export const pages = [
   },
   {
     id: 's2-typhoon',
-    layout: 'siteMock',
+    layout: 'siteShots',
     section: '02 給誰看',
     title: '颱風天：你會打給誰',
-    notes: '10:03 給誰看(4)。開頭承接：剛才是說清楚你要什麼，現在是想清楚誰在看。情境：颱風過後，你家屋頂被吹掉一塊，雨還在下。你搜「屋頂 緊急修繕」，跳出這兩個師傅的網站。課前用 AI 做兩個假網站截圖替換，不用真實店家。',
+    notes: '10:03 給誰看(4)。開頭承接：剛才是說清楚你要什麼，現在是想清楚誰在看。情境：颱風過後，你家屋頂被吹掉一塊，雨還在下。你搜「屋頂 緊急修繕」，跳出這兩個師傅的網站。兩個網站都是假的，店名和電話是編的。',
     heading: '颱風過後屋頂破洞，雨還在下，你會打給誰？',
     sites: [
       {
         name: 'A 師傅',
-        hero: '（空拍美照）\n三代傳承的職人精神',
-        heroColor: '#c9c6bd',
-        lines: ['品牌故事：從阿公那一代開始……', '作品集：老宅翻新、景觀屋頂', '動畫很美，手機載很久', '電話？往下滑三次才找到'],
+        shotSrc: jpg('typhoon-site-a'),
       },
       {
         name: 'B 師傅',
-        hero: '颱風緊急搶修・\n24 小時',
-        heroColor: YELLOW,
-        heroSize: 26,
-        lines: ['新北、桃園，2 小時內到場', '上週颱風後，3 小時補好（前後對照照）'],
-        cta: '立即撥打',
+        shotSrc: jpg('typhoon-site-b'),
       },
     ],
   },

@@ -60,7 +60,7 @@ const here = dirname(fileURLToPath(import.meta.url));
 const INTERACTIVE = new Set(['poll', 'quiz', 'link', 'copycard', 'fileDownload', 'wordcloud', 'webProject', 'homework', 'showcase']);
 const FULLSIZE = new Set(['poll', 'quiz', 'wordcloud', 'webProject', 'showcase']);
 // 舊產生器沒有後來新增的版型，比對時先拿掉這些頁
-const NEW_LAYOUTS = ['styleGallery', 'skillSlide', 'ctxClasses', 'ctxWindow'];
+const NEW_LAYOUTS = ['styleGallery', 'skillSlide', 'ctxClasses', 'ctxWindow', 'siteShots'];
 const oldDeck = () => {
   const dir = mkdtempSync(join(tmpdir(), 'deck-'));
   const out = join(dir, 'old.json');
@@ -101,7 +101,7 @@ test('全份：沒有循環動畫頁', () => {
 test('全份：截圖佔位 svg 數量', () => {
   const svgs = Object.fromEntries(buildDeck(content).slides.map((s) => [s.id, s.elements.filter((e) => e.type === 'svg').length]));
   assert.equal(svgs['s1-goal'], 0);
-  assert.equal(svgs['s2-typhoon'], 2);
+  assert.equal(svgs['s2-typhoon'], 0);
   assert.equal(svgs['s3-recap'], 3);
 });
 

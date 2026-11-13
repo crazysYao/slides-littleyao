@@ -5,7 +5,7 @@ import * as content from './job-site-content.mjs';
 
 const ids = buildDeck(content).slides.map((s) => s.id);
 const page = (id) => content.pages.find((p) => p.id === id);
-const text = (p) => JSON.stringify(p);
+const text = (p) => JSON.stringify(p).replace(/data:image\/jpeg;base64,[A-Za-z0-9+/=]+/g, '');
 
 const S1 = ['cover', 's1', 's1-outline', 's1-goal', 's1-login', 's1-ai-exp', 's1-paid', 's1-problem', 's1-problem-reveal',
   's1-drink', 's1-drink-reveal', 's1-gf-1', 's1-gf-2', 's1-gf-3', 's1-interview', 's1-prompt-1', 's1-save', 's1-save-poll', 'break1'];

@@ -344,6 +344,21 @@ Object.assign(layouts, {
     natives: [n.fileDownload(44, 160, 872, 110, p.file)],
   }),
 
+  // 兩個網站的真截圖並排（颱風題）
+  siteShots: (p, { palette: P }) => {
+    const frame = (s, i) =>
+      abs(
+        `left:${i ? 496 : 44}px;top:140px;width:420px`,
+        `<div style="text-align:center;font-size:20px;font-weight:900;margin-bottom:8px">${esc(s.name)}</div>` +
+          `<div style="border:2px solid ${P.line};border-radius:10px;overflow:hidden;background:#fff;box-shadow:0 8px 24px rgba(0,0,0,.12)">` +
+          `<div style="height:22px;background:#f1efe9;display:flex;align-items:center;gap:6px;padding-left:10px">${'<i style="width:8px;height:8px;border-radius:4px;background:#d4d0c6"></i>'.repeat(3)}</div>` +
+          `<img src="${s.shotSrc}" alt="${esc(s.name)}的網站" style="display:block;width:100%;height:315px;object-fit:cover;object-position:top"></div>`,
+        i,
+        0.2,
+      );
+    return { body: `<h1 class="t in" style="font-size:28px">${esc(p.heading)}</h1>` + p.sites.map(frame).join(''), natives: [] };
+  },
+
   siteMock: (p, { palette: P, n }) => {
     const w = 340;
     const h = 330;
