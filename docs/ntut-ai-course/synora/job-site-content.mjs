@@ -481,6 +481,17 @@ export const pages = [
     sub: '收穫：網站 v2＋一段面試自介',
   },
   {
+    id: 's3-reel',
+    layout: 'linkTask',
+    section: '03 改更好',
+    title: '短片：全部丟給 AI',
+    notes: '讀者審稿前的開場短片，約 1 分鐘，算在讀者審稿的 13 分鐘裡。播完問台下：這一整圈，誰真的看過內容？沒有人。接著講：等一下 AI 會幫你挑網站的毛病，但你要先自己圈出最想改的一處，最後拍板的是你。',
+    tag: '短片 · 約 1 分鐘',
+    heading: '如果每一步都丟給 AI，會怎樣？',
+    link: ['https://www.facebook.com/reel/2049912052349573', '看短片：老師、學生和 ChatGPT', '在 Facebook 開啟'],
+    items: ['老師用 ChatGPT 出作業', '學生把題目丟給 ChatGPT 寫', '老師再拿給 ChatGPT 改'],
+  },
+  {
     id: 's3-review',
     layout: 'skillTemplate',
     section: '03 改更好',
