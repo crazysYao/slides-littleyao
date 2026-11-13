@@ -33,6 +33,8 @@ export const makeNative = (slideId, accent = '#f5b400') => {
     }),
     showcase: (title, linkedHomeworkId, [x, y, width, height] = FULL) =>
       el('showcase', { x, y, width, height, title, points: 5, focusMode: false, showVoting: true, peerVoteCount: 3, linkedHomeworkId }),
+    // 完成打卡：學員按一下，講師端看完成人數與比例
+    checkpoint: (question, buttonLabel, [x, y, width, height] = [80, 150, 800, 340]) => el('checkpoint', { x, y, width, height, question, buttonLabel }),
     // 截圖佔位框：留原生 svg，講師課前在 Synora 直接換成真截圖
     shotFrame: (x, y, w, h, caption, muted = '#62646b', ink = '#16161a') => {
       const e = (s) => s.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');

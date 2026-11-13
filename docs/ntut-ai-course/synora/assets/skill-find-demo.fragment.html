@@ -1,0 +1,185 @@
+<style>
+#skf{--line:#EDE6D8;--ink:#2B2620;--mute:#8A8275;--y:#F5B400;--yd:#D99A00;--y2:#FFF3CC;--ok:#2E8B57;position:absolute;left:0;top:0;width:960px;height:540px}
+#skf *{box-sizing:border-box}
+#skf .outer{position:absolute;left:44px;top:112px;width:576px;height:288px}
+#skf .stage{zoom:.6;position:absolute;top:0;left:0;width:960px;height:480px;background:#fff;border:1px solid var(--line);border-radius:22px;overflow:hidden;padding:26px 30px;display:flex;gap:24px;align-items:stretch}
+#skf .stage::before{content:"";position:absolute;inset:0;background:radial-gradient(circle at 80% 40%,#FFF8E2 0,transparent 55%);pointer-events:none}
+#skf .toast{position:absolute;top:16px;left:50%;transform:translate(-50%,-20px);background:var(--ink);color:#fff;font-size:15px;padding:9px 18px;border-radius:999px;opacity:0;transition:all .3s;z-index:5}
+#skf .toast.show{opacity:1;transform:translate(-50%,0)}
+#skf .fly{position:absolute;top:0;left:0;z-index:6;opacity:0;pointer-events:none;background:#fff;border:2px solid var(--y);border-radius:12px;padding:8px 12px;font-size:13px;font-weight:700;box-shadow:0 10px 24px rgba(200,140,0,.3);white-space:nowrap}
+#skf .cursor{position:absolute;top:0;left:0;z-index:7;pointer-events:none;transform:translate(480px,560px)}
+#skf .cursor svg{width:26px;height:26px;transform:translate(-3px,-2px);transition:transform .12s;filter:drop-shadow(0 2px 3px rgba(0,0,0,.25))}
+#skf .cursor.down svg{transform:translate(-3px,-2px) scale(.85)}
+#skf .ripple{position:absolute;z-index:6;width:16px;height:16px;margin:-8px 0 0 -8px;border-radius:50%;border:2px solid var(--y);pointer-events:none;animation:rip .5s ease-out forwards}
+@keyframes rip{to{transform:scale(3.2);opacity:0}}
+#skf .caption{position:absolute;left:44px;top:406px;width:576px;text-align:center;font-size:15px;font-weight:700;min-height:22px;transition:opacity .25s}
+#skf .caption.fade{opacity:0}
+#skf .ctl{position:absolute;left:44px;top:446px;display:flex;gap:8px}
+#skf .btn{border:1px solid var(--line);background:#fff;font:inherit;font-size:12px;padding:5px 12px;border-radius:999px;cursor:pointer;color:var(--ink)}
+#skf .cards{position:absolute;left:644px;right:44px;top:112px;display:grid;gap:10px}
+#skf .rc{display:flex;align-items:center;gap:10px;background:#fff;border:1.5px solid var(--line);border-radius:12px;padding:10px 12px;transition:all .3s}
+#skf .rc.dark{background:#16161a;border-color:#16161a;color:#fff}
+#skf .rc .n{flex:0 0 26px;height:26px;border-radius:13px;background:var(--y);color:#16161a;display:grid;place-items:center;font-weight:900;font-size:13px}
+#skf .rc .tt{font-size:14px;font-weight:800}
+#skf .rc .ss{font-size:11px;color:var(--mute);margin-top:2px;line-height:1.4}
+#skf .rc.dark .ss{color:#c9c6bd}
+#skf .rc .chk{margin-left:auto;flex:0 0 22px;height:22px;border-radius:50%;background:#E8F6EC;color:var(--ok);display:grid;place-items:center;font-size:12px;opacity:0;transform:scale(.5);transition:all .3s}
+#skf .rc.active{border-color:var(--y);box-shadow:0 6px 18px rgba(245,180,0,.2)}
+#skf .rc.fin .chk{opacity:1;transform:none}
+#skf .rc:not(.active):not(.fin){opacity:.7}
+#skf .win{position:relative;flex:1;background:#F7F4EE;border:1px solid var(--line);border-radius:18px;display:flex;flex-direction:column;overflow:hidden}
+#skf .bar{display:flex;align-items:center;gap:8px;padding:10px 14px;background:#efebe2;border-bottom:1px solid var(--line);font-size:14px;font-weight:700}
+#skf .bar .tab{padding:5px 12px;border-radius:999px;color:var(--mute);transition:all .25s}
+#skf .bar .tab.on{background:#fff;color:var(--ink)}
+#skf .press{background:var(--y)!important;color:#fff!important;border-color:var(--y)!important}
+#skf .view{position:absolute;left:0;right:0;top:46px;bottom:0;padding:14px 18px;display:flex;flex-direction:column;gap:10px;transition:opacity .3s}
+#skf .view.hide{opacity:0;pointer-events:none}
+#skf .url{font:13px ui-monospace,Menlo,monospace;color:var(--mute)}
+#skf .search{padding:10px 14px;border-radius:12px;background:#fff;border:1px solid var(--line);font-size:15px;color:#bdb6a8;min-height:42px}
+#skf .search.typing,#skf .inputbar.typing{color:var(--ink);border-color:var(--y)}
+#skf .results{display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px}
+#skf .res{position:relative;background:#fff;border:1px solid var(--line);border-radius:12px;padding:10px 12px;font-size:12px;line-height:1.5;color:var(--mute);opacity:0;transform:translateY(8px);transition:all .35s}
+#skf .res b{display:block;font-size:14px;color:var(--ink);font-family:ui-monospace,Menlo,monospace}
+#skf .res.vis{opacity:1;transform:none}
+#skf .res.pick{border-color:var(--y);box-shadow:0 0 0 4px rgba(245,180,0,.3)}
+#skf .detail{background:#fff;border:1px solid var(--line);border-radius:12px;padding:10px 14px;font-size:13px;line-height:1.7;opacity:0;transition:opacity .3s}
+#skf .detail.vis{opacity:1}
+#skf .detail b{display:inline-block;min-width:40px;color:var(--yd)}
+#skf .copy{align-self:flex-start;padding:5px 12px;border-radius:999px;border:1px solid var(--line);background:#fff;font-size:12px;color:var(--mute);transition:all .2s;opacity:0}
+#skf .copy.vis{opacity:1}
+#skf .copy.fin{background:#E8F6EC;color:var(--ok);border-color:#BFE5CB}
+#skf .msg{max-width:84%;padding:10px 14px;border-radius:14px;font-size:14px;line-height:1.6;opacity:0;transform:translateY(8px);transition:opacity .35s,transform .35s}
+#skf .msg.vis{opacity:1;transform:none}
+#skf .msg.me{align-self:flex-end;background:#16161a;color:#fff}
+#skf .msg.ai{align-self:flex-start;background:#fff;border:1px solid var(--line)}
+#skf .msg.ai code{font:13px ui-monospace,Menlo,monospace;color:var(--yd)}
+#skf .inputbar{position:absolute;left:14px;right:14px;bottom:14px;padding:10px 14px;border-radius:12px;background:#fff;border:1px solid var(--line);font-size:14px;color:#bdb6a8;min-height:40px}
+#skf .side{position:relative;width:240px;display:flex;flex-direction:column;gap:12px}
+#skf .memo{position:relative;background:#fff;border:1px solid var(--line);border-radius:16px;padding:12px 14px;font-size:13px;line-height:1.7;box-shadow:0 8px 20px rgba(60,40,0,.08)}
+#skf .memo .h{font-size:12px;color:var(--yd);font-weight:700;margin-bottom:4px}
+#skf .memo .row{opacity:.25;transition:opacity .35s}
+#skf .memo .row.vis{opacity:1}
+#skf .memo .ed{background:var(--y2);border-radius:4px;padding:0 3px}
+#skf .memo.target{border-color:var(--y);box-shadow:0 0 0 4px rgba(245,180,0,.35)}
+#skf .badge{position:absolute;right:10px;bottom:-12px;background:#E8F6EC;color:var(--ok);border:1px solid #BFE5CB;border-radius:999px;padding:3px 10px;font-size:12px;font-weight:700;opacity:0;transform:scale(.8);transition:all .35s cubic-bezier(.3,1.6,.5,1)}
+#skf .badge.show{opacity:1;transform:none}
+#skf .note{font-size:12px;color:var(--mute);line-height:1.5;padding:0 4px}
+.cap #skf .toast,.cap #skf .fly,.cap #skf .cursor,.cap #skf .ripple,.cap #skf .ctl{display:none}
+.cap #skf .view.hide{display:none}
+@media (prefers-reduced-motion:reduce){#skf .toast,#skf .fly,#skf .cursor,#skf .ripple{display:none}}
+</style>
+<div id="skf">
+  <div class="outer"><div class="stage" id="stage">
+    <div class="win">
+      <div class="bar"><span class="tab on" id="tMarket">技能市集</span><span class="tab" id="tChat">聊天 AI</span></div>
+      <div class="view" id="mView">
+        <div class="url">skillsmp.com</div>
+        <div class="search" id="search">搜尋 Skill…</div>
+        <div class="results">
+          <div class="res" id="r1"><b>meeting-notes</b>把會議逐字稿整理成重點與待辦</div>
+          <div class="res" id="r2"><b>weekly-report</b>每週工作紀錄寫成週報</div>
+          <div class="res" id="r3"><b>todo-extract</b>從對話抓出誰要做什麼</div>
+        </div>
+        <div class="detail" id="detail"><b>名稱</b>meeting-notes<br><b>說明</b>貼上會議記錄時用<br><b>指示</b>分成：結論／待辦／負責人</div>
+        <span class="copy" id="copyBtn">複製寫法</span>
+      </div>
+      <div class="view hide" id="cView">
+        <div class="inputbar" id="input">輸入訊息…</div>
+      </div>
+    </div>
+    <div class="side">
+      <div class="memo" id="memo"><div class="h">我的 Skill（改好的）</div>
+        <div class="row" id="m1">名稱：<span id="n1">meeting-notes</span></div>
+        <div class="row" id="m2">說明：<span id="n2">貼上會議記錄時用</span></div>
+        <div class="row" id="m3">指示：分成結論／待辦／負責人</div>
+        <span class="badge" id="badge">✓ 改成你的了</span></div>
+      <div class="note">找到的 Skill 不一定能直接裝進今天的聊天 AI；照它的寫法改成你的就好</div>
+    </div>
+    <div class="toast" id="toast"></div>
+    <div class="fly" id="fly"></div>
+    <div class="cursor" id="cursor"><svg viewBox="0 0 24 24"><path d="M4 2l15 11.5-6.6.9 3.9 7.4-3 1.5-3.9-7.5L4 20.5z" fill="#fff" stroke="#2B2620" stroke-width="1.6" stroke-linejoin="round"/></svg></div>
+  </div></div>
+  <div class="caption" id="caption">&nbsp;</div>
+  <div class="ctl"><button class="btn" id="loopBtn">自動循環：開</button><button class="btn" id="replay">↻ 重播</button></div>
+  <div class="cards">
+    <div class="rc" data-step="1"><span class="n">1</span><div><div class="tt">到技能市集搜尋</div><div class="ss">打關鍵字，看別人怎麼寫</div></div><span class="chk">✓</span></div>
+    <div class="rc" data-step="2"><span class="n">2</span><div><div class="tt">直接問你的 AI</div><div class="ss">「幫我找適合＿＿的 Skill」</div></div><span class="chk">✓</span></div>
+    <div class="rc" data-step="3"><span class="n">3</span><div><div class="tt">照寫法改成你的</div><div class="ss">名稱、說明換成自己的情境</div></div><span class="chk">✓</span></div>
+  </div>
+</div>
+<script>
+(() => {
+const $ = (s) => document.querySelector('#skf ' + s);
+const stage = $('#stage'), cursor = $('#cursor'), mView = $('#mView'), cView = $('#cView'), search = $('#search'), input = $('#input'),
+  detail = $('#detail'), copyBtn = $('#copyBtn'), memo = $('#memo'), badge = $('#badge'), toast = $('#toast'), fly = $('#fly'), caption = $('#caption');
+const SCALE = 0.6, ASK = '幫我找適合整理社團會議記錄的 Skill';
+let runId = 0, looping = true, cx = 480, cy = 560;
+const sleep = (ms, t) => new Promise((res, rej) => setTimeout(() => (t !== runId ? rej('cancel') : res()), ms));
+const pos = (el, fx = 0.5, fy = 0.5) => { const s = stage.getBoundingClientRect(), r = el.getBoundingClientRect(); return { x: (r.left - s.left + r.width * fx) / SCALE, y: (r.top - s.top + r.height * fy) / SCALE }; };
+const place = (x, y, dur) => { cx = x; cy = y; cursor.style.transition = dur ? `transform ${dur}ms cubic-bezier(.45,.05,.25,1)` : 'none'; cursor.style.transform = `translate(${x}px,${y}px)`; };
+const move = async (t, el, fx, fy, dur = 650) => { const p = pos(el, fx, fy); place(p.x, p.y, dur); await sleep(dur, t); };
+const ripple = () => { const r = document.createElement('div'); r.className = 'ripple'; r.style.left = cx + 'px'; r.style.top = cy + 'px'; stage.appendChild(r); setTimeout(() => r.remove(), 700); };
+const click = async (t, el) => { cursor.classList.add('down'); ripple(); el && el.classList.add('press'); await sleep(170, t); cursor.classList.remove('down'); el && el.classList.remove('press'); };
+const setCap = (txt) => { caption.classList.add('fade'); setTimeout(() => { caption.textContent = txt; caption.classList.remove('fade'); }, 200); };
+const setStep = (n) => document.querySelectorAll('#skf .rc').forEach((s) => { const k = +s.dataset.step; s.classList.toggle('active', k === n); s.classList.toggle('fin', k < n); });
+const show = (el) => requestAnimationFrame(() => requestAnimationFrame(() => el.classList.add('vis')));
+const tab = (which) => { $('#tMarket').classList.toggle('on', which === 'm'); $('#tChat').classList.toggle('on', which === 'c'); mView.classList.toggle('hide', which !== 'm'); cView.classList.toggle('hide', which !== 'c'); };
+const typeInto = async (t, el, text) => { el.classList.add('typing'); el.textContent = ''; for (const ch of text) { el.textContent += ch; await sleep(60, t); } };
+const say = async (t, cls, html) => { const m = document.createElement('div'); m.className = 'msg extra ' + cls; m.innerHTML = html; cView.insertBefore(m, input); show(m); await sleep(450, t); };
+const flyTo = async (t, label, from, to) => {
+  const a = pos(from), b = pos(to); fly.textContent = label; fly.style.opacity = 1;
+  fly.animate([
+    { transform: `translate(${a.x}px,${a.y}px) translate(-50%,-50%) scale(.6)`, opacity: 0 },
+    { transform: `translate(${a.x}px,${a.y - 30}px) translate(-50%,-50%) scale(1)`, opacity: 1, offset: 0.2 },
+    { transform: `translate(${b.x}px,${b.y}px) translate(-50%,-50%) scale(.8)`, opacity: 1, offset: 0.85 },
+    { transform: `translate(${b.x}px,${b.y}px) translate(-50%,-50%) scale(.5)`, opacity: 0 },
+  ], { duration: 1000, easing: 'cubic-bezier(.5,0,.3,1)', fill: 'forwards' });
+  await sleep(1000, t);
+};
+function reset() {
+  tab('m'); search.className = 'search'; search.textContent = '搜尋 Skill…'; input.className = 'inputbar'; input.textContent = '輸入訊息…';
+  ['#r1', '#r2', '#r3'].forEach((r) => $(r).classList.remove('vis', 'pick')); detail.classList.remove('vis'); copyBtn.className = 'copy'; copyBtn.textContent = '複製寫法';
+  cView.querySelectorAll('.extra').forEach((m) => m.remove());
+  ['#m1', '#m2', '#m3'].forEach((m) => $(m).classList.remove('vis')); $('#n1').textContent = 'meeting-notes'; $('#n2').textContent = '貼上會議記錄時用';
+  $('#n1').className = ''; $('#n2').className = ''; memo.classList.remove('target'); badge.classList.remove('show');
+  fly.getAnimations().forEach((a) => a.cancel()); fly.style.opacity = 0; toast.classList.remove('show');
+  place(480, 560, 0); setStep(0); caption.innerHTML = '&nbsp;';
+}
+async function run() {
+  const t = ++runId; reset();
+  try {
+    await sleep(500, t);
+    setStep(1); setCap('步驟 1：到技能市集，搜尋你想做的事');
+    await move(t, search, 0.2, 0.5); await click(t); await typeInto(t, search, '會議記錄');
+    for (const r of ['#r1', '#r2', '#r3']) { show($(r)); await sleep(200, t); }
+    await sleep(400, t); await move(t, $('#r1')); await click(t); $('#r1').classList.add('pick');
+    show(detail); setCap('點開來，看別人的名稱、說明、指示怎麼寫'); await sleep(1500, t);
+    setStep(2); setCap('步驟 2：也可以直接問你的 AI');
+    await move(t, $('#tChat')); await click(t, $('#tChat')); tab('c'); await sleep(300, t);
+    await move(t, input, 0.3, 0.5); await click(t); await typeInto(t, input, ASK); await sleep(250, t);
+    input.className = 'inputbar'; input.textContent = '輸入訊息…'; await say(t, 'me', ASK);
+    await say(t, 'ai', '可以參考 <code>meeting-notes</code>：把會議記錄分成結論、待辦、負責人。要我照這個寫法幫你改一份嗎？');
+    await sleep(1300, t);
+    setStep(3); setCap('步驟 3：照它的寫法，把名稱、說明換成你的情境');
+    await move(t, $('#tMarket')); await click(t, $('#tMarket')); tab('m'); await sleep(300, t);
+    show(copyBtn); await move(t, copyBtn); await click(t, copyBtn); copyBtn.classList.add('fin'); copyBtn.textContent = '已複製';
+    memo.classList.add('target'); await flyTo(t, 'meeting-notes 的寫法', copyBtn, memo); memo.classList.remove('target');
+    for (const m of ['#m1', '#m2', '#m3']) { $(m).classList.add('vis'); await sleep(250, t); }
+    const edit = async (id, text) => { const el = $(id); await move(t, el, 0.5, 0.5, 500); await click(t); el.className = 'ed'; el.textContent = ''; for (const ch of text) { el.textContent += ch; await sleep(70, t); } };
+    await edit('#n1', 'club-meeting'); await edit('#n2', '貼上社團開會記錄時用');
+    badge.classList.add('show'); await sleep(1400, t);
+    setStep(4); setCap('完成！找靈感、照著改，就是你自己的 Skill');
+    place(cx + 40, 560, 900); await sleep(3000, t);
+    if (looping) run();
+  } catch (e) { if (e !== 'cancel') console.error(e); }
+}
+function finalState() {
+  search.textContent = '會議記錄'; ['#r1', '#r2', '#r3'].forEach((r) => $(r).classList.add('vis')); $('#r1').classList.add('pick'); detail.classList.add('vis');
+  ['#m1', '#m2', '#m3'].forEach((m) => $(m).classList.add('vis')); $('#n1').textContent = 'club-meeting'; $('#n2').textContent = '貼上社團開會記錄時用';
+  $('#n1').className = 'ed'; $('#n2').className = 'ed'; badge.classList.add('show'); setStep(4); caption.textContent = '完成！找靈感、照著改，就是你自己的 Skill';
+}
+$('#replay').onclick = () => run();
+$('#loopBtn').onclick = (e) => { looping = !looping; e.target.textContent = '自動循環：' + (looping ? '開' : '關'); };
+if (window.__SYNORA_CAPTURE__ || matchMedia('(prefers-reduced-motion: reduce)').matches) finalState(); else run();
+})();
+</script>

@@ -1,3 +1,4 @@
+import { readFileSync } from 'node:fs';
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
 import { buildDeck } from './build-deck-html.mjs';
@@ -5,10 +6,10 @@ import * as content from './job-site-content.mjs';
 
 const ids = buildDeck(content).slides.map((s) => s.id);
 const page = (id) => content.pages.find((p) => p.id === id);
-const text = (p) => JSON.stringify(p);
+const text = (p) => JSON.stringify(p).replace(/data:image\/jpeg;base64,[A-Za-z0-9+/=]+/g, '');
 
 const S1 = ['cover', 's1', 's1-outline', 's1-goal', 's1-login', 's1-ai-exp', 's1-paid', 's1-problem', 's1-problem-reveal',
-  's1-drink', 's1-drink-reveal', 's1-gf-1', 's1-gf-2', 's1-gf-3', 's1-interview', 's1-prompt-1', 's1-save', 's1-save-poll', 'break1'];
+  's1-drink', 's1-drink-reveal', 's1-gf-1', 's1-gf-2', 's1-gf-3', 's1-interview', 's1-save', 's1-save-poll', 'break1'];
 
 test('第一節頁序', () => assert.deepEqual(ids.slice(0, S1.length), S1));
 
@@ -24,8 +25,9 @@ test('第一節沒有舊工具鏈字眼', () => scan(content.pages.slice(0, cont
 
 test('訪問卡與追問是聊天版', () => {
   assert.match(page('s1-interview').prompt, /我的基本資料/);
-  assert.match(page('s1-prompt-1').prompt, /重新輸出完整的/);
-  assert.doesNotMatch(page('s1-prompt-1').prompt, /寫回|檔案/);
+  assert.match(page('s1-interview').prompt, /重新輸出完整的/);
+  assert.match(page('s1-interview').prompt, /最多 3 題/);
+  assert.doesNotMatch(page('s1-interview').prompt, /寫回|檔案/);
 });
 
 test('第一節分鐘數加總 50', () => {
@@ -34,10 +36,10 @@ test('第一節分鐘數加總 50', () => {
   assert.equal(sum, 50);
 });
 
-const S2 = ['s2', 's2-quiz-warmup-1', 's2-quiz-warmup-2', 's2-quiz-warmup-3', 's2-typhoon', 's2-typhoon-poll', 's2-typhoon-reveal',
-  's2-style', 's2-style-poll', 's2-prompt-2', 's2-rescue', 's2-v1-poll',
+const S2 = ['s2', 's2-quiz-warmup-1', 's2-quiz-warmup-2', 's2-quiz-warmup-3', 's2-typhoon-video', 's2-roof', 's2-typhoon', 's2-typhoon-poll', 's2-typhoon-reveal', 's2-interview',
+  's2-style', 's2-prompt-2', 's2-rescue', 's2-v1-poll',
   's2-skill-1', 's2-skill-2', 's2-skill-3', 's2-skill-4', 's2-skill-5', 's2-skill-6', 's2-skill-7',
-  's2-skill-make', 's2-skill-save', 's2-skill-upload', 'break2'];
+  's2-skill-make', 's2-skill-save', 's2-skill-upload', 's2-skill-find', 'break2'];
 const minutes = (from, to) =>
   content.pages
     .slice(content.pages.findIndex((x) => x.id === from), content.pages.findIndex((x) => x.id === to))
@@ -57,18 +59,49 @@ test('Skill Prompt 輸出三欄且不重做網站', () => {
   for (const s of ['名稱', '說明', '指示', '不要重做網站']) assert.ok(p.includes(s), s);
 });
 
+test('Skill 用一句話觸發，不用打斜線', () => {
+  assert.match(page('s2-skill-make').prompt, /我說什麼的時候/);
+  assert.ok(page('s2-skill-make').prompt.length < 120);
+  const save = readFileSync(new URL('assets/skill-save-demo.fragment.html', import.meta.url), 'utf8');
+  assert.ok(!save.includes('/名稱'));
+  assert.match(save, /幫我做求職網站/);
+  assert.equal(page('s2-skill-save').layout, 'opDemo');
+});
+
+test('短片頁先不揭露內容', () => {
+  assert.equal(page('s3-reel').items, undefined);
+  assert.ok(!text(page('s3-reel')).includes('ChatGPT 出作業'));
+  assert.equal(page('s3-reel-reveal').layout, 'reveal');
+});
+
+test('Prompt ② 風格空格不再提投票', () => {
+  assert.ok(!text(page('s2-prompt-2')).includes('投'));
+});
+
+test('第二輪修改', () => {
+  assert.equal(page('s1-save').layout, 'opDemo');
+  assert.equal(page('s2-rescue').layout, 'opDemo');
+  for (const id of ['s1-save-poll', 's2-v1-poll']) assert.equal(page(id).layout, 'checkpoint', id);
+  assert.equal(page('s2-typhoon-video').items, undefined);
+  assert.equal(page('s2-roof').layout, 'photoStory');
+  assert.equal(page('s2-roof').lines.length, 3);
+  assert.equal(page('s2-interview').layout, 'photo');
+  assert.equal(page('s2-skill-find').link[0], 'https://skillsmp.com/');
+  assert.match(page('s2-v1-poll').notes, /舉手/);
+});
+
 test('咖啡店七頁照順序', () => {
   const order = content.pages.filter((p) => p.layout === 'skillSlide').map((p) => p.slide);
-  assert.deepEqual(order, ['s1-what', 's2-compare', 's2-compare-b', 's3-folder', 's4-skillmd', 's5-flow', 's6-uses']);
+  assert.deepEqual(order, ['s2-compare-b', 's2-compare', 's1-what', 's3-folder', 's4-skillmd', 's5-flow', 's6-uses']);
 });
 
 test('第二節分鐘數加總 50', () => assert.equal(minutes('s2', 'break2'), 50));
 
-const S3 = ['s3', 's3-review', 's3-fix', 's3-v2-upload', 's3-v2-wall', 's3-v2-html', 's3-public',
+const S3 = ['s3', 's3-reel', 's3-reel-reveal', 's3-review', 's3-fix', 's3-try', 's3-v2-upload', 's3-v2-wall', 's3-public',
   's3-ctx-classes', 's3-ctx-teachers', 's3-ctx-window', 's3-ctx-reveal', 's3-newchat', 's3-drop', 's3-obsidian', 's3-recap', 'qa'];
 
-test('全份 58 頁，頁序完整', () => {
-  assert.equal(ids.length, 58);
+test('全份 62 頁，頁序完整', () => {
+  assert.equal(ids.length, 62);
   assert.deepEqual(ids, [...S1, ...S2, ...S3]);
 });
 
@@ -123,7 +156,7 @@ test('作品牆連到存在的作業', () => {
 // 設計文件三張時間表的 25 個環節：每個環節第一頁的講稿要用「時間 名稱(分)」開頭
 const SCHEDULE = [
   ['s1-outline', '09:00', 4], ['s1-login', '09:04', 5], ['s1-problem', '09:09', 4], ['s1-drink', '09:13', 4], ['s1-gf-1', '09:17', 4],
-  ['s1-interview', '09:21', 15], ['s1-prompt-1', '09:36', 11], ['s1-save', '09:47', 3],
+  ['s1-interview', '09:21', 26], ['s1-save', '09:47', 3],
   ['s2-quiz-warmup', '10:00', 3], ['s2-typhoon', '10:03', 4], ['s2-style', '10:07', 4], ['s2-prompt-2', '10:11', 20], ['s2-v1-poll', '10:31', 3],
   ['s2-skill-1', '10:34', 5], ['s2-skill-make', '10:39', 8], ['s2-skill-upload', '10:47', 3],
   ['s3-review', '11:00', 13], ['s3-v2-upload', '11:13', 8], ['s3-public', '11:21', 2], ['s3-ctx-classes', '11:23', 7], ['s3-newchat', '11:30', 6],
@@ -172,7 +205,7 @@ test('總體審查修正：上傳前先提醒個資、登入頁講到 Skills、�
 
 test('對抗審查修正：換工具也不行時有出路，v1 上牆要標明是 v1', () => {
   // 換了 ChatGPT／Claude 還是沒有網頁預覽時，救援卡要給下一步，不能讓學員停在那裡
-  const rescue = page('s2-rescue').rows.map(([, label, body]) => `${label} ${body}`).join('\n');
+  const rescue = readFileSync(new URL('assets/rescue-demo.fragment.html', import.meta.url), 'utf8');
   assert.match(rescue, /換了還是不行/);
   assert.match(rescue, /助教/);
   // 來不及做 v2 的人交 v1，但要標明，牆上才不會把 v1 當成 v2
@@ -182,7 +215,7 @@ test('對抗審查修正：換工具也不行時有出路，v1 上牆要標明�
 
 test('對抗審查第 2 輪：救援不把學員的資料貼進同學的帳號', () => {
   const p = page('s2-rescue');
-  const rescue = p.rows.map(([, label, body]) => `${label} ${body}`).join('\n');
+  const rescue = readFileSync(new URL('assets/rescue-demo.fragment.html', import.meta.url), 'utf8');
   // 基本資料有學經歷與聯絡方式，只能交給助教，而且要本人同意
   assert.doesNotMatch(rescue, /同學/);
   assert.doesNotMatch(p.notes, /同學.*帳號|帳號.*同學/);

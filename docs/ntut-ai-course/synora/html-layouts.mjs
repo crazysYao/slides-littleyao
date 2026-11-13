@@ -1,3 +1,4 @@
+import { readFileSync } from 'node:fs';
 // 求職網站簡報的版型：每個版型回傳 { body: HTML 片段, natives: 原生元件, loop?: 是否循環示意 }。
 import { esc, splitSteps, chips } from './html-kit.mjs';
 import { contextLayouts } from './html-context.mjs';
@@ -59,12 +60,12 @@ export const layouts = {
     body:
       `<div class="in" style="position:absolute;left:44px;top:56px;font-size:13px;font-weight:700;color:#fff;background:${P.dark};border-radius:99px;padding:4px 12px">${esc(p.tag)}</div>` +
       `<h1 class="t in" style="top:88px;${d(0, 0.08)}">${esc(p.heading)}</h1>` +
-      `<div style="position:absolute;left:44px;right:44px;top:290px;display:grid;grid-template-columns:repeat(${p.items.length},1fr);gap:16px">${p.items
+      (p.items ? `<div style="position:absolute;left:44px;right:44px;top:290px;display:grid;grid-template-columns:repeat(${p.items.length},1fr);gap:16px">${p.items
         .map(
           (s, i) =>
             `<div class="card in" style="${d(i, 0.3)};height:200px"><div style="width:34px;height:34px;border-radius:17px;background:${P.accent};color:${P.text};font-weight:900;font-size:18px;display:flex;align-items:center;justify-content:center;margin-bottom:12px">${i + 1}</div><p style="color:${P.text};font-size:18px">${esc(s)}</p></div>`,
         )
-        .join('')}</div>`,
+        .join('')}</div>` : ''),
     natives: [n.link(44, 160, 872, 110, p.link)],
   }),
 
@@ -306,8 +307,17 @@ Object.assign(layouts, {
 
   // ── 疊原生元件的版型 ──
   goalShot: (p, { palette: P, n }) => ({
-    body: title(p.heading) + abs(`left:44px;top:300px;width:420px;font-size:20px;line-height:1.6;color:${P.muted};border-left:6px solid ${P.accent};padding-left:14px`, esc(p.note), 2),
-    natives: [n.link(44, 160, 420, 110, p.link), n.shotFrame(490, 140, 426, 370, p.shot, P.muted, P.text)],
+    body:
+      title(p.heading) +
+      abs(`left:44px;top:300px;width:420px;font-size:20px;line-height:1.6;color:${P.muted};border-left:6px solid ${P.accent};padding-left:14px`, esc(p.note), 2) +
+      (p.shotSrc
+        ? abs(
+            'left:599px;top:132px;width:208px;height:386px;background:#16161a;border-radius:30px;padding:8px;box-sizing:border-box;box-shadow:0 12px 32px rgba(0,0,0,.25)',
+            `<img src="${p.shotSrc}" alt="${esc(p.shot)}" style="display:block;width:100%;height:100%;object-fit:cover;object-position:top;border-radius:22px">`,
+            1,
+          )
+        : ''),
+    natives: [n.link(44, 160, 420, 110, p.link), ...(p.shotSrc ? [] : [n.shotFrame(490, 140, 426, 370, p.shot, P.muted, P.text)])],
   }),
 
   iconLinks: (p, { palette: P, n }) => {
@@ -334,6 +344,56 @@ Object.assign(layouts, {
     body: tagPill(P, p.tag) + taskTitle(p.heading) + numCards(P, p.items, 290, 200),
     natives: [n.fileDownload(44, 160, 872, 110, p.file)],
   }),
+
+  // 完成打卡（講師只看完成比例）
+  checkpoint: (p, { n }) => ({ body: title(p.heading), natives: [n.checkpoint(p.question, p.buttonLabel)] }),
+
+  // 操作示範動畫：assets/<demo>.fragment.html（做法見 .claude/skills/operation-demo）
+  opDemo: (p, { n }) => ({
+    body: title(p.heading) + readFileSync(new URL(`assets/${p.demo}.fragment.html`, import.meta.url), 'utf8'),
+    natives: p.link ? [n.link(644, 412, 272, 96, p.link)] : [],
+  }),
+
+  // 照片在左，三句故事依序出現在右，最後一句打上黃底
+  photoStory: (p, { palette: P }) => ({
+    body:
+      title(p.heading) +
+      abs('left:44px;top:120px;width:520px;height:390px;border-radius:12px;overflow:hidden;box-shadow:0 10px 28px rgba(0,0,0,.2)', `<img src="${p.src}" alt="${esc(p.alt)}" style="display:block;width:100%;height:100%;object-fit:cover">`, 0) +
+      `<div style="position:absolute;left:596px;right:44px;top:140px;display:flex;flex-direction:column;gap:22px">${p.lines
+        .map((s, i) => {
+          const last = i === p.lines.length - 1;
+          return `<div class="in" style="${d(i, 0.6, 0.9)};font-size:${last ? 25 : 22}px;font-weight:${last ? 900 : 700};line-height:1.45">${last ? mark(P, s) : esc(s)}</div>`;
+        })
+        .join('')}</div>`,
+    natives: [],
+  }),
+
+  // 一張照片＋標題
+  photo: (p) => ({
+    body:
+      title(p.heading) +
+      abs(
+        'left:124px;top:118px;width:712px;height:400px;border-radius:12px;overflow:hidden;box-shadow:0 10px 28px rgba(0,0,0,.2)',
+        `<img src="${p.src}" alt="${esc(p.alt)}" style="display:block;width:100%;height:100%;object-fit:cover">`,
+        1,
+      ),
+    natives: [],
+  }),
+
+  // 兩個網站的真截圖並排（颱風題）
+  siteShots: (p, { palette: P }) => {
+    const frame = (s, i) =>
+      abs(
+        `left:${i ? 496 : 44}px;top:140px;width:420px`,
+        `<div style="text-align:center;font-size:20px;font-weight:900;margin-bottom:8px">${esc(s.name)}</div>` +
+          `<div style="border:2px solid ${P.line};border-radius:10px;overflow:hidden;background:#fff;box-shadow:0 8px 24px rgba(0,0,0,.12)">` +
+          `<div style="height:22px;background:#f1efe9;display:flex;align-items:center;gap:6px;padding-left:10px">${'<i style="width:8px;height:8px;border-radius:4px;background:#d4d0c6"></i>'.repeat(3)}</div>` +
+          `<img src="${s.shotSrc}" alt="${esc(s.name)}的網站" style="display:block;width:100%;height:315px;object-fit:cover;object-position:top"></div>`,
+        i,
+        0.2,
+      );
+    return { body: `<h1 class="t in" style="font-size:28px">${esc(p.heading)}</h1>` + p.sites.map(frame).join(''), natives: [] };
+  },
 
   siteMock: (p, { palette: P, n }) => {
     const w = 340;

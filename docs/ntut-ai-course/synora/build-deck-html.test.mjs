@@ -60,7 +60,7 @@ const here = dirname(fileURLToPath(import.meta.url));
 const INTERACTIVE = new Set(['poll', 'quiz', 'link', 'copycard', 'fileDownload', 'wordcloud', 'webProject', 'homework', 'showcase']);
 const FULLSIZE = new Set(['poll', 'quiz', 'wordcloud', 'webProject', 'showcase']);
 // 舊產生器沒有後來新增的版型，比對時先拿掉這些頁
-const NEW_LAYOUTS = ['styleGallery', 'skillSlide', 'ctxClasses', 'ctxWindow'];
+const NEW_LAYOUTS = ['styleGallery', 'skillSlide', 'ctxClasses', 'ctxWindow', 'siteShots', 'photo', 'photoStory', 'opDemo', 'checkpoint'];
 const oldDeck = () => {
   const dir = mkdtempSync(join(tmpdir(), 'deck-'));
   const out = join(dir, 'old.json');
@@ -76,10 +76,10 @@ const strip = (e, keepBox) => {
   return keepBox ? { ...rest, x, y, width, height } : rest;
 };
 
-test('全份：58 頁，原生互動元件與舊產生器一致', () => {
+test('全份：62 頁，原生互動元件與舊產生器一致', () => {
   const all = buildDeck(content).slides;
   const old = oldDeck().slides;
-  assert.equal(all.length, 58);
+  assert.equal(all.length, 62);
   const oldIds = new Set(old.map((s) => s.id));
   const now = all.filter((s) => oldIds.has(s.id));
   assert.equal(now.length, old.length);
@@ -93,6 +93,16 @@ test('全份：58 頁，原生互動元件與舊產生器一致', () => {
   });
 });
 
+test('完成打卡：講師只看完成比例', () => {
+  const slides = buildDeck(content).slides;
+  for (const id of ['s1-save-poll', 's2-v1-poll']) {
+    const els = slides.find((x) => x.id === id).elements;
+    assert.equal(els.filter((e) => e.type === 'poll').length, 0, id);
+    const cp = els.find((e) => e.type === 'checkpoint');
+    assert.ok(cp && cp.question && cp.buttonLabel, id);
+  }
+});
+
 test('全份：沒有循環動畫頁', () => {
   const loops = buildDeck(content).slides.filter((s) => /infinite/.test(s.elements[0].html)).map((s) => s.id);
   assert.deepEqual(loops, []);
@@ -100,15 +110,15 @@ test('全份：沒有循環動畫頁', () => {
 
 test('全份：截圖佔位 svg 數量', () => {
   const svgs = Object.fromEntries(buildDeck(content).slides.map((s) => [s.id, s.elements.filter((e) => e.type === 'svg').length]));
-  assert.equal(svgs['s1-goal'], 1);
-  assert.equal(svgs['s2-typhoon'], 2);
+  assert.equal(svgs['s1-goal'], 0);
+  assert.equal(svgs['s2-typhoon'], 0);
   assert.equal(svgs['s3-recap'], 3);
 });
 
 test('全份：copycard 標題', () => {
   const titles = Object.fromEntries(buildDeck(content).slides.flatMap((s) => s.elements.filter((e) => e.type === 'copycard').map((e) => [s.id, e.title])));
   assert.deepEqual(titles, {
-    's1-interview': '讓 AI 訪問你', 's1-prompt-1': '照貼就好',
+    's1-interview': '讓 AI 訪問你',
     's2-prompt-2': '複製後，先填好三個空格再送出', 's2-skill-make': '整理成 Skill', 's3-newchat': '面試自介',
   });
 });

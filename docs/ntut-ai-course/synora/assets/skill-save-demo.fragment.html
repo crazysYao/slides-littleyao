@@ -1,0 +1,199 @@
+<style>
+#sks{--line:#EDE6D8;--ink:#2B2620;--mute:#8A8275;--y:#F5B400;--yd:#D99A00;--y2:#FFF3CC;--ok:#2E8B57;position:absolute;left:0;top:0;width:960px;height:540px}
+#sks *{box-sizing:border-box}
+#sks .outer{position:absolute;left:44px;top:112px;width:576px;height:288px}
+#sks .stage{zoom:.6;position:absolute;top:0;left:0;width:960px;height:480px;background:#fff;border:1px solid var(--line);border-radius:22px;overflow:hidden;padding:26px 30px;display:flex;gap:24px;align-items:stretch}
+#sks .stage::before{content:"";position:absolute;inset:0;background:radial-gradient(circle at 80% 40%,#FFF8E2 0,transparent 55%);pointer-events:none}
+#sks .win{position:relative;flex:1;background:#F7F4EE;border:1px solid var(--line);border-radius:18px;display:flex;flex-direction:column;overflow:hidden}
+#sks .bar{display:flex;align-items:center;gap:8px;padding:10px 14px;background:#efebe2;border-bottom:1px solid var(--line);font-size:14px;font-weight:700}
+#sks .bar .app{padding:5px 12px;border-radius:999px;background:#fff}
+#sks .bar .menu{margin-left:auto;padding:5px 12px;border-radius:999px;background:#fff;border:1px solid var(--line);color:var(--ink);transition:all .2s}
+#sks .press{background:var(--y)!important;color:#fff!important;border-color:var(--y)!important}
+#sks .view{position:absolute;left:0;right:0;top:46px;bottom:0;padding:16px 18px;display:flex;flex-direction:column;gap:10px;transition:opacity .3s}
+#sks .view.hide{opacity:0;pointer-events:none}
+#sks .msg{max-width:84%;padding:10px 14px;border-radius:14px;font-size:14px;line-height:1.6;opacity:0;transform:translateY(8px);transition:opacity .35s,transform .35s}
+#sks .msg.vis{opacity:1;transform:none}
+#sks .msg.me{align-self:flex-end;background:#16161a;color:#fff}
+#sks .msg.ai{position:relative;align-self:flex-start;background:#fff;border:1px solid var(--line)}
+#sks .msg.ai b{display:inline-block;min-width:44px;color:var(--yd)}
+#sks .hl{position:absolute;inset:0;background:rgba(245,180,0,.26);border-radius:14px;transform-origin:left center;transform:scaleX(0);transition:transform .9s cubic-bezier(.4,0,.2,1);pointer-events:none}
+#sks .sel .hl{transform:scaleX(1)}
+#sks .copy{align-self:flex-start;margin-top:-2px;padding:5px 12px;border-radius:999px;border:1px solid var(--line);background:#fff;font-size:12px;color:var(--mute);transition:all .2s;opacity:0}
+#sks .copy.vis{opacity:1}
+#sks .copy.fin{background:#E8F6EC;color:var(--ok);border-color:#BFE5CB}
+#sks .inputbar{position:absolute;left:14px;right:14px;bottom:14px;padding:10px 14px;border-radius:12px;background:#fff;border:1px solid var(--line);font-size:14px;color:#bdb6a8;min-height:40px}
+#sks .inputbar.typing{color:var(--ink);border-color:var(--y)}
+#sks .crumbs{display:flex;gap:6px;align-items:center;font-size:14px;font-weight:700;flex-wrap:wrap}
+#sks .crumb{padding:6px 12px;border-radius:999px;background:#fff;border:1px solid var(--line);color:var(--mute);opacity:.35;transition:all .25s}
+#sks .crumb.on{opacity:1;color:var(--ink);border-color:var(--y)}
+#sks .arr{color:var(--mute);font-weight:900}
+#sks .form{margin-top:6px;background:#fff;border:1px solid var(--line);border-radius:14px;padding:12px 14px;display:grid;gap:8px;opacity:0;transition:opacity .3s}
+#sks .form.vis{opacity:1}
+#sks .field{display:flex;gap:10px;align-items:flex-start;font-size:13px}
+#sks .field span{flex:0 0 44px;font-weight:700;color:var(--mute);padding-top:6px}
+#sks .field div{flex:1;min-height:30px;border:1px solid var(--line);border-radius:8px;padding:5px 10px;line-height:1.5;transition:background .4s}
+#sks .field div.filled{background:var(--y2)}
+#sks .create{justify-self:end;padding:6px 16px;border-radius:999px;background:#16161a;color:#fff;font-size:13px;font-weight:700;transition:all .2s}
+#sks .side{position:relative;width:240px;display:flex;flex-direction:column;gap:12px}
+#sks .memo{position:relative;background:#fff;border:1px solid var(--line);border-radius:16px;padding:12px 14px;font-size:13px;line-height:1.65;box-shadow:0 8px 20px rgba(60,40,0,.08)}
+#sks .memo .h{font-size:12px;color:var(--yd);font-weight:700;margin-bottom:4px}
+#sks .memo b{display:block;font-size:14px}
+#sks .memo.target{border-color:var(--y);box-shadow:0 0 0 4px rgba(245,180,0,.35)}
+#sks .memo .new{opacity:0;transform:translateY(6px);transition:all .35s}
+#sks .memo .new.vis{opacity:1;transform:none}
+#sks .badge{position:absolute;right:10px;bottom:-12px;background:#E8F6EC;color:var(--ok);border:1px solid #BFE5CB;border-radius:999px;padding:3px 10px;font-size:12px;font-weight:700;opacity:0;transform:scale(.8);transition:all .35s cubic-bezier(.3,1.6,.5,1)}
+#sks .badge.show{opacity:1;transform:none}
+#sks .note{font-size:12px;color:var(--mute);line-height:1.5;padding:0 4px}
+#sks .toast{position:absolute;top:16px;left:50%;transform:translate(-50%,-20px);background:var(--ink);color:#fff;font-size:15px;padding:9px 18px;border-radius:999px;opacity:0;transition:all .3s;z-index:5}
+#sks .toast.show{opacity:1;transform:translate(-50%,0)}
+#sks .fly{position:absolute;top:0;left:0;z-index:6;opacity:0;pointer-events:none;background:#fff;border:2px solid var(--y);border-radius:12px;padding:8px 12px;font-size:13px;font-weight:700;box-shadow:0 10px 24px rgba(200,140,0,.3);white-space:nowrap}
+#sks .cursor{position:absolute;top:0;left:0;z-index:7;pointer-events:none;transform:translate(480px,560px)}
+#sks .cursor svg{width:26px;height:26px;transform:translate(-3px,-2px);transition:transform .12s;filter:drop-shadow(0 2px 3px rgba(0,0,0,.25))}
+#sks .cursor.down svg{transform:translate(-3px,-2px) scale(.85)}
+#sks .ripple{position:absolute;z-index:6;width:16px;height:16px;margin:-8px 0 0 -8px;border-radius:50%;border:2px solid var(--y);pointer-events:none;animation:rip .5s ease-out forwards}
+@keyframes rip{to{transform:scale(3.2);opacity:0}}
+#sks .caption{position:absolute;left:44px;top:406px;width:576px;text-align:center;font-size:15px;font-weight:700;min-height:22px;transition:opacity .25s}
+#sks .caption.fade{opacity:0}
+#sks .ctl{position:absolute;left:44px;top:446px;display:flex;gap:8px}
+#sks .btn{border:1px solid var(--line);background:#fff;font:inherit;font-size:12px;padding:5px 12px;border-radius:999px;cursor:pointer;color:var(--ink)}
+#sks .cards{position:absolute;left:644px;right:44px;top:112px;display:grid;gap:10px}
+#sks .rc{display:flex;align-items:center;gap:10px;background:#fff;border:1.5px solid var(--line);border-radius:12px;padding:10px 12px;transition:all .3s}
+#sks .rc.dark{background:#16161a;border-color:#16161a;color:#fff}
+#sks .rc .n{flex:0 0 26px;height:26px;border-radius:13px;background:var(--y);color:#16161a;display:grid;place-items:center;font-weight:900;font-size:13px}
+#sks .rc .tt{font-size:14px;font-weight:800}
+#sks .rc .ss{font-size:11px;color:var(--mute);margin-top:2px;line-height:1.4}
+#sks .rc.dark .ss{color:#c9c6bd}
+#sks .rc .chk{margin-left:auto;flex:0 0 22px;height:22px;border-radius:50%;background:#E8F6EC;color:var(--ok);display:grid;place-items:center;font-size:12px;opacity:0;transform:scale(.5);transition:all .3s}
+#sks .rc.active{border-color:var(--y);box-shadow:0 6px 18px rgba(245,180,0,.2)}
+#sks .rc.fin .chk{opacity:1;transform:none}
+#sks .rc:not(.active):not(.fin){opacity:.7}
+.cap #sks .toast,.cap #sks .fly,.cap #sks .cursor,.cap #sks .ripple,.cap #sks .ctl{display:none}
+.cap #sks .view.hide,.cap #sks #skillMsg,.cap #sks .copy{display:none}
+@media (prefers-reduced-motion:reduce){#sks .toast,#sks .fly,#sks .cursor,#sks .ripple{display:none}}
+</style>
+<div id="sks">
+  <div class="outer"><div class="stage" id="stage">
+    <div class="win">
+      <div class="bar"><span class="app">Gemini</span><span class="menu" id="menuBtn">自訂</span></div>
+      <div class="view" id="chatView">
+        <div class="msg ai" id="skillMsg"><span class="hl"></span><b>名稱</b>my-job-site<br><b>說明</b>我說「做求職網站」時用<br><b>指示</b>給面試官看・極簡風・只用基本資料</div>
+        <span class="copy" id="copyBtn">複製</span>
+        <div class="inputbar" id="input">輸入訊息…</div>
+      </div>
+      <div class="view hide" id="setView">
+        <div class="crumbs"><span class="crumb" id="c1">自訂</span><span class="arr">→</span><span class="crumb" id="c2">Skills</span><span class="arr">→</span><span class="crumb" id="c3">建立</span><span class="arr">→</span><span class="crumb" id="c4">手動建立</span></div>
+        <div class="form" id="form">
+          <div class="field"><span>名稱</span><div id="f1"></div></div>
+          <div class="field"><span>說明</span><div id="f2"></div></div>
+          <div class="field"><span>指示</span><div id="f3"></div></div>
+          <span class="create" id="createBtn">建立</span>
+        </div>
+      </div>
+    </div>
+    <div class="side">
+      <div class="memo" id="memo"><div class="h">手機備忘錄</div><b>我的基本資料</b>學校：北科大 資工系…<div class="new" id="memoNew"><b style="margin-top:6px">我的 Skill</b>名稱：my-job-site<br>說明：做求職網站時用…</div><span class="badge" id="badge">✓ 已存好</span></div>
+      <div class="note" id="note">學校帳號、未滿 18 歲，或找不到「自訂」的人：做完第 1 步就夠了</div>
+    </div>
+    <div class="toast" id="toast"></div>
+    <div class="fly" id="fly"></div>
+    <div class="cursor" id="cursor"><svg viewBox="0 0 24 24"><path d="M4 2l15 11.5-6.6.9 3.9 7.4-3 1.5-3.9-7.5L4 20.5z" fill="#fff" stroke="#2B2620" stroke-width="1.6" stroke-linejoin="round"/></svg></div>
+  </div></div>
+  <div class="caption" id="caption">&nbsp;</div>
+  <div class="ctl"><button class="btn" id="loopBtn">自動循環：開</button><button class="btn" id="replay">↻ 重播</button></div>
+  <div class="cards">
+    <div class="rc" data-step="1"><span class="n">1</span><div><div class="tt">所有人：存成文字</div><div class="ss">三欄整段複製，貼到基本資料副本旁邊</div></div><span class="chk">✓</span></div>
+    <div class="rc dark" data-step="2"><span class="n">2</span><div><div class="tt">Gemini 個人帳號：再多一步</div><div class="ss">自訂 → Skills → 建立 → 手動建立，貼進三欄</div></div><span class="chk">✓</span></div>
+    <div class="rc" data-step="3"><span class="n">3</span><div><div class="tt">開新對話確認</div><div class="ss">只打一句，看 AI 說不說得出你的規則</div></div><span class="chk">✓</span></div>
+  </div>
+</div>
+<script>
+(() => {
+const $ = (s) => document.querySelector('#sks ' + s);
+const stage = $('#stage'), cursor = $('#cursor'), chatView = $('#chatView'), setView = $('#setView'), skillMsg = $('#skillMsg'),
+  copyBtn = $('#copyBtn'), input = $('#input'), menuBtn = $('#menuBtn'), form = $('#form'), createBtn = $('#createBtn'),
+  memo = $('#memo'), memoNew = $('#memoNew'), badge = $('#badge'), toast = $('#toast'), fly = $('#fly'), caption = $('#caption');
+const SCALE = 0.6, ASK = '幫我做求職網站，先不要做，告訴我你會照哪些規則做';
+let runId = 0, looping = true, cx = 480, cy = 560;
+const sleep = (ms, t) => new Promise((res, rej) => setTimeout(() => (t !== runId ? rej('cancel') : res()), ms));
+const pos = (el, fx = 0.5, fy = 0.5) => { const s = stage.getBoundingClientRect(), r = el.getBoundingClientRect(); return { x: (r.left - s.left + r.width * fx) / SCALE, y: (r.top - s.top + r.height * fy) / SCALE }; };
+const place = (x, y, dur) => { cx = x; cy = y; cursor.style.transition = dur ? `transform ${dur}ms cubic-bezier(.45,.05,.25,1)` : 'none'; cursor.style.transform = `translate(${x}px,${y}px)`; };
+const move = async (t, el, fx, fy, dur = 650) => { const p = pos(el, fx, fy); place(p.x, p.y, dur); await sleep(dur, t); };
+const ripple = () => { const r = document.createElement('div'); r.className = 'ripple'; r.style.left = cx + 'px'; r.style.top = cy + 'px'; stage.appendChild(r); setTimeout(() => r.remove(), 700); };
+const click = async (t, el) => { cursor.classList.add('down'); ripple(); el && el.classList.add('press'); await sleep(170, t); cursor.classList.remove('down'); el && el.classList.remove('press'); };
+const setCap = (txt) => { caption.classList.add('fade'); setTimeout(() => { caption.textContent = txt; caption.classList.remove('fade'); }, 200); };
+const setStep = (n) => document.querySelectorAll('#sks .rc').forEach((s) => { const k = +s.dataset.step; s.classList.toggle('active', k === n); s.classList.toggle('fin', k < n); });
+const show = (el) => requestAnimationFrame(() => requestAnimationFrame(() => el.classList.add('vis')));
+const flyTo = async (t, label, from, to) => {
+  const a = pos(from), b = pos(to, 0.5, 0.5); fly.textContent = label; fly.style.opacity = 1;
+  fly.animate([
+    { transform: `translate(${a.x}px,${a.y}px) translate(-50%,-50%) scale(.6)`, opacity: 0 },
+    { transform: `translate(${a.x}px,${a.y - 30}px) translate(-50%,-50%) scale(1)`, opacity: 1, offset: 0.2 },
+    { transform: `translate(${b.x}px,${b.y}px) translate(-50%,-50%) scale(.8)`, opacity: 1, offset: 0.85 },
+    { transform: `translate(${b.x}px,${b.y}px) translate(-50%,-50%) scale(.5)`, opacity: 0 },
+  ], { duration: 1000, easing: 'cubic-bezier(.5,0,.3,1)', fill: 'forwards' });
+  await sleep(1000, t);
+};
+const say = async (t, cls, html) => { const m = document.createElement('div'); m.className = 'msg extra ' + cls; m.innerHTML = html; chatView.insertBefore(m, input); show(m); await sleep(450, t); return m; };
+function reset() {
+  chatView.classList.remove('hide'); setView.classList.add('hide');
+  chatView.querySelectorAll('.extra').forEach((m) => m.remove());
+  skillMsg.className = 'msg ai'; copyBtn.className = 'copy'; copyBtn.textContent = '複製';
+  input.className = 'inputbar'; input.textContent = '輸入訊息…';
+  ['#c1', '#c2', '#c3', '#c4'].forEach((c) => $(c).classList.remove('on')); form.classList.remove('vis');
+  ['#f1', '#f2', '#f3'].forEach((f) => { $(f).textContent = ''; $(f).classList.remove('filled'); });
+  memo.classList.remove('target'); memoNew.classList.remove('vis'); badge.classList.remove('show');
+  fly.getAnimations().forEach((a) => a.cancel()); fly.style.opacity = 0; toast.classList.remove('show');
+  place(480, 560, 0); setStep(0); caption.innerHTML = '&nbsp;';
+}
+async function run() {
+  const t = ++runId; reset();
+  try {
+    await sleep(500, t);
+    // 1：所有人存成文字
+    setStep(1); setCap('步驟 1：AI 整理好的三欄，整段選起來複製');
+    show(skillMsg); await sleep(500, t);
+    await move(t, skillMsg, 0.05, 0.15, 800); cursor.classList.add('down'); skillMsg.classList.add('sel');
+    await move(t, skillMsg, 0.95, 0.9, 900); cursor.classList.remove('down');
+    show(copyBtn); await move(t, copyBtn); await click(t, copyBtn); copyBtn.classList.add('fin'); copyBtn.textContent = '已複製';
+    toast.textContent = '✓ 已複製三欄'; toast.classList.add('show'); await sleep(800, t); toast.classList.remove('show');
+    setCap('貼到手機備忘錄，放在「我的基本資料」旁邊');
+    memo.classList.add('target'); await flyTo(t, '我的 Skill（三欄）', copyBtn, memo);
+    memoNew.classList.add('vis'); badge.classList.add('show'); memo.classList.remove('target'); await sleep(1100, t);
+    // 2：Gemini 建 Skill
+    setStep(2); setCap('步驟 2（Gemini 個人帳號）：自訂 → Skills → 建立 → 手動建立');
+    await move(t, menuBtn); await click(t, menuBtn);
+    chatView.classList.add('hide'); setView.classList.remove('hide');
+    for (const c of ['#c1', '#c2', '#c3', '#c4']) { await move(t, $(c), 0.5, 0.5, 450); await click(t); $(c).classList.add('on'); await sleep(200, t); }
+    form.classList.add('vis'); await sleep(400, t);
+    setCap('把名稱、說明、指示三欄貼進去，按「建立」');
+    const vals = ['my-job-site', '我說「做求職網站」時用', '給面試官看・極簡風・只用基本資料'];
+    for (let i = 0; i < 3; i++) { const f = $('#f' + (i + 1)); await move(t, f, 0.3, 0.5, 420); await click(t); f.textContent = vals[i]; f.classList.add('filled'); await sleep(250, t); }
+    await move(t, createBtn); await click(t, createBtn);
+    toast.textContent = '✓ Skill 已建立'; toast.classList.add('show'); await sleep(1000, t); toast.classList.remove('show');
+    // 3：開新對話確認
+    setStep(3); setCap('步驟 3：開新對話，只打一句話');
+    setView.classList.add('hide'); chatView.classList.remove('hide');
+    skillMsg.classList.remove('vis', 'sel'); copyBtn.classList.remove('vis');
+    await move(t, input, 0.3, 0.5); await click(t); input.className = 'inputbar typing'; input.textContent = '';
+    for (const ch of ASK) { input.textContent += ch; await sleep(55, t); }
+    await sleep(300, t); input.className = 'inputbar'; input.textContent = '輸入訊息…';
+    await say(t, 'me', ASK);
+    setCap('AI 說得出你的規則，就是成功（就像店員問「老樣子嗎？」）');
+    await say(t, 'ai', '我會用 <b>my-job-site</b>：給面試官看、極簡風、只用你的基本資料。');
+    await sleep(1400, t);
+    setStep(4); setCap('完成！之後只要說一句，AI 就照你的做法做');
+    place(cx + 40, 560, 900); await sleep(3000, t);
+    if (looping) run();
+  } catch (e) { if (e !== 'cancel') console.error(e); }
+}
+function finalState() {
+  memoNew.classList.add('vis'); badge.classList.add('show');
+  const add = (cls, html) => { const m = document.createElement('div'); m.className = 'msg vis extra ' + cls; m.innerHTML = html; chatView.insertBefore(m, input); };
+  add('me', ASK); add('ai', '我會用 <b>my-job-site</b>：給面試官看、極簡風、只用你的基本資料。');
+  setStep(4); caption.textContent = '完成！之後只要說一句，AI 就照你的做法做';
+}
+$('#replay').onclick = () => run();
+$('#loopBtn').onclick = (e) => { looping = !looping; e.target.textContent = '自動循環：' + (looping ? '開' : '關'); };
+if (window.__SYNORA_CAPTURE__ || matchMedia('(prefers-reduced-motion: reduce)').matches) finalState(); else run();
+})();
+</script>
