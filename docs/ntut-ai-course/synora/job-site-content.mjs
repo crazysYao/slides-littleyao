@@ -540,15 +540,6 @@ export const pages = [
     linkHomework: 'job-v2-up',
   },
   {
-    id: 's3-v2-html',
-    layout: 'webProject',
-    section: '03 改更好',
-    title: '選做：上傳 HTML 檔',
-    notes: '選做，不等大家。拿得到 HTML 檔的人可以上傳；拿不到沒關係，截圖已經算交了。',
-    question: '（選做）上傳你的網站 HTML 檔',
-    methods: ['upload'],
-  },
-  {
     id: 's3-public',
     layout: 'compare',
     section: '03 改更好',
