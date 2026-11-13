@@ -100,7 +100,7 @@ test('全份：沒有循環動畫頁', () => {
 
 test('全份：截圖佔位 svg 數量', () => {
   const svgs = Object.fromEntries(buildDeck(content).slides.map((s) => [s.id, s.elements.filter((e) => e.type === 'svg').length]));
-  assert.equal(svgs['s1-goal'], 1);
+  assert.equal(svgs['s1-goal'], 0);
   assert.equal(svgs['s2-typhoon'], 2);
   assert.equal(svgs['s3-recap'], 3);
 });

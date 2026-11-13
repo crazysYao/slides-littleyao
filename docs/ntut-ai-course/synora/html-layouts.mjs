@@ -306,8 +306,17 @@ Object.assign(layouts, {
 
   // ── 疊原生元件的版型 ──
   goalShot: (p, { palette: P, n }) => ({
-    body: title(p.heading) + abs(`left:44px;top:300px;width:420px;font-size:20px;line-height:1.6;color:${P.muted};border-left:6px solid ${P.accent};padding-left:14px`, esc(p.note), 2),
-    natives: [n.link(44, 160, 420, 110, p.link), n.shotFrame(490, 140, 426, 370, p.shot, P.muted, P.text)],
+    body:
+      title(p.heading) +
+      abs(`left:44px;top:300px;width:420px;font-size:20px;line-height:1.6;color:${P.muted};border-left:6px solid ${P.accent};padding-left:14px`, esc(p.note), 2) +
+      (p.shotSrc
+        ? abs(
+            'left:599px;top:132px;width:208px;height:386px;background:#16161a;border-radius:30px;padding:8px;box-sizing:border-box;box-shadow:0 12px 32px rgba(0,0,0,.25)',
+            `<img src="${p.shotSrc}" alt="${esc(p.shot)}" style="display:block;width:100%;height:100%;object-fit:cover;object-position:top;border-radius:22px">`,
+            1,
+          )
+        : ''),
+    natives: [n.link(44, 160, 420, 110, p.link), ...(p.shotSrc ? [] : [n.shotFrame(490, 140, 426, 370, p.shot, P.muted, P.text)])],
   }),
 
   iconLinks: (p, { palette: P, n }) => {

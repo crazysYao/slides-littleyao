@@ -273,3 +273,10 @@ test('skillTemplate：視窗標題可設定，沒給就寫「聊天 AI」', () =
   assert.match(layouts.skillTemplate({ ...base, app: 'Gemini' }, { palette }).body, /<\/i>Gemini</);
   assert.match(layouts.skillTemplate(base, { palette }).body, /<\/i>聊天 AI</);
 });
+
+test('goalShot：有 shotSrc 時放手機截圖，不放佔位框', () => {
+  const [p, r] = run('s1-goal');
+  assert.ok(p.shotSrc.startsWith('data:image/jpeg;base64,'));
+  assert.ok(r.body.includes(`src="${p.shotSrc}"`));
+  assert.equal(r.natives.filter((e) => e.type === 'svg').length, 0);
+});

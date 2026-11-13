@@ -2,6 +2,7 @@
 // 產生：node build-deck-html.mjs <輸出路徑> job-site-content.mjs
 // 設計見 ../../superpowers/specs/2026-11-12-ntut-speak-clearly-syllabus-design.md；講稿開頭「HH:MM 名稱(分)」是該環節的第一頁
 
+import { readFileSync } from 'node:fs';
 import { skillNotes } from './html-skill.mjs';
 
 export const brand = '讓 AI 一開口就懂你';
@@ -123,6 +124,7 @@ export const pages = [
     heading: '今天下課，你會做出一個這樣的網站',
     link: ['https://hi.littleyao.me/zh', '講師的網站', '課前換成用今天流程做的版本'],
     shot: '講師網站的手機畫面',
+    shotSrc: `data:image/jpeg;base64,${readFileSync(new URL('assets/goal-phone.jpg', import.meta.url)).toString('base64')}`,
     note: '3 小時後，大家的網站會一起出現在作品牆上。',
   },
   {
