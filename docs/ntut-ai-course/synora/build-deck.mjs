@@ -587,7 +587,7 @@ const layouts = {
     ...card(PAD + CW / 2 + 10, 160, CW / 2 - 10, 110, C[p.card[0]], p.card[1], p.card[2]),
     note(300, p.note),
   ],
-  linkTask: (p) => [...taskHeader(p.tag, p.heading), link(PAD, 190, CW, p.link), list(330, p.items, true)],
+  linkTask: (p) => [...taskHeader(p.tag, p.heading), link(PAD, 190, CW, p.link), ...(p.items ? [list(330, p.items, true)] : [])],
   wordcloud: (p) => [wordcloud(p.question, p.maxWords)],
   links: (p) => [
     ...taskHeader(p.tag, p.heading),

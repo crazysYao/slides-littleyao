@@ -59,12 +59,12 @@ export const layouts = {
     body:
       `<div class="in" style="position:absolute;left:44px;top:56px;font-size:13px;font-weight:700;color:#fff;background:${P.dark};border-radius:99px;padding:4px 12px">${esc(p.tag)}</div>` +
       `<h1 class="t in" style="top:88px;${d(0, 0.08)}">${esc(p.heading)}</h1>` +
-      `<div style="position:absolute;left:44px;right:44px;top:290px;display:grid;grid-template-columns:repeat(${p.items.length},1fr);gap:16px">${p.items
+      (p.items ? `<div style="position:absolute;left:44px;right:44px;top:290px;display:grid;grid-template-columns:repeat(${p.items.length},1fr);gap:16px">${p.items
         .map(
           (s, i) =>
             `<div class="card in" style="${d(i, 0.3)};height:200px"><div style="width:34px;height:34px;border-radius:17px;background:${P.accent};color:${P.text};font-weight:900;font-size:18px;display:flex;align-items:center;justify-content:center;margin-bottom:12px">${i + 1}</div><p style="color:${P.text};font-size:18px">${esc(s)}</p></div>`,
         )
-        .join('')}</div>`,
+        .join('')}</div>` : ''),
     natives: [n.link(44, 160, 872, 110, p.link)],
   }),
 

@@ -76,10 +76,10 @@ const strip = (e, keepBox) => {
   return keepBox ? { ...rest, x, y, width, height } : rest;
 };
 
-test('全份：60 頁，原生互動元件與舊產生器一致', () => {
+test('全份：61 頁，原生互動元件與舊產生器一致', () => {
   const all = buildDeck(content).slides;
   const old = oldDeck().slides;
-  assert.equal(all.length, 60);
+  assert.equal(all.length, 61);
   const oldIds = new Set(old.map((s) => s.id));
   const now = all.filter((s) => oldIds.has(s.id));
   assert.equal(now.length, old.length);
