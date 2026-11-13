@@ -60,7 +60,7 @@ const here = dirname(fileURLToPath(import.meta.url));
 const INTERACTIVE = new Set(['poll', 'quiz', 'link', 'copycard', 'fileDownload', 'wordcloud', 'webProject', 'homework', 'showcase']);
 const FULLSIZE = new Set(['poll', 'quiz', 'wordcloud', 'webProject', 'showcase']);
 // 舊產生器沒有後來新增的版型，比對時先拿掉這些頁
-const NEW_LAYOUTS = ['styleGallery', 'skillSlide', 'ctxClasses', 'ctxWindow', 'siteShots', 'photo'];
+const NEW_LAYOUTS = ['styleGallery', 'skillSlide', 'ctxClasses', 'ctxWindow', 'siteShots', 'photo', 'photoStory', 'easySteps', 'checkpoint'];
 const oldDeck = () => {
   const dir = mkdtempSync(join(tmpdir(), 'deck-'));
   const out = join(dir, 'old.json');
@@ -76,10 +76,10 @@ const strip = (e, keepBox) => {
   return keepBox ? { ...rest, x, y, width, height } : rest;
 };
 
-test('全份：60 頁，原生互動元件與舊產生器一致', () => {
+test('全份：62 頁，原生互動元件與舊產生器一致', () => {
   const all = buildDeck(content).slides;
   const old = oldDeck().slides;
-  assert.equal(all.length, 60);
+  assert.equal(all.length, 62);
   const oldIds = new Set(old.map((s) => s.id));
   const now = all.filter((s) => oldIds.has(s.id));
   assert.equal(now.length, old.length);
@@ -91,6 +91,16 @@ test('全份：60 頁，原生互動元件與舊產生器一致', () => {
     assert.equal(s.elements[0].type, 'html', s.id);
     for (const e of s.elements) assert.ok(e.x >= 0 && e.y >= 0 && e.x + e.width <= 960 && e.y + e.height <= 540, `${s.id} ${e.id} 出界`);
   });
+});
+
+test('完成打卡：講師只看完成比例', () => {
+  const slides = buildDeck(content).slides;
+  for (const id of ['s1-save-poll', 's2-v1-poll']) {
+    const els = slides.find((x) => x.id === id).elements;
+    assert.equal(els.filter((e) => e.type === 'poll').length, 0, id);
+    const cp = els.find((e) => e.type === 'checkpoint');
+    assert.ok(cp && cp.question && cp.buttonLabel, id);
+  }
 });
 
 test('全份：沒有循環動畫頁', () => {

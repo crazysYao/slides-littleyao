@@ -8,7 +8,7 @@
 | F | 讓 AI 一開口就懂你：個人知識庫 × AI Agent × 個人網站(Obsidian＋Claude Code 示範，學員可接自己的 Agent) | 封存(2026-11-11)，由新課綱取代；Synora 專案改名待講師指示 | [topic-f-agent-knowledge-resume.md](topic-f-agent-knowledge-resume.md) |
 | C–E | 見下方 | 已快速評估，未採用 | — |
 | — | 為什麼、為什麼不、有沒有更好的：AI 時代的提問力 | 封存(2026-11-11)，由新課綱取代；Synora 專案改名待講師指示 | [core-viewpoint.md](core-viewpoint.md) |
-| **採用** | 讓 AI 一開口就懂你：講清楚 → 做出來 → 改更好＋應用（學員只用聊天 AI；名詞講 Prompt、Skill、Context） | 2026-11-12 講師核准；本機簡報 60 頁已完成，Synora 專案 `aef695ce-…` 尚未推送這一版 | [job-site-syllabus.md](job-site-syllabus.md) |
+| **採用** | 讓 AI 一開口就懂你：講清楚 → 做出來 → 改更好＋應用（學員只用聊天 AI；名詞講 Prompt、Skill、Context） | 2026-11-12 講師核准；本機簡報 62 頁已完成，Synora 專案 `aef695ce-…` 尚未推送這一版 | [job-site-syllabus.md](job-site-syllabus.md) |
 
 ## 跨主題已定案
 - 時間骨架：50＋休10＋50＋休10＋50，最後 10 分鐘 QA（2026-11-12 改）
@@ -42,7 +42,7 @@
 A–E 的案例與素材保留，觀點定下來後再挑合適的當佐證。
 
 ## 簡報現況(2026-11-12，講清楚版)
-- 內容檔 [synora/job-site-content.mjs](synora/job-site-content.mjs)，產生器 `build-deck-html.mjs`，共 60 頁；產生與檢查指令見 [job-site-syllabus.md](job-site-syllabus.md)
+- 內容檔 [synora/job-site-content.mjs](synora/job-site-content.mjs)，產生器 `build-deck-html.mjs`，共 62 頁；產生與檢查指令見 [job-site-syllabus.md](job-site-syllabus.md)
 - 設計見 [2026-11-12 改版設計](../superpowers/specs/2026-11-12-ntut-speak-clearly-syllabus-design.md)
 - Synora 專案已建立，但這一版只在本機產生與預覽，**尚未推送**
 

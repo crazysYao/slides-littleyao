@@ -35,10 +35,10 @@ test('第一節分鐘數加總 50', () => {
   assert.equal(sum, 50);
 });
 
-const S2 = ['s2', 's2-quiz-warmup-1', 's2-quiz-warmup-2', 's2-quiz-warmup-3', 's2-typhoon-video', 's2-roof', 's2-typhoon', 's2-typhoon-poll', 's2-typhoon-reveal',
+const S2 = ['s2', 's2-quiz-warmup-1', 's2-quiz-warmup-2', 's2-quiz-warmup-3', 's2-typhoon-video', 's2-roof', 's2-typhoon', 's2-typhoon-poll', 's2-typhoon-reveal', 's2-interview',
   's2-style', 's2-prompt-2', 's2-rescue', 's2-v1-poll',
   's2-skill-1', 's2-skill-2', 's2-skill-3', 's2-skill-4', 's2-skill-5', 's2-skill-6', 's2-skill-7',
-  's2-skill-make', 's2-skill-save', 's2-skill-upload', 'break2'];
+  's2-skill-make', 's2-skill-save', 's2-skill-upload', 's2-skill-find', 'break2'];
 const minutes = (from, to) =>
   content.pages
     .slice(content.pages.findIndex((x) => x.id === from), content.pages.findIndex((x) => x.id === to))
@@ -75,9 +75,20 @@ test('Prompt ② 風格空格不再提投票', () => {
   assert.ok(!text(page('s2-prompt-2')).includes('投'));
 });
 
+test('第二輪修改', () => {
+  assert.equal(page('s1-save').layout, 'easySteps');
+  for (const id of ['s1-save-poll', 's2-v1-poll']) assert.equal(page(id).layout, 'checkpoint', id);
+  assert.equal(page('s2-typhoon-video').items, undefined);
+  assert.equal(page('s2-roof').layout, 'photoStory');
+  assert.equal(page('s2-roof').lines.length, 3);
+  assert.equal(page('s2-interview').layout, 'photo');
+  assert.equal(page('s2-skill-find').link[0], 'https://skillsmp.com/');
+  assert.match(page('s2-v1-poll').notes, /舉手/);
+});
+
 test('咖啡店七頁照順序', () => {
   const order = content.pages.filter((p) => p.layout === 'skillSlide').map((p) => p.slide);
-  assert.deepEqual(order, ['s1-what', 's2-compare-b', 's2-compare', 's3-folder', 's4-skillmd', 's5-flow', 's6-uses']);
+  assert.deepEqual(order, ['s2-compare-b', 's2-compare', 's1-what', 's3-folder', 's4-skillmd', 's5-flow', 's6-uses']);
 });
 
 test('第二節分鐘數加總 50', () => assert.equal(minutes('s2', 'break2'), 50));
@@ -85,8 +96,8 @@ test('第二節分鐘數加總 50', () => assert.equal(minutes('s2', 'break2'), 
 const S3 = ['s3', 's3-reel', 's3-reel-reveal', 's3-review', 's3-fix', 's3-try', 's3-v2-upload', 's3-v2-wall', 's3-public',
   's3-ctx-classes', 's3-ctx-teachers', 's3-ctx-window', 's3-ctx-reveal', 's3-newchat', 's3-drop', 's3-obsidian', 's3-recap', 'qa'];
 
-test('全份 60 頁，頁序完整', () => {
-  assert.equal(ids.length, 60);
+test('全份 62 頁，頁序完整', () => {
+  assert.equal(ids.length, 62);
   assert.deepEqual(ids, [...S1, ...S2, ...S3]);
 });
 

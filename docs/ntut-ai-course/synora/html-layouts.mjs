@@ -96,6 +96,12 @@ const icon = (name, size, bg, fg) =>
   ICONS[name]
     ? `<span style="flex:0 0 ${size}px;width:${size}px;height:${size}px;border-radius:50%;background:${bg};display:inline-flex;align-items:center;justify-content:center"><svg width="${size * 0.62}" height="${size * 0.62}" viewBox="0 0 24 24" fill="none" stroke="${fg}" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round">${ICONS[name]}</svg></span>`
     : '';
+const EASY_ICONS = {
+  copy: '<svg viewBox="0 0 24 24" fill="none" stroke="#16161a" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="8" y="8" width="12" height="13" rx="2"/><path d="M16 8V5a2 2 0 0 0-2-2H6a2 2 0 0 0-2 2v11a2 2 0 0 0 2 2h2"/></svg>',
+  phone: '<svg viewBox="0 0 24 24" fill="none" stroke="#16161a" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="6" y="2" width="12" height="20" rx="2.5"/><path d="M9 7h6M9 10.5h6M9 14h4M11 18.5h2"/></svg>',
+  tag: '<svg viewBox="0 0 24 24" fill="none" stroke="#16161a" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12V4a1 1 0 0 1 1-1h8l9 9-9 9z"/><circle cx="8" cy="8" r="1.6"/></svg>',
+};
+
 const abs = (style, inner, i = 0, base) => `<div class="in" style="position:absolute;${style};${d(i, base)}">${inner}</div>`;
 const tagPill = (P, s) => `<div class="in" style="position:absolute;left:44px;top:56px;font-size:13px;font-weight:700;color:#fff;background:${P.dark};border-radius:99px;padding:4px 12px">${esc(s)}</div>`;
 const taskTitle = (s) => `<h1 class="t in" style="top:88px;${d(0, 0.08)}">${esc(s)}</h1>`;
@@ -342,6 +348,33 @@ Object.assign(layouts, {
   taskDownload: (p, { palette: P, n }) => ({
     body: tagPill(P, p.tag) + taskTitle(p.heading) + numCards(P, p.items, 290, 200),
     natives: [n.fileDownload(44, 160, 872, 110, p.file)],
+  }),
+
+  // 完成打卡（講師只看完成比例）
+  checkpoint: (p, { n }) => ({ body: title(p.heading), natives: [n.checkpoint(p.question, p.buttonLabel)] }),
+
+  // Easy Read：一列一個動作，左邊大圖示、右邊一句話，依序出現
+  easySteps: (p, { palette: P }) => ({
+    body:
+      `<style>.es{position:absolute;left:44px;right:44px;top:122px;display:flex;flex-direction:column;gap:16px}.es .r{display:flex;align-items:center;gap:22px;background:#fff;border:1.5px solid ${P.line};border-radius:14px;padding:14px 22px}.es .ic{flex:0 0 88px;height:88px;border-radius:20px;background:${P.accent};display:flex;align-items:center;justify-content:center}.es .ic svg{width:52px;height:52px;animation:pop .6s ease-out both;animation-delay:inherit}.es .no{font:900 18px/1 sans-serif;color:${P.muted};width:22px}.es b{display:block;font-size:30px;font-weight:900;line-height:1.2}.es span{display:block;font-size:19px;color:${P.muted};margin-top:4px}@keyframes pop{0%{transform:scale(.4) rotate(-12deg)}70%{transform:scale(1.12)}100%{transform:none}}</style>` +
+      title(p.heading) +
+      `<div class="es">${p.items
+        .map(([icon, t, b], i) => `<div class="r in" style="${d(i, 0.3, 0.7)}"><span class="no">${i + 1}</span><div class="ic">${EASY_ICONS[icon]}</div><div><b>${esc(t)}</b><span>${esc(b)}</span></div></div>`)
+        .join('')}</div>`,
+  }),
+
+  // 照片在左，三句故事依序出現在右，最後一句打上黃底
+  photoStory: (p, { palette: P }) => ({
+    body:
+      title(p.heading) +
+      abs('left:44px;top:120px;width:520px;height:390px;border-radius:12px;overflow:hidden;box-shadow:0 10px 28px rgba(0,0,0,.2)', `<img src="${p.src}" alt="${esc(p.alt)}" style="display:block;width:100%;height:100%;object-fit:cover">`, 0) +
+      `<div style="position:absolute;left:596px;right:44px;top:140px;display:flex;flex-direction:column;gap:22px">${p.lines
+        .map((s, i) => {
+          const last = i === p.lines.length - 1;
+          return `<div class="in" style="${d(i, 0.6, 0.9)};font-size:${last ? 25 : 22}px;font-weight:${last ? 900 : 700};line-height:1.45">${last ? mark(P, s) : esc(s)}</div>`;
+        })
+        .join('')}</div>`,
+    natives: [],
   }),
 
   // 一張照片＋標題
