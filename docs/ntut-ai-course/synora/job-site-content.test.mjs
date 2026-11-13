@@ -57,6 +57,13 @@ test('Skill Prompt 輸出三欄且不重做網站', () => {
   for (const s of ['名稱', '說明', '指示', '不要重做網站']) assert.ok(p.includes(s), s);
 });
 
+test('Skill 用一句話觸發，不用打斜線', () => {
+  assert.match(page('s2-skill-make').prompt, /我說什麼的時候/);
+  assert.ok(page('s2-skill-make').prompt.length < 120);
+  assert.ok(!text(page('s2-skill-save')).includes('/名稱'));
+  assert.match(page('s2-skill-save').note, /幫我做求職網站/);
+});
+
 test('咖啡店七頁照順序', () => {
   const order = content.pages.filter((p) => p.layout === 'skillSlide').map((p) => p.slide);
   assert.deepEqual(order, ['s1-what', 's2-compare-b', 's2-compare', 's3-folder', 's4-skillmd', 's5-flow', 's6-uses']);
