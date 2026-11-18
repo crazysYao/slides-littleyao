@@ -431,7 +431,10 @@ Object.assign(layouts, {
       : '';
     const hand = `<svg class="hand" viewBox="0 0 64 64" width="180" height="180" aria-hidden="true"><path fill="${P.accent}" stroke="${P.text}" stroke-width="2.5" stroke-linejoin="round" d="M22 58c-6-4-10-11-11-18l-2-9c-1-3 3-5 5-2l4 7V12c0-3 5-3 5 0v16-20c0-3 5-3 5 0v20-18c0-3 5-3 5 0v18-14c0-3 5-3 5 0v26c0 9-3 14-6 18z"/></svg>`;
     return {
-      body: title(p.heading) + `<div class="in" style="position:absolute;right:44px;bottom:40px;${d(0, 0.1)}">${hand}</div>` + grid,
+      // 沒有選項：問題放大置中，細節講師現場問
+      body: opts.length
+        ? title(p.heading) + `<div class="in" style="position:absolute;right:44px;bottom:40px;${d(0, 0.1)}">${hand}</div>` + grid
+        : abs('left:44px;right:44px;top:120px;display:flex;flex-direction:column;align-items:center;gap:28px;text-align:center', `<div style="font-size:56px;font-weight:900;line-height:1.3">${esc(p.heading)}</div>${hand}`),
       natives: [],
     };
   },

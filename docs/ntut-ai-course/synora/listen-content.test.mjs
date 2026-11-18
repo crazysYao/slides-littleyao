@@ -9,6 +9,7 @@ const ids = deck.slides.map((s) => s.id);
 const baseIds = new Set(base.pages.map((p) => p.id));
 const slide = (id) => deck.slides.find((s) => s.id === id);
 const page = (id) => listen.pages.find((p) => p.id === id);
+const BASE_HASH = '15738bcdf770e07e43529e0104ee0d23cd491c8b09649e4aaabd686e85ba5a88'; // 9416e39 原版 build；改 html-layouts 讓原版變了就會失敗
 const STAT = ['poll', 'quiz', 'checkpoint', 'homework', 'showcase', 'webProject', 'wordcloud'];
 
 test('頁序引用的原版 id 都存在', () => {
@@ -106,4 +107,41 @@ test('頁首節次編號跟著聽課版節次', () => {
 test('handRaise 選項在兩行標題下方', () => {
   const html = slide('s2-quiz-warmup-2').elements[0].html;
   assert.match(html, /top:170px;display:grid/);
+});
+
+test('講師全程用付費版 Claude，Codex 也做得到', () => {
+  const [row] = page('s1-login').links;
+  assert.equal(row[0][1], 'https://claude.ai');
+  assert.ok(row.some(([, url]) => url === 'https://chatgpt.com/codex'));
+  assert.ok(page('s1-login').notes.includes('付費版 Claude'));
+  for (const id of ['s1-interview', 's2-skill-save']) assert.ok(!page(id).notes.includes('Gemini'), id);
+  for (const id of ['s3-review', 's3-fix']) assert.equal(page(id).app, 'Claude', id);
+});
+
+// 審查發現：只掃部分欄位會漏掉 dark、cardTitle、links 與共用講稿；改成整頁掃描（prompt 是學員帶回家用的，不掃）
+const ACT_ALL = [...ACT, '親手', '換另外兩個', '先填好三個空格', '用個人 Gmail 登入', '有什麼卡住', '卡住的地方', '反過來訪問你', '4 分鐘裡', '把你的 Skill', '整理成你的 Skill', '讓聊天 AI 訪問你', '應用①'];
+test('整頁沒有要學員動手的字（不含 prompt）', () => {
+  for (const p of deck.slides) {
+    const src = listen.pages.find((x) => x.id === p.id);
+    const { prompt, ...rest } = src;
+    const t = JSON.stringify(rest) + p.notes;
+    for (const w of ACT_ALL) assert.ok(!t.includes(w), `${p.id} 出現 ${w}`);
+  }
+});
+
+test('原版 build 與改動前相同（快照）', async () => {
+  const { createHash } = await import('node:crypto');
+  const h = createHash('sha256').update(JSON.stringify(buildDeck(base))).digest('hex');
+  assert.equal(h, BASE_HASH);
+});
+
+test('舉手選項不重複字母、v1→v2 不帶作業連結、上架頁畫面與講稿一致', () => {
+  assert.deepEqual(page('s2-typhoon-poll').options, ['左邊的網站', '右邊的網站']);
+  assert.equal(page('s3-v2-wall').linkHomework, undefined);
+  assert.ok(!JSON.stringify(page('s3-drop').items).includes('自己網站'));
+});
+
+test('付費 AI 頁只留問題，細節現場問', () => {
+  assert.equal(page('s1-paid').heading, '你有付費的 AI 服務嗎？');
+  assert.equal(page('s1-paid').options, undefined);
 });
