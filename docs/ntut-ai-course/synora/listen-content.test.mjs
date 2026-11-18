@@ -144,3 +144,14 @@ test('付費 AI 頁只留問題，細節現場問', () => {
 test('颱風短片換新連結', () => {
   assert.equal(page('s2-typhoon-video').link[0], 'https://www.youtube.com/shorts/qJVypjZNBF8');
 });
+
+// Prompt ② 卡片保留一句「Gemini、ChatGPT 用 Canvas」給回家用別家的人，其餘不得出現
+test('預設操作說明一律是 Claude：整份只剩第 5 頁提到 Gemini', () => {
+  for (const s of deck.slides) {
+    if (s.id === 's1-login') continue;
+    const t = JSON.stringify(s).replaceAll('（Gemini、ChatGPT 用 Canvas）', '').replace(/data:[a-z]+\/[a-z+]+;base64,[A-Za-z0-9+/=]+/g, '');
+    assert.ok(!/Gemini|Canvas（Claude/.test(t), s.id);
+  }
+  assert.match(page('s2-prompt-2').prompt, /^請用 Artifact/);
+  assert.equal(page('s2-skill-save').demo, 'skill-save-demo-claude');
+});

@@ -134,6 +134,7 @@ export const ORDER = [
 ];
 
 const DEMO = '講師示範 · 你只要看';
+const PROMPT2 = base.pages.find((p) => p.id === 's2-prompt-2').prompt;
 
 // 講稿開頭「HH:MM 名稱(分)」照聽課版時間表：第一節 47＋緩衝 3、第二節 50、第三節 50＋彈性 10
 export const OVERRIDES = {
@@ -187,6 +188,7 @@ export const OVERRIDES = {
   's2-interview': { notes: '09:36 面試官在想什麼(1)。配合圖講：面試官打開網站只想知道兩件事，這個人做過類似的事嗎？能不能馬上上手？答案在職缺說明和公司官網查得到。把最對得上的專題放在第一眼。這就是 Prompt ② 第一格「給誰看」要想清楚的事。' },
   's2-style': { notes: '09:37 找風格(3)。風格說不出來很正常，先用看的。這 8 種都有名字，叫得出名字，AI 就做得出來。請台下喊一個，我就用它填進 Prompt ② 的「風格」空格。想看大圖和說明，點下面的 WPORT UI 風格。' },
   's2-prompt-2': {
+    prompt: PROMPT2.replace('請用 Canvas（Claude 用 Artifact）', '請用 Artifact（Gemini、ChatGPT 用 Canvas）'),
     cardTitle: '帶回家做：複製後先填好空格再送出',
     tag: `${DEMO} · 7 分鐘 · 卡片可以從手機複製帶走`,
     heading: 'Prompt ②：看 AI 做出網站 v1',
@@ -201,7 +203,7 @@ export const OVERRIDES = {
     tag: `${DEMO} · 3 分鐘 · 名稱＋說明＝Metadata，指示＝Instructions＋Rules`,
     notes: '10:05 示範做 Skill(3)。在做網站的那個對話貼上，讓 AI 從剛剛的對話整理成三欄：名稱、說明、指示。對回咖啡店第 5 頁：名稱和說明是 Metadata，指示是 Instructions，裡面的規則是 Rules。重點是「說明」那一句：寫清楚你說什麼的時候該用它，AI 就能自己判斷要不要拿出來。',
   },
-  's2-skill-save': { heading: '把 Skill 收好', notes: '10:08 示範收好 Skill(1)。動畫依序示範：先把三欄存成文字放在基本資料副本旁邊；付費版 Claude 還可以把它建成真的 Skill。最後開新對話問「幫我做求職網站，先不要做，告訴我你會照哪些規則做」，AI 說得出規則就是成功。' },
+  's2-skill-save': { demo: 'skill-save-demo-claude', heading: '把 Skill 收好', notes: '10:08 示範收好 Skill(1)。動畫依序示範：先把三欄存成文字放在基本資料副本旁邊；付費版 Claude 還可以把它建成真的 Skill。最後開新對話問「幫我做求職網站，先不要做，告訴我你會照哪些規則做」，AI 說得出規則就是成功。' },
   's2-skill-6': { notes: '（約 50 秒）客人說「幫我做一杯熱拿鐵」，這句話就是 Prompt。店員先聽懂需求：要熱的、要拿鐵。接著它去書架上找，發現有一本 make-latte 的手冊剛好符合，就打開 SKILL.md，照裡面的步驟和規則做。真正動手的時候要用設備，也就是 Tool，開咖啡機、打奶泡。最後檢查一下，確認沒問題再回報。整個流程記一句話：Prompt 說要做什麼，Skill 說怎麼做，Tool 負責真的做。兩個提醒：第一，Skill 會不會自動被找到，要看你用的 AI 平台怎麼設計；第二，如果 AI 手上沒有咖啡機這種工具，它只能教你怎麼做，沒辦法真的端出一杯咖啡。等一下我示範把手冊遞給 AI。\n\n銜接：咖啡只是例子，同一招可以用在你每天的生活和工作。' },
   's2-skill-find': { notes: '10:09 Skill 去哪找(2)。自己做之外，也可以找別人做好的。技能市集上的 Skill 很多是給 Claude Code 這類工具用的，聊天 AI 不一定能直接裝；先逛、找靈感，照它的寫法改成你的。更簡單的方法：直接問你的 AI，請它幫你找。' },
   's3-reel': { notes: '10:11 短片：全部丟給 AI(3)，連同下一頁揭曉。這頁不放文字說明，先讓大家看。\n\n播放前：接下來要把網站改得更好。改之前，先看一支短片，看完我問大家一個問題。\n\n播完先不翻頁，問：這一整圈，老師出題、學生寫、老師改，誰真的看過內容？等台下回答「沒有人」，再翻下一頁。' },
