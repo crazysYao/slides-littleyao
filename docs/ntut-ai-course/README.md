@@ -43,7 +43,7 @@ A–E 的案例與素材保留，觀點定下來後再挑合適的當佐證。
 
 ## 簡報現況(2026-11-12，講清楚版)
 - 內容檔 [synora/job-site-content.mjs](synora/job-site-content.mjs)，產生器 `build-deck-html.mjs`，共 62 頁；產生與檢查指令見 [job-site-syllabus.md](job-site-syllabus.md)
-- 聽課版（學員只聽不做，65 頁）：[synora/listen-content.mjs](synora/listen-content.mjs)，時間表與指令見 [job-site-syllabus.md](job-site-syllabus.md)「聽課版」
+- 聽課版（學員只聽不做，64 頁）：[synora/listen-content.mjs](synora/listen-content.mjs)，時間表與指令見 [job-site-syllabus.md](job-site-syllabus.md)「聽課版」
 - 設計見 [2026-11-12 改版設計](../superpowers/specs/2026-11-12-ntut-speak-clearly-syllabus-design.md)
 - Synora 專案已建立，但這一版只在本機產生與預覽，**尚未推送**
 

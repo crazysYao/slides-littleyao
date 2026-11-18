@@ -129,7 +129,7 @@ export const ORDER = [
   'cover', 's1', 's1-outline', 's1-goal', 's1-login', 's1-ai-exp', 's1-paid',
   's1-problem', 's1-problem-reveal', 's1-drink', 's1-drink-reveal', 's1-gf-1', 's1-gf-2', 's1-gf-3',
   's1-interview', 's1-save',
-  's2-typhoon-video', 's2-roof', 's2-typhoon', 's2-typhoon-poll', 's2-typhoon-reveal', 's2-interview', 's2-style', 's2-prompt-2',
+  's2-typhoon-video', 's2-roof', 's2-typhoon', 's2-typhoon-reveal', 's2-interview', 's2-style', 's2-prompt-2',
   'break1',
   // 第二節：Skill＋改更好＋Context
   's2', ...warmup,
@@ -193,8 +193,7 @@ export const OVERRIDES = {
   },
   's1-save': { notes: '09:29 存副本(2)。動畫示範三步：整段複製 → 貼到手機備忘錄 → 標題寫「我的基本資料」。後面換工具、重開對話、做面試自介，都靠這一份；回家做的時候記得存。' },
   's2-typhoon-video': { notes: '先問「颱風天，你最怕什麼？」再播短片暖場，笑完接下一頁講師家的屋頂。這兩頁加颱風題，算在「給誰看」的 5 分鐘裡，短片請控制在 1 分鐘內。' },
-  's2-typhoon': { notes: '09:31 給誰看(5)。開頭承接：剛才是說清楚你要什麼，現在是想清楚誰在看。情境：颱風過後，你家屋頂被吹掉一塊，雨還在下。你搜「屋頂 緊急修繕」，跳出這兩個師傅的網站。兩個網站都是假的，店名和電話是編的。' },
-  's2-typhoon-poll': { layout: 'handRaise', title: '舉手：你會打給哪一位', heading: '屋頂正在漏水，你會打給哪一位？', options: ['左邊的網站', '右邊的網站'], notes: '先數 A 再數 B，一面倒就是笑點。' },
+  's2-typhoon': { notes: '09:31 給誰看(5)。開頭承接：剛才是說清楚你要什麼，現在是想清楚誰在看。情境：颱風過後，你家屋頂被吹掉一塊，雨還在下。你搜「屋頂 緊急修繕」，跳出這兩個師傅的網站。兩個網站都是假的，店名和電話是編的。最後請台下舉手：打給 A 的？打給 B 的？一面倒就是笑點。' },
   's2-interview': { notes: '09:36 面試官在想什麼(1)。配合圖講：面試官打開網站只想知道兩件事，這個人做過類似的事嗎？能不能馬上上手？答案在職缺說明和公司官網查得到。把最對得上的專題放在第一眼。這就是 Prompt ② 第一格「給誰看」要想清楚的事。' },
   's2-style': { notes: '09:37 找風格(3)。風格說不出來很正常，先用看的。這 8 種都有名字，叫得出名字，AI 就做得出來。請台下喊一個，我就用它填進 Prompt ② 的「風格」空格。想看大圖和說明，點下面的 WPORT UI 風格。' },
   's2-prompt-2': {
