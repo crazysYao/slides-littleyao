@@ -66,7 +66,7 @@ const JAPANESE = [
   },
   {
     id: 'jp-loop', layout: 'opDemo', demo: 'agent-loop-demo', section: J, title: '我、Agent、Skills、Obsidian',
-    notes: '11:28 規劃動線(5)，兩頁。動畫會自己跑四步：我只說「今天練什麼？」→ Agent（Claude Code）去拿「測驗」這本 Skill → 照手冊先讀 Obsidian 裡的複習清單和學習紀錄，只出我弱的地方 → 我答錯，它把錯題寫回複習清單，下次再考。對回今天：Obsidian 裡的計畫、程度、錯題就是我的「基本資料」；Skill 就是第二節的工作手冊；它只讀需要的那幾份，就是 Context。下一頁看我寫了哪些 Skill。',
+    notes: '11:28 規劃動線(5)，兩頁。動畫會自己跑四步：我只說「今天練什麼？」→ Agent（Claude Code）去拿「測驗」這本 Skill → 照手冊先讀 Obsidian 裡的複習清單和學習紀錄，再透過 MCP 到 Google Drive 找同類型的考古題，只出我弱的地方 → 我答錯，它把錯題寫回複習清單，下次再考。對回今天：Obsidian 裡的計畫、程度、錯題就是我的「基本資料」；Skill 就是第二節的工作手冊；它只讀需要的那幾份，就是 Context；MCP 是讓 Agent 連到 Google Drive 這類外部服務的接頭。下一頁看我寫了哪些 Skill。',
     heading: '我、Agent、Skills 和我的資料，怎麼一起動',
   },
   {

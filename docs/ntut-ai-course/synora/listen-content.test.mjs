@@ -167,3 +167,8 @@ test('日文動線改成互動圖：我、Agent、Skills、Obsidian 資料', () 
 test('聽課版沒有無限循環動畫', () => {
   for (const s of deck.slides) assert.ok(!/infinite/.test(s.elements[0].html), s.id);
 });
+
+test('互動圖有 MCP 連到 Google Drive', () => {
+  const html = slide('jp-loop').elements[0].html;
+  for (const w of ['<title>Google Drive</title>', 'MCP', '考古題']) assert.ok(html.includes(w), w);
+});
