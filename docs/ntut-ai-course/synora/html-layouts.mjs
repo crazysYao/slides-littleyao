@@ -422,7 +422,7 @@ Object.assign(layouts, {
     const opts = p.options ?? [];
     const cols = opts.length > 4 ? 2 : 1;
     const grid = opts.length
-      ? `<div style="position:absolute;left:44px;right:250px;top:150px;display:grid;grid-template-columns:repeat(${cols},1fr);gap:12px 18px">${opts
+      ? `<div style="position:absolute;left:44px;right:250px;top:170px;display:grid;grid-template-columns:repeat(${cols},1fr);gap:12px 18px">${opts
           .map(
             (o, i) =>
               `<div class="card in" style="${d(i, 0.2, 0.06)};display:flex;align-items:center;gap:14px;padding:12px 16px"><span style="flex:none;width:40px;height:40px;border-radius:50%;background:${P.accent};color:${P.text};font-weight:900;font-size:22px;display:flex;align-items:center;justify-content:center">${String.fromCharCode(65 + i)}</span><span style="font-size:${opts.length > 4 ? 21 : 26}px;font-weight:700">${esc(o)}</span></div>`,
@@ -437,7 +437,7 @@ Object.assign(layouts, {
   },
   // 左右兩張截圖對照（v1 → v2），截圖框留原生，講師課前在 Synora 換成真截圖
   shotPair: (p, { palette: P, n }) => ({
-    body: title(p.heading) + abs(`left:452px;top:300px;font-size:44px;font-weight:900;color:${P.accent}`, '→', 1),
+    body: title(p.heading) + abs(`left:462px;top:300px;font-size:36px;font-weight:900;color:${P.accent}`, '→', 1),
     natives: p.shots.map((s, i) => n.shotFrame(44 + i * 460, 140, 412, 370, s, P.muted, P.text)),
   }),
   poll: (p, { n }) => ({ body: '', natives: [n.poll(p.question, p.options)] }),

@@ -94,3 +94,16 @@ test('日文對回今天', () => {
   const t = JSON.stringify(page('jp-map'));
   for (const w of ['基本資料', 'Skill', 'Context', 'japanes-pk.littleyao.me']) assert.ok(t.includes(w), w);
 });
+
+test('頁首節次編號跟著聽課版節次', () => {
+  const nth = (id) => (ids.indexOf(id) < ids.indexOf('s2') ? '01' : ids.indexOf(id) < ids.indexOf('s3') ? '02' : '03');
+  for (const p of listen.pages) {
+    const m = (p.section ?? '').match(/^(0\d) /);
+    if (m) assert.equal(m[1], nth(p.id), `${p.id}：${p.section}`);
+  }
+});
+
+test('handRaise 選項在兩行標題下方', () => {
+  const html = slide('s2-quiz-warmup-2').elements[0].html;
+  assert.match(html, /top:170px;display:grid/);
+});

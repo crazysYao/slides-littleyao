@@ -247,4 +247,11 @@ export const OVERRIDES = {
 };
 
 const byId = new Map(base.pages.map((p) => [p.id, p]));
-export const pages = ORDER.map((x) => (typeof x === 'string' ? { ...byId.get(x), ...OVERRIDES[x] } : x));
+const SECTION_STARTS = ['s1', 's2', 's3'];
+let nth = 0;
+// 搬了節次的頁，頁首「02 給誰看」要跟著改成聽課版的節次編號
+export const pages = ORDER.map((x) => {
+  const p = typeof x === 'string' ? { ...byId.get(x), ...OVERRIDES[x] } : x;
+  if (SECTION_STARTS.includes(p.id)) nth += 1;
+  return p.section?.match(/^0\d /) ? { ...p, section: `0${nth}${p.section.slice(2)}` } : p;
+});
