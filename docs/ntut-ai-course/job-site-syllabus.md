@@ -54,7 +54,7 @@
 
 ## 聽課版（學員只聽不做）
 
-設計：[../superpowers/specs/2026-11-18-ntut-listen-version-design.md](../superpowers/specs/2026-11-18-ntut-listen-version-design.md)。內容沿用原版，變換檔 [synora/listen-content.mjs](synora/listen-content.mjs) 只寫頁序、覆寫與新頁；改原版會自動帶進聽課版（頁序清單以外的新頁除外）。共 64 頁。
+設計：[../superpowers/specs/2026-11-18-ntut-listen-version-design.md](../superpowers/specs/2026-11-18-ntut-listen-version-design.md)。內容沿用原版，變換檔 [synora/listen-content.mjs](synora/listen-content.mjs) 只寫頁序、覆寫與新頁；改原版會自動帶進聽課版（頁序清單以外的新頁除外）。共 62 頁。
 
 | 節次 | 內容 | 分 |
 |---|---|---|

@@ -21,7 +21,7 @@ test('沒有統計元件', () => {
 });
 
 test('刪掉的頁不在', () => {
-  for (const id of ['s1-save-poll', 's2-rescue', 's2-v1-poll', 's2-skill-upload', 's3-try', 's3-v2-upload', 's3-obsidian', 's2-typhoon-poll'])
+  for (const id of ['s1-save-poll', 's2-rescue', 's2-v1-poll', 's2-skill-upload', 's3-try', 's3-v2-upload', 's3-obsidian', 's2-typhoon-poll', 's2-quiz-warmup-1', 's2-quiz-warmup-2'])
     assert.ok(!ids.includes(id), id);
 });
 
@@ -31,13 +31,13 @@ test('頁序以外的原版頁不會混進來', () => {
 });
 
 test('舉手頁', () => {
-  for (const id of ['s1-ai-exp', 's1-paid', 's2-quiz-warmup-1', 's2-quiz-warmup-2', 's2-quiz-warmup-3'])
+  for (const id of ['s1-ai-exp', 's1-paid', 's2-quiz-warmup-3'])
     assert.equal(page(id)?.layout, 'handRaise', id);
   const items = base.pages.find((p) => p.id === 's2-quiz-warmup').items;
-  items.forEach(([, options, correct], i) => {
-    const n = page(`s2-quiz-warmup-${i + 1}`).notes;
-    assert.ok(n.includes('正解：') && n.includes(options[correct]), n);
-  });
+  const [, options, correct] = items[2];
+  const n = page('s2-quiz-warmup-3').notes;
+  assert.ok(n.includes('正解：') && n.includes(options[correct]), n);
+  assert.equal(page('s2-quiz-warmup-3').title, '暖身舉手');
 });
 
 test('v1→v2 對照', () => {
@@ -105,7 +105,7 @@ test('頁首節次編號跟著聽課版節次', () => {
 });
 
 test('handRaise 選項在兩行標題下方', () => {
-  const html = slide('s2-quiz-warmup-2').elements[0].html;
+  const html = slide('s2-quiz-warmup-3').elements[0].html;
   assert.match(html, /top:170px;display:grid/);
 });
 
