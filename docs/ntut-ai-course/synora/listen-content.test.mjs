@@ -50,3 +50,27 @@ test('複製卡保留', () => {
   for (const id of ['s1-interview', 's2-prompt-2', 's2-skill-make', 's3-newchat'])
     assert.equal(slide(id).elements.filter((e) => e.type === 'copycard').length, 1, id);
 });
+
+const ACT = ['全班實作', '上傳你的', '換你做', '存好了', '互投', '助教', '走動看大家', '大家上傳', '所有人都先做', '交 v1', '你們改網站'];
+test('沒有要學員動手的字', () => {
+  for (const p of listen.pages)
+    for (const k of ['title', 'heading', 'tag', 'notes', 'description'])
+      for (const w of ACT) assert.ok(!(p[k] ?? '').includes(w), `${p.id}.${k} 出現 ${w}`);
+});
+
+test('有時間前綴的頁都被覆寫過', () => {
+  for (const id of ids) {
+    const b = base.pages.find((p) => p.id === id);
+    if (b && /^\d\d:\d\d/.test(b.notes ?? '')) assert.ok(listen.OVERRIDES[id]?.notes, id);
+  }
+});
+
+test('示範頁標題', () => {
+  for (const id of ['s1-interview', 's2-prompt-2', 's2-skill-make', 's3-newchat']) assert.match(page(id).tag, /^講師示範/, id);
+});
+
+test('跟著改字', () => {
+  for (const id of ['cover', 's1-outline', 's1', 's2', 's3', 's3-recap', 'qa']) assert.ok(listen.OVERRIDES[id], id);
+  assert.notEqual(page('cover').subtitle, base.pages.find((p) => p.id === 'cover').subtitle);
+  assert.ok(!JSON.stringify(page('s3-recap')).includes('上傳'));
+});

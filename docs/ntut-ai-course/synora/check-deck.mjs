@@ -1,5 +1,5 @@
 // 檢查 build-deck.mjs 產出的 deck.json：作品牆連結、元素不出界、每頁有講稿；--sections 檢查三節總長。
-// 用法：node check-deck.mjs <deck.json> [--sections] [--expect-pages=N]
+// 用法：node check-deck.mjs <deck.json> [--sections [--ranges=HH:MM-HH:MM=分,…]] [--expect-pages=N]
 import { readFileSync } from 'node:fs';
 
 const [file, ...flags] = process.argv.slice(2);
@@ -22,7 +22,10 @@ if (flags.includes('--sections')) {
   // 講稿開頭「HH:MM 名稱(分)」；依開始時間分到三節
   // 第三節含 QA 10 分；另有 3 分緩衝沒有頁面，所以是 57 不是 60
   const ranges = [['09:00', '09:50', 50], ['10:00', '10:50', 50], ['11:00', '12:00', 57]];
-  const sums = [0, 0, 0];
+  // --ranges=09:00-09:50=47,10:00-10:50=50,… 換掉預設三節（聽課版用）
+  const custom = flags.find((f) => f.startsWith('--ranges='));
+  if (custom) ranges.splice(0, ranges.length, ...custom.slice(9).split(',').map((r) => { const [span, want] = r.split('='); const [a, b] = span.split('-'); return [a, b, Number(want)]; }));
+  const sums = ranges.map(() => 0);
   for (const s of slides) {
     const m = s.notes?.match(/^(\d\d:\d\d) [^(（]*[(（](\d+)[)）]/);
     if (!m) continue;
