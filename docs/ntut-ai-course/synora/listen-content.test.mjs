@@ -147,3 +147,11 @@ test('預設操作說明一律是 Claude：整份只剩第 5 頁提到 Gemini', 
   assert.match(page('s2-prompt-2').prompt, /^請用 Artifact/);
   assert.equal(page('s2-skill-save').demo, 'skill-save-demo-claude');
 });
+
+test('資安頁：標題點明資安，多一點「貼給 AI 的資料也要挑」', () => {
+  const p = page('s3-public');
+  assert.match(p.heading, /^資安/);
+  const t = JSON.stringify(p.cards);
+  for (const w of ['不要貼給 AI', '密碼', '身分證', '作品連結']) assert.ok(t.includes(w), w);
+  assert.match(p.notes, /^10:20 資安提醒\(4\)/);
+});
