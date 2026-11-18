@@ -435,6 +435,11 @@ Object.assign(layouts, {
       natives: [],
     };
   },
+  // 左右兩張截圖對照（v1 → v2），截圖框留原生，講師課前在 Synora 換成真截圖
+  shotPair: (p, { palette: P, n }) => ({
+    body: title(p.heading) + abs(`left:452px;top:300px;font-size:44px;font-weight:900;color:${P.accent}`, '→', 1),
+    natives: p.shots.map((s, i) => n.shotFrame(44 + i * 460, 140, 412, 370, s, P.muted, P.text)),
+  }),
   poll: (p, { n }) => ({ body: '', natives: [n.poll(p.question, p.options)] }),
   multiChoice: (p, { n }) => ({ body: '', natives: [n.poll(p.question, p.options, true)] }),
   quiz: (p, { n }) => ({ body: '', natives: [n.quiz(p.question, p.options, p.correct)] }),

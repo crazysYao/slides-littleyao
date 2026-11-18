@@ -300,3 +300,13 @@ test('handRaise：問題、選項字母、舉手圖示、不出原生元件', ()
   const bare = layouts.handRaise({ id: 'hr2', heading: '看懂的舉手' }, { palette, n });
   assert.ok(bare.body.includes('看懂的舉手') && bare.body.includes('class="hand"'));
 });
+
+test('shotPair：兩個截圖框都在畫面內', () => {
+  const n = makeNative('sp', palette.accent);
+  const out = layouts.shotPair({ id: 'sp', heading: 'v1 → v2', shots: ['待講師提供：網站 v1 截圖', '待講師提供：網站 v2 截圖'] }, { palette, n });
+  assert.equal(out.natives.length, 2);
+  for (const e of out.natives) {
+    assert.equal(e.type, 'svg');
+    assert.ok(e.x >= 0 && e.y >= 0 && e.x + e.width <= 960 && e.y + e.height <= 540);
+  }
+});
