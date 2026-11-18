@@ -74,3 +74,23 @@ test('跟著改字', () => {
   assert.notEqual(page('cover').subtitle, base.pages.find((p) => p.id === 'cover').subtitle);
   assert.ok(!JSON.stringify(page('s3-recap')).includes('上傳'));
 });
+
+test('第三節頁序', () => {
+  assert.deepEqual(ids.slice(ids.indexOf('s3')), ['s3', 'v-ways', 's3-drop', 'v-cli', 'v-github', 'jp-why', 'jp-need', 'jp-flow', 'jp-skills', 'jp-scene', 'jp-map', 's3-recap', 'qa']);
+});
+
+test('Vercel', () => {
+  assert.ok(JSON.stringify(page('v-cli')).includes('vercel --prod'));
+  assert.ok(page('v-github').notes.includes('口述'));
+  assert.equal(slide('v-github').elements.length, 1);
+});
+
+test('日文不揭露', () => {
+  for (const p of listen.pages.filter((x) => x.id.startsWith('jp-')))
+    for (const w of ['77', '未及格', '沒過', '中斷', '19 天']) assert.ok(!JSON.stringify(p).includes(w), `${p.id} 出現 ${w}`);
+});
+
+test('日文對回今天', () => {
+  const t = JSON.stringify(page('jp-map'));
+  for (const w of ['基本資料', 'Skill', 'Context', 'japanes-pk.littleyao.me']) assert.ok(t.includes(w), w);
+});

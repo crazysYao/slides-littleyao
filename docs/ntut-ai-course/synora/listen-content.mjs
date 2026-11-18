@@ -16,6 +16,113 @@ const warmup = quiz.items.map(([question, options, correct], i) => ({
   options,
 }));
 
+const V = '03 上線';
+const VERCEL = [
+  {
+    id: 'v-ways', layout: 'three', section: V, title: '讓網站上線的三種方式',
+    notes: '11:00 三種上線方式(3)。網站做好只在自己電腦裡，別人看不到。今天介紹三種讓它上線的方式，從最簡單到最自動：拖進去、打一行指令、推到 GitHub 自動上線。前兩種現場做，第三種用講的。',
+    heading: '網站做好了，怎麼讓別人打得開？',
+    cards: [
+      ['accent', '① Drop：拖進去', '把 HTML 檔拖進瀏覽器，幾秒就有網址。不用裝任何東西'],
+      ['accent', '② CLI：打一行指令', '在終端機打 vercel --prod，改完再打一次就更新'],
+      ['dark', '③ GitHub：推了就上線', '程式碼放 GitHub，每次推上去 Vercel 自動重新上線'],
+    ],
+  },
+  {
+    id: 'v-cli', layout: 'steps', section: V, title: 'CLI：一行指令上線',
+    notes: '11:11 CLI 示範(9)。開終端機，進到網站資料夾。第一次要先裝 Vercel CLI 並登入，之後每次改完只要打 vercel --prod。示範：改網站上一個字 → 再打一次 → 網址重新整理就更新了。對比 Drop：Drop 每次都要重新拖，CLI 改完打一行就好。需要 Node.js；只是想讓網站上線、不打算常改的，用 Drop 就夠。',
+    heading: 'CLI：在終端機打一行就上線',
+    items: [
+      ['npm i -g vercel', '第一次：安裝 Vercel CLI'],
+      ['vercel login', '第一次：登入 Vercel 帳號'],
+      ['vercel --prod', '每次改完：打這行就更新網址'],
+    ],
+  },
+  {
+    id: 'v-github', layout: 'rows', section: V, title: 'GitHub：推了就自動上線',
+    notes: '11:20 GitHub 自動上線(5)，口述帶過、不示範。專案放在 GitHub，Vercel 連上這個 repo 之後，每次推上新版本，Vercel 就自動重新建置、自動上線，這叫 CI/CD（自動部署）。我自己的網站都是這樣上線的，下一段的日文練習網站也是。今天不用學會，知道有這條路就好。',
+    heading: 'GitHub：推上去，Vercel 自動上線',
+    rows: [
+      ['muted', '一次設定', 'Vercel 連上你的 GitHub repo'],
+      ['accent', '之後每次', '改完推上 GitHub'],
+      ['accent', 'Vercel 自動', '重新建置、自動換成新版'],
+      ['dark', '這叫', 'CI/CD：自動部署，不用再手動上傳'],
+    ],
+  },
+];
+
+const J = '03 我的學習系統';
+const JAPANESE = [
+  {
+    id: 'jp-why', layout: 'rows', section: J, title: '我為什麼學日文',
+    notes: '11:25 動機(3)。換個題目，看同一套方法還能用在哪。我報名了 12 月的日檢 N3，聽力是我最弱的一科；但我每週只有 8 小時能讀。時間這麼少，每一分鐘都不能花在已經會的東西上。避開：不講分數、不講過去的進度。',
+    heading: '我在準備日檢 N3',
+    rows: [
+      ['accent', '目標', '12 月考日檢 N3'],
+      ['dark', '弱點', '聽力'],
+      ['muted', '時間', '每週只有 8 小時'],
+      ['accent', '所以', '每一分鐘都不能花在已經會的東西上'],
+    ],
+  },
+  {
+    id: 'jp-need', layout: 'compare', section: J, title: '我需要的不是一本教材',
+    notes: '照教材從第一課讀起，會花很多時間在已經會的地方。我需要的是一個知道「我哪裡弱」的系統：每天告訴我該練什麼、錯過的題目會再出現。這就是今天第一節講的：先把自己講清楚，AI 才幫得上忙。',
+    heading: '我需要的不是一本教材',
+    cards: [
+      ['dark', '照教材讀', '從第一課開始\n會的不會的都讀一遍'],
+      ['accent', '知道我哪裡弱的系統', '每天告訴我練什麼\n錯過的題目會再出現'],
+    ],
+    note: '先把自己講清楚，AI 才幫得上忙。',
+  },
+  {
+    id: 'jp-flow', layout: 'steps', section: J, title: '每天的動線',
+    notes: '11:28 規劃動線(5)，兩頁。這是我每天的流程，全部放在 Obsidian 筆記裡，Agent（Claude Code）直接讀寫這些筆記。每天 60 分鐘照固定順序：單字、文法、聽力、讀解；做完打卡，Agent 出題考我，錯的題目進複習清單，隔幾天再考一次，單字同步到 Anki。對回今天：計畫、程度、錯題清單，就是我的「基本資料」。',
+    heading: '每天的動線：全部記在 Obsidian',
+    items: [
+      ['60 分鐘', '單字 → 文法 → 聽力 → 讀解'],
+      ['打卡', '記下今天做了什麼、卡在哪'],
+      ['測驗', 'Agent 依我的筆記出題'],
+      ['複習清單', '答錯的隔幾天再考'],
+      ['Anki', '單字卡同步到手機'],
+    ],
+  },
+  {
+    id: 'jp-skills', layout: 'grid', section: J, title: '一件事一個 Skill',
+    notes: '我幫 Agent 寫了好幾個 Skill，每個只管一件事，也只能改自己負責的檔案，不會互相弄亂。就像第二節咖啡店的工作手冊：說清楚什麼時候用、怎麼做、規則是什麼。',
+    heading: '一件事一個 Skill，各管各的',
+    tiles: [
+      ['打卡', '寫今天的學習紀錄'],
+      ['測驗', '從筆記出題，錯的進複習清單'],
+      ['改句子', '我寫日文句子，它幫我改'],
+      ['單字／文法筆記', '整理成固定格式的筆記'],
+      ['解題', '看考古題截圖，講解為什麼'],
+      ['Anki', '把單字同步成手機單字卡'],
+    ],
+  },
+  {
+    id: 'jp-scene', layout: 'split', section: J, title: '依自己的弱點做練習情境',
+    notes: '11:33 專屬練習情境(6)。我最常卡的是口語縮約形：ちゃ（＝ては）跟 ちゃう（＝てしまう）分不清，還有 貯める（存錢）跟 稼ぐ（賺錢）老是搞混。現場示範：在 vault 裡請 Agent「讀我的複習清單和最近一次學習紀錄，出一段便利商店的對話，裡面藏 3 個縮約形讓我還原」，我當場作答，再請它改我的句子。對回 Context：它讀了我的資料才出得了專屬題目；沒給資料，只會出一般題。網路出狀況就改播課前錄好的畫面。',
+    kicker: '講師示範 · 現場跑一次',
+    heading: '依自己的弱點\n做練習情境',
+    items: [
+      '我的卡點：ちゃ（＝ては）和 ちゃう（＝てしまう）分不清',
+      '請 Agent 讀複習清單＋最近的學習紀錄',
+      '出一段便利商店對話，藏 3 個縮約形讓我還原',
+    ],
+  },
+  {
+    id: 'jp-map', layout: 'rows', section: J, title: '同一套方法，換個題目',
+    notes: '11:39 對照(1)。求職網站和學日文，用的是同一套：基本資料、Skill、Context。最後提一句：我還把練習做成一個 PK 對戰的網站 japanes-pk.littleyao.me，就是用剛剛第三種方式上線的。',
+    heading: '同一套方法，換個題目',
+    rows: [
+      ['accent', '基本資料', '求職：我的基本資料｜日文：計畫、程度、複習清單'],
+      ['accent', 'Skill', '求職：做網站的做法｜日文：打卡、測驗、改句子'],
+      ['accent', 'Context', '求職：開新對話只貼副本｜日文：只讀我的錯題出題'],
+      ['dark', '上線', '日文 PK 網站：japanes-pk.littleyao.me'],
+    ],
+  },
+];
+
 // 頁序是白名單：原版之後新增的頁不會自動跑進聽課版
 export const ORDER = [
   // 第一節：講清楚＋做出 v1
@@ -33,7 +140,7 @@ export const ORDER = [
   { id: 's2-qa', layout: 'qa', section: '02 改更好', title: '舉手 QA', notes: '10:38 舉手 QA(12)。', heading: '舉手 QA', sub: '到這裡有卡住的地方，現在問。' },
   'break2',
   // 第三節：上架＋我的學習系統
-  's3', 's3-drop', 's3-recap', 'qa',
+  's3', ...VERCEL.slice(0, 1), 's3-drop', ...VERCEL.slice(1), ...JAPANESE, 's3-recap', 'qa',
 ];
 
 const DEMO = '講師示範 · 你只要看';
