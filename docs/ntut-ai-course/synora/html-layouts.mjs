@@ -417,6 +417,24 @@ Object.assign(layouts, {
   }),
 
   homework: (p, { n }) => ({ body: title(p.heading), natives: [n.homework(p.hwId, 70, 130, 820, 400, p.title, p.description)] }),
+  // 聽課版：現場舉手取代投票／搶答；選項依序唸、學員舉手
+  handRaise: (p, { palette: P }) => {
+    const opts = p.options ?? [];
+    const cols = opts.length > 4 ? 2 : 1;
+    const grid = opts.length
+      ? `<div style="position:absolute;left:44px;right:250px;top:150px;display:grid;grid-template-columns:repeat(${cols},1fr);gap:12px 18px">${opts
+          .map(
+            (o, i) =>
+              `<div class="card in" style="${d(i, 0.2, 0.06)};display:flex;align-items:center;gap:14px;padding:12px 16px"><span style="flex:none;width:40px;height:40px;border-radius:50%;background:${P.accent};color:${P.text};font-weight:900;font-size:22px;display:flex;align-items:center;justify-content:center">${String.fromCharCode(65 + i)}</span><span style="font-size:${opts.length > 4 ? 21 : 26}px;font-weight:700">${esc(o)}</span></div>`,
+          )
+          .join('')}</div>`
+      : '';
+    const hand = `<svg class="hand" viewBox="0 0 64 64" width="180" height="180" aria-hidden="true"><path fill="${P.accent}" stroke="${P.text}" stroke-width="2.5" stroke-linejoin="round" d="M22 58c-6-4-10-11-11-18l-2-9c-1-3 3-5 5-2l4 7V12c0-3 5-3 5 0v16-20c0-3 5-3 5 0v20-18c0-3 5-3 5 0v18-14c0-3 5-3 5 0v26c0 9-3 14-6 18z"/></svg>`;
+    return {
+      body: title(p.heading) + `<div class="in" style="position:absolute;right:44px;bottom:40px;${d(0, 0.1)}">${hand}</div>` + grid,
+      natives: [],
+    };
+  },
   poll: (p, { n }) => ({ body: '', natives: [n.poll(p.question, p.options)] }),
   multiChoice: (p, { n }) => ({ body: '', natives: [n.poll(p.question, p.options, true)] }),
   quiz: (p, { n }) => ({ body: '', natives: [n.quiz(p.question, p.options, p.correct)] }),

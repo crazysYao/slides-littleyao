@@ -287,3 +287,16 @@ test('photo：照片放在 HTML 裡，沒有原生元件', () => {
   assert.match(r.body, /那天，抬頭就是天空/);
   assert.deepEqual(r.natives, []);
 });
+
+test('handRaise：問題、選項字母、舉手圖示、不出原生元件', () => {
+  const n = makeNative('hr', palette.accent);
+  const opts = ['還沒用過', '問問題', '寫報告／作業', '寫履歷或自傳', '翻譯', '做簡報', '寫程式', '做圖'];
+  const out = layouts.handRaise({ id: 'hr', heading: '你用 AI 做過哪些事？', options: opts }, { palette, n });
+  assert.ok(out.body.includes('你用 AI 做過哪些事？'));
+  for (const o of opts) assert.ok(out.body.includes(esc(o)), o);
+  for (const L of 'ABCDEFGH') assert.ok(out.body.includes(`>${L}<`), L);
+  assert.ok(out.body.includes('class="hand"'));
+  assert.equal(out.natives.length, 0);
+  const bare = layouts.handRaise({ id: 'hr2', heading: '看懂的舉手' }, { palette, n });
+  assert.ok(bare.body.includes('看懂的舉手') && bare.body.includes('class="hand"'));
+});
