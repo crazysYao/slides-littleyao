@@ -21,7 +21,7 @@ test('沒有統計元件', () => {
 });
 
 test('刪掉的頁不在', () => {
-  for (const id of ['s1-save-poll', 's2-rescue', 's2-v1-poll', 's2-skill-upload', 's3-try', 's3-v2-upload', 's3-obsidian', 's2-typhoon-poll', 's2-quiz-warmup-1', 's2-quiz-warmup-2', 's2-quiz-warmup-3'])
+  for (const id of ['s1-save-poll', 's2-rescue', 's2-v1-poll', 's2-skill-upload', 's3-try', 's3-v2-upload', 's3-obsidian', 's2-typhoon-poll', 's2-quiz-warmup-1', 's2-quiz-warmup-2', 's2-quiz-warmup-3', 's3-v2-wall'])
     assert.ok(!ids.includes(id), id);
 });
 
@@ -33,13 +33,6 @@ test('頁序以外的原版頁不會混進來', () => {
 test('舉手頁', () => {
   for (const id of ['s1-ai-exp', 's1-paid'])
     assert.equal(page(id)?.layout, 'handRaise', id);
-});
-
-test('v1→v2 對照', () => {
-  const els = slide('s3-v2-wall').elements;
-  const frames = els.filter((e) => e.type === 'svg' && e.svgContent.includes('待講師提供'));
-  assert.equal(frames.length, 2);
-  assert.ok(!els.some((e) => e.type === 'showcase'));
 });
 
 test('複製卡保留', () => {
@@ -132,7 +125,6 @@ test('原版 build 與改動前相同（快照）', async () => {
 
 test('舉手選項不重複字母、v1→v2 不帶作業連結、上架頁畫面與講稿一致', () => {
   assert.match(page('s2-typhoon').notes, /舉手/);
-  assert.equal(page('s3-v2-wall').linkHomework, undefined);
   assert.ok(!JSON.stringify(page('s3-drop').items).includes('自己網站'));
 });
 
