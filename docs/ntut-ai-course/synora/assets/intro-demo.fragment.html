@@ -1,0 +1,130 @@
+<!-- 聽課版第 2 頁：講師自我介紹，由 Agent 從 Obsidian、GitHub、WPORT 官網抓資料組成。logo 取自 simple-icons 13.21.0 -->
+<style>
+#itr{--line:#EDE6D8;--ink:#2B2620;--mute:#8A8275;--y:#F5B400;--y2:#FFF3CC;--ok:#2E8B57;position:absolute;left:0;top:0;width:960px;height:540px}
+#itr *{box-sizing:border-box}
+#itr .outer{position:absolute;left:44px;top:112px;width:576px;height:288px}
+#itr .stage{zoom:.6;position:absolute;top:0;left:0;width:960px;height:480px;background:#fff;border:1px solid var(--line);border-radius:22px;overflow:hidden}
+#itr .stage::before{content:"";position:absolute;inset:0;background:radial-gradient(circle at 45% 45%,#FFF8E2 0,transparent 60%);pointer-events:none}
+#itr svg.edges{position:absolute;left:0;top:0;width:960px;height:480px}
+#itr .edge{stroke:#DDD6C8;stroke-width:4;stroke-dasharray:10 8;fill:none;transition:stroke .3s}
+#itr .edge.on{stroke:var(--y)}
+#itr .node{position:absolute;background:#fff;border:2px solid var(--line);border-radius:18px;padding:12px 14px;transition:all .3s;box-shadow:0 8px 20px rgba(60,40,0,.06)}
+#itr .node.on{border-color:var(--y);box-shadow:0 0 0 6px rgba(245,180,0,.18),0 8px 20px rgba(60,40,0,.08)}
+#itr .nh{display:flex;align-items:center;gap:10px;font-size:21px;font-weight:900;color:var(--ink)}
+#itr .nh svg{width:30px;height:30px;flex:none}
+#itr .ns{font-size:14px;color:var(--mute);margin-top:4px}
+#itr .badge{width:30px;height:30px;border-radius:8px;background:#0E3D8C;color:#fff;font-size:11px;font-weight:900;display:grid;place-items:center;flex:none}
+#itr .me{left:30px;top:60px;width:170px;text-align:center}
+#itr .me .face{width:52px;height:52px;margin:0 auto 6px;border-radius:50%;background:var(--ink);color:#fff;display:grid;place-items:center;font-size:22px;font-weight:900}
+#itr .ag{left:300px;top:70px;width:240px;text-align:center}
+#itr .ag .nh{justify-content:center}
+#itr .src{left:690px;width:245px}
+#itr .s1{top:22px}#itr .s2{top:172px}#itr .s3{top:322px}
+#itr .bub{position:absolute;left:30px;top:250px;max-width:200px;padding:10px 14px;border-radius:14px;font-size:15px;line-height:1.5;background:#16161a;color:#fff;opacity:0;transform:translateY(8px);transition:all .3s}
+#itr .bub.vis{opacity:1;transform:none}
+#itr .intro{position:absolute;left:250px;top:215px;width:400px;background:#fff;border:2px solid var(--y);border-radius:18px;padding:14px 18px;opacity:0;transform:translateY(10px);transition:all .4s;z-index:3}
+#itr .intro.vis{opacity:1;transform:none}
+#itr .intro h4{margin:0 0 6px;font-size:22px;font-weight:900;color:var(--ink)}
+#itr .ln{font-size:15px;line-height:1.55;color:var(--ink);padding:4px 0;border-top:1px dashed var(--line);opacity:0;transition:opacity .35s}
+#itr .ln.vis{opacity:1}
+#itr .ln b{display:inline-block;min-width:66px;color:var(--mute);font-weight:700}
+#itr .pkt{position:absolute;top:0;left:0;z-index:5;opacity:0;pointer-events:none;background:var(--ink);color:#fff;border-radius:999px;padding:6px 14px;font-size:14px;font-weight:700;white-space:nowrap}
+#itr .caption{position:absolute;left:44px;top:406px;width:576px;text-align:center;font-size:15px;font-weight:700;min-height:22px;transition:opacity .25s}
+#itr .caption.fade{opacity:0}
+#itr .ctl{position:absolute;left:44px;top:446px;display:flex;gap:8px}
+#itr .btn{border:1px solid var(--line);background:#fff;font:inherit;font-size:12px;padding:5px 12px;border-radius:999px;cursor:pointer;color:var(--ink)}
+#itr .cards{position:absolute;left:644px;right:44px;top:112px;display:grid;gap:8px}
+#itr .rc{display:flex;align-items:center;gap:10px;background:#fff;border:1.5px solid var(--line);border-radius:12px;padding:8px 12px;transition:all .3s}
+#itr .rc .n{flex:0 0 26px;height:26px;border-radius:13px;background:var(--y);display:grid;place-items:center;font-weight:900;font-size:13px}
+#itr .rc .tt{font-size:14px;font-weight:800}
+#itr .rc .ss{font-size:11px;color:var(--mute);margin-top:2px;line-height:1.35}
+#itr .rc .chk{margin-left:auto;flex:0 0 22px;height:22px;border-radius:50%;background:#E8F6EC;color:var(--ok);display:grid;place-items:center;font-size:12px;opacity:0;transform:scale(.6);transition:all .3s}
+#itr .rc.active{border-color:var(--y);box-shadow:0 6px 18px rgba(245,180,0,.18)}
+#itr .rc.fin .chk{opacity:1;transform:none}
+#itr .rc:not(.active):not(.fin){opacity:.7}
+.cap #itr .pkt,.cap #itr .ctl{display:none}
+@media (prefers-reduced-motion:reduce){#itr .pkt{display:none}}
+</style>
+<div id="itr">
+  <div class="outer"><div class="stage" id="stage">
+    <svg class="edges" viewBox="0 0 960 480">
+      <path class="edge" id="e-me" d="M200 120 L300 125"/>
+      <path class="edge" id="e-s1" d="M540 110 L690 75"/>
+      <path class="edge" id="e-s2" d="M540 135 L690 215"/>
+      <path class="edge" id="e-s3" d="M540 150 L690 360"/>
+    </svg>
+    <div class="node me" id="n-me"><div class="face">我</div><div class="nh" style="justify-content:center">David</div></div>
+    <div class="node ag" id="n-ag"><div class="nh"><svg viewBox="0 0 24 24"><title>Claude</title><path fill="#D97757" d="m4.7144 15.9555 4.7174-2.6471.079-.2307-.079-.1275h-.2307l-.7893-.0486-2.6956-.0729-2.3375-.0971-2.2646-.1214-.5707-.1215-.5343-.7042.0546-.3522.4797-.3218.686.0608 1.5179.1032 2.2767.1578 1.6514.0972 2.4468.255h.3886l.0546-.1579-.1336-.0971-.1032-.0972L6.973 9.8356l-2.55-1.6879-1.3356-.9714-.7225-.4918-.3643-.4614-.1578-1.0078.6557-.7225.8803.0607.2246.0607.8925.686 1.9064 1.4754 2.4893 1.8336.3643.3035.1457-.1032.0182-.0728-.164-.2733-1.3539-2.4467-1.445-2.4893-.6435-1.032-.17-.6194c-.0607-.255-.1032-.4674-.1032-.7285L6.287.1335 6.6997 0l.9957.1336.419.3642.6192 1.4147 1.0018 2.2282 1.5543 3.0296.4553.8985.2429.8318.091.255h.1579v-.1457l.1275-1.706.2368-2.0947.2307-2.6957.0789-.7589.3764-.9107.7468-.4918.5828.2793.4797.686-.0668.4433-.2853 1.8517-.5586 2.9021-.3643 1.9429h.2125l.2429-.2429.9835-1.3053 1.6514-2.0643.7286-.8196.85-.9046.5464-.4311h1.0321l.759 1.1293-.34 1.1657-1.0625 1.3478-.8804 1.1414-1.2628 1.7-.7893 1.36.0729.1093.1882-.0183 2.8535-.607 1.5421-.2794 1.8396-.3157.8318.3886.091.3946-.3278.8075-1.967.4857-2.3072.4614-3.4364.8136-.0425.0304.0486.0607 1.5482.1457.6618.0364h1.621l3.0175.2247.7892.522.4736.6376-.079.4857-1.2142.6193-1.6393-.3886-3.825-.9107-1.3113-.3279h-.1822v.1093l1.0929 1.0686 2.0035 1.8092 2.5075 2.3314.1275.5768-.3218.4554-.34-.0486-2.2039-1.6575-.85-.7468-1.9246-1.621h-.1275v.17l.4432.6496 2.3436 3.5214.1214 1.0807-.17.3521-.6071.2125-.6679-.1214-1.3721-1.9246L14.38 17.959l-1.1414-1.9428-.1397.079-.674 7.2552-.3156.3703-.7286.2793-.6071-.4614-.3218-.7468.3218-1.4753.3886-1.9246.3157-1.53.2853-1.9004.17-.6314-.0121-.0425-.1397.0182-1.4328 1.9672-2.1796 2.9446-1.7243 1.8456-.4128.164-.7164-.3704.0667-.6618.4008-.5889 2.386-3.0357 1.4389-1.882.929-1.0868-.0062-.1579h-.0546l-6.3385 4.1164-1.1293.1457-.4857-.4554.0608-.7467.2307-.2429 1.9064-1.3114Z"/></svg>Agent</div><div class="ns">只用查得到的資料</div></div>
+    <div class="node src s1" id="n-s1"><div class="nh"><svg viewBox="0 0 24 24"><title>Obsidian</title><path fill="#7C3AED" d="M19.355 18.538a68.967 68.959 0 0 0 1.858-2.954.81.81 0 0 0-.062-.9c-.516-.685-1.504-2.075-2.042-3.362-.553-1.321-.636-3.375-.64-4.377a1.707 1.707 0 0 0-.358-1.05l-3.198-4.064a3.744 3.744 0 0 1-.076.543c-.106.503-.307 1.004-.536 1.5-.134.29-.29.6-.446.914l-.31.626c-.516 1.068-.997 2.227-1.132 3.59-.124 1.26.046 2.73.815 4.481.128.011.257.025.386.044a6.363 6.363 0 0 1 3.326 1.505c.916.79 1.744 1.922 2.415 3.5zM8.199 22.569c.073.012.146.02.22.02.78.024 2.095.092 3.16.29.87.16 2.593.64 4.01 1.055 1.083.316 2.198-.548 2.355-1.664.114-.814.33-1.735.725-2.58l-.01.005c-.67-1.87-1.522-3.078-2.416-3.849a5.295 5.295 0 0 0-2.778-1.257c-1.54-.216-2.952.19-3.84.45.532 2.218.368 4.829-1.425 7.531zM5.533 9.938c-.023.1-.056.197-.098.29L2.82 16.059a1.602 1.602 0 0 0 .313 1.772l4.116 4.24c2.103-3.101 1.796-6.02.836-8.3-.728-1.73-1.832-3.081-2.55-3.831zM9.32 14.01c.615-.183 1.606-.465 2.745-.534-.683-1.725-.848-3.233-.716-4.577.154-1.552.7-2.847 1.235-3.95.113-.235.223-.454.328-.664.149-.297.288-.577.419-.86.217-.47.379-.885.46-1.27.08-.38.08-.72-.014-1.043-.095-.325-.297-.675-.68-1.06a1.6 1.6 0 0 0-1.475.36l-4.95 4.452a1.602 1.602 0 0 0-.513.952l-.427 2.83c.672.59 2.328 2.316 3.335 4.711.09.21.175.43.253.653z"/></svg>Obsidian</div><div class="ns">WPORT 教學履歷筆記</div></div>
+    <div class="node src s2" id="n-s2"><div class="nh"><svg viewBox="0 0 24 24"><title>GitHub</title><path fill="#181717" d="M12 .297c-6.63 0-12 5.373-12 12 0 5.303 3.438 9.8 8.205 11.385.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61C4.422 18.07 3.633 17.7 3.633 17.7c-1.087-.744.084-.729.084-.729 1.205.084 1.838 1.236 1.838 1.236 1.07 1.835 2.809 1.305 3.495.998.108-.776.417-1.305.76-1.605-2.665-.3-5.466-1.332-5.466-5.93 0-1.31.465-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176 0 0 1.005-.322 3.3 1.23.96-.267 1.98-.399 3-.405 1.02.006 2.04.138 3 .405 2.28-1.552 3.285-1.23 3.285-1.23.645 1.653.24 2.873.12 3.176.765.84 1.23 1.91 1.23 3.22 0 4.61-2.805 5.625-5.475 5.92.42.36.81 1.096.81 2.22 0 1.606-.015 2.896-.015 3.286 0 .315.21.69.825.57C20.565 22.092 24 17.592 24 12.297c0-6.627-5.373-12-12-12"/></svg>GitHub</div><div class="ns">crazysYao 的 repo</div></div>
+    <div class="node src s3" id="n-s3"><div class="nh"><span class="badge">WPORT</span>WPORT 官網</div><div class="ns">公開的教學紀錄</div></div>
+    <div class="bub" id="bub">幫我寫一段給北科大學生的自我介紹</div>
+    <div class="intro" id="intro"><h4>David（CrazyYao）</h4>
+      <div class="ln" id="l1"><b>身份</b>後端工程師 7+ 年 · WPORT 後端負責人</div>
+      <div class="ln" id="l2"><b>教學經歷</b>桃園社大（AI 學日語）、開南資管、企業內訓、聰電站、聯合報內訓助教</div>
+      <div class="ln" id="l3"><b>學員</b>49+ 名，從中高齡、大學生到企業同仁</div>
+    </div>
+    <div class="pkt" id="pkt"></div>
+  </div></div>
+  <div class="caption" id="caption">&nbsp;</div>
+  <div class="ctl"><button class="btn" id="loopBtn">自動循環：開</button><button class="btn" id="replay">↻ 重播</button></div>
+  <div class="cards">
+    <div class="rc" data-step="1"><span class="n">1</span><div><div class="tt">我只說一句</div><div class="ss">「幫我寫自我介紹」</div></div><span class="chk">✓</span></div>
+    <div class="rc" data-step="2"><span class="n">2</span><div><div class="tt">讀 Obsidian 筆記</div><div class="ss">教學履歷 → 身份</div></div><span class="chk">✓</span></div>
+    <div class="rc" data-step="3"><span class="n">3</span><div><div class="tt">再查 GitHub、WPORT 官網</div><div class="ss">對照公開紀錄 → 教學經歷</div></div><span class="chk">✓</span></div>
+    <div class="rc" data-step="4"><span class="n">4</span><div><div class="tt">組成自我介紹</div><div class="ss">查不到的不寫，不編</div></div><span class="chk">✓</span></div>
+  </div>
+</div>
+<script>
+(() => {
+const $ = (s) => document.querySelector('#itr ' + s);
+const stage = $('#stage'), pkt = $('#pkt'), caption = $('#caption'), bub = $('#bub'), intro = $('#intro');
+const SCALE = 0.6;
+let runId = 0, looping = true;
+const sleep = (ms, t) => new Promise((res, rej) => setTimeout(() => (t !== runId ? rej('cancel') : res()), ms));
+const ctr = (el) => { const s = stage.getBoundingClientRect(), r = el.getBoundingClientRect(); return { x: (r.left - s.left + r.width / 2) / SCALE, y: (r.top - s.top + r.height / 2) / SCALE }; };
+const on = (ids, v = true) => ids.forEach((id) => $('#' + id).classList.toggle('on', v));
+const vis = (id) => $('#' + id).classList.add('vis');
+const setCap = (txt) => { caption.classList.add('fade'); setTimeout(() => { caption.textContent = txt; caption.classList.remove('fade'); }, 200); };
+const setStep = (n) => document.querySelectorAll('#itr .rc').forEach((s) => { const k = +s.dataset.step; s.classList.toggle('active', k === n); s.classList.toggle('fin', k < n); });
+const send = async (t, label, from, to, edge) => {
+  on([edge]); const a = ctr($('#' + from)), b = ctr($('#' + to)); pkt.textContent = label;
+  pkt.animate([
+    { transform: `translate(${a.x}px,${a.y}px) translate(-50%,-50%) scale(.6)`, opacity: 0 },
+    { transform: `translate(${a.x}px,${a.y}px) translate(-50%,-50%) scale(1)`, opacity: 1, offset: 0.15 },
+    { transform: `translate(${b.x}px,${b.y}px) translate(-50%,-50%) scale(1)`, opacity: 1, offset: 0.85 },
+    { transform: `translate(${b.x}px,${b.y}px) translate(-50%,-50%) scale(.6)`, opacity: 0 },
+  ], { duration: 1000, easing: 'cubic-bezier(.5,0,.3,1)', fill: 'forwards' });
+  await sleep(1000, t); on([edge], false);
+};
+function reset() {
+  document.querySelectorAll('#itr .on,#itr .vis').forEach((x) => x.classList.remove('on', 'vis'));
+  pkt.getAnimations().forEach((a) => a.cancel()); pkt.style.opacity = 0; setStep(0); caption.innerHTML = '&nbsp;';
+}
+async function run() {
+  const t = ++runId; reset();
+  try {
+    await sleep(500, t);
+    setStep(1); setCap('步驟 1：我只說一句「幫我寫自我介紹」'); on(['n-me']); vis('bub'); await sleep(900, t);
+    await send(t, '幫我寫自我介紹', 'n-me', 'n-ag', 'e-me'); on(['n-me'], false); on(['n-ag']);
+    setStep(2); setCap('步驟 2：Agent 先讀我 Obsidian 裡的教學履歷');
+    on(['n-s1']); await send(t, '讀筆記', 'n-ag', 'n-s1', 'e-s1'); await send(t, '身份', 'n-s1', 'n-ag', 'e-s1'); on(['n-s1'], false);
+    vis('intro'); vis('l1'); await sleep(600, t);
+    setStep(3); setCap('步驟 3：再到 GitHub、WPORT 官網對照公開紀錄');
+    on(['n-s2']); await send(t, '查 repo', 'n-ag', 'n-s2', 'e-s2'); on(['n-s2'], false);
+    on(['n-s3']); await send(t, '查教學紀錄', 'n-ag', 'n-s3', 'e-s3'); await send(t, '教學經歷', 'n-s3', 'n-ag', 'e-s3'); on(['n-s3'], false);
+    vis('l2'); await sleep(500, t); vis('l3'); await sleep(600, t);
+    setStep(4); setCap('步驟 4：組成自我介紹，查不到的就不寫'); await sleep(1500, t);
+    setStep(5); setCap('這一頁就是今天要教的事：先給 AI 對的資料'); await sleep(3000, t);
+    if (looping) run();
+  } catch (e) { if (e !== 'cancel') console.error(e); }
+}
+function finalState() {
+  reset(); setStep(5); ['bub', 'intro', 'l1', 'l2', 'l3'].forEach(vis);
+  caption.textContent = '這一頁就是今天要教的事：先給 AI 對的資料';
+}
+$('#replay').onclick = () => run();
+$('#loopBtn').onclick = (e) => { looping = !looping; e.target.textContent = '自動循環：' + (looping ? '開' : '關'); };
+if (window.__SYNORA_CAPTURE__ || matchMedia('(prefers-reduced-motion: reduce)').matches) finalState(); else run();
+})();
+</script>

@@ -172,3 +172,13 @@ test('互動圖有 MCP 連到 Google Drive', () => {
   const html = slide('jp-loop').elements[0].html;
   for (const w of ['<title>Google Drive</title>', 'MCP', '考古題']) assert.ok(html.includes(w), w);
 });
+
+test('第 2 頁講師自我介紹：Agent 從 Obsidian、GitHub、WPORT 抓資料', () => {
+  assert.equal(ids[1], 'intro');
+  const p = page('intro');
+  assert.equal(p.layout, 'opDemo');
+  assert.match(p.notes, /^09:00 講師自我介紹\(2\)/);
+  const html = slide('intro').elements[0].html;
+  for (const w of ['David（CrazyYao）', '<title>Obsidian</title>', '<title>GitHub</title>', 'WPORT', '後端工程師 7+ 年', '桃園社大', '49+', '__SYNORA_CAPTURE__'])
+    assert.ok(html.includes(w), w);
+});

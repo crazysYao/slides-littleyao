@@ -54,16 +54,16 @@
 
 ## 聽課版（學員只聽不做）
 
-設計：[../superpowers/specs/2026-11-18-ntut-listen-version-design.md](../superpowers/specs/2026-11-18-ntut-listen-version-design.md)。內容沿用原版，變換檔 [synora/listen-content.mjs](synora/listen-content.mjs) 只寫頁序、覆寫與新頁；改原版會自動帶進聽課版（頁序清單以外的新頁除外）。共 60 頁。
+設計：[../superpowers/specs/2026-11-18-ntut-listen-version-design.md](../superpowers/specs/2026-11-18-ntut-listen-version-design.md)。內容沿用原版，變換檔 [synora/listen-content.mjs](synora/listen-content.mjs) 只寫頁序、覆寫與新頁；改原版會自動帶進聽課版（頁序清單以外的新頁除外）。共 61 頁。
 
 | 節次 | 內容 | 分 |
 |---|---|---|
-| 第一節 09:00–09:50 | 講清楚＋講師示範做出網站 v1（含緩衝 3） | 50 |
+| 第一節 09:00–09:50 | 講師自我介紹 2＋講清楚＋講師示範做出網站 v1（含緩衝 1） | 50 |
 | 第二節 10:00–10:50 | Skill＋改更好＋Context＋舉手 QA | 50 |
 | 第三節 11:00–12:00 | Vercel 三種上線方式 25＋日文學習分享 15＋回顧 1＋QA 9＋彈性 10 | 60 |
 
 - 產生：`node synora/build-deck-html.mjs /tmp/deck-listen.json synora/listen-content.mjs`
-- 檢查：`node synora/check-deck.mjs /tmp/deck-listen.json --sections --ranges=09:00-09:50=47,10:00-10:50=50,11:00-12:00=50`
+- 檢查：`node synora/check-deck.mjs /tmp/deck-listen.json --sections --ranges=09:00-09:50=49,10:00-10:50=50,11:00-12:00=50`
 - 待講師提供：日文示範錄影備案
 - 尚未建立 Synora 專案；建立與推送等講師說「推上去」
 
