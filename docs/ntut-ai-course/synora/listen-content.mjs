@@ -65,16 +65,9 @@ const JAPANESE = [
     note: '先把自己講清楚，AI 才幫得上忙。',
   },
   {
-    id: 'jp-flow', layout: 'steps', section: J, title: '每天的動線',
-    notes: '11:28 規劃動線(5)，兩頁。這是我每天的流程，全部放在 Obsidian 筆記裡，Agent（Claude Code）直接讀寫這些筆記。每天 60 分鐘照固定順序：單字、文法、聽力、讀解；做完打卡，Agent 出題考我，錯的題目進複習清單，隔幾天再考一次，單字同步到 Anki。對回今天：計畫、程度、錯題清單，就是我的「基本資料」。',
-    heading: '每天的動線：全部記在 Obsidian',
-    items: [
-      ['60 分鐘', '單字 → 文法 → 聽力 → 讀解'],
-      ['打卡', '記下今天做了什麼、卡在哪'],
-      ['測驗', 'Agent 依我的筆記出題'],
-      ['複習清單', '答錯的隔幾天再考'],
-      ['Anki', '單字卡同步到手機'],
-    ],
+    id: 'jp-loop', layout: 'opDemo', demo: 'agent-loop-demo', section: J, title: '我、Agent、Skills、Obsidian',
+    notes: '11:28 規劃動線(5)，兩頁。動畫會自己跑四步：我只說「今天練什麼？」→ Agent（Claude Code）去拿「測驗」這本 Skill → 照手冊先讀 Obsidian 裡的複習清單和學習紀錄，只出我弱的地方 → 我答錯，它把錯題寫回複習清單，下次再考。對回今天：Obsidian 裡的計畫、程度、錯題就是我的「基本資料」；Skill 就是第二節的工作手冊；它只讀需要的那幾份，就是 Context。下一頁看我寫了哪些 Skill。',
+    heading: '我、Agent、Skills 和我的資料，怎麼一起動',
   },
   {
     id: 'jp-skills', layout: 'grid', section: J, title: '一件事一個 Skill',

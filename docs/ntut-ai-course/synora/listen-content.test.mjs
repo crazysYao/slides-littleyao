@@ -65,7 +65,7 @@ test('跟著改字', () => {
 });
 
 test('第三節頁序', () => {
-  assert.deepEqual(ids.slice(ids.indexOf('s3')), ['s3', 'v-ways', 's3-drop', 'v-cli', 'v-github', 'jp-why', 'jp-need', 'jp-flow', 'jp-skills', 'jp-scene', 'jp-map', 's3-recap', 'qa']);
+  assert.deepEqual(ids.slice(ids.indexOf('s3')), ['s3', 'v-ways', 's3-drop', 'v-cli', 'v-github', 'jp-why', 'jp-need', 'jp-loop', 'jp-skills', 'jp-scene', 'jp-map', 's3-recap', 'qa']);
 });
 
 test('Vercel', () => {
@@ -154,4 +154,16 @@ test('資安頁：標題點明資安，多一點「貼給 AI 的資料也要挑�
   const t = JSON.stringify(p.cards);
   for (const w of ['不要貼給 AI', '密碼', '身分證', '作品連結']) assert.ok(t.includes(w), w);
   assert.match(p.notes, /^10:20 資安提醒\(4\)/);
+});
+
+test('日文動線改成互動圖：我、Agent、Skills、Obsidian 資料', () => {
+  const p = page('jp-loop');
+  assert.equal(p.layout, 'opDemo');
+  const html = slide('jp-loop').elements[0].html;
+  for (const w of ['<title>Obsidian</title>', '<title>Claude</title>', '我', 'Agent', 'Skills', '複習清單', '__SYNORA_CAPTURE__']) assert.ok(html.includes(w), w);
+  assert.match(p.notes, /^11:28 /);
+});
+
+test('聽課版沒有無限循環動畫', () => {
+  for (const s of deck.slides) assert.ok(!/infinite/.test(s.elements[0].html), s.id);
 });
