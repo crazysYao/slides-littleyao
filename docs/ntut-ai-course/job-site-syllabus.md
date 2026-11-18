@@ -65,6 +65,12 @@
 - 產生：`node synora/build-deck-html.mjs /tmp/deck-listen.json synora/listen-content.mjs`
 - 檢查：`node synora/check-deck.mjs /tmp/deck-listen.json --sections --ranges=09:00-09:50=49,10:00-10:50=50,11:00-12:00=50`
 - 待講師提供：日文示範錄影備案
+- 未驗證（11/19 排練要確認）：
+  - 付費版 Claude 建 Skill 的路徑「設定 → 功能 → Skills → 新增」（`assets/skill-save-demo-claude.fragment.html`）
+  - 日文互動圖若現場真跑，Claude Code 要先接好 Google Drive MCP、雲端硬碟要有考古題
+  - 第 2 頁自我介紹「49+ 學員」是 2026-05 的數字；動畫演 Agent 查 GitHub、WPORT 官網，實際資料取自 Obsidian 教學履歷
+  - 動畫播放中的畫面只在 Chrome 預覽看過，未在 Synora 正式站看過
+- 未決定：第三節彈性 10 分的用途；第二節舉手 QA 現為 15 分
 - 尚未建立 Synora 專案；建立與推送等講師說「推上去」
 
 ## 檔案
