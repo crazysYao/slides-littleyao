@@ -145,3 +145,7 @@ test('付費 AI 頁只留問題，細節現場問', () => {
   assert.equal(page('s1-paid').heading, '你有付費的 AI 服務嗎？');
   assert.equal(page('s1-paid').options, undefined);
 });
+
+test('颱風短片換新連結', () => {
+  assert.equal(page('s2-typhoon-video').link[0], 'https://www.youtube.com/shorts/qJVypjZNBF8');
+});
