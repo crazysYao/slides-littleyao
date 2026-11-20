@@ -202,8 +202,9 @@ export const OVERRIDES = {
   },
   's1-paid': { layout: 'handRaise', title: '舉手：有沒有付費的 AI', heading: '你有付費的 AI 服務嗎？', options: undefined, notes: '09:09 舉手兩題(2)。有的舉手，再現場問幾位：用哪一家、拿來做什麼。' },
   's1-gf-3': {
-    layout: 'sameMove', mid: '同一招', left: ['對女朋友', '不解風情'], right: ['對 AI', '具體描述'],
-    equation: ['「幫我寫自我介紹」', '女朋友說「好煩喔」'], why: '聊天 AI 不追問，除非你要它問；只會猜出誰都適用的那段',
+    layout: 'sameMove', mid: '同一招',
+    left: { say: '好煩喔…', act: '你追問細節 → 她更氣', ok: false, verdict: '不解風情' },
+    right: { say: '幫我寫自我介紹', act: '你給足細節 → 它才寫對', ok: true, verdict: '具體描述' },
     give: ['你要主動給', ['發生什麼事', '要什麼結果', '怎樣算做好']],
     notes: '講稿：人跟人之間，具體到附上 KPI 可能會被噴；但跟 AI 講話，越像我那晚那樣越好。聊天 AI 預設不追問，除非你要它問；它只會猜，猜出來就是剛剛那段誰都適用的自我介紹。銜接：所以下一頁，我讓 AI 反過來訪問我，把這些細節問出來。',
   },

@@ -347,11 +347,13 @@ test('bigPrompt：有 after 時在下方加「讓它跑」提示，沒有就不�
   assert.equal(bare.body.includes('class="run"'), false);
 });
 
-test('sameMove：左右對照卡、中間同一招、等式、結論三項', () => {
+test('sameMove：女朋友與 AI 圖示對照、同一個動作相反結果、結論三項', () => {
   const n = makeNative('sm', palette.accent);
-  const p = { id: 'sm', heading: '但同一招，AI 最吃', mid: '同一招', left: ['對女朋友', '不解風情'], right: ['對 AI', '具體描述'], equation: ['「幫我寫自我介紹」', '女朋友說「好煩喔」'], why: '聊天 AI 不追問，只會猜', give: ['你要主動給', ['發生什麼事', '要什麼結果', '怎樣算做好']] };
+  const p = { id: 'sm', heading: '但同一招，AI 最吃', mid: '同一招', left: { say: '好煩喔…', act: '你追問細節 → 她更氣', ok: false, verdict: '不解風情' }, right: { say: '幫我寫自我介紹', act: '你給足細節 → 它才寫對', ok: true, verdict: '具體描述' }, give: ['你要主動給', ['發生什麼事', '要什麼結果', '怎樣算做好']] };
   const out = layouts.sameMove(p, { palette, n });
-  for (const w of ['但同一招，AI 最吃', '同一招', '對女朋友', '不解風情', '對 AI', '具體描述', '「幫我寫自我介紹」', '女朋友說「好煩喔」', '聊天 AI 不追問，只會猜', '你要主動給', '發生什麼事', '要什麼結果', '怎樣算做好'])
+  for (const w of ['但同一招，AI 最吃', '同一招', '好煩喔…', '這叫不解風情', '幫我寫自我介紹', '這叫具體描述', '你追問細節 → 她更氣', '你給足細節 → 它才寫對', '你要主動給', '發生什麼事', '要什麼結果', '怎樣算做好'])
     assert.ok(out.body.includes(esc(w)), w);
+  assert.equal((out.body.match(/<svg /g) ?? []).length, 2);
+  assert.ok(out.body.includes('✗') && out.body.includes('✓'));
   assert.deepEqual(out.natives, []);
 });

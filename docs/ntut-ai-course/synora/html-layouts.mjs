@@ -442,28 +442,29 @@ Object.assign(layouts, {
     };
   },
   // 同一招兩種結果：左黑卡（對人）、右黃卡（對 AI），中間「同一招」，下方等式與結論條
+  // 同一招：左女朋友、右 AI 機器人，各一個對話泡泡＋同一個動作＋相反結果；底部結論條
   sameMove: (p, { palette: P }) => {
-    const side = ([who, verdict], dark, i) =>
+    const face = (robot) =>
+      robot
+        ? `<svg width="92" height="92" viewBox="0 0 92 92"><circle cx="46" cy="46" r="44" fill="${P.accent}"/><line x1="46" y1="14" x2="46" y2="24" stroke="${P.text}" stroke-width="4" stroke-linecap="round"/><circle cx="46" cy="12" r="4" fill="${P.text}"/><rect x="22" y="24" width="48" height="40" rx="10" fill="#fff" stroke="${P.text}" stroke-width="4"/><circle cx="36" cy="42" r="5" fill="${P.text}"/><circle cx="56" cy="42" r="5" fill="${P.text}"/><line x1="36" y1="54" x2="56" y2="54" stroke="${P.text}" stroke-width="4" stroke-linecap="round"/><rect x="16" y="38" width="6" height="12" rx="3" fill="${P.text}"/><rect x="70" y="38" width="6" height="12" rx="3" fill="${P.text}"/></svg>`
+        : `<svg width="92" height="92" viewBox="0 0 92 92"><circle cx="46" cy="46" r="44" fill="${P.dark}"/><path d="M20 76 C16 40 24 18 46 18 C68 18 76 40 72 76 Z" fill="#5A4636"/><circle cx="46" cy="46" r="20" fill="#FFE2C6"/><path d="M26 42 C28 28 38 24 46 24 C54 24 64 28 66 42 C58 36 50 32 42 34 C36 36 30 40 26 42 Z" fill="#5A4636"/><line x1="36" y1="42" x2="42" y2="45" stroke="${P.text}" stroke-width="3" stroke-linecap="round"/><line x1="56" y1="42" x2="50" y2="45" stroke="${P.text}" stroke-width="3" stroke-linecap="round"/><path d="M40 57 Q46 53 52 57" fill="none" stroke="${P.text}" stroke-width="3" stroke-linecap="round"/></svg>`;
+    const side = (s, robot, i) =>
       abs(
-        `left:${dark ? 44 : 576}px;top:118px;width:340px;height:160px;border-radius:16px;padding:22px 28px;background:${dark ? P.dark : P.accent};color:${dark ? '#fff' : P.text};box-shadow:0 10px 24px rgba(0,0,0,.12)`,
-        `<div style="font-size:20px;font-weight:700;opacity:.8">${esc(who)}</div><div style="font-size:44px;font-weight:900;margin-top:10px">這叫${esc(verdict)}</div>`,
-        i,
+        `left:${robot ? 556 : 44}px;top:124px;width:360px;display:flex;flex-direction:column;align-items:center;text-align:center`,
+        `<div style="display:flex;align-items:center;gap:14px">${face(robot)}<div style="position:relative;background:#fff;border:2px solid ${P.text};border-radius:16px;padding:10px 18px;font-size:26px;font-weight:900;white-space:nowrap">${esc(s.say)}</div></div>` +
+          `<div style="margin-top:18px;font-size:20px;font-weight:700;color:${P.muted}">${esc(s.act)} <b style="color:${s.ok ? '#2E8B57' : '#C0392B'}">${s.ok ? '✓' : '✗'}</b></div>` +
+          `<div style="margin-top:12px;border-radius:14px;padding:10px 26px;font-size:36px;font-weight:900;background:${robot ? P.accent : P.dark};color:${robot ? P.text : '#fff'}">這叫${esc(s.verdict)}</div>`,
+        i * 2,
         0.2,
       );
     return {
       body:
         title(p.heading) +
-        side(p.left, true, 0) +
-        abs('left:384px;width:192px;top:160px;text-align:center', `<div style="font-size:22px;font-weight:900">${esc(p.mid)}</div><div style="font-size:40px;font-weight:900;line-height:1">⟶</div>`, 1, 0.2) +
-        side(p.right, false, 2) +
+        side(p.left, false, 0) +
+        abs('left:404px;width:152px;top:210px;text-align:center', `<div style="font-size:22px;font-weight:900">${esc(p.mid)}</div><div style="font-size:40px;font-weight:900;line-height:1">⟶</div>`, 1, 0.2) +
+        side(p.right, true, 1) +
         abs(
-          'left:44px;right:44px;top:300px;text-align:center',
-          `<div style="font-size:28px;font-weight:900">${esc(p.equation[0])} ＝ ${esc(p.equation[1])}</div><div style="font-size:17px;font-weight:700;color:${P.muted};margin-top:6px">${esc(p.why)}</div>`,
-          3,
-          0.2,
-        ) +
-        abs(
-          `left:44px;right:44px;top:396px;display:flex;align-items:center;gap:16px;background:#fff;border:2px solid ${P.text};border-radius:14px;padding:16px 22px`,
+          `left:44px;right:44px;top:404px;display:flex;align-items:center;gap:16px;background:#fff;border:2px solid ${P.text};border-radius:14px;padding:16px 22px`,
           `<b style="flex:none;font-size:24px;font-weight:900">${esc(p.give[0])}</b>${p.give[1]
             .map((g, j) => `${j ? `<span style="font-size:22px;font-weight:900;color:${P.muted}">＋</span>` : ''}<span style="flex:1;text-align:center;background:${P.accent};border-radius:10px;padding:8px 10px;font-size:21px;font-weight:900">${esc(g)}</span>`)
             .join('')}`,

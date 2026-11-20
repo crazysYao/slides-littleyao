@@ -208,8 +208,11 @@ test('發現問題頁：強調「一開始只打一句目的，就讓 Agent 跑�
   assert.match(p.notes, /^09:11 發現問題\(4\)/);
 });
 
-test('「但同一招」頁改左右對照＋結論條', () => {
+test('「但同一招」頁改圖示對照＋結論條', () => {
   const p = page('s1-gf-3');
   assert.equal(p.layout, 'sameMove');
   assert.deepEqual(p.give[1], ['發生什麼事', '要什麼結果', '怎樣算做好']);
+  assert.equal(p.equation, undefined);
+  assert.equal(p.left.ok, false);
+  assert.equal(p.right.ok, true);
 });
