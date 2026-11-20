@@ -184,3 +184,16 @@ test('第 2 頁講師自我介紹：四段經歷各一張真照片＋身份與�
   for (const w of ['David（CrazyYao）', '安東社大', '開南大學', '聰電站', '超級聰電站', '後端工程師 7+ 年', '49+'])
     assert.ok(html.includes(w), w);
 });
+
+test('Prompt ① 拆解動畫：標出用到的技巧，卡片仍可複製', () => {
+  const p = page('s1-interview');
+  assert.equal(p.layout, 'opDemo');
+  assert.equal(p.demo, 'prompt-anatomy-demo');
+  const s = slide('s1-interview');
+  const card = s.elements.find((e) => e.type === 'copycard');
+  assert.equal(card.content, base.pages.find((x) => x.id === 's1-interview').prompt);
+  const html = s.elements[0].html;
+  for (const w of ['角色', '用途', '一次問一題', '附範例', '追問', '「？」', '隱私', '欄位', '先確認', 'Markdown', '__SYNORA_CAPTURE__'])
+    assert.ok(html.includes(w), w);
+  assert.equal(html.includes('infinite'), false);
+});

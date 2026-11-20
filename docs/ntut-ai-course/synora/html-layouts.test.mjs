@@ -329,3 +329,11 @@ test('photoWall：照片依序排、每張有經歷標籤、右側事實卡、�
   assert.equal(out.body.includes('infinite'), false);
   assert.deepEqual(out.natives, []);
 });
+
+test('opDemo：copy 為真時右下放複製卡', () => {
+  const n = makeNative('od', palette.accent);
+  const out = layouts.opDemo({ id: 'od', heading: 'H', demo: 'copy-paste-demo', copy: true, cardTitle: '卡', prompt: 'P' }, { palette, n });
+  assert.equal(out.natives.length, 1);
+  assert.equal(out.natives[0].type, 'copycard');
+  assert.equal(out.natives[0].content, 'P');
+});
