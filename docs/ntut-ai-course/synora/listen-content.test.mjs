@@ -36,7 +36,7 @@ test('舉手頁', () => {
 });
 
 test('複製卡保留', () => {
-  for (const id of ['s1-interview', 's2-prompt-2', 's2-skill-make', 's3-newchat'])
+  for (const id of ['s1-interview-card', 's2-prompt-2', 's2-skill-make', 's3-newchat'])
     assert.equal(slide(id).elements.filter((e) => e.type === 'copycard').length, 1, id);
 });
 
@@ -55,7 +55,7 @@ test('有時間前綴的頁都被覆寫過', () => {
 });
 
 test('示範頁標題', () => {
-  for (const id of ['s1-interview', 's2-prompt-2', 's2-skill-make', 's3-newchat']) assert.match(page(id).tag, /^講師示範/, id);
+  for (const id of ['s1-interview', 's1-interview-card', 's2-prompt-2', 's2-skill-make', 's3-newchat']) assert.match(page(id).tag, /^講師示範/, id);
 });
 
 test('跟著改字', () => {
@@ -185,13 +185,16 @@ test('第 2 頁講師自我介紹：四段經歷各一張真照片＋身份與�
     assert.ok(html.includes(w), w);
 });
 
-test('Prompt ① 拆解動畫：標出用到的技巧，卡片仍可複製', () => {
+test('Prompt ① 拆成兩頁：技巧拆解動畫＋下一頁複製卡', () => {
   const p = page('s1-interview');
   assert.equal(p.layout, 'opDemo');
   assert.equal(p.demo, 'prompt-anatomy-demo');
   const s = slide('s1-interview');
-  const card = s.elements.find((e) => e.type === 'copycard');
+  assert.equal(s.elements.some((e) => e.type === 'copycard'), false);
+  assert.equal(ids[ids.indexOf('s1-interview') + 1], 's1-interview-card');
+  const card = slide('s1-interview-card').elements.find((e) => e.type === 'copycard');
   assert.equal(card.content, base.pages.find((x) => x.id === 's1-interview').prompt);
+  assert.doesNotMatch(page('s1-interview-card').notes, /^\d\d:\d\d/);
   const html = s.elements[0].html;
   for (const w of ['角色', '用途', '一次問一題', '附範例', '追問', '「？」', '隱私', '欄位', '先確認', 'Markdown', '__SYNORA_CAPTURE__'])
     assert.ok(html.includes(w), w);
