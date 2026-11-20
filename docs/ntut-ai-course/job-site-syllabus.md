@@ -71,7 +71,7 @@
   - 第 2 頁自我介紹「49+ 學員」是 2026-05 的數字；動畫演 Agent 查 GitHub、WPORT 官網，實際資料取自 Obsidian 教學履歷
   - 動畫播放中的畫面只在 Chrome 預覽看過，未在 Synora 正式站看過
 - 未決定：第三節彈性 10 分的用途；第二節舉手 QA 現為 15 分
-- 尚未建立 Synora 專案；建立與推送等講師說「推上去」
+- Synora 聽課版專案「讓 AI 一開口就懂你（聽課版）」id `5c93cd2b-597a-46d2-83d4-57f0cdd167ef`，加入碼 `AIORRCFD`；2026-11-20 從原版複製後推上 63 頁（saveSeq 2）。原版 `aef695ce` 未動（saveSeq 12）。之後更新走 `synora-safe-push`，學員入口仍是草稿
 
 ## 檔案
 - 簡報內容（每頁文字、講稿、Prompt 原文）：[synora/job-site-content.mjs](synora/job-site-content.mjs)
