@@ -144,7 +144,10 @@ Object.assign(layouts, {
   bigPrompt: (p, { palette: P }) => ({
     body: centerCol(
       lineIn(0, `font-size:20px;font-weight:700;color:${P.muted}`, esc(p.caption)) +
-        lineIn(1, `background:${P.dark};color:#fff;border-radius:28px;padding:22px 56px;font-size:48px;font-weight:900;box-shadow:0 14px 30px ${P.text}40`, esc(p.prompt)),
+        lineIn(1, `background:${P.dark};color:#fff;border-radius:28px;padding:22px 56px;font-size:48px;font-weight:900;box-shadow:0 14px 30px ${P.text}40`, esc(p.prompt)) +
+        (p.after
+          ? lineIn(2, `display:flex;align-items:center;gap:12px;font-size:26px;font-weight:900;color:${P.text}`, `<span style="font-size:30px">↓</span><span style="background:${P.accent};border-radius:10px;padding:4px 16px">${esc(p.after)}</span><span class="run" style="display:inline-flex;gap:6px">${[0, 1, 2].map((i) => `<i style="width:10px;height:10px;border-radius:5px;background:${P.text};animation:runDot 1s ease-in-out ${i * 0.2}s 12 both"></i>`).join('')}</span><style>@keyframes runDot{0%,100%{opacity:.2}50%{opacity:1}}</style>`, 0.5)
+          : ''),
     ),
   }),
 

@@ -337,3 +337,12 @@ test('opDemo：copy 為真時右下放複製卡', () => {
   assert.equal(out.natives[0].type, 'copycard');
   assert.equal(out.natives[0].content, 'P');
 });
+
+test('bigPrompt：有 after 時在下方加「讓它跑」提示，沒有就不加', () => {
+  const n = makeNative('bp', palette.accent);
+  const out = layouts.bigPrompt({ id: 'bp', caption: 'C', prompt: 'P', after: '然後就讓它自己跑' }, { palette, n });
+  assert.ok(out.body.includes('然後就讓它自己跑') && out.body.includes('class="run"'));
+  assert.equal(out.body.includes('infinite'), false);
+  const bare = layouts.bigPrompt({ id: 'bp2', caption: 'C', prompt: 'P' }, { palette, n });
+  assert.equal(bare.body.includes('class="run"'), false);
+});

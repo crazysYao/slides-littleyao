@@ -200,3 +200,10 @@ test('Prompt ① 拆成兩頁：技巧拆解動畫＋下一頁複製卡', () => 
     assert.ok(html.includes(w), w);
   assert.equal(html.includes('infinite'), false);
 });
+
+test('發現問題頁：強調「一開始只打一句目的，就讓 Agent 跑」', () => {
+  const p = page('s1-problem');
+  assert.match(p.caption, /AI Agent/);
+  assert.match(p.after, /讓它/);
+  assert.match(p.notes, /^09:11 發現問題\(4\)/);
+});
