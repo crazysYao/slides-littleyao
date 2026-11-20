@@ -346,3 +346,12 @@ test('bigPrompt：有 after 時在下方加「讓它跑」提示，沒有就不�
   const bare = layouts.bigPrompt({ id: 'bp2', caption: 'C', prompt: 'P' }, { palette, n });
   assert.equal(bare.body.includes('class="run"'), false);
 });
+
+test('sameMove：左右對照卡、中間同一招、等式、結論三項', () => {
+  const n = makeNative('sm', palette.accent);
+  const p = { id: 'sm', heading: '但同一招，AI 最吃', mid: '同一招', left: ['對女朋友', '不解風情'], right: ['對 AI', '具體描述'], equation: ['「幫我寫自我介紹」', '女朋友說「好煩喔」'], why: '聊天 AI 不追問，只會猜', give: ['你要主動給', ['發生什麼事', '要什麼結果', '怎樣算做好']] };
+  const out = layouts.sameMove(p, { palette, n });
+  for (const w of ['但同一招，AI 最吃', '同一招', '對女朋友', '不解風情', '對 AI', '具體描述', '「幫我寫自我介紹」', '女朋友說「好煩喔」', '聊天 AI 不追問，只會猜', '你要主動給', '發生什麼事', '要什麼結果', '怎樣算做好'])
+    assert.ok(out.body.includes(esc(w)), w);
+  assert.deepEqual(out.natives, []);
+});

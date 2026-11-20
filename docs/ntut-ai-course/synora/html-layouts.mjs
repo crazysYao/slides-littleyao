@@ -441,6 +441,38 @@ Object.assign(layouts, {
       natives: [],
     };
   },
+  // 同一招兩種結果：左黑卡（對人）、右黃卡（對 AI），中間「同一招」，下方等式與結論條
+  sameMove: (p, { palette: P }) => {
+    const side = ([who, verdict], dark, i) =>
+      abs(
+        `left:${dark ? 44 : 576}px;top:118px;width:340px;height:160px;border-radius:16px;padding:22px 28px;background:${dark ? P.dark : P.accent};color:${dark ? '#fff' : P.text};box-shadow:0 10px 24px rgba(0,0,0,.12)`,
+        `<div style="font-size:20px;font-weight:700;opacity:.8">${esc(who)}</div><div style="font-size:44px;font-weight:900;margin-top:10px">這叫${esc(verdict)}</div>`,
+        i,
+        0.2,
+      );
+    return {
+      body:
+        title(p.heading) +
+        side(p.left, true, 0) +
+        abs('left:384px;width:192px;top:160px;text-align:center', `<div style="font-size:22px;font-weight:900">${esc(p.mid)}</div><div style="font-size:40px;font-weight:900;line-height:1">⟶</div>`, 1, 0.2) +
+        side(p.right, false, 2) +
+        abs(
+          'left:44px;right:44px;top:300px;text-align:center',
+          `<div style="font-size:28px;font-weight:900">${esc(p.equation[0])} ＝ ${esc(p.equation[1])}</div><div style="font-size:17px;font-weight:700;color:${P.muted};margin-top:6px">${esc(p.why)}</div>`,
+          3,
+          0.2,
+        ) +
+        abs(
+          `left:44px;right:44px;top:396px;display:flex;align-items:center;gap:16px;background:#fff;border:2px solid ${P.text};border-radius:14px;padding:16px 22px`,
+          `<b style="flex:none;font-size:24px;font-weight:900">${esc(p.give[0])}</b>${p.give[1]
+            .map((g, j) => `${j ? `<span style="font-size:22px;font-weight:900;color:${P.muted}">＋</span>` : ''}<span style="flex:1;text-align:center;background:${P.accent};border-radius:10px;padding:8px 10px;font-size:21px;font-weight:900">${esc(g)}</span>`)
+            .join('')}`,
+          4,
+          0.2,
+        ),
+      natives: [],
+    };
+  },
   // 照片牆：左邊 2×2 真照片（每張壓經歷標籤），右邊身份事實卡
   photoWall: (p, { palette: P }) => ({
     body:
