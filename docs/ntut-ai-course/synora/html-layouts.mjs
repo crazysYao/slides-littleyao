@@ -351,7 +351,7 @@ Object.assign(layouts, {
   // 操作示範動畫：assets/<demo>.fragment.html（做法見 .claude/skills/operation-demo）
   opDemo: (p, { n }) => ({
     body: title(p.heading) + readFileSync(new URL(`assets/${p.demo}.fragment.html`, import.meta.url), 'utf8'),
-    natives: p.link ? [n.link(644, 412, 272, 96, p.link)] : p.copy ? [n.copycard(644, 412, 272, 100, p.cardTitle, p.prompt)] : [],
+    natives: p.link ? [n.link(644, 412, 272, 96, p.link)] : p.copy ? [n.copycard(644, 112, 272, 400, p.cardTitle, p.prompt)] : [],
   }),
 
   // 照片在左，三句故事依序出現在右，最後一句打上黃底

@@ -1,4 +1,4 @@
-<!-- 聽課版 Prompt ①：逐段標出用到的 prompt 技巧；完整 prompt 在右下原生複製卡 -->
+<!-- 聽課版 Prompt ①：逐段標出用到的 prompt 技巧；完整 prompt 在右側原生複製卡 -->
 <style>
 #pan{--line:#EDE6D8;--ink:#2B2620;--mute:#8A8275;--y:#F5B400;--yd:#D99A00;--y2:#FFF3CC;--ok:#2E8B57;position:absolute;left:0;top:0;width:960px;height:540px}
 #pan *{box-sizing:border-box}
@@ -15,15 +15,6 @@
 #pan .caption.fade{opacity:0}
 #pan .ctl{position:absolute;left:44px;top:446px;display:flex;gap:8px}
 #pan .btn{border:1px solid var(--line);background:#fff;font:inherit;font-size:12px;padding:5px 12px;border-radius:999px;cursor:pointer;color:var(--ink)}
-#pan .cards{position:absolute;left:644px;right:44px;top:112px;display:grid;gap:8px}
-#pan .rc{display:flex;align-items:center;gap:10px;background:#fff;border:1.5px solid var(--line);border-radius:12px;padding:8px 12px;transition:all .3s}
-#pan .rc .n{flex:0 0 26px;height:26px;border-radius:13px;background:var(--y);display:grid;place-items:center;font-weight:900;font-size:13px}
-#pan .rc .tt{font-size:14px;font-weight:800}
-#pan .rc .ss{font-size:11px;color:var(--mute);margin-top:2px;line-height:1.35}
-#pan .rc .chk{margin-left:auto;flex:0 0 22px;height:22px;border-radius:50%;background:#E8F6EC;color:var(--ok);display:grid;place-items:center;font-size:12px;opacity:0;transform:scale(.6);transition:all .3s}
-#pan .rc.active{border-color:var(--y);box-shadow:0 6px 18px rgba(245,180,0,.18)}
-#pan .rc.fin .chk{opacity:1;transform:none}
-#pan .rc:not(.active):not(.fin){opacity:.7}
 .cap #pan .ctl{display:none}
 </style>
 <div id="pan">
@@ -54,12 +45,6 @@
   </div></div>
   <div class="caption" id="caption">&nbsp;</div>
   <div class="ctl"><button class="btn" id="loopBtn">自動循環：開</button><button class="btn" id="replay">↻ 重播</button></div>
-  <div class="cards">
-    <div class="rc" data-step="1"><span class="n">1</span><div><div class="tt">給角色和用途</div><div class="ss">你是求職顧問；資料要拿來做網站、履歷、面試</div></div><span class="chk">✓</span></div>
-    <div class="rc" data-step="2"><span class="n">2</span><div><div class="tt">讓 AI 反過來發問</div><div class="ss">一次問一題、附範例，答太短就追問</div></div><span class="chk">✓</span></div>
-    <div class="rc" data-step="3"><span class="n">3</span><div><div class="tt">設護欄</div><div class="ss">不知道寫「？」、不誇大不編、不碰隱私</div></div><span class="chk">✓</span></div>
-    <div class="rc" data-step="4"><span class="n">4</span><div><div class="tt">固定欄位＋輸出格式</div><div class="ss">5 個欄位；先確認，Markdown 輸出，缺的再追問</div></div><span class="chk">✓</span></div>
-  </div>
 </div>
 <script>
 (() => {
@@ -74,25 +59,24 @@ const STEPS = [
 let runId = 0, looping = true;
 const sleep = (ms, t) => new Promise((res, rej) => setTimeout(() => (t !== runId ? rej('cancel') : res()), ms));
 const setCap = (txt) => { caption.classList.add('fade'); setTimeout(() => { caption.textContent = txt; caption.classList.remove('fade'); }, 200); };
-const setStep = (n) => $$('.rc').forEach((s) => { const k = +s.dataset.step; s.classList.toggle('active', k === n); s.classList.toggle('fin', k < n); });
 const light = (gs) => {
   $$('.ln[data-g]').forEach((l) => { const on = gs.includes(+l.dataset.g); l.classList.toggle('hit', on); l.classList.toggle('dim', !on && gs.length > 0); });
 };
 const tags = (gs) => $$('.tag').forEach((x) => { if (gs.includes(+x.dataset.g)) x.classList.add('vis'); });
-function reset() { light([]); $$('.tag').forEach((x) => x.classList.remove('vis')); setStep(0); caption.innerHTML = '&nbsp;'; }
+function reset() { light([]); $$('.tag').forEach((x) => x.classList.remove('vis')); caption.innerHTML = '&nbsp;'; }
 async function run() {
   const t = ++runId; reset();
   try {
     await sleep(600, t);
     for (const [n, gs, cap] of STEPS) {
-      setStep(n); setCap(cap); light(gs); await sleep(500, t); tags(gs); await sleep(2600, t);
+      setCap(cap); light(gs); await sleep(500, t); tags(gs); await sleep(2600, t);
     }
-    setStep(5); light([]); setCap('四招合起來：AI 不再亂猜，而是照你的規則把你問清楚');
+    light([]); setCap('四招合起來：AI 不再亂猜，而是照你的規則把你問清楚');
     await sleep(3500, t);
     if (looping) run();
   } catch (e) { if (e !== 'cancel') console.error(e); }
 }
-function finalState() { reset(); setStep(5); tags([1, 2, 3, 4, 5]); caption.textContent = '四招合起來：AI 不再亂猜，而是照你的規則把你問清楚'; }
+function finalState() { reset(); tags([1, 2, 3, 4, 5]); caption.textContent = '四招合起來：AI 不再亂猜，而是照你的規則把你問清楚'; }
 document.querySelector('#pan #replay').onclick = () => run();
 document.querySelector('#pan #loopBtn').onclick = (e) => { looping = !looping; e.target.textContent = '自動循環：' + (looping ? '開' : '關'); };
 if (window.__SYNORA_CAPTURE__ || matchMedia('(prefers-reduced-motion: reduce)').matches) finalState(); else run();
