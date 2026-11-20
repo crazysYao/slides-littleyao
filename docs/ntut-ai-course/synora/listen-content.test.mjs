@@ -65,7 +65,7 @@ test('跟著改字', () => {
 });
 
 test('第三節頁序', () => {
-  assert.deepEqual(ids.slice(ids.indexOf('s3')), ['s3', 'v-ways', 's3-drop', 'v-cli', 'v-github', 'jp-why', 'jp-need', 'jp-loop', 'jp-skills', 'jp-scene', 'jp-map', 's3-recap', 'qa']);
+  assert.deepEqual(ids.slice(ids.indexOf('s3')), ['s3', 'v-ways', 's3-drop', 'v-cli', 'v-github', 'jp-bridge', 'jp-why', 'jp-need', 'jp-loop', 'jp-skills', 'jp-scene', 'jp-map', 's3-recap', 'qa']);
 });
 
 test('Vercel', () => {
