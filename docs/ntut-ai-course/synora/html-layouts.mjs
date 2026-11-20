@@ -438,6 +438,28 @@ Object.assign(layouts, {
       natives: [],
     };
   },
+  // 照片牆：左邊 2×2 真照片（每張壓經歷標籤），右邊身份事實卡
+  photoWall: (p, { palette: P }) => ({
+    body:
+      title(p.heading) +
+      `<div style="position:absolute;left:44px;top:112px;width:556px;height:400px;display:grid;grid-template-columns:1fr 1fr;grid-auto-rows:1fr;gap:10px">${p.photos
+        .map(
+          (ph, i) =>
+            `<div class="in" style="${d(i, 0.15, 0.25)};position:relative;border-radius:10px;overflow:hidden;box-shadow:0 6px 18px rgba(0,0,0,.18)">` +
+            `<img src="${ph.src}" alt="${esc(ph.label)}" style="display:block;width:100%;height:100%;object-fit:cover;object-position:${ph.pos ?? 'center'}">` +
+            `<div style="position:absolute;left:0;right:0;bottom:0;padding:18px 12px 8px;background:linear-gradient(transparent,rgba(0,0,0,.78));color:#fff">` +
+            `<b style="display:inline-block;background:${P.accent};color:${P.text};font-size:15px;font-weight:900;border-radius:4px;padding:1px 8px">${esc(ph.label)}</b>` +
+            `<span style="margin-left:8px;font-size:13px;font-weight:700">${esc(ph.sub)}</span></div></div>`,
+        )
+        .join('')}</div>` +
+      `<div style="position:absolute;left:624px;right:44px;top:112px;display:flex;flex-direction:column;gap:12px">${p.facts
+        .map(
+          ([k, v], i) =>
+            `<div class="card in" style="${d(i, 1.2, 0.2)};padding:14px 18px"><div style="font-size:14px;font-weight:700;color:${P.muted}">${esc(k)}</div><div style="font-size:21px;font-weight:900;line-height:1.4;margin-top:2px">${esc(v)}</div></div>`,
+        )
+        .join('')}</div>`,
+    natives: [],
+  }),
   // 左右兩張截圖對照（v1 → v2），截圖框留原生，講師課前在 Synora 換成真截圖
   shotPair: (p, { palette: P, n }) => ({
     body: title(p.heading) + abs(`left:462px;top:300px;font-size:36px;font-weight:900;color:${P.accent}`, '→', 1),

@@ -1,7 +1,10 @@
 // 北科大求職網站課「聽課版」：學員只聽不做，講師示範全部操作；統計互動改現場舉手。
 // 內容沿用 job-site-content.mjs，這裡只寫頁序、覆寫與新頁。用法同原版：
 //   node build-deck-html.mjs <輸出路徑> ./listen-content.mjs
+import { readFileSync } from 'node:fs';
 import * as base from './job-site-content.mjs';
+
+const jpg = (name) => `data:image/jpeg;base64,${readFileSync(new URL(`assets/${name}.jpg`, import.meta.url)).toString('base64')}`;
 
 export const { brand, palette } = base;
 
@@ -110,7 +113,22 @@ const JAPANESE = [
 export const ORDER = [
   // 第一節：講清楚＋做出 v1
   'cover',
-  { id: 'intro', layout: 'opDemo', demo: 'intro-demo', section: '開始之前', title: '講師自我介紹', heading: '我是 David（CrazyYao），這段介紹是 Agent 幫我寫的', notes: '09:00 講師自我介紹(2)。讓動畫自己跑：我只說一句「幫我寫自我介紹」，Agent 先讀我 Obsidian 裡的教學履歷，再查 GitHub 和 WPORT 官網的公開紀錄，最後組成右下這張卡，查不到的就不寫。收尾一句：早上第一個例子，就是同一句話不給資料會怎樣；今天整堂課教的，就是怎麼先把資料給對。' },
+  {
+    id: 'intro', layout: 'photoWall', section: '開始之前', title: '講師自我介紹',
+    heading: '我是 David（CrazyYao），在這些地方教過 AI',
+    notes: '09:00 講師自我介紹(2)。照片一張一張出來，每張講一句：安東社大教中高齡學員用 AI；開南大學電腦教室帶大學生實作；聰電站對外開課，學員自帶筆電；超級聰電站跟來參加的人聊求職和 AI。右邊收尾：本業是後端工程師 7 年多，現在是 WPORT 後端負責人，教過的學員超過 49 位。最後一句：今天不是要你們變工程師，是要你們學會讓 AI 一開口就懂你。',
+    photos: [
+      { src: jpg('exp-shequ'), label: '安東社大', sub: 'AI 課程' },
+      { src: jpg('exp-kainan'), label: '開南大學', sub: '電腦教室實作', pos: 'center 25%' },
+      { src: jpg('exp-congdian'), label: '聰電站', sub: '對外開課' },
+      { src: jpg('exp-supercd'), label: '超級聰電站', sub: '社群交流' },
+    ],
+    facts: [
+      ['身份', '後端工程師 7+ 年 · WPORT 後端負責人'],
+      ['教學經歷', '社大、大學、對外開課、企業內訓、社群活動'],
+      ['學員', '49+ 名'],
+    ],
+  },
   's1', 's1-outline', 's1-goal', 's1-login', 's1-ai-exp', 's1-paid',
   's1-problem', 's1-problem-reveal', 's1-drink', 's1-drink-reveal', 's1-gf-1', 's1-gf-2', 's1-gf-3',
   's1-interview', 's1-save',

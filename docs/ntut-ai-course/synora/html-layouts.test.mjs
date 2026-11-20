@@ -310,3 +310,22 @@ test('shotPair：兩個截圖框都在畫面內', () => {
     assert.ok(e.x >= 0 && e.y >= 0 && e.x + e.width <= 960 && e.y + e.height <= 540);
   }
 });
+
+test('photoWall：照片依序排、每張有經歷標籤、右側事實卡、不出原生元件', () => {
+  const n = makeNative('pw', palette.accent);
+  const photos = [
+    { src: 'data:image/jpeg;base64,AAA', label: '安東社大', sub: 'AI 課程', pos: 'center 30%' },
+    { src: 'data:image/jpeg;base64,BBB', label: '開南大學', sub: '電腦教室' },
+  ];
+  const facts = [['身份', '後端工程師 7+ 年'], ['學員', '49+ 名']];
+  const out = layouts.photoWall({ id: 'pw', heading: '我是 David', photos, facts }, { palette, n });
+  assert.ok(out.body.includes('我是 David'));
+  for (const ph of photos) {
+    assert.ok(out.body.includes(`src="${ph.src}"`), ph.src);
+    assert.ok(out.body.includes(esc(ph.label)) && out.body.includes(esc(ph.sub)), ph.label);
+  }
+  assert.ok(out.body.includes('object-position:center 30%'));
+  for (const [k, v] of facts) assert.ok(out.body.includes(esc(k)) && out.body.includes(esc(v)), k);
+  assert.equal(out.body.includes('infinite'), false);
+  assert.deepEqual(out.natives, []);
+});
