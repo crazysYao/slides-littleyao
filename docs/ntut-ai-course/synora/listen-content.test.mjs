@@ -153,7 +153,7 @@ test('資安頁：標題點明資安，多一點「貼給 AI 的資料也要挑�
   assert.match(p.heading, /^資安/);
   const t = JSON.stringify(p.cards);
   for (const w of ['不要貼給 AI', '密碼', '身分證', '作品連結']) assert.ok(t.includes(w), w);
-  assert.match(p.notes, /^10:20 資安提醒\(4\)/);
+  assert.match(p.notes, /^10:21 資安提醒\(4\)/);
 });
 
 test('日文動線改成互動圖：我、Agent、Skills、Obsidian 資料', () => {
@@ -161,7 +161,7 @@ test('日文動線改成互動圖：我、Agent、Skills、Obsidian 資料', () 
   assert.equal(p.layout, 'opDemo');
   const html = slide('jp-loop').elements[0].html;
   for (const w of ['<title>Obsidian</title>', '<title>Claude</title>', '我', 'Agent', 'Skills', '複習清單', '__SYNORA_CAPTURE__']) assert.ok(html.includes(w), w);
-  assert.match(p.notes, /^11:28 /);
+  assert.match(p.notes, /^11:25 /);
 });
 
 test('聽課版沒有無限循環動畫', () => {
@@ -215,4 +215,14 @@ test('「但同一招」頁改圖示對照＋結論條', () => {
   assert.equal(p.equation, undefined);
   assert.equal(p.left.ok, false);
   assert.equal(p.right.ok, true);
+});
+
+test('時間重分配：第一節留 2 分緩衝、Skill 6 分、CLI 6 分、日文示範 9 分', () => {
+  const n = (id) => listen.pages.find((p) => p.id === id).notes;
+  assert.match(n('s2-style'), /^09:39 找風格\(2\)/);
+  assert.match(n('s2-skill-1'), /^10:00 Skill\(6\)/);
+  assert.ok(n('s2-skill-7').length < 250);
+  assert.match(n('s2-qa'), /^10:36 舉手 QA\(14\)/);
+  assert.match(n('v-cli'), /^11:11 CLI 示範\(6\)/);
+  assert.match(n('jp-scene'), /^11:30 專屬練習情境\(9\)/);
 });

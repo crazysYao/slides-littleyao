@@ -58,19 +58,20 @@
 
 | 節次 | 內容 | 分 |
 |---|---|---|
-| 第一節 09:00–09:50 | 講師自我介紹 2＋講清楚＋講師示範做出網站 v1（含緩衝 1） | 50 |
+| 第一節 09:00–09:50 | 講師自我介紹 2＋講清楚＋講師示範做出網站 v1（含緩衝 2） | 50 |
 | 第二節 10:00–10:50 | Skill＋改更好＋Context＋舉手 QA | 50 |
-| 第三節 11:00–12:00 | Vercel 三種上線方式 25＋日文學習分享 15＋回顧 1＋QA 9＋彈性 10 | 60 |
+| 第三節 11:00–12:00 | Vercel 三種上線方式 22＋日文學習分享 18＋回顧 1＋QA 9＋彈性 10 | 60 |
 
 - 產生：`node synora/build-deck-html.mjs /tmp/deck-listen.json synora/listen-content.mjs`
-- 檢查：`node synora/check-deck.mjs /tmp/deck-listen.json --sections --ranges=09:00-09:50=49,10:00-10:50=50,11:00-12:00=50`
+- 檢查：`node synora/check-deck.mjs /tmp/deck-listen.json --sections --ranges=09:00-09:50=48,10:00-10:50=50,11:00-12:00=50`
 - 待講師提供：日文示範錄影備案
 - 未驗證（11/19 排練要確認）：
   - 付費版 Claude 建 Skill 的路徑「設定 → 功能 → Skills → 新增」（`assets/skill-save-demo-claude.fragment.html`）
   - 日文互動圖若現場真跑，Claude Code 要先接好 Google Drive MCP、雲端硬碟要有考古題
   - 第 2 頁自我介紹「49+ 學員」是 2026-05 的數字；動畫演 Agent 查 GitHub、WPORT 官網，實際資料取自 Obsidian 教學履歷
   - 動畫播放中的畫面只在 Chrome 預覽看過，未在 Synora 正式站看過
-- 未決定：第三節彈性 10 分的用途；第二節舉手 QA 現為 15 分
+- 2026-11-22 時間重分配：找風格 3→2（第一節緩衝 1→2）、v1 超過 2 分鐘就切備案；Skill 5→6（第 34 頁講稿縮短，只在聽課版覆寫）、QA 15→14；CLI 9→6、日文專屬練習情境 6→9
+- 未決定：第三節彈性 10 分的用途；第二節舉手 QA 現為 14 分
 - Synora 聽課版專案「讓 AI 一開口就懂你（聽課版）」id `5c93cd2b-597a-46d2-83d4-57f0cdd167ef`，加入碼 `AIORRCFD`；2026-11-20 從原版複製後推上 63 頁（saveSeq 2）。原版 `aef695ce` 未動（saveSeq 12）。之後更新走 `synora-safe-push`，學員入口仍是草稿
 
 ## 檔案
