@@ -226,3 +226,11 @@ test('時間重分配：第一節留 2 分緩衝、Skill 6 分、CLI 6 分、日
   assert.match(n('v-cli'), /^11:11 CLI 示範\(6\)/);
   assert.match(n('jp-scene'), /^11:30 專屬練習情境\(9\)/);
 });
+
+test('Prompt ③ 聽課版：限一兩句、只挑一處、不叫 AI 寫 fix:', () => {
+  const p = listen.pages.find((x) => x.id === 's3-review');
+  const text = p.lines.map((l) => l[1]).join('');
+  assert.match(text, /30 份應徵資料/);
+  assert.match(text, /只挑一處/);
+  assert.doesNotMatch(text, /fix:/);
+});
