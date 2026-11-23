@@ -88,15 +88,9 @@ const JAPANESE = [
     ],
   },
   {
-    id: 'jp-map', layout: 'rows', section: J, title: '同一套方法，換個題目',
+    id: 'jp-map', layout: 'opDemo', demo: 'jp-map-demo', section: J, title: '同一套方法，換個題目',
     notes: '11:39 對照(1)。求職網站和學日文，用的是同一套：基本資料、Skill、Context。最後提一句：我還把練習做成一個 PK 對戰的網站 japanes-pk.littleyao.me，就是用剛剛第三種方式上線的。',
     heading: '同一套方法，換個題目',
-    rows: [
-      ['accent', '基本資料', '求職：我的基本資料｜日文：計畫、程度、複習清單'],
-      ['accent', 'Skill', '求職：做網站的做法｜日文：打卡、測驗、改句子'],
-      ['accent', 'Context', '求職：開新對話只貼副本｜日文：只讀我的錯題出題'],
-      ['dark', '上線', '日文 PK 網站：japanes-pk.littleyao.me'],
-    ],
   },
 ];
 

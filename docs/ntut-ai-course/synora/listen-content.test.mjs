@@ -79,8 +79,10 @@ test('日文不揭露', () => {
     for (const w of ['77', '未及格', '沒過', '中斷', '19 天']) assert.ok(!JSON.stringify(p).includes(w), `${p.id} 出現 ${w}`);
 });
 
-test('日文對回今天', () => {
-  const t = JSON.stringify(page('jp-map'));
+test('日文對回今天（動畫頁）', () => {
+  assert.equal(page('jp-map').layout, 'opDemo');
+  const t = slide('jp-map').elements[0].html;
+  assert.ok(t.includes('id="jpm"') && t.includes('__SYNORA_CAPTURE__') && !t.includes('infinite'));
   for (const w of ['基本資料', 'Skill', 'Context', 'japanes-pk.littleyao.me']) assert.ok(t.includes(w), w);
 });
 
