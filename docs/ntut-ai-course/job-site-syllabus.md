@@ -72,7 +72,7 @@
   - 動畫播放中的畫面只在 Chrome 預覽看過，未在 Synora 正式站看過
 - 2026-11-22 時間重分配：找風格 3→2（第一節緩衝 1→2）、v1 超過 2 分鐘就切備案；Skill 5→6（第 34 頁講稿縮短，只在聽課版覆寫）、QA 15→14；CLI 9→6、日文專屬練習情境 6→9
 - 未決定：第三節彈性 10 分的用途；第二節舉手 QA 現為 14 分
-- Synora 聽課版專案「讓 AI 一開口就懂你（聽課版）」id `5c93cd2b-597a-46d2-83d4-57f0cdd167ef`，加入碼 `AIORRCFD`；2026-11-20 從原版複製後推上 63 頁（saveSeq 2）。2026-11-22 推上時間重分配＋Prompt ③ 改版（saveSeq 3，改 20 頁講稿、第 40 頁 Prompt）。原版 `aef695ce` 未動（saveSeq 12）。之後更新走 `synora-safe-push`，學員入口仍是草稿
+- Synora 聽課版專案「讓 AI 一開口就懂你（聽課版）」id `5c93cd2b-597a-46d2-83d4-57f0cdd167ef`，加入碼 `AIORRCFD`；2026-11-20 從原版複製後推上 63 頁（saveSeq 2）。2026-11-22 推上時間重分配＋Prompt ③ 改版（saveSeq 3，改 20 頁講稿、第 40 頁 Prompt）。 2026-11-23 推上 5 頁改版（saveSeq 4）：第 20 頁屋頂照換成室內、室外兩張（公開上傳，講師同意）；第 53 CLI、54 GitHub、56 日檢動機、61 同一套方法改成動畫，第 61 頁加日文 PK 網站連結。原版 `aef695ce` 未動（saveSeq 12）。之後更新走 `synora-safe-push`，學員入口仍是草稿
 
 ## 檔案
 - 簡報內容（每頁文字、講稿、Prompt 原文）：[synora/job-site-content.mjs](synora/job-site-content.mjs)
