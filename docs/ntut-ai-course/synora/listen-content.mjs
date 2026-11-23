@@ -27,15 +27,9 @@ const VERCEL = [
     heading: 'CLI：在終端機打一行就上線',
   },
   {
-    id: 'v-github', layout: 'rows', section: V, title: 'GitHub：推了就自動上線',
+    id: 'v-github', layout: 'opDemo', demo: 'github-deploy-demo', section: V, title: 'GitHub：推了就自動上線',
     notes: '11:17 GitHub 自動上線(5)，口述帶過、不示範。專案放在 GitHub，Vercel 連上這個 repo 之後，每次推上新版本，Vercel 就自動重新建置、自動上線，這叫 CI/CD（自動部署）。我自己的網站都是這樣上線的，下一段的日文練習網站也是。今天不用學會，知道有這條路就好。',
     heading: 'GitHub：推上去，Vercel 自動上線',
-    rows: [
-      ['muted', '一次設定', 'Vercel 連上你的 GitHub repo'],
-      ['accent', '之後每次', '改完推上 GitHub'],
-      ['accent', 'Vercel 自動', '重新建置、自動換成新版'],
-      ['dark', '這叫', 'CI/CD：自動部署，不用再手動上傳'],
-    ],
   },
 ];
 
@@ -50,15 +44,9 @@ const JAPANESE = [
     sub: '網站上線了。接下來看我怎麼用 Agent＋Obsidian 準備日檢',
   },
   {
-    id: 'jp-why', layout: 'rows', section: J, title: '我為什麼學日文',
+    id: 'jp-why', layout: 'opDemo', demo: 'jp-why-demo', section: J, title: '我為什麼學日文',
     notes: '11:23 動機(2)。我報名了 12 月的日檢 N3，聽力是我最弱的一科；但我每週只有 8 小時能讀。時間這麼少，每一分鐘都不能花在已經會的東西上。避開：不講分數、不講過去的進度。',
     heading: '我在準備日檢 N3',
-    rows: [
-      ['accent', '目標', '12 月考日檢 N3'],
-      ['dark', '弱點', '聽力'],
-      ['muted', '時間', '每週只有 8 小時'],
-      ['accent', '所以', '每一分鐘都不能花在已經會的東西上'],
-    ],
   },
   {
     id: 'jp-need', layout: 'compare', section: J, title: '我需要的不是一本教材',

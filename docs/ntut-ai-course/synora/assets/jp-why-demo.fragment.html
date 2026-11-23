@@ -1,0 +1,130 @@
+<!-- 聽課版：我在準備日檢 N3（目標 → 弱點 → 時間 → 所以），不出現分數與過去進度 -->
+<style>
+#jpw{--line:#EDE6D8;--ink:#2B2620;--mute:#8A8275;--y:#F5B400;--yd:#D99A00;--y2:#FFF3CC;--ok:#2E8B57;--bad:#D9534F;position:absolute;left:0;top:0;width:960px;height:540px}
+#jpw *{box-sizing:border-box}
+#jpw .outer{position:absolute;left:44px;top:112px;width:576px;height:288px}
+#jpw .stage{zoom:.6;position:absolute;top:0;left:0;width:960px;height:480px;background:#fff;border:1px solid var(--line);border-radius:22px;overflow:hidden;padding:26px 30px;display:flex;gap:24px;align-items:stretch}
+#jpw .stage::before{content:"";position:absolute;inset:0;background:radial-gradient(circle at 80% 40%,#FFF8E2 0,transparent 55%);pointer-events:none}
+#jpw .week{position:relative;flex:1;background:#F7F4EE;border:1px solid var(--line);border-radius:18px;padding:18px 20px;display:flex;flex-direction:column;gap:14px}
+#jpw .wh{display:flex;align-items:baseline;gap:10px;font-size:20px;font-weight:900}
+#jpw .wh small{font-size:14px;color:var(--mute);font-weight:700}
+#jpw .grid{display:grid;grid-template-columns:repeat(4,1fr);gap:12px}
+#jpw .blk{height:92px;border-radius:14px;border:2px dashed #d9d2c3;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px;font-size:15px;font-weight:800;color:#bdb6a8;opacity:0;transform:scale(.7);transition:all .35s cubic-bezier(.3,1.4,.5,1)}
+#jpw .blk small{font-size:12px;font-weight:700}
+#jpw .blk.vis{opacity:1;transform:none}
+#jpw .blk.known{border:2px solid #d9d2c3;background:#EFEAE0;color:var(--mute)}
+#jpw .blk.known b{text-decoration:line-through;text-decoration-color:var(--bad);text-decoration-thickness:2px}
+#jpw .blk.focus{border:2px solid var(--y);background:var(--y2);color:var(--ink)}
+#jpw .rule{margin-top:auto;display:flex;gap:10px;align-items:center;font-size:15px;font-weight:800;opacity:0;transform:translateY(8px);transition:all .35s}
+#jpw .rule.vis{opacity:1;transform:none}
+#jpw .chip{padding:5px 12px;border-radius:999px;font-size:13px}
+#jpw .chip.no{background:#FBE9E8;color:var(--bad);text-decoration:line-through}
+#jpw .chip.yes{background:var(--y);color:#16161a}
+#jpw .side{position:relative;width:290px;display:flex;flex-direction:column;gap:14px}
+#jpw .ticket{position:relative;background:#16161a;color:#fff;border-radius:16px;padding:16px 18px;opacity:0;transform:translateY(-14px) rotate(-3deg);transition:all .45s cubic-bezier(.3,1.4,.5,1)}
+#jpw .ticket.vis{opacity:1;transform:rotate(-2deg)}
+#jpw .ticket .k{font-size:12px;color:var(--y);font-weight:700;letter-spacing:.08em}
+#jpw .ticket .big{font-size:30px;font-weight:900;margin-top:4px}
+#jpw .ticket .d{font-size:13px;color:#c9c6bd;margin-top:2px}
+#jpw .skills{position:relative;background:#fff;border:1px solid var(--line);border-radius:16px;padding:12px 14px;display:grid;gap:8px;box-shadow:0 8px 20px rgba(60,40,0,.08);opacity:0;transition:opacity .35s}
+#jpw .skills.vis{opacity:1}
+#jpw .sk{display:flex;align-items:center;justify-content:space-between;padding:7px 10px;border-radius:10px;font-size:15px;font-weight:800;border:1.5px solid transparent;transition:all .35s}
+#jpw .sk span{font-size:12px;font-weight:700;color:var(--mute)}
+#jpw .sk.weak{border-color:var(--bad);background:#FBE9E8}
+#jpw .sk.weak span{color:var(--bad)}
+#jpw .toast{position:absolute;top:16px;left:50%;transform:translate(-50%,-20px);background:var(--ink);color:#fff;font-size:15px;padding:9px 18px;border-radius:999px;opacity:0;transition:all .3s;z-index:5}
+#jpw .toast.show{opacity:1;transform:translate(-50%,0)}
+#jpw .caption{position:absolute;left:44px;top:406px;width:576px;text-align:center;font-size:15px;font-weight:700;min-height:22px;transition:opacity .25s}
+#jpw .caption.fade{opacity:0}
+#jpw .ctl{position:absolute;left:44px;top:446px;display:flex;gap:8px}
+#jpw .btn{border:1px solid var(--line);background:#fff;font:inherit;font-size:12px;padding:5px 12px;border-radius:999px;cursor:pointer;color:var(--ink)}
+#jpw .cards{position:absolute;left:644px;right:44px;top:112px;display:grid;gap:10px}
+#jpw .rc{display:flex;align-items:center;gap:10px;background:#fff;border:1.5px solid var(--line);border-radius:12px;padding:10px 12px;transition:all .3s}
+#jpw .rc.dark{background:#16161a;border-color:#16161a;color:#fff}
+#jpw .rc .n{flex:0 0 26px;height:26px;border-radius:13px;background:var(--y);color:#16161a;display:grid;place-items:center;font-weight:900;font-size:13px}
+#jpw .rc .tt{font-size:14px;font-weight:800}
+#jpw .rc .ss{font-size:11px;color:var(--mute);margin-top:2px;line-height:1.4}
+#jpw .rc.dark .ss{color:#c9c6bd}
+#jpw .rc .chk{margin-left:auto;flex:0 0 22px;height:22px;border-radius:50%;background:#E8F6EC;color:var(--ok);display:grid;place-items:center;font-size:12px;opacity:0;transform:scale(.5);transition:all .3s}
+#jpw .rc.active{border-color:var(--y);box-shadow:0 6px 18px rgba(245,180,0,.2)}
+#jpw .rc.fin .chk{opacity:1;transform:none}
+#jpw .rc:not(.active):not(.fin){opacity:.7}
+.cap #jpw .toast,.cap #jpw .ctl{display:none}
+@media (prefers-reduced-motion:reduce){#jpw .toast{display:none}}
+</style>
+<div id="jpw">
+  <div class="outer"><div class="stage" id="stage">
+    <div class="week">
+      <div class="wh">我的一週<small id="hrs">能讀書的時間</small></div>
+      <div class="grid" id="grid"></div>
+      <div class="rule" id="rule"><span class="chip no">已經會的</span>→<span class="chip yes">還不會的：聽力優先</span></div>
+    </div>
+    <div class="side">
+      <div class="ticket" id="ticket"><div class="k">日本語能力試驗</div><div class="big">N3</div><div class="d">12 月・已報名</div></div>
+      <div class="skills" id="skills">
+        <div class="sk">文字・語彙<span>還行</span></div>
+        <div class="sk">文法<span>還行</span></div>
+        <div class="sk">讀解<span>還行</span></div>
+        <div class="sk" id="listen">聽力<span id="lsTag">？</span></div>
+      </div>
+    </div>
+    <div class="toast" id="toast"></div>
+  </div></div>
+  <div class="caption" id="caption">&nbsp;</div>
+  <div class="ctl"><button class="btn" id="loopBtn">自動循環：開</button><button class="btn" id="replay">↻ 重播</button></div>
+  <div class="cards">
+    <div class="rc" data-step="1"><span class="n">1</span><div><div class="tt">目標</div><div class="ss">12 月考日檢 N3</div></div><span class="chk">✓</span></div>
+    <div class="rc" data-step="2"><span class="n">2</span><div><div class="tt">弱點</div><div class="ss">聽力</div></div><span class="chk">✓</span></div>
+    <div class="rc" data-step="3"><span class="n">3</span><div><div class="tt">時間</div><div class="ss">每週只有 8 小時</div></div><span class="chk">✓</span></div>
+    <div class="rc dark" data-step="4"><span class="n">4</span><div><div class="tt">所以</div><div class="ss">每一分鐘都不能花在已經會的東西上</div></div><span class="chk">✓</span></div>
+  </div>
+</div>
+<script>
+(() => {
+const $ = (s) => document.querySelector('#jpw ' + s);
+const grid = $('#grid'), ticket = $('#ticket'), skills = $('#skills'), listen = $('#listen'), lsTag = $('#lsTag'),
+  rule = $('#rule'), hrs = $('#hrs'), toast = $('#toast'), caption = $('#caption');
+const KNOWN = ['單字', '文法', '讀解', '單字'], AFTER = ['聽力', '聽力', '聽力', '沒把握的'];
+let runId = 0, looping = true;
+const sleep = (ms, t) => new Promise((res, rej) => setTimeout(() => (t !== runId ? rej('cancel') : res()), ms));
+const setCap = (txt) => { caption.classList.add('fade'); setTimeout(() => { caption.textContent = txt; caption.classList.remove('fade'); }, 200); };
+const setStep = (n) => document.querySelectorAll('#jpw .rc').forEach((s) => { const k = +s.dataset.step; s.classList.toggle('active', k === n); s.classList.toggle('fin', k < n); });
+const show = (el) => requestAnimationFrame(() => requestAnimationFrame(() => el.classList.add('vis')));
+const blocks = () => [...grid.children];
+const fill = (b, cls, label) => { b.className = 'blk vis ' + cls; b.innerHTML = `<b>${label}</b><small>1 小時</small>`; };
+function build() { grid.innerHTML = ''; for (let i = 0; i < 8; i++) { const b = document.createElement('div'); b.className = 'blk'; b.innerHTML = '<b>1 小時</b>'; grid.appendChild(b); } }
+function reset() {
+  build(); ticket.classList.remove('vis'); skills.classList.remove('vis'); listen.classList.remove('weak'); lsTag.textContent = '？';
+  rule.classList.remove('vis'); hrs.textContent = '能讀書的時間'; toast.classList.remove('show'); setStep(0); caption.innerHTML = '&nbsp;';
+}
+async function run() {
+  const t = ++runId; reset();
+  try {
+    await sleep(500, t);
+    setStep(1); setCap('目標：12 月考日檢 N3，已經報名了');
+    show(ticket); await sleep(1800, t);
+    setStep(2); setCap('弱點：四科裡面，聽力最弱');
+    show(skills); await sleep(900, t); listen.classList.add('weak'); lsTag.textContent = '最弱'; await sleep(1500, t);
+    setStep(3); setCap('時間：每週只有 8 小時能讀');
+    for (const b of blocks()) { show(b); await sleep(160, t); }
+    hrs.textContent = '每週 8 小時'; await sleep(1000, t);
+    setCap('如果平均分配，一半時間花在已經會的東西上');
+    blocks().forEach((b, i) => fill(b, i < 4 ? 'known' : 'focus', i < 4 ? KNOWN[i] : '聽力')); await sleep(2000, t);
+    setStep(4); setCap('所以：已經會的不讀，8 小時全給還不會的，聽力優先');
+    show(rule); await sleep(700, t);
+    for (const [i, b] of blocks().slice(0, 4).entries()) { fill(b, 'focus', AFTER[i]); await sleep(280, t); }
+    toast.textContent = '每一分鐘都花在還不會的地方'; toast.classList.add('show'); await sleep(1500, t); toast.classList.remove('show');
+    setStep(5); await sleep(3000, t);
+    if (looping) run();
+  } catch (e) { if (e !== 'cancel') console.error(e); }
+}
+function finalState() {
+  build(); ticket.classList.add('vis'); skills.classList.add('vis'); listen.classList.add('weak'); lsTag.textContent = '最弱';
+  blocks().forEach((b, i) => fill(b, 'focus', i < 4 ? AFTER[i] : '聽力')); hrs.textContent = '每週 8 小時'; rule.classList.add('vis');
+  setStep(5); caption.textContent = '所以：已經會的不讀，8 小時全給還不會的，聽力優先';
+}
+$('#replay').onclick = () => run();
+$('#loopBtn').onclick = (e) => { looping = !looping; e.target.textContent = '自動循環：' + (looping ? '開' : '關'); };
+if (window.__SYNORA_CAPTURE__ || matchMedia('(prefers-reduced-motion: reduce)').matches) finalState(); else run();
+})();
+</script>

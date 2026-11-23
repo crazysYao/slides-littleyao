@@ -241,3 +241,18 @@ test('CLI 頁改成操作動畫：終端機打三行指令、網址上線', () =
   for (const w of ['id="vcd"', 'npm i -g vercel', 'vercel login', 'vercel --prod', '.vercel.app', '__SYNORA_CAPTURE__']) assert.ok(html.includes(w), w);
   assert.equal(html.includes('infinite'), false);
 });
+
+test('GitHub 頁改成操作動畫：推上 GitHub，Vercel 自動上線', () => {
+  assert.equal(page('v-github').layout, 'opDemo');
+  const html = slide('v-github').elements[0].html;
+  for (const w of ['id="vgh"', 'git push', 'Building', 'Ready', 'CI/CD', '__SYNORA_CAPTURE__']) assert.ok(html.includes(w), w);
+  assert.equal(html.includes('infinite'), false);
+});
+
+test('日檢動機頁改成動畫：目標、弱點、時間、所以，不出現分數', () => {
+  assert.equal(page('jp-why').layout, 'opDemo');
+  const html = slide('jp-why').elements[0].html;
+  for (const w of ['id="jpw"', 'N3', '聽力', '8 小時', '已經會', '__SYNORA_CAPTURE__']) assert.ok(html.includes(w), w);
+  assert.doesNotMatch(html, /\d+\s*分|及格|N4/);
+  assert.equal(html.includes('infinite'), false);
+});

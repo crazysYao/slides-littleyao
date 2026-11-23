@@ -1,0 +1,193 @@
+<!-- 聽課版：GitHub 推上去，Vercel 自動上線（CI/CD） -->
+<style>
+#vgh{--line:#EDE6D8;--ink:#2B2620;--mute:#8A8275;--y:#F5B400;--yd:#D99A00;--y2:#FFF3CC;--ok:#2E8B57;position:absolute;left:0;top:0;width:960px;height:540px}
+#vgh *{box-sizing:border-box}
+#vgh .outer{position:absolute;left:44px;top:112px;width:576px;height:288px}
+#vgh .stage{zoom:.6;position:absolute;top:0;left:0;width:960px;height:480px;background:#fff;border:1px solid var(--line);border-radius:22px;overflow:hidden;padding:26px 30px;display:flex;gap:24px;align-items:stretch}
+#vgh .stage::before{content:"";position:absolute;inset:0;background:radial-gradient(circle at 80% 40%,#FFF8E2 0,transparent 55%);pointer-events:none}
+#vgh .term{position:relative;flex:1;background:#16161a;border-radius:18px;display:flex;flex-direction:column;overflow:hidden;box-shadow:0 10px 26px rgba(0,0,0,.18)}
+#vgh .tbar{display:flex;align-items:center;gap:7px;padding:10px 14px;background:#26262c;font-size:13px;color:#c9c6bd;font-weight:700}
+#vgh .tbar i{width:10px;height:10px;border-radius:5px;background:#55555d}
+#vgh .tbar span{margin-left:8px}
+#vgh .tbody{flex:1;padding:14px 18px;font-family:ui-monospace,Menlo,Consolas,monospace;font-size:16px;line-height:1.7;color:#e8e6e1;display:flex;flex-direction:column;gap:2px}
+#vgh .ln{white-space:pre;opacity:0;transform:translateY(4px);transition:opacity .3s,transform .3s}
+#vgh .ln.vis{opacity:1;transform:none}
+#vgh .ps{color:var(--y)}
+#vgh .out{color:#a9a59c}
+#vgh .good{color:#6fd39a}
+#vgh .now{opacity:1;transform:none}
+#vgh .caret{display:inline-block;width:9px;height:18px;background:var(--y);vertical-align:-3px;margin-left:2px;animation:blink 1s steps(1) 40}
+@keyframes blink{50%{opacity:0}}
+#vgh .key{position:absolute;right:18px;bottom:16px;padding:6px 14px;border-radius:8px;background:#2f2f36;color:#e8e6e1;font-size:14px;font-weight:700;border:1px solid #44444c;transition:all .15s}
+#vgh .press{background:var(--y)!important;color:#16161a!important;border-color:var(--y)!important}
+#vgh .side{position:relative;width:300px;display:flex;flex-direction:column;gap:10px}
+#vgh .box{position:relative;background:#fff;border:1px solid var(--line);border-radius:14px;padding:10px 12px;box-shadow:0 6px 16px rgba(60,40,0,.07);transition:box-shadow .3s,border-color .3s}
+#vgh .box.target{border-color:var(--y);box-shadow:0 0 0 4px rgba(245,180,0,.35)}
+#vgh .bh{display:flex;align-items:center;gap:8px;font-size:13px;font-weight:800}
+#vgh .bh .lg{width:20px;height:20px;border-radius:6px;background:#16161a;color:#fff;display:grid;place-items:center;font-size:11px}
+#vgh .bh .rp{margin-left:auto;font-size:11px;color:var(--mute);font-weight:700}
+#vgh .cm{display:flex;gap:8px;align-items:center;font-size:12px;color:var(--mute);margin-top:6px;padding:4px 8px;border-radius:8px;transition:background .5s}
+#vgh .cm b{font-family:ui-monospace,Menlo,monospace;color:var(--ink);font-weight:700}
+#vgh .cm.new{background:var(--y2);opacity:0;transition:opacity .35s,background .5s}
+#vgh .cm.new.vis{opacity:1}
+#vgh .imp{display:inline-block;margin-top:8px;padding:6px 14px;border-radius:999px;background:#16161a;color:#fff;font-size:12px;font-weight:700;transition:all .15s}
+#vgh .linked{margin-top:8px;font-size:12px;font-weight:700;color:var(--ok)}
+#vgh .st{display:flex;align-items:center;gap:8px;margin-top:8px;font-size:13px;font-weight:700}
+#vgh .dot{width:10px;height:10px;border-radius:5px;background:#d4d0c6;transition:background .3s}
+#vgh .dot.bld{background:var(--y)}
+#vgh .dot.rdy{background:#3cb371}
+#vgh .hide{display:none}
+#vgh .brow{flex:1;padding:0;overflow:hidden}
+#vgh .addr{margin:8px;padding:5px 10px;border-radius:999px;background:#F4F1EA;font-size:11px;color:var(--ink);font-weight:700;white-space:nowrap}
+#vgh .site{padding:4px 14px;display:flex;flex-direction:column;gap:6px}
+#vgh .site .nm{font-size:16px;font-weight:900;padding:2px 6px;border-radius:6px;transition:background .6s}
+#vgh .site .nm.flash{background:var(--y2)}
+#vgh .site .sb{font-size:11px;color:var(--mute);padding:0 6px}
+#vgh .site .bl{height:7px;border-radius:4px;background:#EFEAE0;margin:0 6px}
+#vgh .badge{position:absolute;right:10px;bottom:8px;background:#E8F6EC;color:var(--ok);border:1px solid #BFE5CB;border-radius:999px;padding:3px 10px;font-size:12px;font-weight:700;opacity:0;transform:scale(.8);transition:all .35s cubic-bezier(.3,1.6,.5,1)}
+#vgh .badge.show{opacity:1;transform:none}
+#vgh .toast{position:absolute;top:16px;left:50%;transform:translate(-50%,-20px);background:var(--ink);color:#fff;font-size:15px;padding:9px 18px;border-radius:999px;opacity:0;transition:all .3s;z-index:5}
+#vgh .toast.show{opacity:1;transform:translate(-50%,0)}
+#vgh .fly{position:absolute;top:0;left:0;z-index:6;opacity:0;pointer-events:none;background:#fff;border:2px solid var(--y);border-radius:12px;padding:8px 12px;font-size:13px;font-weight:700;box-shadow:0 10px 24px rgba(200,140,0,.3);white-space:nowrap}
+#vgh .cursor{position:absolute;top:0;left:0;z-index:7;pointer-events:none;transform:translate(480px,560px)}
+#vgh .cursor svg{width:26px;height:26px;transform:translate(-3px,-2px);transition:transform .12s;filter:drop-shadow(0 2px 3px rgba(0,0,0,.25))}
+#vgh .cursor.down svg{transform:translate(-3px,-2px) scale(.85)}
+#vgh .ripple{position:absolute;z-index:6;width:16px;height:16px;margin:-8px 0 0 -8px;border-radius:50%;border:2px solid var(--y);pointer-events:none;animation:rip .5s ease-out forwards}
+@keyframes rip{to{transform:scale(3.2);opacity:0}}
+#vgh .caption{position:absolute;left:44px;top:406px;width:576px;text-align:center;font-size:15px;font-weight:700;min-height:22px;transition:opacity .25s}
+#vgh .caption.fade{opacity:0}
+#vgh .ctl{position:absolute;left:44px;top:446px;display:flex;gap:8px}
+#vgh .btn{border:1px solid var(--line);background:#fff;font:inherit;font-size:12px;padding:5px 12px;border-radius:999px;cursor:pointer;color:var(--ink)}
+#vgh .cards{position:absolute;left:644px;right:44px;top:112px;display:grid;gap:10px}
+#vgh .rc{display:flex;align-items:center;gap:10px;background:#fff;border:1.5px solid var(--line);border-radius:12px;padding:10px 12px;transition:all .3s}
+#vgh .rc.dark{background:#16161a;border-color:#16161a;color:#fff}
+#vgh .rc .n{flex:0 0 26px;height:26px;border-radius:13px;background:var(--y);color:#16161a;display:grid;place-items:center;font-weight:900;font-size:13px}
+#vgh .rc .tt{font-size:14px;font-weight:800}
+#vgh .rc .ss{font-size:11px;color:var(--mute);margin-top:2px;line-height:1.4}
+#vgh .rc.dark .ss{color:#c9c6bd}
+#vgh .rc .chk{margin-left:auto;flex:0 0 22px;height:22px;border-radius:50%;background:#E8F6EC;color:var(--ok);display:grid;place-items:center;font-size:12px;opacity:0;transform:scale(.5);transition:all .3s}
+#vgh .rc.active{border-color:var(--y);box-shadow:0 6px 18px rgba(245,180,0,.2)}
+#vgh .rc.fin .chk{opacity:1;transform:none}
+#vgh .rc:not(.active):not(.fin){opacity:.7}
+.cap #vgh .toast,.cap #vgh .fly,.cap #vgh .cursor,.cap #vgh .ripple,.cap #vgh .ctl,.cap #vgh .caret,.cap #vgh .key{display:none}
+@media (prefers-reduced-motion:reduce){#vgh .toast,#vgh .fly,#vgh .cursor,#vgh .ripple{display:none}}
+</style>
+<div id="vgh">
+  <div class="outer"><div class="stage" id="stage">
+    <div class="term" id="term">
+      <div class="tbar"><i></i><i></i><i></i><span>終端機 — my-job-site</span></div>
+      <div class="tbody" id="tbody"></div>
+      <span class="key" id="key">Enter ⏎</span>
+    </div>
+    <div class="side">
+      <div class="box" id="ghBox"><div class="bh"><span class="lg">GH</span>GitHub<span class="rp">my-job-site</span></div>
+        <div class="cm"><b>a1c9</b>第一版網站</div>
+        <div class="cm new" id="newCm"><b>7f3e</b>改網站標題</div>
+      </div>
+      <div class="box" id="vcBox"><div class="bh"><span class="lg">▲</span>Vercel</div>
+        <span class="imp" id="impBtn">Import my-job-site</span>
+        <div class="linked hide" id="linked">✓ 已連上 GitHub repo</div>
+        <div class="st hide" id="st"><span class="dot" id="dot"></span><span id="stTxt">等待新版本</span></div>
+      </div>
+      <div class="box brow" id="brow"><div class="addr">my-job-site.vercel.app</div>
+        <div class="site"><div class="nm" id="nm">我的求職網站</div><div class="sb">北科大 資工系・想找前端實習</div><div class="bl"></div><div class="bl" style="width:70%"></div></div>
+        <span class="badge" id="badge">✓ 已自動更新</span>
+      </div>
+    </div>
+    <div class="toast" id="toast"></div>
+    <div class="fly" id="fly"></div>
+    <div class="cursor" id="cursor"><svg viewBox="0 0 24 24"><path d="M4 2l15 11.5-6.6.9 3.9 7.4-3 1.5-3.9-7.5L4 20.5z" fill="#fff" stroke="#2B2620" stroke-width="1.6" stroke-linejoin="round"/></svg></div>
+  </div></div>
+  <div class="caption" id="caption">&nbsp;</div>
+  <div class="ctl"><button class="btn" id="loopBtn">自動循環：開</button><button class="btn" id="replay">↻ 重播</button></div>
+  <div class="cards">
+    <div class="rc" data-step="1"><span class="n">1</span><div><div class="tt">一次設定</div><div class="ss">Vercel 連上你的 GitHub repo</div></div><span class="chk">✓</span></div>
+    <div class="rc" data-step="2"><span class="n">2</span><div><div class="tt">之後每次</div><div class="ss">改完推上 GitHub（git push）</div></div><span class="chk">✓</span></div>
+    <div class="rc" data-step="3"><span class="n">3</span><div><div class="tt">Vercel 自動</div><div class="ss">重新建置、自動換成新版</div></div><span class="chk">✓</span></div>
+    <div class="rc dark" data-step="4"><span class="n">4</span><div><div class="tt">這叫 CI/CD</div><div class="ss">自動部署，不用再手動上傳</div></div><span class="chk">✓</span></div>
+  </div>
+</div>
+<script>
+(() => {
+const $ = (s) => document.querySelector('#vgh ' + s);
+const stage = $('#stage'), cursor = $('#cursor'), tbody = $('#tbody'), key = $('#key'), ghBox = $('#ghBox'), newCm = $('#newCm'),
+  vcBox = $('#vcBox'), impBtn = $('#impBtn'), linked = $('#linked'), st = $('#st'), dot = $('#dot'), stTxt = $('#stTxt'),
+  brow = $('#brow'), nm = $('#nm'), badge = $('#badge'), toast = $('#toast'), fly = $('#fly'), caption = $('#caption');
+const SCALE = 0.6, PS = '<span class="ps">~/my-job-site $</span> ', NEW_NAME = '林同學｜前端實習作品集';
+let runId = 0, looping = true, cx = 480, cy = 560;
+const sleep = (ms, t) => new Promise((res, rej) => setTimeout(() => (t !== runId ? rej('cancel') : res()), ms));
+const pos = (el, fx = 0.5, fy = 0.5) => { const s = stage.getBoundingClientRect(), r = el.getBoundingClientRect(); return { x: (r.left - s.left + r.width * fx) / SCALE, y: (r.top - s.top + r.height * fy) / SCALE }; };
+const place = (x, y, dur) => { cx = x; cy = y; cursor.style.transition = dur ? `transform ${dur}ms cubic-bezier(.45,.05,.25,1)` : 'none'; cursor.style.transform = `translate(${x}px,${y}px)`; };
+const move = async (t, el, fx, fy, dur = 650) => { const p = pos(el, fx, fy); place(p.x, p.y, dur); await sleep(dur, t); };
+const ripple = () => { const r = document.createElement('div'); r.className = 'ripple'; r.style.left = cx + 'px'; r.style.top = cy + 'px'; stage.appendChild(r); setTimeout(() => r.remove(), 700); };
+const click = async (t, el) => { cursor.classList.add('down'); ripple(); el && el.classList.add('press'); await sleep(170, t); cursor.classList.remove('down'); el && el.classList.remove('press'); };
+const setCap = (txt) => { caption.classList.add('fade'); setTimeout(() => { caption.textContent = txt; caption.classList.remove('fade'); }, 200); };
+const setStep = (n) => document.querySelectorAll('#vgh .rc').forEach((s) => { const k = +s.dataset.step; s.classList.toggle('active', k === n); s.classList.toggle('fin', k < n); });
+const show = (el) => requestAnimationFrame(() => requestAnimationFrame(() => el.classList.add('vis')));
+const line = (html, cls = '') => { const l = document.createElement('div'); l.className = 'ln ' + cls; l.innerHTML = html; tbody.appendChild(l); return l; };
+const out = async (t, html, ms = 450) => { show(line(html)); await sleep(ms, t); };
+const type = async (t, cmd) => {
+  const l = line(PS + '<span class="cmd"></span><span class="caret"></span>', 'now'), c = l.querySelector('.cmd');
+  for (const ch of cmd) { c.textContent += ch; await sleep(60, t); }
+  await sleep(250, t); key.classList.add('press'); await sleep(200, t); key.classList.remove('press'); l.querySelector('.caret').remove(); await sleep(300, t);
+};
+const flyTo = async (t, label, from, to) => {
+  const a = pos(from), b = pos(to, 0.5, 0.5); fly.textContent = label; fly.style.opacity = 1;
+  fly.animate([
+    { transform: `translate(${a.x}px,${a.y}px) translate(-50%,-50%) scale(.6)`, opacity: 0 },
+    { transform: `translate(${a.x}px,${a.y - 30}px) translate(-50%,-50%) scale(1)`, opacity: 1, offset: 0.2 },
+    { transform: `translate(${b.x}px,${b.y}px) translate(-50%,-50%) scale(.8)`, opacity: 1, offset: 0.85 },
+    { transform: `translate(${b.x}px,${b.y}px) translate(-50%,-50%) scale(.5)`, opacity: 0 },
+  ], { duration: 1000, easing: 'cubic-bezier(.5,0,.3,1)', fill: 'forwards' });
+  await sleep(1000, t);
+};
+const CMDS = [['git commit -am "改網站標題"', '<span class="out">[main 7f3e] 改網站標題</span>'], ['git push', '<span class="good">✓ main → GitHub</span>']];
+const status = (cls, txt) => { dot.className = 'dot ' + cls; stTxt.textContent = txt; };
+function reset() {
+  tbody.innerHTML = ''; newCm.classList.remove('vis');
+  impBtn.classList.remove('hide'); linked.classList.add('hide'); st.classList.add('hide'); status('', '等待新版本');
+  nm.textContent = '我的求職網站'; nm.classList.remove('flash'); badge.classList.remove('show');
+  [ghBox, vcBox, brow].forEach((b) => b.classList.remove('target'));
+  fly.getAnimations().forEach((a) => a.cancel()); fly.style.opacity = 0; toast.classList.remove('show');
+  place(480, 560, 0); setStep(0); caption.innerHTML = '&nbsp;';
+}
+async function run() {
+  const t = ++runId; reset();
+  try {
+    await sleep(500, t);
+    // 1：一次設定
+    setStep(1); setCap('步驟 1（只做一次）：在 Vercel 按 Import，連上 GitHub 的 repo');
+    vcBox.classList.add('target'); await move(t, impBtn, 0.5, 0.5, 800); await click(t, impBtn);
+    impBtn.classList.add('hide'); linked.classList.remove('hide'); st.classList.remove('hide'); vcBox.classList.remove('target');
+    await sleep(1100, t);
+    // 2：推上 GitHub
+    setStep(2); setCap('步驟 2：之後每次改完網站，推上 GitHub');
+    await move(t, $('#term'), 0.4, 0.4, 700); await click(t);
+    for (const [cmd, o] of CMDS) { await type(t, cmd); await out(t, o, 500); }
+    ghBox.classList.add('target'); await flyTo(t, '改網站標題', tbody.lastElementChild, ghBox);
+    newCm.classList.add('vis'); ghBox.classList.remove('target'); await sleep(700, t);
+    // 3：Vercel 自動
+    setStep(3); setCap('步驟 3：Vercel 看到新版本，自己重新建置');
+    place(cx, 560, 700);
+    vcBox.classList.add('target'); status('bld', 'Building…'); await sleep(1600, t);
+    status('rdy', 'Ready・已換成新版'); vcBox.classList.remove('target'); await sleep(500, t);
+    brow.classList.add('target'); nm.textContent = NEW_NAME; nm.classList.add('flash'); badge.classList.add('show');
+    toast.textContent = '✓ 網站自動更新了'; toast.classList.add('show'); await sleep(1200, t); toast.classList.remove('show'); brow.classList.remove('target');
+    // 4：CI/CD
+    setStep(4); setCap('這整套就叫 CI/CD：推上去就自動上線，不用再手動上傳');
+    await sleep(2200, t);
+    setStep(5); await sleep(3000, t);
+    if (looping) run();
+  } catch (e) { if (e !== 'cancel') console.error(e); }
+}
+function finalState() {
+  tbody.innerHTML = ''; for (const [cmd, o] of CMDS) { line(PS + cmd, 'vis'); line(o, 'vis'); }
+  newCm.classList.add('vis'); impBtn.classList.add('hide'); linked.classList.remove('hide'); st.classList.remove('hide'); status('rdy', 'Ready・已換成新版');
+  nm.textContent = NEW_NAME; badge.classList.add('show');
+  setStep(5); caption.textContent = '這整套就叫 CI/CD：推上去就自動上線，不用再手動上傳';
+}
+$('#replay').onclick = () => run();
+$('#loopBtn').onclick = (e) => { looping = !looping; e.target.textContent = '自動循環：' + (looping ? '開' : '關'); };
+if (window.__SYNORA_CAPTURE__ || matchMedia('(prefers-reduced-motion: reduce)').matches) finalState(); else run();
+})();
+</script>
