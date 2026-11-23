@@ -288,6 +288,16 @@ test('photo：照片放在 HTML 裡，沒有原生元件', () => {
   assert.deepEqual(r.natives, []);
 });
 
+test('photoStory：給 photos 時左邊上下疊兩張圖', () => {
+  const photos = [
+    { src: 'data:image/jpeg;base64,IN', alt: '室內' },
+    { src: 'data:image/jpeg;base64,OUT', alt: '室外' },
+  ];
+  const r = layouts.photoStory({ heading: '我家真的遇過', lines: ['a', 'b', 'c'], photos }, { palette });
+  for (const ph of photos) assert.ok(r.body.includes(`src="${ph.src}" alt="${ph.alt}"`));
+  assert.equal((r.body.match(/<img /g) || []).length, 2);
+});
+
 test('handRaise：問題、選項字母、舉手圖示、不出原生元件', () => {
   const n = makeNative('hr', palette.accent);
   const opts = ['還沒用過', '問問題', '寫報告／作業', '寫履歷或自傳', '翻譯', '做簡報', '寫程式', '做圖'];

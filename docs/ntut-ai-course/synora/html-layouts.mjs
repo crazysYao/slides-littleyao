@@ -357,11 +357,16 @@ Object.assign(layouts, {
     natives: p.link ? [n.link(644, 412, 272, 96, p.link)] : p.copy ? [n.copycard(644, 112, 272, 400, p.cardTitle, p.prompt)] : [],
   }),
 
-  // 照片在左，三句故事依序出現在右，最後一句打上黃底
+  // 照片在左（photos 給兩張時上下疊），三句故事依序出現在右，最後一句打上黃底
   photoStory: (p, { palette: P }) => ({
     body:
       title(p.heading) +
-      abs('left:44px;top:120px;width:520px;height:390px;border-radius:12px;overflow:hidden;box-shadow:0 10px 28px rgba(0,0,0,.2)', `<img src="${p.src}" alt="${esc(p.alt)}" style="display:block;width:100%;height:100%;object-fit:cover">`, 0) +
+      (p.photos || [{ src: p.src, alt: p.alt }])
+        .map((ph, i, all) => {
+          const h = (390 - 10 * (all.length - 1)) / all.length;
+          return abs(`left:44px;top:${120 + i * (h + 10)}px;width:520px;height:${h}px;border-radius:12px;overflow:hidden;box-shadow:0 10px 28px rgba(0,0,0,.2)`, `<img src="${ph.src}" alt="${esc(ph.alt)}" style="display:block;width:100%;height:100%;object-fit:cover${ph.pos ? `;object-position:${ph.pos}` : ''}">`, i);
+        })
+        .join('') +
       `<div style="position:absolute;left:596px;right:44px;top:140px;display:flex;flex-direction:column;gap:22px">${p.lines
         .map((s, i) => {
           const last = i === p.lines.length - 1;
