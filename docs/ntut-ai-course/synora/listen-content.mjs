@@ -22,14 +22,9 @@ const VERCEL = [
     ],
   },
   {
-    id: 'v-cli', layout: 'steps', section: V, title: 'CLI：一行指令上線',
+    id: 'v-cli', layout: 'opDemo', demo: 'vercel-cli-demo', section: V, title: 'CLI：一行指令上線',
     notes: '11:11 CLI 示範(6)。開終端機，進到網站資料夾。第一次要先裝 Vercel CLI 並登入，之後每次改完只要打 vercel --prod。示範：改網站上一個字 → 再打一次 → 網址重新整理就更新了。對比 Drop：Drop 每次都要重新拖，CLI 改完打一行就好。需要 Node.js；只是想讓網站上線、不打算常改的，用 Drop 就夠。',
     heading: 'CLI：在終端機打一行就上線',
-    items: [
-      ['npm i -g vercel', '第一次：安裝 Vercel CLI'],
-      ['vercel login', '第一次：登入 Vercel 帳號'],
-      ['vercel --prod', '每次改完：打這行就更新網址'],
-    ],
   },
   {
     id: 'v-github', layout: 'rows', section: V, title: 'GitHub：推了就自動上線',

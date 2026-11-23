@@ -1,0 +1,181 @@
+<!-- 聽課版：Vercel CLI 一行上線（終端機打三行指令 → 網址出現在瀏覽器） -->
+<style>
+#vcd{--line:#EDE6D8;--ink:#2B2620;--mute:#8A8275;--y:#F5B400;--yd:#D99A00;--y2:#FFF3CC;--ok:#2E8B57;position:absolute;left:0;top:0;width:960px;height:540px}
+#vcd *{box-sizing:border-box}
+#vcd .outer{position:absolute;left:44px;top:112px;width:576px;height:288px}
+#vcd .stage{zoom:.6;position:absolute;top:0;left:0;width:960px;height:480px;background:#fff;border:1px solid var(--line);border-radius:22px;overflow:hidden;padding:26px 30px;display:flex;gap:24px;align-items:stretch}
+#vcd .stage::before{content:"";position:absolute;inset:0;background:radial-gradient(circle at 80% 40%,#FFF8E2 0,transparent 55%);pointer-events:none}
+#vcd .term{position:relative;flex:1;background:#16161a;border-radius:18px;display:flex;flex-direction:column;overflow:hidden;box-shadow:0 10px 26px rgba(0,0,0,.18)}
+#vcd .tbar{display:flex;align-items:center;gap:7px;padding:10px 14px;background:#26262c;font-size:13px;color:#c9c6bd;font-weight:700}
+#vcd .tbar i{width:10px;height:10px;border-radius:5px;background:#55555d}
+#vcd .tbar span{margin-left:8px}
+#vcd .tbody{flex:1;padding:14px 18px;font-family:ui-monospace,Menlo,Consolas,monospace;font-size:16px;line-height:1.7;color:#e8e6e1;display:flex;flex-direction:column;gap:2px}
+#vcd .ln{white-space:pre;opacity:0;transform:translateY(4px);transition:opacity .3s,transform .3s}
+#vcd .ln.vis{opacity:1;transform:none}
+#vcd .ps{color:var(--y)}
+#vcd .out{color:#a9a59c}
+#vcd .good{color:#6fd39a}
+#vcd .url{color:#fff;text-decoration:underline;text-decoration-color:var(--y)}
+#vcd .now{opacity:1;transform:none}
+#vcd .caret{display:inline-block;width:9px;height:18px;background:var(--y);vertical-align:-3px;margin-left:2px;animation:blink 1s steps(1) 40}
+@keyframes blink{50%{opacity:0}}
+#vcd .key{position:absolute;right:18px;bottom:16px;padding:6px 14px;border-radius:8px;background:#2f2f36;color:#e8e6e1;font-size:14px;font-weight:700;border:1px solid #44444c;transition:all .15s}
+#vcd .press{background:var(--y)!important;color:#16161a!important;border-color:var(--y)!important}
+#vcd .side{position:relative;width:280px;display:flex;flex-direction:column;gap:12px}
+#vcd .brow{position:relative;flex:1;background:#fff;border:1px solid var(--line);border-radius:16px;overflow:hidden;box-shadow:0 8px 20px rgba(60,40,0,.08);transition:box-shadow .3s,border-color .3s}
+#vcd .brow.target{border-color:var(--y);box-shadow:0 0 0 4px rgba(245,180,0,.35)}
+#vcd .addr{margin:10px;padding:6px 10px;border-radius:999px;background:#F4F1EA;font-size:12px;color:var(--mute);white-space:nowrap;overflow:hidden;transition:background .4s}
+#vcd .addr.filled{background:var(--y2);color:var(--ink);font-weight:700}
+#vcd .pane{position:absolute;left:0;right:0;top:46px;bottom:0;padding:14px 16px;display:flex;flex-direction:column;gap:10px;transition:opacity .3s}
+#vcd .pane.hide{opacity:0;pointer-events:none}
+#vcd .empty{align-items:center;justify-content:center;color:#c9c2b4;font-size:14px}
+#vcd .lgT{font-size:18px;font-weight:900;text-align:center;margin-top:18px}
+#vcd .lgS{font-size:12px;color:var(--mute);text-align:center}
+#vcd .gh{margin:10px auto 0;padding:9px 16px;border-radius:10px;background:#16161a;color:#fff;font-size:14px;font-weight:700;transition:all .15s}
+#vcd .site .hero{height:62px;border-radius:10px;background:linear-gradient(120deg,#FFE7A3,#F5B400)}
+#vcd .site .nm{font-size:18px;font-weight:900}
+#vcd .site .sb{font-size:12px;color:var(--mute);line-height:1.5}
+#vcd .site .bl{height:8px;border-radius:4px;background:#EFEAE0}
+#vcd .badge{position:absolute;right:10px;bottom:10px;background:#E8F6EC;color:var(--ok);border:1px solid #BFE5CB;border-radius:999px;padding:3px 10px;font-size:12px;font-weight:700;opacity:0;transform:scale(.8);transition:all .35s cubic-bezier(.3,1.6,.5,1)}
+#vcd .badge.show{opacity:1;transform:none}
+#vcd .note{font-size:12px;color:var(--mute);line-height:1.5;padding:0 4px}
+#vcd .toast{position:absolute;top:16px;left:50%;transform:translate(-50%,-20px);background:var(--ink);color:#fff;font-size:15px;padding:9px 18px;border-radius:999px;opacity:0;transition:all .3s;z-index:5}
+#vcd .toast.show{opacity:1;transform:translate(-50%,0)}
+#vcd .fly{position:absolute;top:0;left:0;z-index:6;opacity:0;pointer-events:none;background:#fff;border:2px solid var(--y);border-radius:12px;padding:8px 12px;font-size:13px;font-weight:700;box-shadow:0 10px 24px rgba(200,140,0,.3);white-space:nowrap}
+#vcd .cursor{position:absolute;top:0;left:0;z-index:7;pointer-events:none;transform:translate(480px,560px)}
+#vcd .cursor svg{width:26px;height:26px;transform:translate(-3px,-2px);transition:transform .12s;filter:drop-shadow(0 2px 3px rgba(0,0,0,.25))}
+#vcd .cursor.down svg{transform:translate(-3px,-2px) scale(.85)}
+#vcd .ripple{position:absolute;z-index:6;width:16px;height:16px;margin:-8px 0 0 -8px;border-radius:50%;border:2px solid var(--y);pointer-events:none;animation:rip .5s ease-out forwards}
+@keyframes rip{to{transform:scale(3.2);opacity:0}}
+#vcd .caption{position:absolute;left:44px;top:406px;width:576px;text-align:center;font-size:15px;font-weight:700;min-height:22px;transition:opacity .25s}
+#vcd .caption.fade{opacity:0}
+#vcd .ctl{position:absolute;left:44px;top:446px;display:flex;gap:8px}
+#vcd .btn{border:1px solid var(--line);background:#fff;font:inherit;font-size:12px;padding:5px 12px;border-radius:999px;cursor:pointer;color:var(--ink)}
+#vcd .cards{position:absolute;left:644px;right:44px;top:112px;display:grid;gap:10px}
+#vcd .rc{display:flex;align-items:center;gap:10px;background:#fff;border:1.5px solid var(--line);border-radius:12px;padding:10px 12px;transition:all .3s}
+#vcd .rc.dark{background:#16161a;border-color:#16161a;color:#fff}
+#vcd .rc .n{flex:0 0 26px;height:26px;border-radius:13px;background:var(--y);color:#16161a;display:grid;place-items:center;font-weight:900;font-size:13px}
+#vcd .rc .tt{font-size:14px;font-weight:800;font-family:ui-monospace,Menlo,Consolas,monospace}
+#vcd .rc .ss{font-size:11px;color:var(--mute);margin-top:2px;line-height:1.4}
+#vcd .rc.dark .ss{color:#c9c6bd}
+#vcd .rc .chk{margin-left:auto;flex:0 0 22px;height:22px;border-radius:50%;background:#E8F6EC;color:var(--ok);display:grid;place-items:center;font-size:12px;opacity:0;transform:scale(.5);transition:all .3s}
+#vcd .rc.active{border-color:var(--y);box-shadow:0 6px 18px rgba(245,180,0,.2)}
+#vcd .rc.fin .chk{opacity:1;transform:none}
+#vcd .rc:not(.active):not(.fin){opacity:.7}
+.cap #vcd .toast,.cap #vcd .fly,.cap #vcd .cursor,.cap #vcd .ripple,.cap #vcd .ctl,.cap #vcd .caret,.cap #vcd .key{display:none}
+.cap #vcd .pane.hide{display:none}
+@media (prefers-reduced-motion:reduce){#vcd .toast,#vcd .fly,#vcd .cursor,#vcd .ripple{display:none}}
+</style>
+<div id="vcd">
+  <div class="outer"><div class="stage" id="stage">
+    <div class="term" id="term">
+      <div class="tbar"><i></i><i></i><i></i><span>終端機 — my-job-site</span></div>
+      <div class="tbody" id="tbody"></div>
+      <span class="key" id="key">Enter ⏎</span>
+    </div>
+    <div class="side">
+      <div class="brow" id="brow">
+        <div class="addr" id="addr">瀏覽器</div>
+        <div class="pane empty" id="pEmpty">還沒有網址</div>
+        <div class="pane hide" id="pLogin"><div class="lgT">登入 Vercel</div><div class="lgS">終端機叫你來這裡按一下</div><span class="gh" id="ghBtn">Continue with GitHub</span></div>
+        <div class="pane site hide" id="pSite"><div class="hero"></div><div class="nm">我的求職網站</div><div class="sb">北科大 資工系・想找前端實習</div><div class="bl"></div><div class="bl" style="width:70%"></div><span class="badge" id="badge">✓ 已上線</span></div>
+      </div>
+      <div class="note">要先裝好 Node.js；第 1、2 行只在第一次打</div>
+    </div>
+    <div class="toast" id="toast"></div>
+    <div class="fly" id="fly"></div>
+    <div class="cursor" id="cursor"><svg viewBox="0 0 24 24"><path d="M4 2l15 11.5-6.6.9 3.9 7.4-3 1.5-3.9-7.5L4 20.5z" fill="#fff" stroke="#2B2620" stroke-width="1.6" stroke-linejoin="round"/></svg></div>
+  </div></div>
+  <div class="caption" id="caption">&nbsp;</div>
+  <div class="ctl"><button class="btn" id="loopBtn">自動循環：開</button><button class="btn" id="replay">↻ 重播</button></div>
+  <div class="cards">
+    <div class="rc" data-step="1"><span class="n">1</span><div><div class="tt">npm i -g vercel</div><div class="ss">第一次：安裝 Vercel CLI</div></div><span class="chk">✓</span></div>
+    <div class="rc" data-step="2"><span class="n">2</span><div><div class="tt">vercel login</div><div class="ss">第一次：登入 Vercel 帳號</div></div><span class="chk">✓</span></div>
+    <div class="rc dark" data-step="3"><span class="n">3</span><div><div class="tt">vercel --prod</div><div class="ss">每次改完：打這行就更新網址</div></div><span class="chk">✓</span></div>
+  </div>
+</div>
+<script>
+(() => {
+const $ = (s) => document.querySelector('#vcd ' + s);
+const stage = $('#stage'), cursor = $('#cursor'), tbody = $('#tbody'), key = $('#key'), brow = $('#brow'), addr = $('#addr'),
+  pEmpty = $('#pEmpty'), pLogin = $('#pLogin'), pSite = $('#pSite'), ghBtn = $('#ghBtn'), badge = $('#badge'),
+  toast = $('#toast'), fly = $('#fly'), caption = $('#caption');
+const SCALE = 0.6, URL_ = 'https://my-job-site.vercel.app', PS = '<span class="ps">~/my-job-site $</span> ';
+let runId = 0, looping = true, cx = 480, cy = 560;
+const sleep = (ms, t) => new Promise((res, rej) => setTimeout(() => (t !== runId ? rej('cancel') : res()), ms));
+const pos = (el, fx = 0.5, fy = 0.5) => { const s = stage.getBoundingClientRect(), r = el.getBoundingClientRect(); return { x: (r.left - s.left + r.width * fx) / SCALE, y: (r.top - s.top + r.height * fy) / SCALE }; };
+const place = (x, y, dur) => { cx = x; cy = y; cursor.style.transition = dur ? `transform ${dur}ms cubic-bezier(.45,.05,.25,1)` : 'none'; cursor.style.transform = `translate(${x}px,${y}px)`; };
+const move = async (t, el, fx, fy, dur = 650) => { const p = pos(el, fx, fy); place(p.x, p.y, dur); await sleep(dur, t); };
+const ripple = () => { const r = document.createElement('div'); r.className = 'ripple'; r.style.left = cx + 'px'; r.style.top = cy + 'px'; stage.appendChild(r); setTimeout(() => r.remove(), 700); };
+const click = async (t, el) => { cursor.classList.add('down'); ripple(); el && el.classList.add('press'); await sleep(170, t); cursor.classList.remove('down'); el && el.classList.remove('press'); };
+const setCap = (txt) => { caption.classList.add('fade'); setTimeout(() => { caption.textContent = txt; caption.classList.remove('fade'); }, 200); };
+const setStep = (n) => document.querySelectorAll('#vcd .rc').forEach((s) => { const k = +s.dataset.step; s.classList.toggle('active', k === n); s.classList.toggle('fin', k < n); });
+const show = (el) => requestAnimationFrame(() => requestAnimationFrame(() => el.classList.add('vis')));
+const pane = (p) => [pEmpty, pLogin, pSite].forEach((x) => x.classList.toggle('hide', x !== p));
+const line = (html, cls = '') => { const l = document.createElement('div'); l.className = 'ln ' + cls; l.innerHTML = html; tbody.appendChild(l); return l; };
+const out = async (t, html, ms = 450) => { show(line(html)); await sleep(ms, t); };
+const type = async (t, cmd) => {
+  const l = line(PS + '<span class="cmd"></span><span class="caret"></span>', 'now'), c = l.querySelector('.cmd');
+  for (const ch of cmd) { c.textContent += ch; await sleep(70, t); }
+  await sleep(250, t); key.classList.add('press'); await sleep(200, t); key.classList.remove('press'); l.querySelector('.caret').remove(); await sleep(300, t);
+};
+const flyTo = async (t, label, from, to) => {
+  const a = pos(from), b = pos(to, 0.5, 0.5); fly.textContent = label; fly.style.opacity = 1;
+  fly.animate([
+    { transform: `translate(${a.x}px,${a.y}px) translate(-50%,-50%) scale(.6)`, opacity: 0 },
+    { transform: `translate(${a.x}px,${a.y - 30}px) translate(-50%,-50%) scale(1)`, opacity: 1, offset: 0.2 },
+    { transform: `translate(${b.x}px,${b.y}px) translate(-50%,-50%) scale(.8)`, opacity: 1, offset: 0.85 },
+    { transform: `translate(${b.x}px,${b.y}px) translate(-50%,-50%) scale(.5)`, opacity: 0 },
+  ], { duration: 1000, easing: 'cubic-bezier(.5,0,.3,1)', fill: 'forwards' });
+  await sleep(1000, t);
+};
+const OUT1 = '<span class="out">added 1 package in 3s</span>';
+const OUT2a = '<span class="out">? Log in to Vercel › Continue with GitHub</span>';
+const OUT2b = '<span class="good">✓ Success! 已登入</span>';
+const OUT3a = '<span class="out">Deploying ~/my-job-site …</span>';
+const OUT3b = `<span class="good">✓ Production:</span> <span class="url" id="urlTxt">${URL_}</span>`;
+function reset() {
+  tbody.innerHTML = ''; pane(pEmpty); addr.className = 'addr'; addr.textContent = '瀏覽器';
+  brow.classList.remove('target'); badge.classList.remove('show');
+  fly.getAnimations().forEach((a) => a.cancel()); fly.style.opacity = 0; toast.classList.remove('show');
+  place(480, 560, 0); setStep(0); caption.innerHTML = '&nbsp;';
+}
+async function run() {
+  const t = ++runId; reset();
+  try {
+    await sleep(500, t);
+    await move(t, $('#term'), 0.4, 0.4, 800); await click(t);
+    // 1：安裝
+    setStep(1); setCap('步驟 1（第一次）：打 npm i -g vercel，裝好 Vercel CLI');
+    await type(t, 'npm i -g vercel'); await out(t, OUT1, 900);
+    // 2：登入
+    setStep(2); setCap('步驟 2（第一次）：打 vercel login，跳出瀏覽器按一下登入');
+    await type(t, 'vercel login'); await out(t, OUT2a, 600);
+    pane(pLogin); addr.textContent = 'vercel.com/login'; await sleep(500, t);
+    await move(t, ghBtn); await click(t, ghBtn); await sleep(300, t);
+    await move(t, $('#term'), 0.5, 0.6, 600);
+    await out(t, OUT2b, 900);
+    // 3：上線
+    setStep(3); setCap('步驟 3：打 vercel --prod，幾秒後就拿到網址');
+    await type(t, 'vercel --prod'); await out(t, OUT3a, 1100); await out(t, OUT3b, 600);
+    const u = $('#urlTxt'); brow.classList.add('target'); await flyTo(t, URL_.replace('https://', ''), u, addr);
+    addr.className = 'addr filled'; addr.textContent = URL_.replace('https://', ''); pane(pSite); brow.classList.remove('target');
+    badge.classList.add('show'); toast.textContent = '✓ 網站上線了'; toast.classList.add('show'); await sleep(1200, t); toast.classList.remove('show');
+    setStep(4); setCap('完成！之後改完網站，只要再打一次 vercel --prod');
+    place(cx + 40, 560, 900); await sleep(3000, t);
+    if (looping) run();
+  } catch (e) { if (e !== 'cancel') console.error(e); }
+}
+function finalState() {
+  tbody.innerHTML = '';
+  for (const [cmd, outs] of [['npm i -g vercel', [OUT1]], ['vercel login', [OUT2a, OUT2b]], ['vercel --prod', [OUT3a, OUT3b]]]) {
+    line(PS + cmd, 'vis'); outs.forEach((o) => line(o, 'vis'));
+  }
+  pane(pSite); addr.className = 'addr filled'; addr.textContent = URL_.replace('https://', ''); badge.classList.add('show');
+  setStep(4); caption.textContent = '完成！之後改完網站，只要再打一次 vercel --prod';
+}
+$('#replay').onclick = () => run();
+$('#loopBtn').onclick = (e) => { looping = !looping; e.target.textContent = '自動循環：' + (looping ? '開' : '關'); };
+if (window.__SYNORA_CAPTURE__ || matchMedia('(prefers-reduced-motion: reduce)').matches) finalState(); else run();
+})();
+</script>

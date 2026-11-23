@@ -234,3 +234,10 @@ test('Prompt ③ 聽課版：限一兩句、只挑一處、不叫 AI 寫 fix:', 
   assert.match(text, /只挑一處/);
   assert.doesNotMatch(text, /fix:/);
 });
+
+test('CLI 頁改成操作動畫：終端機打三行指令、網址上線', () => {
+  assert.equal(page('v-cli').layout, 'opDemo');
+  const html = slide('v-cli').elements[0].html;
+  for (const w of ['id="vcd"', 'npm i -g vercel', 'vercel login', 'vercel --prod', '.vercel.app', '__SYNORA_CAPTURE__']) assert.ok(html.includes(w), w);
+  assert.equal(html.includes('infinite'), false);
+});
