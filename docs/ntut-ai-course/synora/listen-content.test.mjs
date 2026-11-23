@@ -84,6 +84,8 @@ test('日文對回今天（動畫頁）', () => {
   const t = slide('jp-map').elements[0].html;
   assert.ok(t.includes('id="jpm"') && t.includes('__SYNORA_CAPTURE__') && !t.includes('infinite'));
   for (const w of ['基本資料', 'Skill', 'Context', 'japanes-pk.littleyao.me']) assert.ok(t.includes(w), w);
+  const link = slide('jp-map').elements.find((e) => e.type === 'link');
+  assert.equal(link.linkUrl, 'https://japanes-pk.littleyao.me');
 });
 
 test('頁首節次編號跟著聽課版節次', () => {
