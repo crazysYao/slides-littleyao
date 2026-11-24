@@ -17,10 +17,10 @@ test('頁序引用的原版 id 都存在', () => {
 });
 
 // 2026-11-24 講師決定開回 Synora 投票與搶答，只限這幾頁
-const STAT_OK = ['s1-paid', 's1-ai-exp', 's2-typhoon-poll', 'l-quiz-s2-1', 'l-quiz-s2-2', 'l-quiz-s2-3', 'l-quiz-s3-1'];
+const STAT_OK = ['s1-paid', 's1-ai-exp', 's2-typhoon-poll', 'l-reel-poll', 'l-your-turn', 'l-quiz-s2-1', 'l-quiz-s2-2', 'l-quiz-s2-3', 'l-quiz-s3-1'];
 test('統計元件只出現在投票與搶答頁', () => {
   for (const s of deck.slides) for (const e of s.elements) if (STAT.includes(e.type)) assert.ok(STAT_OK.includes(s.id), `${s.id} 有 ${e.type}`);
-  for (const id of STAT_OK) assert.ok(slide(id).elements.some((e) => ['poll', 'quiz'].includes(e.type)), id);
+  for (const id of STAT_OK) assert.ok(slide(id).elements.some((e) => ['poll', 'quiz', 'wordcloud'].includes(e.type)), id);
 });
 
 test('投票與搶答頁講稿都有聊天室備案', () => {
@@ -72,7 +72,7 @@ test('跟著改字', () => {
 });
 
 test('第三節頁序', () => {
-  assert.deepEqual(ids.slice(ids.indexOf('s3')), ['s3', 'l-quiz-s3-1', 'l-localhost', 'v-ways', 's3-drop', 'v-cli', 'v-github', 'jp-bridge', 'jp-why', 'jp-need', 'jp-loop', 'jp-skills', 'jp-scene', 'jp-map', 's3-recap', 'qa', 'jp-pk']);
+  assert.deepEqual(ids.slice(ids.indexOf('s3')), ['s3', 'l-quiz-s3-1', 'l-localhost', 'v-ways', 's3-drop', 'v-cli', 'v-github', 'jp-bridge', 'l-pk-first', 'jp-why', 'jp-loop', 'jp-skills', 'jp-scene', 'jp-map', 'l-your-turn', 's3-recap', 'jp-pk', 'qa']);
 });
 
 test('Vercel', () => {
@@ -167,7 +167,7 @@ test('日文動線改成互動圖：我、Agent、Skills、Obsidian 資料', () 
   assert.equal(p.layout, 'opDemo');
   const html = slide('jp-loop').elements[0].html;
   for (const w of ['<title>Obsidian</title>', '<title>Claude</title>', '我', 'Agent', 'Skills', '複習清單', '__SYNORA_CAPTURE__']) assert.ok(html.includes(w), w);
-  assert.match(p.notes, /^11:26 /);
+  assert.match(p.notes, /^11:18 /);
 });
 
 test('聽課版沒有無限循環動畫', () => {
@@ -230,8 +230,8 @@ test('時間重分配：第一節留 2 分緩衝、Skill 6 分、CLI 6 分、日
   assert.match(n('s2-skill-1'), /^10:04 Skill\(6\)/);
   assert.ok(n('s2-skill-7').length < 250);
   assert.match(n('s2-qa'), /^10:41 舉手 QA\(9\)/);
-  assert.match(n('v-cli'), /^11:12 CLI 示範\(6\)/);
-  assert.match(n('jp-scene'), /^11:31 專屬練習情境\(9\)/);
+  assert.match(n('v-cli'), /^11:10 工程師怎麼上線：CLI\(2\)/);
+  assert.match(n('jp-scene'), /^11:22 專屬練習情境\(5\)/);
 });
 
 test('Prompt ③ 聽課版：限一兩句、只挑一處、不叫 AI 寫 fix:', () => {
@@ -280,7 +280,7 @@ test('動畫步驟卡合併成 3 張', () => {
 
 test('第三節最後是跟講師 PK', () => {
   const p = page('jp-pk');
-  assert.match(p.notes, /^11:51 PK\(9\)/);
+  assert.match(p.notes, /^11:35 PK\(10\)/);
   assert.equal(p.link[0], 'https://japanes-pk.littleyao.me');
 });
 
@@ -306,4 +306,26 @@ test('概念段先出大標題頁，再進例子', () => {
 test('Skill 段先播照字面做三明治，再進咖啡店', () => {
   assert.equal(ids[ids.indexOf('s2-skill-1') - 1], 'v-exact');
   assert.equal(page('v-exact').link[0], 'https://youtu.be/7vZ9bGW5WoI');
+});
+
+test('節奏複查：付費 AI 4 選項、短片後投票（日文投票講師決定刪除）', () => {
+  assert.equal(page('s1-paid').options.length, 4);
+  assert.equal(ids[ids.indexOf('s3-reel') + 1], 'l-reel-poll');
+  assert.ok(!ids.includes('l-jp-poll'));
+  assert.equal(page('intro').facts.length, 2);
+});
+
+test('第三節改成先看成品、再講方法、最後換學員想', () => {
+  assert.ok(ids.indexOf('l-pk-first') < ids.indexOf('jp-why'));
+  assert.ok(!ids.includes('jp-need'));
+  assert.ok(ids.indexOf('jp-pk') < ids.indexOf('qa'));
+  assert.ok(slide('l-your-turn').elements.some((e) => e.type === 'wordcloud'));
+  assert.ok(!page('jp-scene').items[0].includes('ちゃ'));
+});
+
+test('QA 最後附 Instagram 聯絡方式（內嵌 QR，不用上傳圖片）', () => {
+  const html = slide('qa').elements[0].html;
+  assert.ok(html.includes('@david.jhang.3979'));
+  assert.ok(html.includes('<svg') && !html.includes('data:image'));
+  assert.equal(ids.at(-1), 'qa');
 });

@@ -296,7 +296,14 @@ Object.assign(layouts, {
   }),
 
   qa: (p, { palette: P }) => ({
-    body: centerCol(lineIn(0, `font-size:80px;font-weight:900;color:#fff`, esc(p.heading)) + lineIn(1, `font-size:24px;color:${P.darkSub}`, esc(p.sub))),
+    body: centerCol(
+      lineIn(0, `font-size:80px;font-weight:900;color:#fff`, esc(p.heading)) +
+        lineIn(1, `font-size:24px;color:${P.darkSub}`, esc(p.sub)) +
+        // 聽課版：QA 最後附講師聯絡方式（QR 是內嵌 SVG，不用上傳圖片）
+        (p.contact
+          ? lineIn(2, 'margin-top:14px;display:flex;align-items:center;gap:22px;text-align:left', `<div style="width:150px;height:150px;background:#fff;border-radius:12px;padding:8px">${p.contact.qr}</div><div><div style="font-size:16px;color:${P.darkSub}">${esc(p.contact.label)}</div><div style="font-size:30px;font-weight:900;color:#fff;margin-top:4px">${esc(p.contact.handle)}</div></div>`)
+          : ''),
+    ),
   }),
 
   closing: (p, { palette: P }) => ({

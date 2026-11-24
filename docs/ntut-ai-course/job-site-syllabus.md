@@ -54,16 +54,16 @@
 
 ## 聽課版（學員只聽不做）
 
-設計：[../superpowers/specs/2026-11-18-ntut-listen-version-design.md](../superpowers/specs/2026-11-18-ntut-listen-version-design.md)。內容沿用原版，變換檔 [synora/listen-content.mjs](synora/listen-content.mjs) 只寫頁序、覆寫與新頁；改原版會自動帶進聽課版（頁序清單以外的新頁除外）。共 76 頁（2026-11-24 attention-review 改版＋資安前直播漏金鑰短片＋localhost 反諷頁＋Skill 前「照字面做三明治」短片＋四個概念標題頁；之前 63 頁）。
+設計：[../superpowers/specs/2026-11-18-ntut-listen-version-design.md](../superpowers/specs/2026-11-18-ntut-listen-version-design.md)。內容沿用原版，變換檔 [synora/listen-content.mjs](synora/listen-content.mjs) 只寫頁序、覆寫與新頁；改原版會自動帶進聽課版（頁序清單以外的新頁除外）。共 78 頁（2026-11-24 attention-review 改版＋資安前直播漏金鑰短片＋localhost 反諷頁＋Skill 前「照字面做三明治」短片＋四個概念標題頁；之前 63 頁）。
 
 | 節次 | 內容 | 分 |
 |---|---|---|
 | 第一節 09:00–09:50 | 講師自我介紹 2＋講清楚＋講師示範做出網站 v1（含緩衝 2） | 50 |
 | 第二節 10:00–10:50 | 暖身搶答 3＋Skill＋改更好（照字面做三明治 1、資安前直播漏金鑰短片 1）＋Context＋舉手 QA 9 | 50 |
-| 第三節 11:00–12:00 | 回想搶答 1＋localhost 反諷頁 1＋Vercel 三種上線方式 21＋日文學習分享 18＋回顧 1＋QA 9＋跟講師 PK 9 | 60 |
+| 第三節 11:00–12:00 | 回想搶答 1＋localhost 反諷 1＋Drop 示範 8＋工程師怎麼上線（CLI、GitHub 只播動畫）4＋先看 PK 網站成品 2＋日檢動機 2＋動線 4＋日文情境示範 5＋對照 1＋換你想（文字雲）6＋回顧 1＋跟講師 PK 10＋QA 15 | 60 |
 
 - 產生：`node synora/build-deck-html.mjs /tmp/deck-listen.json synora/listen-content.mjs`
-- 檢查：`node synora/check-deck.mjs /tmp/deck-listen.json --sections --ranges=09:00-09:50=48,10:00-10:50=50,11:00-12:00=60 --expect-pages=76`
+- 檢查：`node synora/check-deck.mjs /tmp/deck-listen.json --sections --ranges=09:00-09:50=48,10:00-10:50=50,11:00-12:00=60 --expect-pages=78`
 - 待講師提供：日文示範錄影備案
 - 未驗證（11/19 排練要確認）：
   - 付費版 Claude 建 Skill 的路徑「設定 → 功能 → Skills → 新增」（`assets/skill-save-demo-claude.fragment.html`）
@@ -72,6 +72,8 @@
   - 動畫播放中的畫面只在 Chrome 預覽看過，未在 Synora 正式站看過
 - 2026-11-22 時間重分配：找風格 3→2（第一節緩衝 1→2）、v1 超過 2 分鐘就切備案；Skill 5→6（第 34 頁講稿縮短，只在聽課版覆寫）、QA 15→14；CLI 9→6、日文專屬練習情境 6→9
 - 已決定（2026-11-24）：第三節彈性 10 分改成跟講師 PK（後來讓 1 分給第三節開頭的 localhost 反諷頁，PK 9 分；網路上沒找到合適的 localhost 短片，改成靜態揭曉頁）；第二節舉手 QA 縮成 9 分，讓出 3 分給暖身搶答、資安前一支短片（ThePrimeagen 直播寫程式漏 token，先問再揭曉；push .env、.gitignore 兩支講師看過後拿掉）；第 44、45 頁標題改成「Prompt ③：這次，我先看過」「看懂了，改哪裡我決定」，回應短片「沒有人看過內容」；具體描述、給誰看、Skill、Context 四段前各加一頁大標題（divider，不占分鐘），講師要求概念先出標題再講
+- 2026-11-24 第三節重排（講師說太抽象）：先看成品、再講方法、最後換學員想。CLI 改只播動畫（推翻先前「保留現場示範」）、GitHub 2 分；日文 PK 網站提前到日文段開頭；刪「我需要的不是一本教材」（與日檢動機動畫重複，回扣句移進動機講稿）；日文情境示範 9→5 分並寫成逐步腳本、第 1 張卡改白話；新增「換你想」文字雲 6 分；PK 移到 QA 前（10 分），QA 15 分。QA 頁最後加講師 Instagram（@david.jhang.3979）QR，QR 是內嵌 SVG（`synora/assets/ig-qr.svg`），不用上傳圖片。尚未推 Synora
+- 2026-11-24 節奏複查後再改（尚未推 Synora）：自我介紹拿掉「教學經歷」卡（照片已經在講）、付費 AI 投票 4 選項、「全部丟給 AI」短片後加「誰真的看過內容」投票（不加時間）；日檢動機前的「學外語最弱的一項」投票講師看過後刪除
 - 2026-11-24 attention-review 改版（12 條已改，2026-11-24 已推 Synora saveSeq 5；頁碼是改版前 63 頁的編號）：
   - [x] 1. 第 8 頁「你用 AI 做過哪些事」8 個選項 → 決定：砍到 4 項（問問題、寫報告／作業、寫履歷或自傳、還沒用過）
   - [x] 2. 第 24 頁「找風格」8 種同時出現 → 講師看過預覽後決定維持原本 8 種，不修改

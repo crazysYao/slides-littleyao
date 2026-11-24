@@ -14,7 +14,7 @@ const V = '03 上線';
 const VERCEL = [
   {
     id: 'v-ways', layout: 'three', section: V, title: '讓網站上線的三種方式',
-    notes: '11:02 三種上線方式(2)。網站做好只在自己電腦裡，別人看不到。今天介紹三種讓它上線的方式，從最簡單到最自動：拖進去、打一行指令、推到 GitHub 自動上線。前兩種現場做，第三種用講的。',
+    notes: '三種上線方式，接在 localhost 後一句帶過、不另算時間。網站做好只在自己電腦裡，別人看不到。讓它上線有三種方式：拖進去、打一行指令、推到 GitHub 自動上線。今天現場做第一種，後兩種是工程師常用的，看動畫知道有這條路就好。',
     heading: '網站做好了，怎麼讓別人打得開？',
     cards: [
       ['accent', '① Drop：拖進去', '把 HTML 檔拖進瀏覽器，幾秒就有網址。不用裝任何東西'],
@@ -24,12 +24,12 @@ const VERCEL = [
   },
   {
     id: 'v-cli', layout: 'opDemo', demo: 'vercel-cli-demo', section: V, title: 'CLI：一行指令上線',
-    notes: '11:12 CLI 示範(6)。開終端機，進到網站資料夾。第一次要先裝 Vercel CLI 並登入，之後每次改完只要打 vercel --prod。示範：改網站上一個字 → 再打一次 → 網址重新整理就更新了。對比 Drop：Drop 每次都要重新拖，CLI 改完打一行就好。需要 Node.js；只是想讓網站上線、不打算常改的，用 Drop 就夠。',
+    notes: '11:10 工程師怎麼上線：CLI(2)。只播動畫、不切出畫面。工程師會在終端機打一行 vercel --prod 就上線，改完再打一次就更新。你們不用學，回家用 Drop 就夠。',
     heading: 'CLI：在終端機打一行就上線',
   },
   {
     id: 'v-github', layout: 'opDemo', demo: 'github-deploy-demo', section: V, title: 'GitHub：推了就自動上線',
-    notes: '11:18 GitHub 自動上線(5)，口述帶過、不示範。專案放在 GitHub，Vercel 連上這個 repo 之後，每次推上新版本，Vercel 就自動重新建置、自動上線，這叫 CI/CD（自動部署）。我自己的網站都是這樣上線的，下一段的日文練習網站也是。今天不用學會，知道有這條路就好。',
+    notes: '11:12 工程師怎麼上線：GitHub(2)，看動畫、口述帶過。程式碼放在 GitHub，Vercel 連上之後，每次推上新版本就自動上線，這叫 CI/CD（自動部署）。等一下要給你們看的日文 PK 網站，就是這樣上線的。',
     heading: 'GitHub：推上去，Vercel 自動上線',
   },
 ];
@@ -49,30 +49,20 @@ const J = '03 我的學習系統';
 const JAPANESE = [
   {
     id: 'jp-bridge', layout: 'divider', section: J, title: '轉場：同一套方法換個題目',
-    notes: '11:23 轉場(1)。網站上線了，今天的求職網站到這裡告一段落。最後這段換個題目：同樣是基本資料、Skill、Context，我拿來準備日檢。你們會看到，這套方法不只能做網站，生活裡任何想做好的事都能用。',
+    notes: '轉場，不另算時間。網站上線告一段落。最後這段換個題目：同樣是基本資料、Skill、Context，我拿來準備日檢。下一頁先看成品。',
     no: '分享',
     heading: '同一套方法，還能做什麼？',
-    time: '11:23–11:41',
+    time: '11:14–11:28',
     sub: '網站上線了。接下來看我怎麼用 Agent＋Obsidian 準備日檢',
   },
   {
     id: 'jp-why', layout: 'opDemo', demo: 'jp-why-demo', section: J, title: '我為什麼學日文',
-    notes: '11:24 動機(2)。我報名了 12 月的日檢 N3，聽力是我最弱的一科；但我每週只有 8 小時能讀。時間這麼少，每一分鐘都不能花在已經會的東西上。避開：不講分數、不講過去的進度。',
+    notes: '11:16 動機(2)。我報名了 12 月的日檢 N3，聽力是我最弱的一科；但我每週只有 8 小時能讀。時間這麼少，每一分鐘都不能花在已經會的東西上。最後一句：先把自己講清楚，AI 才幫得上忙。避開：不講分數、不講過去的進度。',
     heading: '我在準備日檢 N3',
   },
   {
-    id: 'jp-need', layout: 'compare', section: J, title: '我需要的不是一本教材',
-    notes: '照教材從第一課讀起，會花很多時間在已經會的地方。我需要的是一個知道「我哪裡弱」的系統：每天告訴我該練什麼、錯過的題目會再出現。這就是今天第一節講的：先把自己講清楚，AI 才幫得上忙。',
-    heading: '我需要的不是一本教材',
-    cards: [
-      ['dark', '照教材讀', '從第一課開始\n會的不會的都讀一遍'],
-      ['accent', '知道我哪裡弱的系統', '每天告訴我練什麼\n錯過的題目會再出現'],
-    ],
-    note: '先把自己講清楚，AI 才幫得上忙。',
-  },
-  {
     id: 'jp-loop', layout: 'opDemo', demo: 'agent-loop-demo', section: J, title: '我、Agent、Skills、Obsidian',
-    notes: '11:26 規劃動線(5)，兩頁。動畫會自己跑四步：我只說「今天練什麼？」→ Agent（Claude Code）去拿「測驗」這本 Skill → 照手冊先讀 Obsidian 裡的複習清單和學習紀錄，再透過 MCP 到 Google Drive 找同類型的考古題，只出我弱的地方 → 我答錯，它把錯題寫回複習清單，下次再考。對回今天：Obsidian 裡的計畫、程度、錯題就是我的「基本資料」；Skill 就是第二節的工作手冊；它只讀需要的那幾份，就是 Context；MCP 是讓 Agent 連到 Google Drive 這類外部服務的接頭。下一頁看我寫了哪些 Skill。',
+    notes: '11:18 規劃動線(4)，兩頁。只講三樣東西：我的資料（Obsidian 裡的複習清單）、手冊（Skill）、AI（Agent）。動畫會自己跑：我說「今天練什麼？」→ Agent 拿「測驗」這本手冊 → 讀我的複習清單出題 → 我答錯，它把錯題寫回清單，下次再考。畫面上的 MCP、Google Drive 不用解釋。對回今天：複習清單就是基本資料，手冊就是 Skill，只讀需要的那幾份就是 Context。',
     heading: '我、Agent、Skills 和我的資料，怎麼一起動',
   },
   {
@@ -87,18 +77,18 @@ const JAPANESE = [
   },
   {
     id: 'jp-scene', layout: 'split', section: J, title: '依自己的弱點做練習情境',
-    notes: '11:31 專屬練習情境(9)。我最常卡的是口語縮約形：ちゃ（＝ては）跟 ちゃう（＝てしまう）分不清，還有 貯める（存錢）跟 稼ぐ（賺錢）老是搞混。現場示範：在 vault 裡請 Agent「讀我的複習清單和最近一次學習紀錄，出一段便利商店的對話，裡面藏 3 個縮約形讓我還原」，我當場作答，再請它改我的句子。對回 Context：它讀了我的資料才出得了專屬題目；沒給資料，只會出一般題。網路出狀況就改播課前錄好的畫面。',
+    notes: '11:22 專屬練習情境(5)，現場示範。學員看不懂日文沒關係，只要看得出「題目裡的字＝我清單上的字」。① 0:00 打開 Obsidian 的複習清單，指出 3 個卡點（ちゃ＝ては、ちゃう＝てしまう、貯める／稼ぐ）。② 0:45 在 Claude Code 打：「讀我的複習清單和最近一次學習紀錄，出一段便利商店的對話，裡面藏 3 個我常錯的縮約形，讓我還原成完整的說法。先不要給答案。」讓大家看它讀了哪兩個檔。③ 1:30 一個一個圈出題目裡的縮寫，不唸日文、不講文法。④ 2:30 當場還原一題，故意答錯一個，讓 AI 指出錯在哪。⑤ 3:30 回 Obsidian，看錯題被寫回複習清單。⑥ 4:30 收尾：它出得了這種題目，是因為讀了我的資料；沒給資料只會出一般題，這就是 Context。網路或 Claude Code 出狀況就直接播課前錄好的這 5 分鐘，不要現場除錯。',
     kicker: '講師示範 · 現場跑一次',
     heading: '依自己的弱點\n做練習情境',
     items: [
-      '我的卡點：ちゃ（＝ては）和 ちゃう（＝てしまう）分不清',
+      '我常搞混日文的口語縮寫',
       '請 Agent 讀複習清單＋最近的學習紀錄',
       '出一段便利商店對話，藏 3 個縮約形讓我還原',
     ],
   },
   {
     id: 'jp-map', layout: 'opDemo', demo: 'jp-map-demo', link: ['https://japanes-pk.littleyao.me', '打開日文 PK 網站', '點了會開新分頁'], section: J, title: '同一套方法，換個題目',
-    notes: '11:40 對照(1)。求職網站和學日文，用的是同一套：基本資料、Skill、Context。最後提一句：我還把練習做成一個 PK 對戰的網站 japanes-pk.littleyao.me，就是用剛剛第三種方式上線的。',
+    notes: '11:27 對照(1)。求職網站和學日文，用的是同一套：基本資料、Skill、Context。下一頁換你們想。',
     heading: '同一套方法，換個題目',
   },
 ];
@@ -119,7 +109,6 @@ export const ORDER = [
     ],
     facts: [
       ['身份', '後端工程師 7+ 年 · WPORT 後端負責人'],
-      ['教學經歷', '社大、大學、對外開課、企業內訓、社群活動'],
       ['學員', '49+ 名'],
     ],
   },
@@ -172,7 +161,14 @@ export const ORDER = [
   },
   's2-skill-1', 's2-skill-2', 's2-skill-3', 's2-skill-4', 's2-skill-5', 's2-skill-6', 's2-skill-7',
   's2-skill-make', 's2-skill-save', 's2-skill-find',
-  's3-reel', 's3-reel-reveal', 's3-review', 's3-fix', ...SECURITY, 's3-public',
+  's3-reel',
+  {
+    id: 'l-reel-poll', layout: 'poll', section: '03 改更好', title: '投票：誰真的看過內容',
+    notes: `短片播完先投票，算在短片的 3 分鐘裡。等長條圖出來再翻下一頁揭曉。${CHAT}`,
+    question: '這一整圈，老師出題、學生寫、老師改，誰真的看過內容？',
+    options: ['老師', '學生', 'AI', '沒有人'],
+  },
+  's3-reel-reveal', 's3-review', 's3-fix', ...SECURITY, 's3-public',
   {
     id: 'l-ctx-title', layout: 'divider', section: '03 Context', title: '標題：Context',
     notes: '先秀大標題 Context，停一拍再進八堂課的例子：接下來這段講的就是它。',
@@ -196,15 +192,31 @@ export const ORDER = [
     punch: '打不開耶？',
     sub: 'localhost＝你自己這台電腦，別人永遠打不開',
   },
-  ...VERCEL.slice(0, 1), 's3-drop', ...VERCEL.slice(1), ...JAPANESE, 's3-recap', 'qa',
+  ...VERCEL.slice(0, 1), 's3-drop', ...VERCEL.slice(1), ...JAPANESE.slice(0, 1),
+  {
+    id: 'l-pk-first', layout: 'linkTask', section: J, title: '先看成品：日文 PK 網站',
+    notes: '11:14 先看成品(2)。打開日文 PK 網站，在畫面上玩幾秒。不要先解釋怎麼做的，只說：這個網站是我用今天同一套方法做出來的，也是用剛剛 GitHub 那種方式上線的。接下來看它是怎麼來的。最後 PK 時間會邀一位同學跟我對戰。',
+    tag: '先看成品',
+    heading: '這個網站，是怎麼做出來的？',
+    link: ['https://japanes-pk.littleyao.me', '日文 PK 網站', '講師先玩幾秒給大家看'],
+  },
+  ...JAPANESE.slice(1),
+  {
+    id: 'l-your-turn', layout: 'wordcloud', section: J, title: '換你想：你想用這套方法做什麼',
+    notes: `11:28 換你想(6)。請大家用手機在文字雲打一個詞：你想用基本資料＋Skill＋Context 做什麼？挑 3 個回應，現場講它的基本資料、Skill、Context 各會是什麼。沒人打就用備用例子：準備多益、記帳、寫社團企劃。Synora 連不上時，請大家在 Meet 聊天室打字。`,
+    question: '你想用這套方法做什麼？（打一個詞）',
+    maxWords: 3,
+  },
+  's3-recap',
   {
     id: 'jp-pk', layout: 'linkTask', section: J, title: '跟講師 PK',
-    notes: '11:51 PK(9)。邀一位自願的同學用手機打開 japanes-pk.littleyao.me，跟講師對戰一局；講師分享自己的畫面，全班一起看。今天用的方法做出來的網站，最後一起玩一次。',
+    notes: '11:35 PK(10)。邀一位自願的同學用手機打開 japanes-pk.littleyao.me，跟講師對戰一局；講師分享自己的畫面，全班一起看。今天用的方法做出來的網站，最後一起玩一次。',
     tag: '自願一位 · 用手機就能玩',
-    heading: '最後：誰要來跟我 PK？',
+    heading: '誰要來跟我 PK？',
     link: ['https://japanes-pk.littleyao.me', '日文 PK 網站', '用手機打開，跟講師同一局對戰'],
     items: ['自願的同學用手機打開網站', '跟講師同一局對戰', '大家看講師分享的畫面'],
   },
+  'qa',
 ];
 
 const DEMO = '講師示範 · 你只要看';
@@ -244,7 +256,7 @@ export const OVERRIDES = {
     options: ['問問題', '寫報告／作業', '寫履歷或自傳', '還沒用過'],
     notes: `學員用手機複選。「還沒用過」多就講慢一點。${CHAT}`,
   },
-  's1-paid': { notes: `09:09 投票兩題(2)。學員用手機複選，再現場問幾位：用哪一家、拿來做什麼。${CHAT}` },
+  's1-paid': { options: ['ChatGPT 付費版', 'Gemini 付費版', 'Claude 付費版', '其他或都沒有'], notes: `09:09 投票兩題(2)。學員用手機複選，再現場問幾位：用哪一家、拿來做什麼。${CHAT}` },
   's2-typhoon-poll': { notes: `長條圖一面倒就是笑點。${CHAT}` },
   's1-gf-3': {
     layout: 'sameMove', mid: '同一招',
@@ -337,7 +349,7 @@ export const OVERRIDES = {
     title: 'Drop：拖進去就上線',
     section: '03 上線',
     items: ['講師把剛剛做好的網站 v2 拖進這個頁面', '幾秒後拿到一個網址，手機也打得開', '沒登入的網址會過期；註冊免費帳號認領才會保留'],
-    notes: '11:04 Drop 示範(8)。上架的是剛剛做的網站 v2。把 HTML 檔拖進 Vercel Drop，拿到網址，用手機打開給大家看。這就是開場那個網站的做法。提一句：沒登入的網址會過期，註冊免費帳號認領才會保留。',
+    notes: '11:02 Drop 示範(8)。上架的是剛剛做的網站 v2。把 HTML 檔拖進 Vercel Drop，拿到網址，用手機打開給大家看。這就是開場那個網站的做法。提一句：沒登入的網址會過期，註冊免費帳號認領才會保留。',
   },
   's3-recap': {
     layout: 'three',
@@ -347,7 +359,7 @@ export const OVERRIDES = {
       ['accent', '一套流程', '講清楚 → 做 → 審 → 改，一輪不夠就再跑一輪'],
       ['dark', '三種上線方式', 'Drop、CLI、GitHub 推了就自動上線'],
     ],
-    notes: '11:41 回顧(1)。今天跑了一圈問題迴圈：發現 AI 回得空泛 → 讓 AI 訪問、把自己講清楚 → 做出 v1 → 請讀者審稿 → 寫 fix 改成 v2 → 上線。手機上的 Prompt 卡都能帶回家，自己跑一次。課前把三站換成成品截圖。',
+    notes: '11:34 回顧(1)。今天跑了一圈問題迴圈：發現 AI 回得空泛 → 讓 AI 訪問、把自己講清楚 → 做出 v1 → 請讀者審稿 → 寫 fix 改成 v2 → 上線。手機上的 Prompt 卡都能帶回家，自己跑一次。課前把三站換成成品截圖。',
     shots: [
       ['第一節｜講清楚＋做出來（發現問題 → ① → ②）', '我的基本資料、網站 v1'],
       ['第二節｜Skill＋改更好（③ → ↺）', 'Skill、網站 v2'],
@@ -356,7 +368,11 @@ export const OVERRIDES = {
     compareTitle: '回家帶走',
     compare: ['手機上的四張 Prompt 卡', '一套「講清楚 → 做 → 審 → 改」的流程', '三種讓網站上線的方式'],
   },
-  qa: { notes: '11:42 QA(9)。之後 9 分鐘跟講師 PK。', sub: '現在，換你問了。' },
+  qa: {
+    notes: '11:45 QA(15)。最後秀聯絡方式：想繼續問、想看我後續的分享，掃 QR 追蹤我的 Instagram。沒人問可以提早下課。',
+    sub: '現在，換你問了。',
+    contact: { qr: readFileSync(new URL('assets/ig-qr.svg', import.meta.url), 'utf8'), label: '課後想問，追蹤我的 Instagram', handle: '@david.jhang.3979' },
+  },
 };
 
 const byId = new Map(base.pages.map((p) => [p.id, p]));
