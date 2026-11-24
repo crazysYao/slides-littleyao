@@ -63,7 +63,6 @@
     <div class="rc" data-step="1"><span class="n">1</span><div><div class="tt">基本資料</div><div class="ss">AI 先認識你是誰</div></div><span class="chk">✓</span></div>
     <div class="rc" data-step="2"><span class="n">2</span><div><div class="tt">Skill</div><div class="ss">把做法存起來，下次直接用</div></div><span class="chk">✓</span></div>
     <div class="rc" data-step="3"><span class="n">3</span><div><div class="tt">Context</div><div class="ss">只給 AI 需要的那一份</div></div><span class="chk">✓</span></div>
-    <div class="rc dark" data-step="4"><span class="n">4</span><div><div class="tt">上線</div><div class="ss">japanes-pk.littleyao.me</div></div><span class="chk">✓</span></div>
   </div>
 </div>
 <script>
@@ -98,14 +97,14 @@ async function run() {
     for (const ch of URL_) { u.textContent += ch; await sleep(55, t); }
     await sleep(300, t); addr.querySelector('.caret').remove(); live.classList.add('show');
     toast.textContent = '同一套方法，換個題目也能用'; toast.classList.add('show'); await sleep(1600, t); toast.classList.remove('show');
-    setStep(5); await sleep(3000, t);
+    setStep(4); await sleep(3000, t);
     if (looping) run();
   } catch (e) { if (e !== 'cancel') console.error(e); }
 }
 function finalState() {
   rows.forEach((r) => { r.querySelectorAll('.side').forEach((s) => s.classList.add('vis')); r.querySelector('.mid').className = 'mid fin'; });
   ship.classList.add('vis'); addr.textContent = URL_; live.classList.add('show');
-  setStep(5); caption.textContent = '同一套方法：基本資料、Skill、Context，換個題目也能用';
+  setStep(4); caption.textContent = '同一套方法：基本資料、Skill、Context，換個題目也能用';
 }
 $('#replay').onclick = () => run();
 $('#loopBtn').onclick = (e) => { looping = !looping; e.target.textContent = '自動循環：' + (looping ? '開' : '關'); };

@@ -77,8 +77,7 @@
   <div class="cards">
     <div class="rc" data-step="1"><span class="n">1</span><div><div class="tt">我開口</div><div class="ss">「今天練什麼？」</div></div><span class="chk">✓</span></div>
     <div class="rc" data-step="2"><span class="n">2</span><div><div class="tt">Agent 拿出 Skill</div><div class="ss">找到「測驗」這本工作手冊</div></div><span class="chk">✓</span></div>
-    <div class="rc" data-step="3"><span class="n">3</span><div><div class="tt">讀我的資料出題</div><div class="ss">Obsidian 錯題＋Google Drive 考古題（MCP）</div></div><span class="chk">✓</span></div>
-    <div class="rc" data-step="4"><span class="n">4</span><div><div class="tt">答錯寫回 Obsidian</div><div class="ss">錯題進複習清單，下次再考</div></div><span class="chk">✓</span></div>
+    <div class="rc" data-step="3"><span class="n">3</span><div><div class="tt">出題，錯題寫回</div><div class="ss">讀錯題和考古題出題，答錯寫回複習清單</div></div><span class="chk">✓</span></div>
   </div>
 </div>
 <script>
@@ -128,16 +127,16 @@ async function run() {
     setCap('只出我弱的地方：不是教材第一課');
     await say(t, bAi, '「存錢」是哪一個？（N3 考古題）<br>A 貯める　B 稼ぐ', 1300);
     on(['n-me']); await say(t, bMe, 'B 稼ぐ', 700); await send(t, 'B', 'n-me', 'n-ag', 'e-me'); on(['n-me'], false);
-    setStep(4); setCap('步驟 4：答錯了，Agent 把這題寫回 Obsidian 的複習清單');
+    setCap('接著：答錯了，Agent 把這題寫回 Obsidian 的複習清單');
     await say(t, bAi, '<span class="ng">✗</span> 存錢是 貯める（ためる），稼ぐ 是賺錢', 1200);
     on(['n-ob']); await send(t, '寫回錯題', 'n-ag', 'n-ob', 'e-ob'); $('#r-new').classList.add('vis'); on(['r-rev']); await sleep(1200, t);
-    setStep(5); setCap('資料在我手上，Agent 照 Skill 讀寫，每天越來越懂我');
+    setStep(4); setCap('資料在我手上，Agent 照 Skill 讀寫，每天越來越懂我');
     await sleep(3000, t);
     if (looping) run();
   } catch (e) { if (e !== 'cancel') console.error(e); }
 }
 function finalState() {
-  reset(); setStep(5);
+  reset(); setStep(4);
   bMe.textContent = '今天練什麼？'; bMe.classList.add('vis');
   bAi.innerHTML = '<span class="ng">✗</span> 存錢是 貯める（ためる），稼ぐ 是賺錢'; bAi.classList.add('vis');
   on(['c-quiz', 'r-rev']); $('#r-new').classList.add('vis');

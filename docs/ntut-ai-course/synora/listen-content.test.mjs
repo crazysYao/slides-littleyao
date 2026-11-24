@@ -16,12 +16,19 @@ test('頁序引用的原版 id 都存在', () => {
   for (const x of listen.ORDER) if (typeof x === 'string') assert.ok(baseIds.has(x), x);
 });
 
-test('沒有統計元件', () => {
-  for (const s of deck.slides) for (const e of s.elements) assert.ok(!STAT.includes(e.type), `${s.id} 有 ${e.type}`);
+// 2026-11-24 講師決定開回 Synora 投票與搶答，只限這幾頁
+const STAT_OK = ['s1-paid', 's1-ai-exp', 's2-typhoon-poll', 'l-quiz-s2-1', 'l-quiz-s2-2', 'l-quiz-s2-3', 'l-quiz-s3-1'];
+test('統計元件只出現在投票與搶答頁', () => {
+  for (const s of deck.slides) for (const e of s.elements) if (STAT.includes(e.type)) assert.ok(STAT_OK.includes(s.id), `${s.id} 有 ${e.type}`);
+  for (const id of STAT_OK) assert.ok(slide(id).elements.some((e) => ['poll', 'quiz'].includes(e.type)), id);
+});
+
+test('投票與搶答頁講稿都有聊天室備案', () => {
+  for (const id of ['s1-paid', 's1-ai-exp', 's2-typhoon-poll', 'l-quiz-s2-1', 'l-quiz-s3-1']) assert.match(slide(id).notes, /Meet 聊天室/, id);
 });
 
 test('刪掉的頁不在', () => {
-  for (const id of ['s1-save-poll', 's2-rescue', 's2-v1-poll', 's2-skill-upload', 's3-try', 's3-v2-upload', 's3-obsidian', 's2-typhoon-poll', 's2-quiz-warmup-1', 's2-quiz-warmup-2', 's2-quiz-warmup-3', 's3-v2-wall'])
+  for (const id of ['s1-save-poll', 's2-rescue', 's2-v1-poll', 's2-skill-upload', 's3-try', 's3-v2-upload', 's3-obsidian', 's2-quiz-warmup-1', 's2-quiz-warmup-2', 's2-quiz-warmup-3', 's3-v2-wall'])
     assert.ok(!ids.includes(id), id);
 });
 
@@ -30,9 +37,9 @@ test('頁序以外的原版頁不會混進來', () => {
   for (const id of ids) if (baseIds.has(id)) assert.ok(ordered.has(id), id);
 });
 
-test('舉手頁', () => {
-  for (const id of ['s1-ai-exp', 's1-paid'])
-    assert.equal(page(id)?.layout, 'handRaise', id);
+test('投票頁：第 8 頁只留 4 個選項', () => {
+  for (const id of ['s1-ai-exp', 's1-paid']) assert.equal(page(id)?.layout, 'multiChoice', id);
+  assert.deepEqual(page('s1-ai-exp').options, ['問問題', '寫報告／作業', '寫履歷或自傳', '還沒用過']);
 });
 
 test('複製卡保留', () => {
@@ -65,7 +72,7 @@ test('跟著改字', () => {
 });
 
 test('第三節頁序', () => {
-  assert.deepEqual(ids.slice(ids.indexOf('s3')), ['s3', 'v-ways', 's3-drop', 'v-cli', 'v-github', 'jp-bridge', 'jp-why', 'jp-need', 'jp-loop', 'jp-skills', 'jp-scene', 'jp-map', 's3-recap', 'qa']);
+  assert.deepEqual(ids.slice(ids.indexOf('s3')), ['s3', 'l-quiz-s3-1', 'l-localhost', 'v-ways', 's3-drop', 'v-cli', 'v-github', 'jp-bridge', 'jp-why', 'jp-need', 'jp-loop', 'jp-skills', 'jp-scene', 'jp-map', 's3-recap', 'qa', 'jp-pk']);
 });
 
 test('Vercel', () => {
@@ -89,16 +96,12 @@ test('日文對回今天（動畫頁）', () => {
 });
 
 test('頁首節次編號跟著聽課版節次', () => {
-  const nth = (id) => (ids.indexOf(id) < ids.indexOf('s2') ? '01' : ids.indexOf(id) < ids.indexOf('s3') ? '02' : '03');
+  const pids = listen.pages.map((p) => p.id);
+  const nth = (id) => (pids.indexOf(id) < pids.indexOf('s2') ? '01' : pids.indexOf(id) < pids.indexOf('s3') ? '02' : '03');
   for (const p of listen.pages) {
     const m = (p.section ?? '').match(/^(0\d) /);
     if (m) assert.equal(m[1], nth(p.id), `${p.id}：${p.section}`);
   }
-});
-
-test('handRaise 選項在兩行標題下方', () => {
-  const html = slide('s1-ai-exp').elements[0].html;
-  assert.match(html, /top:170px;display:grid/);
 });
 
 test('講師全程用付費版 Claude，Codex 也做得到', () => {
@@ -114,7 +117,7 @@ test('講師全程用付費版 Claude，Codex 也做得到', () => {
 const ACT_ALL = [...ACT, '親手', '換另外兩個', '先填好三個空格', '用個人 Gmail 登入', '有什麼卡住', '卡住的地方', '反過來訪問你', '4 分鐘裡', '把你的 Skill', '整理成你的 Skill', '讓聊天 AI 訪問你', '應用①'];
 test('整頁沒有要學員動手的字（不含 prompt）', () => {
   for (const p of deck.slides) {
-    const src = listen.pages.find((x) => x.id === p.id);
+    const src = listen.pages.find((x) => x.id === p.id || p.id.startsWith(`${x.id}-`));
     const { prompt, ...rest } = src;
     const t = JSON.stringify(rest) + p.notes;
     for (const w of ACT_ALL) assert.ok(!t.includes(w), `${p.id} 出現 ${w}`);
@@ -128,13 +131,12 @@ test('原版 build 與改動前相同（快照）', async () => {
 });
 
 test('舉手選項不重複字母、v1→v2 不帶作業連結、上架頁畫面與講稿一致', () => {
-  assert.match(page('s2-typhoon').notes, /舉手/);
+  assert.ok(ids.indexOf('s2-typhoon-poll') === ids.indexOf('s2-typhoon') + 1);
   assert.ok(!JSON.stringify(page('s3-drop').items).includes('自己網站'));
 });
 
-test('付費 AI 頁只留問題，細節現場問', () => {
-  assert.equal(page('s1-paid').heading, '你有付費的 AI 服務嗎？');
-  assert.equal(page('s1-paid').options, undefined);
+test('付費 AI 頁改回投票，細節現場問', () => {
+  assert.match(page('s1-paid').notes, /現場問幾位/);
 });
 
 test('颱風短片換新連結', () => {
@@ -144,7 +146,7 @@ test('颱風短片換新連結', () => {
 // Prompt ② 卡片保留一句「Gemini、ChatGPT 用 Canvas」給回家用別家的人，其餘不得出現
 test('預設操作說明一律是 Claude：整份只剩第 5 頁提到 Gemini', () => {
   for (const s of deck.slides) {
-    if (s.id === 's1-login') continue;
+    if (s.id === 's1-login' || s.id === 's1-paid') continue; // 付費 AI 投票的選項本來就列各家
     const t = JSON.stringify(s).replaceAll('（Gemini、ChatGPT 用 Canvas）', '').replace(/data:[a-z]+\/[a-z+]+;base64,[A-Za-z0-9+/=]+/g, '');
     assert.ok(!/Gemini|Canvas（Claude/.test(t), s.id);
   }
@@ -157,7 +159,7 @@ test('資安頁：標題點明資安，多一點「貼給 AI 的資料也要挑�
   assert.match(p.heading, /^資安/);
   const t = JSON.stringify(p.cards);
   for (const w of ['不要貼給 AI', '密碼', '身分證', '作品連結']) assert.ok(t.includes(w), w);
-  assert.match(p.notes, /^10:21 資安提醒\(4\)/);
+  assert.match(p.notes, /^10:26 資安提醒\(4\)/);
 });
 
 test('日文動線改成互動圖：我、Agent、Skills、Obsidian 資料', () => {
@@ -165,7 +167,7 @@ test('日文動線改成互動圖：我、Agent、Skills、Obsidian 資料', () 
   assert.equal(p.layout, 'opDemo');
   const html = slide('jp-loop').elements[0].html;
   for (const w of ['<title>Obsidian</title>', '<title>Claude</title>', '我', 'Agent', 'Skills', '複習清單', '__SYNORA_CAPTURE__']) assert.ok(html.includes(w), w);
-  assert.match(p.notes, /^11:25 /);
+  assert.match(p.notes, /^11:26 /);
 });
 
 test('聽課版沒有無限循環動畫', () => {
@@ -215,7 +217,8 @@ test('發現問題頁：強調「一開始只打一句目的，就讓 Agent 跑�
 test('「但同一招」頁改圖示對照＋結論條', () => {
   const p = page('s1-gf-3');
   assert.equal(p.layout, 'sameMove');
-  assert.deepEqual(p.give[1], ['發生什麼事', '要什麼結果', '怎樣算做好']);
+  assert.equal(p.give, undefined); // 三個條件改口述（attention-review 第 8 條）
+  assert.match(p.notes, /發生什麼事、要什麼結果、怎樣算做好/);
   assert.equal(p.equation, undefined);
   assert.equal(p.left.ok, false);
   assert.equal(p.right.ok, true);
@@ -224,11 +227,11 @@ test('「但同一招」頁改圖示對照＋結論條', () => {
 test('時間重分配：第一節留 2 分緩衝、Skill 6 分、CLI 6 分、日文示範 9 分', () => {
   const n = (id) => listen.pages.find((p) => p.id === id).notes;
   assert.match(n('s2-style'), /^09:39 找風格\(2\)/);
-  assert.match(n('s2-skill-1'), /^10:00 Skill\(6\)/);
+  assert.match(n('s2-skill-1'), /^10:04 Skill\(6\)/);
   assert.ok(n('s2-skill-7').length < 250);
-  assert.match(n('s2-qa'), /^10:36 舉手 QA\(14\)/);
-  assert.match(n('v-cli'), /^11:11 CLI 示範\(6\)/);
-  assert.match(n('jp-scene'), /^11:30 專屬練習情境\(9\)/);
+  assert.match(n('s2-qa'), /^10:41 舉手 QA\(9\)/);
+  assert.match(n('v-cli'), /^11:12 CLI 示範\(6\)/);
+  assert.match(n('jp-scene'), /^11:31 專屬練習情境\(9\)/);
 });
 
 test('Prompt ③ 聽課版：限一兩句、只挑一處、不叫 AI 寫 fix:', () => {
@@ -259,4 +262,48 @@ test('日檢動機頁改成動畫：目標、弱點、時間、所以，不出�
   for (const w of ['id="jpw"', 'N3', '聽力', '8 小時', '已經會', '__SYNORA_CAPTURE__']) assert.ok(html.includes(w), w);
   assert.doesNotMatch(html, /\d+\s*分|及格|N4/);
   assert.equal(html.includes('infinite'), false);
+});
+
+test('attention-review 精簡：Skill 3 張、回顧只留帶走 3 條', () => {
+  assert.equal(page('jp-skills').tiles.length, 3);
+  assert.equal(page('s3-recap').layout, 'three');
+  assert.equal(page('s3-recap').cards.length, 3);
+});
+
+test('動畫步驟卡合併成 3 張', () => {
+  for (const id of ['v-github', 'jp-why', 'jp-loop', 'jp-map']) {
+    const html = slide(id).elements[0].html;
+    assert.equal((html.match(/class="rc[^"]*" data-step=/g) ?? []).length, 3, id);
+    assert.ok(!/setStep\(5\)/.test(html), id);
+  }
+});
+
+test('第三節最後是跟講師 PK', () => {
+  const p = page('jp-pk');
+  assert.match(p.notes, /^11:51 PK\(9\)/);
+  assert.equal(p.link[0], 'https://japanes-pk.littleyao.me');
+});
+
+test('讀者審稿與 fix: 標題回應短片「沒有人看過內容」', () => {
+  assert.equal(page('s3-review').heading, 'Prompt ③：這次，我先看過');
+  assert.equal(page('s3-fix').heading, '看懂了，改哪裡我決定');
+});
+
+test('資安頁前先播直播漏金鑰，只留這一支', () => {
+  assert.equal(ids[ids.indexOf('s3-public') - 1], 'v-token');
+  assert.ok(!ids.includes('v-env') && !ids.includes('v-gitignore'));
+  assert.match(page('v-token').notes, /^10:25 .*猜猜/);
+  assert.equal(page('v-token').link[0], 'https://www.youtube.com/shorts/WhC6iSFDtZk');
+});
+
+test('概念段先出大標題頁，再進例子', () => {
+  for (const [title, first, h] of [['l-desc-title', 's1-drink', '具體描述'], ['l-reader-title', 's2-typhoon-video', '給誰看'], ['l-skill-title', 'v-exact', 'Skill'], ['l-ctx-title', 's3-ctx-classes', 'Context']]) {
+    assert.equal(ids[ids.indexOf(first) - 1], title, first);
+    assert.equal(page(title).heading, h);
+  }
+});
+
+test('Skill 段先播照字面做三明治，再進咖啡店', () => {
+  assert.equal(ids[ids.indexOf('s2-skill-1') - 1], 'v-exact');
+  assert.equal(page('v-exact').link[0], 'https://youtu.be/7vZ9bGW5WoI');
 });

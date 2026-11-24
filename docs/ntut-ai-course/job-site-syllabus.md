@@ -54,16 +54,16 @@
 
 ## 聽課版（學員只聽不做）
 
-設計：[../superpowers/specs/2026-11-18-ntut-listen-version-design.md](../superpowers/specs/2026-11-18-ntut-listen-version-design.md)。內容沿用原版，變換檔 [synora/listen-content.mjs](synora/listen-content.mjs) 只寫頁序、覆寫與新頁；改原版會自動帶進聽課版（頁序清單以外的新頁除外）。共 63 頁。
+設計：[../superpowers/specs/2026-11-18-ntut-listen-version-design.md](../superpowers/specs/2026-11-18-ntut-listen-version-design.md)。內容沿用原版，變換檔 [synora/listen-content.mjs](synora/listen-content.mjs) 只寫頁序、覆寫與新頁；改原版會自動帶進聽課版（頁序清單以外的新頁除外）。共 76 頁（2026-11-24 attention-review 改版＋資安前直播漏金鑰短片＋localhost 反諷頁＋Skill 前「照字面做三明治」短片＋四個概念標題頁；之前 63 頁）。
 
 | 節次 | 內容 | 分 |
 |---|---|---|
 | 第一節 09:00–09:50 | 講師自我介紹 2＋講清楚＋講師示範做出網站 v1（含緩衝 2） | 50 |
-| 第二節 10:00–10:50 | Skill＋改更好＋Context＋舉手 QA | 50 |
-| 第三節 11:00–12:00 | Vercel 三種上線方式 22＋日文學習分享 18＋回顧 1＋QA 9＋彈性 10 | 60 |
+| 第二節 10:00–10:50 | 暖身搶答 3＋Skill＋改更好（照字面做三明治 1、資安前直播漏金鑰短片 1）＋Context＋舉手 QA 9 | 50 |
+| 第三節 11:00–12:00 | 回想搶答 1＋localhost 反諷頁 1＋Vercel 三種上線方式 21＋日文學習分享 18＋回顧 1＋QA 9＋跟講師 PK 9 | 60 |
 
 - 產生：`node synora/build-deck-html.mjs /tmp/deck-listen.json synora/listen-content.mjs`
-- 檢查：`node synora/check-deck.mjs /tmp/deck-listen.json --sections --ranges=09:00-09:50=48,10:00-10:50=50,11:00-12:00=50`
+- 檢查：`node synora/check-deck.mjs /tmp/deck-listen.json --sections --ranges=09:00-09:50=48,10:00-10:50=50,11:00-12:00=60 --expect-pages=76`
 - 待講師提供：日文示範錄影備案
 - 未驗證（11/19 排練要確認）：
   - 付費版 Claude 建 Skill 的路徑「設定 → 功能 → Skills → 新增」（`assets/skill-save-demo-claude.fragment.html`）
@@ -71,8 +71,21 @@
   - 第 2 頁自我介紹「49+ 學員」是 2026-05 的數字；動畫演 Agent 查 GitHub、WPORT 官網，實際資料取自 Obsidian 教學履歷
   - 動畫播放中的畫面只在 Chrome 預覽看過，未在 Synora 正式站看過
 - 2026-11-22 時間重分配：找風格 3→2（第一節緩衝 1→2）、v1 超過 2 分鐘就切備案；Skill 5→6（第 34 頁講稿縮短，只在聽課版覆寫）、QA 15→14；CLI 9→6、日文專屬練習情境 6→9
-- 未決定：第三節彈性 10 分的用途；第二節舉手 QA 現為 14 分
-- Synora 聽課版專案「讓 AI 一開口就懂你（聽課版）」id `5c93cd2b-597a-46d2-83d4-57f0cdd167ef`，加入碼 `AIORRCFD`；2026-11-20 從原版複製後推上 63 頁（saveSeq 2）。2026-11-22 推上時間重分配＋Prompt ③ 改版（saveSeq 3，改 20 頁講稿、第 40 頁 Prompt）。 2026-11-23 推上 5 頁改版（saveSeq 4）：第 20 頁屋頂照換成室內、室外兩張（公開上傳，講師同意）；第 53 CLI、54 GitHub、56 日檢動機、61 同一套方法改成動畫，第 61 頁加日文 PK 網站連結。原版 `aef695ce` 未動（saveSeq 12）。之後更新走 `synora-safe-push`，學員入口仍是草稿
+- 已決定（2026-11-24）：第三節彈性 10 分改成跟講師 PK（後來讓 1 分給第三節開頭的 localhost 反諷頁，PK 9 分；網路上沒找到合適的 localhost 短片，改成靜態揭曉頁）；第二節舉手 QA 縮成 9 分，讓出 3 分給暖身搶答、資安前一支短片（ThePrimeagen 直播寫程式漏 token，先問再揭曉；push .env、.gitignore 兩支講師看過後拿掉）；第 44、45 頁標題改成「Prompt ③：這次，我先看過」「看懂了，改哪裡我決定」，回應短片「沒有人看過內容」；具體描述、給誰看、Skill、Context 四段前各加一頁大標題（divider，不占分鐘），講師要求概念先出標題再講
+- 2026-11-24 attention-review 改版（12 條已改、本機測試 118 過，尚未推 Synora；頁碼是改版前 63 頁的編號）：
+  - [x] 1. 第 8 頁「你用 AI 做過哪些事」8 個選項 → 決定：砍到 4 項（問問題、寫報告／作業、寫履歷或自傳、還沒用過）
+  - [x] 2. 第 24 頁「找風格」8 種同時出現 → 講師看過預覽後決定維持原本 8 種，不修改
+  - [x] 3. 第 59 頁「一件事一個 Skill」6 張卡 → 只留打卡、測驗、改句子
+  - [x] 4. 第 62 頁「回顧」約 10 個重點 → 決定：只留「回家帶走」3 條，迴圈圖縮成一行
+  - [x] 5. 第二節開頭補 3 題回想題，用 Synora 手機搶答；題目由 Claude 先擬稿給講師看（設計文件有「暖身舉手搶答 3 題」，聽課版頁序漏了）
+  - [x] 6. 第三節開頭補 1 題回想題，同上
+  - [x] 7. 第 53 頁 CLI 已是動畫、講稿仍寫現場開終端機；只播動畫時 11:11–11:30 連續講授 19 分。決定：保留現場示範（動畫當開場、再切終端機），講稿不改；第 53 頁算示範，連續講授問題消失
+  - [x] 8. 第 15 頁「同一招」約 5 個重點 → 「你要主動給」3 條改口述
+  - [x] 9. 第 54、56、58、61 頁動畫右側 4 張步驟卡 → 決定：合併成 3 張（最後一張併進前一張）
+  - [x] 10. 開回 Synora 投票與搶答（原版投票 6、7、26，搶答 20–22，聽課版改成了舉手）；學員用手機作答。學員存取已開放（11-24 確認），前提：用手機實測一次加入與作答
+  - [x] 11. 舉手頁備案改聊天室：`handRaise` 提示改成「在 Meet 聊天室打 A/B」（第 7、8、21 頁），Synora 不能用時改走這條
+  - [x] 12. 彈性 10 分：邀一位同學用手機跟講師在 `japanes-pk.littleyao.me` PK 一局，講師分享自己的畫面（11-24 講師確認網站兩人對戰、手機版可玩）
+- Synora 聽課版專案「讓 AI 一開口就懂你（聽課版）」id `5c93cd2b-597a-46d2-83d4-57f0cdd167ef`，加入碼 `AIORRCFD`；2026-11-20 從原版複製後推上 63 頁（saveSeq 2）。2026-11-22 推上時間重分配＋Prompt ③ 改版（saveSeq 3，改 20 頁講稿、第 40 頁 Prompt）。 2026-11-23 推上 5 頁改版（saveSeq 4）：第 20 頁屋頂照換成室內、室外兩張（公開上傳，講師同意）；第 53 CLI、54 GitHub、56 日檢動機、61 同一套方法改成動畫，第 61 頁加日文 PK 網站連結。原版 `aef695ce` 未動（saveSeq 12）。之後更新走 `synora-safe-push`。2026-11-24 `classroom-preflight`：學員存取已開放（加入碼 AIORRCFD 可用），學員手機端尚未實測
 
 ## 檔案
 - 簡報內容（每頁文字、講稿、Prompt 原文）：[synora/job-site-content.mjs](synora/job-site-content.mjs)

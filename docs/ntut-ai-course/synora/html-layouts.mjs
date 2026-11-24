@@ -468,14 +468,14 @@ Object.assign(layouts, {
         side(p.left, false, 0) +
         abs('left:404px;width:152px;top:210px;text-align:center', `<div style="font-size:22px;font-weight:900">${esc(p.mid)}</div><div style="font-size:40px;font-weight:900;line-height:1">⟶</div>`, 1, 0.2) +
         side(p.right, true, 1) +
-        abs(
+        (p.give ? abs(
           `left:44px;right:44px;top:404px;display:flex;align-items:center;gap:16px;background:#fff;border:2px solid ${P.text};border-radius:14px;padding:16px 22px`,
           `<b style="flex:none;font-size:24px;font-weight:900">${esc(p.give[0])}</b>${p.give[1]
             .map((g, j) => `${j ? `<span style="font-size:22px;font-weight:900;color:${P.muted}">＋</span>` : ''}<span style="flex:1;text-align:center;background:${P.accent};border-radius:10px;padding:8px 10px;font-size:21px;font-weight:900">${esc(g)}</span>`)
             .join('')}`,
           4,
           0.2,
-        ),
+        ) : ''),
       natives: [],
     };
   },

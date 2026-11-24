@@ -75,8 +75,7 @@
   <div class="cards">
     <div class="rc" data-step="1"><span class="n">1</span><div><div class="tt">目標</div><div class="ss">12 月考日檢 N3</div></div><span class="chk">✓</span></div>
     <div class="rc" data-step="2"><span class="n">2</span><div><div class="tt">弱點</div><div class="ss">聽力</div></div><span class="chk">✓</span></div>
-    <div class="rc" data-step="3"><span class="n">3</span><div><div class="tt">時間</div><div class="ss">每週只有 8 小時</div></div><span class="chk">✓</span></div>
-    <div class="rc dark" data-step="4"><span class="n">4</span><div><div class="tt">所以</div><div class="ss">每一分鐘都不能花在已經會的東西上</div></div><span class="chk">✓</span></div>
+    <div class="rc dark" data-step="3"><span class="n">3</span><div><div class="tt">時間：每週只有 8 小時</div><div class="ss">所以每一分鐘都不能花在已經會的東西上</div></div><span class="chk">✓</span></div>
   </div>
 </div>
 <script>
@@ -110,18 +109,18 @@ async function run() {
     hrs.textContent = '每週 8 小時'; await sleep(1000, t);
     setCap('如果平均分配，一半時間花在已經會的東西上');
     blocks().forEach((b, i) => fill(b, i < 4 ? 'known' : 'focus', i < 4 ? KNOWN[i] : '聽力')); await sleep(2000, t);
-    setStep(4); setCap('所以：已經會的不讀，8 小時全給還不會的，聽力優先');
+    setCap('所以：已經會的不讀，8 小時全給還不會的，聽力優先');
     show(rule); await sleep(700, t);
     for (const [i, b] of blocks().slice(0, 4).entries()) { fill(b, 'focus', AFTER[i]); await sleep(280, t); }
     toast.textContent = '每一分鐘都花在還不會的地方'; toast.classList.add('show'); await sleep(1500, t); toast.classList.remove('show');
-    setStep(5); await sleep(3000, t);
+    setStep(4); await sleep(3000, t);
     if (looping) run();
   } catch (e) { if (e !== 'cancel') console.error(e); }
 }
 function finalState() {
   build(); ticket.classList.add('vis'); skills.classList.add('vis'); listen.classList.add('weak'); lsTag.textContent = '最弱';
   blocks().forEach((b, i) => fill(b, 'focus', i < 4 ? AFTER[i] : '聽力')); hrs.textContent = '每週 8 小時'; rule.classList.add('vis');
-  setStep(5); caption.textContent = '所以：已經會的不讀，8 小時全給還不會的，聽力優先';
+  setStep(4); caption.textContent = '所以：已經會的不讀，8 小時全給還不會的，聽力優先';
 }
 $('#replay').onclick = () => run();
 $('#loopBtn').onclick = (e) => { looping = !looping; e.target.textContent = '自動循環：' + (looping ? '開' : '關'); };

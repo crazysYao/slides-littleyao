@@ -103,8 +103,7 @@
   <div class="cards">
     <div class="rc" data-step="1"><span class="n">1</span><div><div class="tt">一次設定</div><div class="ss">Vercel 連上你的 GitHub repo</div></div><span class="chk">✓</span></div>
     <div class="rc" data-step="2"><span class="n">2</span><div><div class="tt">之後每次</div><div class="ss">改完推上 GitHub（git push）</div></div><span class="chk">✓</span></div>
-    <div class="rc" data-step="3"><span class="n">3</span><div><div class="tt">Vercel 自動</div><div class="ss">重新建置、自動換成新版</div></div><span class="chk">✓</span></div>
-    <div class="rc dark" data-step="4"><span class="n">4</span><div><div class="tt">這叫 CI/CD</div><div class="ss">自動部署，不用再手動上傳</div></div><span class="chk">✓</span></div>
+    <div class="rc dark" data-step="3"><span class="n">3</span><div><div class="tt">Vercel 自動上線</div><div class="ss">重新建置、換成新版，這叫 CI/CD</div></div><span class="chk">✓</span></div>
   </div>
 </div>
 <script>
@@ -174,9 +173,9 @@ async function run() {
     brow.classList.add('target'); nm.textContent = NEW_NAME; nm.classList.add('flash'); badge.classList.add('show');
     toast.textContent = '✓ 網站自動更新了'; toast.classList.add('show'); await sleep(1200, t); toast.classList.remove('show'); brow.classList.remove('target');
     // 4：CI/CD
-    setStep(4); setCap('這整套就叫 CI/CD：推上去就自動上線，不用再手動上傳');
+    setCap('這整套就叫 CI/CD：推上去就自動上線，不用再手動上傳');
     await sleep(2200, t);
-    setStep(5); await sleep(3000, t);
+    setStep(4); await sleep(3000, t);
     if (looping) run();
   } catch (e) { if (e !== 'cancel') console.error(e); }
 }
@@ -184,7 +183,7 @@ function finalState() {
   tbody.innerHTML = ''; for (const [cmd, o] of CMDS) { line(PS + cmd, 'vis'); line(o, 'vis'); }
   newCm.classList.add('vis'); impBtn.classList.add('hide'); linked.classList.remove('hide'); st.classList.remove('hide'); status('rdy', 'Ready・已換成新版');
   nm.textContent = NEW_NAME; badge.classList.add('show');
-  setStep(5); caption.textContent = '這整套就叫 CI/CD：推上去就自動上線，不用再手動上傳';
+  setStep(4); caption.textContent = '這整套就叫 CI/CD：推上去就自動上線，不用再手動上傳';
 }
 $('#replay').onclick = () => run();
 $('#loopBtn').onclick = (e) => { looping = !looping; e.target.textContent = '自動循環：' + (looping ? '開' : '關'); };
