@@ -370,14 +370,21 @@ test('學員期待頁顯示學生端連結，電腦也能加入作答', () => {
   const [q] = slide('l-expect').elements.filter((e) => e.type === 'opentext');
   assert.ok(q.y + q.height <= links[0].y && links[0].y + links[0].height <= 540);
 });
-test('手機端：學生端動畫提醒手機橫著拿', () => {
-  assert.match(slide('l-synora').elements[0].html, /手機橫著拿/);
+test('學員端動畫頁一律建議用電腦：預設播電腦版、提示放學生端網址', () => {
+  const h = slide('l-synora').elements[0].html;
+  assert.match(h, /mode='desktop'/);
+  assert.match(h, /<button data-mode="desktop" class="on">用電腦<\/button>/);
+  assert.match(h, /建議用電腦：(\n|\\n)synora\.biz\/app\/student\/AIORRCFD/);
+  assert.ok(!h.includes('手機橫著拿'));
+  assert.match(page('l-synora').heading, /建議用電腦/);
+  assert.match(slide('l-synora').notes, /作答中/);
 });
 
 test('學員端動畫：手機／電腦切換，演加入、作答、自行瀏覽、複製，按鈕名稱照 Synora 學員端', () => {
   const h = slide('l-synora').elements[0].html;
-  for (const w of ['用手機', '用電腦', '加入課堂', '課堂代碼', '你的姓名', '送出', '自行瀏覽', '回到講師', '複製', '全螢幕']) assert.ok(h.includes(w), w);
+  for (const w of ['用手機', '用電腦', '加入課堂', '課堂代碼', '你的姓名', '送出', '自行瀏覽', '回到講師', '複製']) assert.ok(h.includes(w), w);
   assert.match(slide('l-synora').notes, /自行瀏覽/);
+  assert.match(slide('l-synora').notes, /全螢幕/);
 });
 test('學員端動畫裡的頁碼與實際頁序一致', () => {
   const h = slide('l-synora').elements[0].html;

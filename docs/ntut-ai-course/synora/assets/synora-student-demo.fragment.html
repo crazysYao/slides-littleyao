@@ -117,6 +117,9 @@
 #sjd .step:not(.active):not(.fin){opacity:.7}
 #sjd .tip{position:absolute;left:644px;right:44px;top:412px;display:flex;gap:10px;align-items:center;background:var(--y2);border:1.5px dashed var(--yd);border-radius:12px;padding:8px 12px;font-size:14px;font-weight:700;color:var(--ink);line-height:1.4}
 #sjd .tip svg{width:24px;height:24px;flex:none}
+#sjd .tip span{min-width:0;white-space:pre-line;font-size:13px;letter-spacing:-.2px}
+#sjd .tip{gap:7px;padding:8px 10px}
+#sjd .tip svg{width:20px;height:20px}
 .cap #sjd .pv:not(.on),.cap #sjd .pslide:not(.on),.cap #sjd .toast,.cap #sjd .cursor,.cap #sjd .ripple,.cap #sjd .ctl,.cap #sjd .cam,.cap #sjd .backbar{display:none}
 @media (prefers-reduced-motion:reduce){#sjd .toast,#sjd .cursor,#sjd .ripple,#sjd .ctl,#sjd .cam,#sjd .backbar{display:none}}</style>
 <div id="sjd"><div class="outer"><div class="stage" id="stage">
@@ -188,7 +191,7 @@
   <div class="cursor" id="cursor"><svg class="arrow" viewBox="0 0 24 24"><path d="M4 2l15 11.5-6.6.9 3.9 7.4-3 1.5-3.9-7.5L4 20.5z" fill="#fff" stroke="#2B2620" stroke-width="1.6" stroke-linejoin="round"/></svg><div class="touch"></div></div>
 </div></div>
 <div class="caption" id="caption">&nbsp;</div>
-<div class="ctl"><div class="seg" id="modeSeg"><button data-mode="phone" class="on">用手機</button><button data-mode="desktop">用電腦</button></div><button class="btn" id="loopBtn">自動循環：開</button><button class="btn" id="replay">↻ 重播</button></div>
+<div class="ctl"><div class="seg" id="modeSeg"><button data-mode="desktop" class="on">用電腦</button><button data-mode="phone">用手機</button></div><button class="btn" id="loopBtn">自動循環：開</button><button class="btn" id="replay">↻ 重播</button></div>
 <div class="steps">
   <div class="step" data-step="1"><div class="n">1</div>
     <div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="#2B2620" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><path d="M14 14h3v3M21 14v7h-7"/></svg></div>
@@ -203,7 +206,8 @@
     <div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="#2B2620" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="12" height="12" rx="2"/><path d="M5 15V5a2 2 0 0 1 2-2h10"/></svg></div>
     <div><div class="tt">帶走 Prompt</div><div class="s">按複製，貼給你的 AI</div></div><div class="chk">✓</div></div>
 </div>
-<div class="tip" id="tip"><svg viewBox="0 0 24 24" fill="none" stroke="#2B2620" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="6" width="20" height="12" rx="3"/><path d="M18 12h.01"/></svg><span id="tipTxt">手機橫著拿，畫面會比較大</span></div>
+<div class="tip" id="tip"><svg viewBox="0 0 24 24" fill="none" stroke="#2B2620" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="12" rx="2"/><path d="M2 20h20"/></svg><span id="tipTxt">建議用電腦：
+synora.biz/app/student/AIORRCFD</span></div>
 </div>
 <script>
 const $ = s => document.querySelector('#sjd '+s);
@@ -213,7 +217,7 @@ const stage=$('#stage'), cursor=$('#cursor'), device=$('#device'), cam=$('#cam')
       sbTitle=$('#sbTitle'), sbSub=$('#sbSub'), pgNo=$('#pgNo'), pgNav=$('#pgNav'), backbar=$('#backbar'), backBtn=$('#backBtn'),
       copyBtn=$('#copyBtn'), copyLabel=$('#copyLabel'), toast=$('#toast'), caption=$('#caption');
 const scale=.6, CODE='AIORRCFD', NAME='王小明';
-let runId=0, looping=true, mode='phone', cx=480, cy=560;
+let runId=0, looping=true, mode='desktop', cx=480, cy=560;
 const phone=()=>mode==='phone';
 
 // 示意用 QR 圖樣（不是真的連結）：三個定位框＋固定亂數點
@@ -240,7 +244,7 @@ function bars(on){ document.querySelectorAll('#sjd .fl').forEach(f=>f.style.widt
 function applyMode(){
   device.className='device '+mode; stage.classList.toggle('desk',!phone());
   $('#s1s').textContent = phone() ? '掃 QR，填姓名' : '輸入課堂代碼和姓名';
-  $('#tipTxt').textContent = phone() ? '手機橫著拿，畫面會比較大' : '按「全螢幕」，投影片最大';
+  $('#tipTxt').textContent = phone() ? '手機作答可能卡住，建議改用電腦' : '建議用電腦：\nsynora.biz/app/student/AIORRCFD';
 }
 function setFollow(free){ followBtn.classList.toggle('free',free); followTxt.textContent=free?'自行瀏覽':'跟隨'; }
 function setBrowse(no,title,sub){ pgNo.textContent=`第 ${no} 頁`; pgNav.textContent=`${no} / 80`; sbTitle.textContent=title; sbSub.textContent=sub; }
