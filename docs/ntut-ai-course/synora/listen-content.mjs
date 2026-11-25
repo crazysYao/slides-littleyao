@@ -7,6 +7,7 @@ import * as base from './job-site-content.mjs';
 const jpg = (name) => `data:image/jpeg;base64,${readFileSync(new URL(`assets/${name}.jpg`, import.meta.url)).toString('base64')}`;
 
 export const { brand, palette } = base;
+export const footer = '講師 張家鴻 David';
 
 
 const CHAT = 'Synora 連不上時，請大家在 Meet 聊天室打選項字母。';
@@ -226,6 +227,16 @@ export const ORDER = [
     heading: '誰要來跟我 PK？',
     link: ['https://japanes-pk.littleyao.me', '日文 PK 網站', '用手機打開，跟講師同一局對戰'],
     items: ['自願的同學用手機打開網站', '跟講師同一局對戰', '大家看講師分享的畫面'],
+  },
+  {
+    id: 'l-review', layout: 'reviewAsk', section: '收尾', title: '請學員留 Google 評論',
+    notes: '留評論（約 1 分，QA 前）。請大家掃 QR 或點連結留一則 Google 評論。提醒：比起「很棒」，寫出哪一段最有用、今天看到什麼、會推薦給誰，對下一個想來上課的人更有幫助。不勉強，不想寫的直接進 QA。',
+    heading: '今天講得好的話，幫我留一則 Google 評論',
+    lead: ['比起「很棒」，', '具體寫出哪裡好', '更有幫助：'],
+    checks: ['哪一段最有用？例如：Prompt 四招、Skill、上線', '今天看到了什麼？例如：從零做出求職網站', '會推薦給誰？例如：正在找工作的同學'],
+    closing: '你給的星星數，\n能讓更多人知道我們的存在。',
+    qr: 'https://lrypleluliwfgjdcbvoq.supabase.co/storage/v1/object/public/slides/images/983e1cd2-e49e-42b3-92e8-9fdcaa919289/9420c5a7-1fa0-4810-a272-f433930b25ba.png',
+    link: ['https://www.google.com/maps/place//data=!4m3!3m2!1s0x34681f2616ab9e4b:0x9464eaa164ab5c38!12e1?source=g.page.m.ia._&laa=nmx-review-solicitation-ia2', '點這裡留評論', '手機、電腦都能開'],
   },
   'qa',
 ];

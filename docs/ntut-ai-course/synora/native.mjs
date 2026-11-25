@@ -20,6 +20,7 @@ export const makeNative = (slideId, accent = '#f5b400') => {
     // 一整塊原生 svg（假網站手機畫面），講師可在 Synora 整塊換成截圖
     svg: (x, y, width, height, body) =>
       el('svg', { x, y, width, height, src: '', label: '', svgContent: `<svg xmlns="http://www.w3.org/2000/svg" width="${width}" height="${height}" viewBox="0 0 ${width} ${height}">${body}</svg>` }),
+    image: (x, y, width, height, src) => el('image', { x, y, width, height, src, objectFit: 'contain' }),
     copycard: (x, y, width, height, title, content) => el('copycard', { x, y, width, height, title, content, copied: false }),
     fileDownload: (x, y, width, height, [fileUrl, fileName, fileSize, fileType]) =>
       el('fileDownload', { x, y, width, height, fileUrl, fileName, fileSize, fileType }),

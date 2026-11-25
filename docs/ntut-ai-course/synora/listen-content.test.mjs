@@ -72,7 +72,7 @@ test('跟著改字', () => {
 });
 
 test('第三節頁序', () => {
-  assert.deepEqual(ids.slice(ids.indexOf('s3')), ['s3', 'l-quiz-s3-1', 'l-localhost', 'v-ways', 's3-drop', 'v-cli', 'v-github', 'jp-bridge', 'l-pk-first', 'jp-why', 'jp-loop', 'jp-skills', 'jp-scene', 'jp-map', 'l-your-turn', 's3-recap', 'jp-pk', 'qa']);
+  assert.deepEqual(ids.slice(ids.indexOf('s3')), ['s3', 'l-quiz-s3-1', 'l-localhost', 'v-ways', 's3-drop', 'v-cli', 'v-github', 'jp-bridge', 'l-pk-first', 'jp-why', 'jp-loop', 'jp-skills', 'jp-scene', 'jp-map', 'l-your-turn', 's3-recap', 'jp-pk', 'l-review', 'qa']);
 });
 
 test('Vercel', () => {
@@ -409,4 +409,24 @@ test('搶答題正確答案不全排第一個，位置分散', () => {
   const pos = ['l-quiz-s2-1', 'l-quiz-s2-2', 'l-quiz-s2-3', 'l-quiz-s3-1'].map((id) => slide(id).elements.find((e) => e.type === 'quiz').options.findIndex((o) => o.correct));
   assert.ok(!pos.includes(-1), String(pos));
   assert.ok(new Set(pos).size >= 3, String(pos));
+});
+const REVIEW_URL = 'https://www.google.com/maps/place//data=!4m3!3m2!1s0x34681f2616ab9e4b:0x9464eaa164ab5c38!12e1?source=g.page.m.ia._&laa=nmx-review-solicitation-ia2';
+test('每頁右下角有講師資訊，原版沒有', () => {
+  for (const s of deck.slides) assert.match(s.elements[0].html, /<div class="ft">講師 張家鴻 David<\/div>/, s.id);
+  assert.ok(!JSON.stringify(buildDeck(base)).includes('張家鴻 David'));
+});
+test('有講師資訊時，互動元件不壓到右下角（底邊不超過 520）', () => {
+  for (const s of deck.slides) for (const e of s.elements.slice(1)) assert.ok(e.y + e.height <= 520, `${s.id} ${e.type}`);
+  assert.match(slide('l-synora').elements[0].html, /#sjd \.notice\{[^}]*right:250px/);
+});
+test('QA 前一頁請學員留 Google 評論：QR 圖片＋可點連結', () => {
+  assert.equal(ids[ids.indexOf('qa') - 1], 'l-review');
+  const s = slide('l-review');
+  assert.match(s.elements[0].html, /幫我留一則 Google 評論/);
+  assert.match(s.elements[0].html, /具體寫出哪裡好/);
+  const img = s.elements.find((e) => e.type === 'image');
+  assert.match(img.src, /^https:\/\/.+\/storage\/v1\/object\/public\/slides\/.+\.png$/);
+  const link = s.elements.find((e) => e.type === 'link');
+  assert.equal(link.linkUrl, REVIEW_URL);
+  for (const e of [img, link]) assert.ok(e.x + e.width <= 960 && e.y + e.height <= 540, e.type);
 });

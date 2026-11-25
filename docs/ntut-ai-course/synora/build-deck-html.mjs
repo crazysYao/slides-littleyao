@@ -23,7 +23,7 @@ const expand = (p) =>
         correct,
       }));
 
-export const buildDeck = ({ pages, brand, palette = {} }, { only, layouts = defaultLayouts } = {}) => {
+export const buildDeck = ({ pages, brand, palette = {}, footer }, { only, layouts = defaultLayouts } = {}) => {
   const all = pages.flatMap(expand);
   const chosen = only ? all.filter((p) => only.includes(p.id)) : all;
   const slides = chosen.map((p, i) => {
@@ -32,7 +32,7 @@ export const buildDeck = ({ pages, brand, palette = {} }, { only, layouts = defa
     const special = palette.bgFor?.[p.layout] ?? (DARK.has(p.layout) ? palette.dark : undefined);
     const background = special ?? palette.bg;
     const { body, natives = [], loop = false } = layout(p, { palette, n: makeNative(p.id, palette.accent) });
-    const html = pageHtml({ brand, section: p.section, palette, body: p.css ? `${body}<style>${p.css}</style>` : body, loop, background: special });
+    const html = pageHtml({ brand, section: p.section, palette, body: p.css ? `${body}<style>${p.css}</style>` : body, loop, background: special, footer });
     return {
       id: p.id,
       slideNumber: i + 1,
@@ -40,7 +40,8 @@ export const buildDeck = ({ pages, brand, palette = {} }, { only, layouts = defa
       description: '',
       background,
       notes: p.notes,
-      elements: [{ id: `${p.id}-bg`, type: 'html', x: 0, y: 0, width: 960, height: 540, html }, ...natives],
+      // 有講師資訊（右下角 520 以下）時，把伸到那裡的原生元件收短，免得蓋住
+      elements: [{ id: `${p.id}-bg`, type: 'html', x: 0, y: 0, width: 960, height: 540, html }, ...(footer ? natives.map((e) => (e.y + e.height > 520 ? { ...e, height: 520 - e.y } : e)) : natives)],
     };
   });
   return { sections: [], slides };

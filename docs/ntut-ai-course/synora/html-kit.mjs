@@ -59,11 +59,15 @@ ${[1, 2, 3, 4, 5].map((i) => { const a = ((2.8 + 0.7 * (i - 1)) / 9) * 100; retu
 
 const DEFAULTS = { bg: '#fbfaf7', text: '#16161a', accent: '#f5b400', muted: '#62646b', line: '#ebe7de', dark: '#16161a', darkSub: '#c9c6bd' };
 
-export const pageHtml = ({ brand, section, palette, body, loop = false, background }) => {
+export const pageHtml = ({ brand, section, palette, body, loop = false, background, footer }) => {
   const P = { ...DEFAULTS, ...palette };
   const bg = background ? `<div class="paper" style="background:${background}"></div>` : '<div class="paper"></div>';
   const hd = section ? `<div class="hd">${esc(`${brand} · ${section}`)}</div>` : '';
+  // 右下角講師資訊：只有內容檔有給 footer 才加，原版不受影響
+  const ft = footer
+    ? `<style>.ft{position:absolute;right:28px;bottom:3px;font-size:12px;line-height:16px;letter-spacing:.12em;color:${background === P.dark ? P.darkSub : background ? P.text : P.muted};pointer-events:none;z-index:20}</style><div class="ft">${esc(footer)}</div>`
+    : '';
   return `<!doctype html><html><head><meta charset="utf-8">
 <script>if (window.__SYNORA_CAPTURE__) document.documentElement.classList.add('cap')</script>
-<style>${css(P)}${loop ? loopCss(P) : ''}</style></head><body>${bg}${hd}${body}</body></html>`;
+<style>${css(P)}${loop ? loopCss(P) : ''}</style></head><body>${bg}${hd}${body}${ft}</body></html>`;
 };

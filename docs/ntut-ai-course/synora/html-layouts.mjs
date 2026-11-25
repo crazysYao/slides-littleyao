@@ -56,6 +56,17 @@ export const layouts = {
   }),
 
   // 連結任務：標籤＋標題 → 原生連結 → 編號步驟卡
+  // 請學員留 Google 評論：左邊說明怎麼寫，右邊 QR（已上傳的公開圖片）＋可點連結；版面照 Eric 新竹將軍村 jj-review
+  reviewAsk: (p, { palette: P, n }) => ({
+    body:
+      title(p.heading) +
+      `<div style="position:absolute;left:44px;top:132px;width:540px">` +
+      `<div class="in" style="${d(0, 0.1)};font-size:19px;margin-bottom:16px;line-height:1.6">${esc(p.lead[0])}<b style="color:${P.dark}">${esc(p.lead[1])}</b>${esc(p.lead[2])}</div>` +
+      p.checks.map((c, i) => `<div class="in" style="${d(i, 0.2, 0.2)};display:flex;gap:10px;align-items:baseline;font-size:18px;margin-bottom:10px"><b style="color:${P.accent};-webkit-text-stroke:.4px ${P.text}">✓</b><span>${esc(c)}</span></div>`).join('') +
+      `<div class="in" style="${d(0, 0.8)};margin-top:22px;background:${P.dark};color:#fff;border-radius:10px;padding:14px 18px;font-size:19px;font-weight:900;line-height:1.5">${esc(p.closing)}</div></div>` +
+      `<div style="position:absolute;left:656px;top:118px;width:230px;height:230px;background:#fff;border:2px solid ${P.line};border-radius:10px"></div>`,
+    natives: [n.image(666, 128, 210, 210, p.qr), n.link(636, 366, 270, 60, p.link)],
+  }),
   linkTask: (p, { palette: P, n }) => ({
     body:
       `<div class="in" style="position:absolute;left:44px;top:56px;font-size:13px;font-weight:700;color:#fff;background:${P.dark};border-radius:99px;padding:4px 12px">${esc(p.tag)}</div>` +
