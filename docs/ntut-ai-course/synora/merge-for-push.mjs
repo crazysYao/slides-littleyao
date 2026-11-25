@@ -11,13 +11,23 @@ const canon = (v) => (Array.isArray(v) ? v.map(canon) : v && typeof v === 'objec
 // 圖片在本機是 data URI、在遠端是已上傳網址，比對時都當成同一個佔位
 const key = (s) => JSON.stringify(canon({ ...s, slideNumber: 0 })).replace(/data:image\/[a-z]+;base64,[A-Za-z0-9+/=]+/g, 'IMG').replace(/https:\/\/[^"' )]+\.(jpe?g|png|webp)/g, 'IMG');
 
+// 有改的頁：本機的圖片照出現順序換回遠端的版本（已上傳網址或原本的內嵌圖），避免推送時新增大型內嵌圖、丟掉已上傳網址
+const IMG = /data:image\/[a-z]+;base64,[A-Za-z0-9+/=]+|https:\/\/[^"' )]+\.(?:jpe?g|png|webp)/g;
+const keepRemoteImages = (s, old) => {
+  const olds = JSON.stringify(old).match(IMG) ?? [];
+  const json = JSON.stringify(s);
+  if ((json.match(IMG) ?? []).length !== olds.length) return s;
+  let i = 0;
+  return JSON.parse(json.replace(IMG, () => olds[i++]));
+};
+
 const byId = Object.fromEntries(remote.slides.map((s) => [s.id, s]));
 const report = { unchanged: [], changed: [], added: [], removed: [] };
 const slides = local.slides.map((s) => {
   const old = byId[s.id];
   if (!old) return report.added.push(s.id), s;
   if (key(old) === key(s)) return report.unchanged.push(s.id), old;
-  return report.changed.push(s.id), s;
+  return report.changed.push(s.id), keepRemoteImages(s, old);
 });
 report.removed = remote.slides.filter((s) => !local.slides.some((x) => x.id === s.id)).map((s) => s.id);
 slides.forEach((s, i) => (s.slideNumber = i + 1));
