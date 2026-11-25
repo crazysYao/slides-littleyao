@@ -331,9 +331,15 @@ test('QA 最後附 Instagram 聯絡方式（內嵌 QR，不用上傳圖片）', 
 });
 
 test('第 3 頁課綱後接學員期待頁：兩題開放問答', () => {
-  assert.equal(ids[ids.indexOf('s1-outline') + 1], 'l-expect');
+  assert.equal(ids[ids.indexOf('l-synora') + 1], 'l-expect');
   const qs = slide('l-expect').elements.filter((e) => e.type === 'opentext');
   assert.equal(qs.length, 2);
   assert.ok(qs.every((e) => e.question && e.x + e.width <= 960 && e.y + e.height <= 540));
   assert.match(slide('l-expect').notes, /Meet 聊天室/);
+});
+
+test('課綱後先播學生端操作動畫，再進開放問答', () => {
+  assert.deepEqual(ids.slice(ids.indexOf('s1-outline'), ids.indexOf('s1-outline') + 3), ['s1-outline', 'l-synora', 'l-expect']);
+  assert.match(slide('l-synora').elements[0].html, /id="sjd"/);
+  assert.match(slide('l-synora').notes, /AIORRCFD/);
 });

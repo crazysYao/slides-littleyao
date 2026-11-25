@@ -113,6 +113,10 @@ export const ORDER = [
     ],
   },
   's1-outline', {
+    id: 'l-synora', layout: 'opDemo', demo: 'synora-student-demo', section: '開始之前', title: '手機怎麼用 Synora',
+    notes: '學員手機怎麼用（約 1 分）。讓動畫跑一輪，邊播邊講三件事：一、相機掃 QR 或輸入加入碼 AIORRCFD 加入；二、我翻到投票或問答，你的手機會自動跳到同一頁，點一下就送出；三、看到 Prompt 卡按「複製」，回家貼給自己的 AI 就能用。講完直接進下一頁，馬上用手機回答第一個問題。',
+    heading: '今天你的手機這樣用',
+  }, {
     id: 'l-expect', layout: 'openTextPair', section: '開始之前', title: '開放問答：你想帶走什麼',
     notes: '課綱後學員期待（約 2 分，用第一節緩衝的時間）。請大家用手機回答兩題，不用寫長，一兩句就好。邊等邊念幾則出來，告訴大家今天哪一段會回應到；跟今天內容無關的，留到最後 QA 一起聊。Synora 連不上時，請大家在 Meet 聊天室打字。',
     heading: '開始之前，先聽聽你的',
