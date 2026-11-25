@@ -458,3 +458,7 @@ test('終點頁：放 Megan 網站截圖（沿用已上傳的公開網址，不�
   assert.ok(html.includes('src="https://lrypleluliwfgjdcbvoq.supabase.co/storage/v1/object/public/slides/images/0886115d-2379-4932-8497-6b4807777d91/e9d448c7-174d-47da-b61d-2c60f5a57453.jpg"'));
   assert.ok(html.includes('alt="Megan 的網站'));
 });
+
+test('終點頁說明：聽課版不提作品牆，改成帶 Prompt 回家做', () => {
+  assert.equal(page('s1-goal').note, '3 小時後，你會帶走每一張 Prompt，回家也做得出自己的網站。');
+});

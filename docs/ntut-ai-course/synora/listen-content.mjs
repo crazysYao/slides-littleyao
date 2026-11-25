@@ -290,6 +290,7 @@ export const OVERRIDES = {
   },
   's1-goal': {
     heading: '今天你會看到，一個網站從零做到上線',
+    note: '3 小時後，你會帶走每一張 Prompt，回家也做得出自己的網站。',
     link2: ['https://luyen.vercel.app/', 'Megan 的網站', '開南同學（資管）用 AI 做的'],
     shot2: ['https://lrypleluliwfgjdcbvoq.supabase.co/storage/v1/object/public/slides/images/0886115d-2379-4932-8497-6b4807777d91/e9d448c7-174d-47da-b61d-2c60f5a57453.jpg', 'Megan 的網站電腦畫面'],
     notes: '打開講師用今天流程做的網站，切手機畫面給大家看。再點 Megan 的網站：開南資管的同學，也是用 AI 做出來的，不是只有工程師做得到。',
