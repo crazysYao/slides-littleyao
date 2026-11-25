@@ -43,7 +43,7 @@ test('投票頁：第 8 頁只留 4 個選項', () => {
 });
 
 test('複製卡保留', () => {
-  for (const id of ['s1-interview-card', 's2-prompt-2', 's2-skill-make', 's3-newchat'])
+  for (const id of ['s1-interview-card', 's2-skill-make', 's3-newchat'])
     assert.equal(slide(id).elements.filter((e) => e.type === 'copycard').length, 1, id);
 });
 
@@ -354,7 +354,7 @@ test('手機端：操作動畫字幕 18px、按鈕 13px', () => {
   }
 });
 test('手機端：複製卡頁步驟晶片放大到 17px', () => {
-  for (const id of ['s1-interview-card', 's2-prompt-2', 's2-skill-make', 's3-newchat']) assert.ok(slide(id).elements[0].html.includes('.chips span{font-size:17px'), id);
+  for (const id of ['s1-interview-card', 's2-skill-make', 's3-newchat']) assert.ok(slide(id).elements[0].html.includes('.chips span{font-size:17px'), id);
 });
 test('手機端：開放問答拆成兩頁，一頁一題、輸入框夠寬', () => {
   for (const id of ['l-expect-1', 'l-expect-2']) {

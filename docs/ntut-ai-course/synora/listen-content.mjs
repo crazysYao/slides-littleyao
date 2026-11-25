@@ -397,7 +397,7 @@ let nth = 0;
 // 搬了節次的頁，頁首「02 給誰看」要跟著改成聽課版的節次編號
 // 2026-11-25 手機端：學生手機看到等比縮小的整張投影片，只放大這幾頁的字幕、步驟卡與步驟晶片（單頁樣式，其他頁不變）
 const demoCss = (box, [t, s] = ['.rc .tt', '.rc .ss']) =>
-  `#${box} .caption{font-size:18px}#${box} ${t}{font-size:17px}#${box} ${s}{font-size:13px;line-height:1.35}#${box} .btn{font-size:13px}`;
+  `#${box} .caption{font-size:18px}#${box} ${t}{font-size:17px}#${box} ${s}{font-size:13px;line-height:1.35;color:#6B6458}#${box} .rc.dark .ss{color:#c9c6bd}#${box} .btn{font-size:13px}`;
 const CHIPS_CSS = '.chips span{font-size:17px;padding:5px 14px}.chips b{min-width:24px;height:24px;line-height:24px;border-radius:12px;font-size:15px}';
 const CSS = {
   's1-save': demoCss('cpd', ['.step .t', '.step .s']),
@@ -410,7 +410,6 @@ const CSS = {
   'jp-loop': demoCss('alp'),
   'jp-map': demoCss('jpm'),
   's1-interview-card': CHIPS_CSS,
-  's2-prompt-2': CHIPS_CSS,
   's2-skill-make': CHIPS_CSS,
   's3-newchat': CHIPS_CSS,
 };
