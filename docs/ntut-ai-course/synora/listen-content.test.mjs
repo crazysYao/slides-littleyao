@@ -330,16 +330,14 @@ test('QA 最後附 Instagram 聯絡方式（內嵌 QR，不用上傳圖片）', 
   assert.equal(ids.at(-1), 'qa');
 });
 
-test('學生端動畫後接學員期待兩頁，講稿有聊天室備案', () => {
-  assert.deepEqual(ids.slice(ids.indexOf('l-synora') + 1, ids.indexOf('l-synora') + 3), ['l-expect-1', 'l-expect-2']);
-  for (const id of ['l-expect-1', 'l-expect-2']) {
-    for (const e of slide(id).elements.filter((x) => x.type === 'opentext')) assert.ok(e.question && e.x + e.width <= 960 && e.y + e.height <= 540, id);
-    assert.match(slide(id).notes, /Meet 聊天室/, id);
-  }
+test('學生端動畫後接學員期待一頁，講稿有聊天室備案', () => {
+  assert.equal(ids[ids.indexOf('l-synora') + 1], 'l-expect');
+  for (const e of slide('l-expect').elements.filter((x) => x.type === 'opentext')) assert.ok(e.question && e.x + e.width <= 960 && e.y + e.height <= 540);
+  assert.match(slide('l-expect').notes, /Meet 聊天室/);
 });
 
 test('課綱後先播學生端操作動畫，再進開放問答', () => {
-  assert.deepEqual(ids.slice(ids.indexOf('s1-outline'), ids.indexOf('s1-outline') + 3), ['s1-outline', 'l-synora', 'l-expect-1']);
+  assert.deepEqual(ids.slice(ids.indexOf('s1-outline'), ids.indexOf('s1-outline') + 3), ['s1-outline', 'l-synora', 'l-expect']);
   assert.match(slide('l-synora').elements[0].html, /id="sjd"/);
   assert.match(slide('l-synora').notes, /AIORRCFD/);
 });
@@ -356,14 +354,29 @@ test('手機端：操作動畫字幕 18px、按鈕 13px', () => {
 test('手機端：複製卡頁步驟晶片放大到 17px', () => {
   for (const id of ['s1-interview-card', 's2-skill-make', 's3-newchat']) assert.ok(slide(id).elements[0].html.includes('.chips span{font-size:17px'), id);
 });
-test('手機端：開放問答拆成兩頁，一頁一題、輸入框夠寬', () => {
-  for (const id of ['l-expect-1', 'l-expect-2']) {
-    const qs = slide(id).elements.filter((e) => e.type === 'opentext');
-    assert.equal(qs.length, 1, id);
-    assert.ok(qs[0].width >= 800, id);
-  }
-  assert.ok(!ids.includes('l-expect'));
+test('開放問答合成一頁：兩個問題共用一個輸入框、輸入框夠寬', () => {
+  const qs = slide('l-expect').elements.filter((e) => e.type === 'opentext');
+  assert.equal(qs.length, 1);
+  assert.ok(qs[0].width >= 800);
+  assert.match(qs[0].question, /最想帶走什麼/);
+  assert.match(qs[0].question, /讓 AI 幫忙/);
+  assert.ok(!ids.includes('l-expect-1') && !ids.includes('l-expect-2'));
 });
 test('手機端：學生端動畫提醒手機橫著拿', () => {
   assert.match(slide('l-synora').elements[0].html, /手機橫著拿/);
+});
+
+test('學員端動畫：手機／電腦切換，演加入、作答、自行瀏覽、複製，按鈕名稱照 Synora 學員端', () => {
+  const h = slide('l-synora').elements[0].html;
+  for (const w of ['用手機', '用電腦', '加入課堂', '課堂代碼', '你的姓名', '送出', '自行瀏覽', '回到講師', '複製', '全螢幕']) assert.ok(h.includes(w), w);
+  assert.match(slide('l-synora').notes, /自行瀏覽/);
+});
+test('學員端動畫裡的頁碼與實際頁序一致', () => {
+  const h = slide('l-synora').elements[0].html;
+  const no = (id) => ids.indexOf(id) + 1;
+  assert.ok(h.includes(`第 ${no('s1-paid')} 頁`), 's1-paid');
+  assert.ok(h.includes(`setBrowse(${no('s1-login')},'登入聊天 AI'`), 's1-login');
+  assert.ok(h.includes(`setBrowse(${no('s1-gf-2')},`), 's1-gf-2');
+  assert.ok(h.includes(`第 ${no('s2-prompt-2')} 頁`), 's2-prompt-2');
+  assert.ok(h.includes(`/ ${ids.length}`), 'total');
 });

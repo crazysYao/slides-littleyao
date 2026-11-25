@@ -113,19 +113,14 @@ export const ORDER = [
     ],
   },
   's1-outline', {
-    id: 'l-synora', layout: 'opDemo', demo: 'synora-student-demo', section: '開始之前', title: '手機怎麼用 Synora',
-    notes: '學員手機怎麼用（約 1 分）。讓動畫跑一輪，邊播邊講三件事：一、相機掃 QR 或輸入加入碼 AIORRCFD 加入；二、我翻到投票或問答，你的手機會自動跳到同一頁，點一下就送出；三、看到 Prompt 卡按「複製」，回家貼給自己的 AI 就能用。講完直接進下一頁，馬上用手機回答第一個問題。',
+    id: 'l-synora', layout: 'opDemo', demo: 'synora-student-demo', section: '開始之前', title: '學員端怎麼用 Synora',
+    notes: '學員端怎麼用（約 1.5 分）。先播「用手機」一輪，邊播邊講四件事：一、相機掃 QR 或輸入課堂代碼 AIORRCFD，填姓名，按「加入課堂」；二、我翻到投票，你的畫面自動跟上，選好按「送出」；三、想看前面的頁，點「跟隨」切成「自行瀏覽」自己翻，看完按「回到講師」跟上；四、看到 Prompt 卡按「複製」帶回家。手機橫著拿畫面比較大；用電腦的同學按「全螢幕」。有帶電腦的人多，再點左下「用電腦」播一次。講完直接進下一頁，馬上回答第一個問題。',
     heading: '今天你的手機這樣用',
   }, {
-    id: 'l-expect-1', layout: 'openTextPair', section: '開始之前', title: '開放問答：你想帶走什麼',
-    notes: '學員期待 1/2（約 1 分，用第一節緩衝的時間）。請大家用手機回答，不用寫長，一兩句就好。邊等邊念幾則出來，告訴大家今天哪一段會回應到。Synora 連不上時，請大家在 Meet 聊天室打字。',
-    heading: '開始之前，先聽聽你的（1/2）',
-    questions: [['今天這 3 小時，你最想帶走什麼？', '例如：寫出像樣的自我介紹、做出自己的網站']],
-  }, {
-    id: 'l-expect-2', layout: 'openTextPair', section: '開始之前', title: '開放問答：想讓 AI 幫你解決什麼',
-    notes: '學員期待 2/2（約 1 分，用第一節緩衝的時間）。一樣一兩句就好。念幾則出來；跟今天內容無關的，留到最後 QA 一起聊。Synora 連不上時，請大家在 Meet 聊天室打字。',
-    heading: '開始之前，先聽聽你的（2/2）',
-    questions: [['最近有什麼事讓你卡住，想試試看讓 AI 幫忙？', '例如：寫履歷沒頭緒、報告整理不完']],
+    id: 'l-expect', layout: 'openTextPair', section: '開始之前', title: '開放問答：想帶走什麼、想讓 AI 幫什麼',
+    notes: '學員期待（約 2 分，用第一節緩衝的時間）。兩個問題寫在同一格，請大家用手機回答，一兩句就好，挑一題答也可以。邊等邊念幾則出來，告訴大家今天哪一段會回應到；跟今天內容無關的，留到最後 QA 一起聊。Synora 連不上時，請大家在 Meet 聊天室打字。',
+    heading: '開始之前，先聽聽你的',
+    questions: [['今天這 3 小時，你最想帶走什麼？最近有什麼事卡住、想讓 AI 幫忙？', '例如：想寫出像樣的自我介紹；寫履歷沒頭緒']],
   },
   's1', 's1-goal', 's1-login', 's1-paid', 's1-ai-exp',
   's1-problem', 's1-problem-reveal', {
