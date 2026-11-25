@@ -288,7 +288,11 @@ export const OVERRIDES = {
       ['dark', '第三節｜上線＋我的學習系統', '三種方式讓網站上線，再看同一套方法怎麼拿來學日文'],
     ],
   },
-  's1-goal': { heading: '今天你會看到，一個網站從零做到上線' },
+  's1-goal': {
+    heading: '今天你會看到，一個網站從零做到上線',
+    link2: ['https://luyen.vercel.app/', 'Megan 的網站', '開南同學（資管）用 AI 做的'],
+    notes: '打開講師用今天流程做的網站，切手機畫面給大家看。再點 Megan 的網站：開南資管的同學，也是用 AI 做出來的，不是只有工程師做得到。',
+  },
   's1-login': {
     tag: '手機加入 Synora · 帶走今天的 Prompt',
     heading: '今天講師全程用付費版 Claude',

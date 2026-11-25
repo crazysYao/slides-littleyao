@@ -330,7 +330,7 @@ Object.assign(layouts, {
   goalShot: (p, { palette: P, n }) => ({
     body:
       title(p.heading) +
-      abs(`left:44px;top:300px;width:420px;font-size:20px;line-height:1.6;color:${P.muted};border-left:6px solid ${P.accent};padding-left:14px`, esc(p.note), 2) +
+      abs(`left:44px;top:${p.link2 ? 430 : 300}px;width:420px;font-size:20px;line-height:1.6;color:${P.muted};border-left:6px solid ${P.accent};padding-left:14px`, esc(p.note), 2) +
       (p.shotSrc
         ? abs(
             'left:599px;top:132px;width:208px;height:386px;background:#16161a;border-radius:30px;padding:8px;box-sizing:border-box;box-shadow:0 12px 32px rgba(0,0,0,.25)',
@@ -338,7 +338,7 @@ Object.assign(layouts, {
             1,
           )
         : ''),
-    natives: [n.link(44, 160, 420, 110, p.link), ...(p.shotSrc ? [] : [n.shotFrame(490, 140, 426, 370, p.shot, P.muted, P.text)])],
+    natives: [n.link(44, 160, 420, 110, p.link), ...(p.link2 ? [n.link(44, 290, 420, 110, p.link2)] : []), ...(p.shotSrc ? [] : [n.shotFrame(490, 140, 426, 370, p.shot, P.muted, P.text)])],
   }),
 
   iconLinks: (p, { palette: P, n }) => {

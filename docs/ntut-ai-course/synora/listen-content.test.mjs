@@ -446,3 +446,9 @@ test('最後一頁附錄：今天的 5 支短片連結', () => {
   for (const id of ['s2-typhoon-video', 'v-exact', 's3-reel', 'v-token', 'v-newchat']) assert.ok(urls.includes(slide(id) && JSON.stringify(slide(id)).match(/https:\/\/(www\.)?(youtube\.com|youtu\.be|facebook\.com)[^"\\ ]*/)[0]), id);
   assert.equal(urls.length, 5);
 });
+
+test('終點頁：講師網站下面加 Megan 的網站', () => {
+  const links = slide('s1-goal').elements.filter((e) => e.type === 'link');
+  assert.deepEqual(links.map((e) => e.linkUrl), ['https://hi.littleyao.me/zh', 'https://luyen.vercel.app/']);
+  assert.ok(links[1].y > links[0].y + links[0].height);
+});
