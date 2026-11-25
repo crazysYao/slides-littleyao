@@ -72,7 +72,7 @@ test('跟著改字', () => {
 });
 
 test('第三節頁序', () => {
-  assert.deepEqual(ids.slice(ids.indexOf('s3')), ['s3', 'l-quiz-s3-1', 'l-localhost', 'v-ways', 's3-drop', 'v-cli', 'v-github', 'jp-bridge', 'l-pk-first', 'jp-why', 'jp-loop', 'jp-skills', 'jp-scene', 'jp-map', 'l-your-turn', 's3-recap', 'jp-pk', 'l-review', 'qa']);
+  assert.deepEqual(ids.slice(ids.indexOf('s3')), ['s3', 'l-quiz-s3-1', 'l-localhost', 'v-ways', 's3-drop', 'v-cli', 'v-github', 'jp-bridge', 'l-pk-first', 'jp-why', 'jp-loop', 'jp-skills', 'jp-scene', 'jp-map', 'l-your-turn', 's3-recap', 'jp-pk', 'l-review', 'qa', 'l-videos']);
 });
 
 test('Vercel', () => {
@@ -334,7 +334,7 @@ test('QA 最後附 Instagram 聯絡方式（內嵌 QR，不用上傳圖片）', 
   const html = slide('qa').elements[0].html;
   assert.ok(html.includes('@david.jhang.3979'));
   assert.ok(html.includes('<svg') && !html.includes('data:image'));
-  assert.equal(ids.at(-1), 'qa');
+  assert.equal(ids.at(-2), 'qa');
 });
 
 test('學生端動畫後接學員期待一頁，講稿有聊天室備案', () => {
@@ -436,4 +436,13 @@ test('QA 前一頁請學員留 Google 評論：QR 圖片＋可點連結', () => 
   const link = s.elements.find((e) => e.type === 'link');
   assert.equal(link.linkUrl, REVIEW_URL);
   for (const e of [img, link]) assert.ok(e.x + e.width <= 960 && e.y + e.height <= 540, e.type);
+});
+
+test('最後一頁附錄：今天的 5 支短片連結', () => {
+  assert.equal(ids[ids.length - 2], 'qa');
+  assert.equal(ids.at(-1), 'l-videos');
+  assert.equal(page('l-videos').layout, 'iconLinks');
+  const urls = page('l-videos').links.flat().map((x) => x[1]);
+  for (const id of ['s2-typhoon-video', 'v-exact', 's3-reel', 'v-token', 'v-newchat']) assert.ok(urls.includes(slide(id) && JSON.stringify(slide(id)).match(/https:\/\/(www\.)?(youtube\.com|youtu\.be|facebook\.com)[^"\\ ]*/)[0]), id);
+  assert.equal(urls.length, 5);
 });

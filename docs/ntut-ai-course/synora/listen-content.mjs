@@ -246,6 +246,24 @@ export const ORDER = [
     link: ['https://www.google.com/maps/place//data=!4m3!3m2!1s0x34681f2616ab9e4b:0x9464eaa164ab5c38!12e1?source=g.page.m.ia._&laa=nmx-review-solicitation-ia2', '點這裡留評論', '手機、電腦都能開'],
   },
   'qa',
+  {
+    id: 'l-videos', layout: 'iconLinks', section: '附錄', title: '附錄：今天的短片',
+    notes: '附錄，上課不講、不占時間。學員下課後想重看可以自己點；上課時某支短片連結打不開，也可以從這頁找。',
+    tag: '附錄 · 下課後自己看',
+    heading: '今天播過的 5 支短片',
+    links: [
+      [
+        ['', 'https://www.youtube.com/shorts/qJVypjZNBF8', '颱風來襲', '給誰看'],
+        ['', 'https://youtu.be/7vZ9bGW5WoI', '照字面做三明治', 'Skill'],
+        ['', 'https://www.facebook.com/reel/2049912052349573', '全部丟給 AI', '改更好'],
+      ],
+      [
+        ['', 'https://www.youtube.com/shorts/WhC6iSFDtZk', '工程師直播', '資安'],
+        ['', 'https://www.youtube.com/shorts/O_xvhxECTf8', '聊太久的下場', 'Context'],
+      ],
+    ],
+    dark: ['eye', '每支短片都對應一個概念', '看完再想一次：它在講今天的哪一段？'],
+  },
 ];
 
 const DEMO = '講師示範 · 你只要看';

@@ -63,7 +63,7 @@
 | 第三節 11:00–12:00 | 回想搶答 1＋localhost 反諷 1＋Drop 示範 8＋工程師怎麼上線（CLI、GitHub 只播動畫）4＋先看 PK 網站成品 2＋日檢動機 2＋動線 4＋日文情境示範 5＋對照 1＋換你想（文字雲）6＋回顧 1＋跟講師 PK 10＋QA 15 | 60 |
 
 - 產生：`node synora/build-deck-html.mjs /tmp/deck-listen.json synora/listen-content.mjs`
-- 檢查：`node synora/check-deck.mjs /tmp/deck-listen.json --sections --ranges=09:00-09:50=48,10:00-10:50=50,11:00-12:00=60 --expect-pages=82`
+- 檢查：`node synora/check-deck.mjs /tmp/deck-listen.json --sections --ranges=09:00-09:50=48,10:00-10:50=50,11:00-12:00=60 --expect-pages=83`
 - 2026-11-25 手機端：學生手機看到的是等比縮小的整張投影片（直拿約 0.35 倍），投票、搶答、問答、文字雲、複製卡是 Synora 內建元件，字級改不到。已做：第 4 頁提醒手機橫著拿；開放問答一頁一題；9 頁操作動畫的字幕 18px、步驟卡放大（內容檔 `CSS` 單頁樣式，不影響其他頁）；複製卡頁步驟晶片 17px。未驗證：正式站學生端在手機直拿、橫拿的實際縮放
 - 待講師提供：日文示範錄影備案
 - 未驗證（11/19 排練要確認）：

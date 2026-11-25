@@ -178,7 +178,7 @@
     <div class="pv" id="sBrowse">
       <div class="app-top"><span class="lg">S</span><span id="pgNo">第 9 頁</span><span class="follow" id="followBtn"><i></i><span id="followTxt">跟隨</span></span></div>
       <div class="slidebox" id="slidebox"><b id="sbTitle">投票：你有沒有付費的 AI？</b><span id="sbSub">已作答</span></div>
-      <div class="pgnav"><span class="arr" id="prevBtn">‹</span><span id="pgNav">9 / 82</span><span class="arr">›</span></div>
+      <div class="pgnav"><span class="arr" id="prevBtn">‹</span><span id="pgNav">9 / 83</span><span class="arr">›</span></div>
       <div class="backbar" id="backbar">老師已經翻到下一頁<span class="bk" id="backBtn">回到講師</span></div>
     </div>
     <div class="pv" id="sCard">
@@ -249,7 +249,7 @@ function applyMode(){
   $('#tipTxt').textContent = phone() ? '手機作答可能卡住，建議改用電腦' : '建議用電腦：\nsynora.biz/app/student/AIORRCFD';
 }
 function setFollow(free){ followBtn.classList.toggle('free',free); followTxt.textContent=free?'自行瀏覽':'跟隨'; }
-function setBrowse(no,title,sub){ pgNo.textContent=`第 ${no} 頁`; pgNav.textContent=`${no} / 82`; sbTitle.textContent=title; sbSub.textContent=sub; }
+function setBrowse(no,title,sub){ pgNo.textContent=`第 ${no} 頁`; pgNav.textContent=`${no} / 83`; sbTitle.textContent=title; sbSub.textContent=sub; }
 
 function reset(){
   [device,fCode,fName,joined,toast,optPick,backbar,cursor].forEach(e=>e.classList.remove('active','focus','show','pick','down','is-touch'));
