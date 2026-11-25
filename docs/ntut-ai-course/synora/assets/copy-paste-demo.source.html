@@ -128,8 +128,8 @@ h1{font-size:26px;margin:0 0 14px;letter-spacing:.5px}
 
   <div class="bar">
     <div class="seg" id="modeSeg">
-      <button data-mode="phone" class="on">存到手機</button>
-      <button data-mode="desktop">存到電腦</button>
+      <button data-mode="desktop" class="on">存到電腦</button>
+      <button data-mode="phone">存到手機</button>
     </div>
     <div class="ctrls">
       <button class="btn" id="loopBtn">自動循環：開</button>
@@ -157,7 +157,7 @@ h1{font-size:26px;margin:0 0 14px;letter-spacing:.5px}
       </div>
 
       <!-- device -->
-      <div class="device phone" id="device">
+      <div class="device desktop" id="device">
         <div class="screen">
           <div class="notch"></div>
           <div class="statusbar"><span>9:41</span><span>100%</span></div>
@@ -234,7 +234,7 @@ const stage=$('#stage'), outer=$('#outer'), cursor=$('#cursor'), chat=$('#chat')
       noteTitle=$('#noteTitle'), titlePh=$('#titlePh'), tt=$('#tt'), noteBody=$('#noteBody'), bodyPh=$('#bodyPh'),
       pasted=$('#pasted'), menu=$('#menu'), saved=$('#saved'), caption=$('#caption');
 const LINES=['「我的基本資料」','姓名：王小明','職業：國小老師','興趣：登山、烘焙','常用工具：LINE、Google 文件'];
-let runId=0, scale=1, mode='phone', looping=true, cx=480, cy=560;
+let runId=0, scale=1, mode='desktop', looping=true, cx=480, cy=560;
 
 /* ---------- layout ---------- */
 function fit(){ scale=Math.min(1, outer.clientWidth/960); stage.style.transform=`scale(${scale})`; outer.style.height=(480*scale)+'px'; }

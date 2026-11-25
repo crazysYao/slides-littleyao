@@ -9,7 +9,7 @@ const ids = deck.slides.map((s) => s.id);
 const baseIds = new Set(base.pages.map((p) => p.id));
 const slide = (id) => deck.slides.find((s) => s.id === id);
 const page = (id) => listen.pages.find((p) => p.id === id);
-const BASE_HASH = '15738bcdf770e07e43529e0104ee0d23cd491c8b09649e4aaabd686e85ba5a88'; // 9416e39 原版 build；改 html-layouts 讓原版變了就會失敗
+const BASE_HASH = 'c4d87d0920cc740a8dbebfd25e7d14a8188f092c46db4586393f180b0a943e84'; // 2026-11-25 copy-paste-demo 改電腦在前後的原版 build；改 html-layouts 讓原版變了就會失敗
 const STAT = ['poll', 'quiz', 'checkpoint', 'homework', 'showcase', 'webProject', 'wordcloud'];
 
 test('頁序引用的原版 id 都存在', () => {
@@ -395,4 +395,13 @@ test('學員端動畫裡的頁碼與實際頁序一致', () => {
   assert.ok(h.includes(`setBrowse(${no('s1-gf-2')},`), 's1-gf-2');
   assert.ok(h.includes(`第 ${no('s2-prompt-2')} 頁`), 's2-prompt-2');
   assert.ok(h.includes(`/ ${ids.length}`), 'total');
+});
+test('手機／電腦切換一律電腦在前、預設電腦', () => {
+  for (const id of ['l-synora', 's1-save']) {
+    const h = slide(id).elements[0].html;
+    const seg = h.match(/<button data-mode="(\w+)" class="on">[^<]*<\/button>\s*<button data-mode="(\w+)">/);
+    assert.deepEqual(seg && [seg[1], seg[2]], ['desktop', 'phone'], id);
+    assert.match(h, /mode='desktop'/, id);
+  }
+  assert.match(slide('s1-save').elements[0].html, /class="device desktop"/);
 });
