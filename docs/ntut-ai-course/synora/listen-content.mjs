@@ -118,9 +118,10 @@ export const ORDER = [
     heading: '上課時，手機或電腦這樣用',
   }, {
     id: 'l-expect', layout: 'openTextPair', section: '開始之前', title: '開放問答：想帶走什麼、想讓 AI 幫什麼',
-    notes: '學員期待（約 2 分，用第一節緩衝的時間）。兩個問題寫在同一格，請大家用手機回答，一兩句就好，挑一題答也可以。邊等邊念幾則出來，告訴大家今天哪一段會回應到；跟今天內容無關的，留到最後 QA 一起聊。Synora 連不上時，請大家在 Meet 聊天室打字。',
+    notes: '學員期待（約 2 分，用第一節緩衝的時間）。兩個問題寫在同一格，請大家用手機回答，一兩句就好，挑一題答也可以。邊等邊念幾則出來，告訴大家今天哪一段會回應到；跟今天內容無關的，留到最後 QA 一起聊。用電腦上課的，請打開畫面下方的網址加入再作答。Synora 連不上時，請大家在 Meet 聊天室打字。',
     heading: '開始之前，先聽聽你的',
     questions: [['今天這 3 小時，你最想帶走什麼？最近有什麼事卡住、想讓 AI 幫忙？', '例如：想寫出像樣的自我介紹；寫履歷沒頭緒']],
+    link: ['https://synora.biz/app/student/AIORRCFD', '電腦也能填：synora.biz/app/student/AIORRCFD', '用電腦上課的，打開這個網址、輸入姓名加入，就能在這頁作答'],
   },
   's1', 's1-goal', 's1-login', 's1-paid', 's1-ai-exp',
   's1-problem', 's1-problem-reveal', {

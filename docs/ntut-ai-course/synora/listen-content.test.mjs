@@ -362,6 +362,14 @@ test('開放問答合成一頁：兩個問題共用一個輸入框、輸入框�
   assert.match(qs[0].question, /讓 AI 幫忙/);
   assert.ok(!ids.includes('l-expect-1') && !ids.includes('l-expect-2'));
 });
+test('學員期待頁顯示學生端連結，電腦也能加入作答', () => {
+  const links = slide('l-expect').elements.filter((e) => e.type === 'link');
+  assert.equal(links.length, 1);
+  assert.equal(links[0].linkUrl, 'https://synora.biz/app/student/AIORRCFD');
+  assert.match(links[0].linkLabel, /synora\.biz\/app\/student\/AIORRCFD/);
+  const [q] = slide('l-expect').elements.filter((e) => e.type === 'opentext');
+  assert.ok(q.y + q.height <= links[0].y && links[0].y + links[0].height <= 540);
+});
 test('手機端：學生端動畫提醒手機橫著拿', () => {
   assert.match(slide('l-synora').elements[0].html, /手機橫著拿/);
 });
