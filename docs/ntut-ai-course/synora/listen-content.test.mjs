@@ -297,10 +297,17 @@ test('資安頁前先播直播漏金鑰，只留這一支', () => {
 });
 
 test('概念段先出大標題頁，再進例子', () => {
-  for (const [title, first, h] of [['l-desc-title', 's1-drink', '具體描述'], ['l-reader-title', 's2-typhoon-video', '給誰看'], ['l-skill-title', 'v-exact', 'Skill'], ['l-ctx-title', 's3-ctx-classes', 'Context']]) {
+  for (const [title, first, h] of [['l-desc-title', 's1-drink', '具體描述'], ['l-reader-title', 's2-typhoon-video', '給誰看'], ['l-skill-title', 'v-exact', 'Skill'], ['l-ctx-title', 'v-newchat', 'Context']]) {
     assert.equal(ids[ids.indexOf(first) - 1], title, first);
     assert.equal(page(title).heading, h);
   }
+});
+
+test('Context 段先播開新對話短片，再進八堂課', () => {
+  assert.equal(ids[ids.indexOf('s3-ctx-classes') - 1], 'v-newchat');
+  assert.equal(page('v-newchat').layout, 'linkTask');
+  assert.equal(page('v-newchat').link[0], 'https://www.youtube.com/shorts/O_xvhxECTf8');
+  assert.doesNotMatch(page('v-newchat').heading, /新對話|忘/);
 });
 
 test('Skill 段先播照字面做三明治，再進咖啡店', () => {

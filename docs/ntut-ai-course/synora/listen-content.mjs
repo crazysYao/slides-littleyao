@@ -186,6 +186,13 @@ export const ORDER = [
     notes: '先秀大標題 Context，停一拍再進八堂課的例子：接下來這段講的就是它。',
     no: '概念', heading: 'Context', sub: 'AI 這一輪看得到的範圍',
   },
+  {
+    id: 'v-newchat', layout: 'linkTask', section: '03 Context', title: '短片：聊太久的下場',
+    notes: '短片：聊太久的下場，算在 Context 的 7 分鐘裡。播放前先問：跟 AI 聊到最後，你通常會怎麼做？播 10 秒揭曉：ChatGPT 已經什麼都聽不懂，只好開新對話，站在白板前把專案背景、需求、規則從頭講一次。笑完接：大家都遇過，對話太長，AI 開始忘、開始亂講。為什麼會這樣？下一頁八堂課。',
+    tag: '短片 · 10 秒',
+    heading: '跟 AI 聊了一整天，最後你會怎麼做？',
+    link: ['https://www.youtube.com/shorts/O_xvhxECTf8', '看短片', '在 YouTube 開啟'],
+  },
   's3-ctx-classes', 's3-ctx-teachers', 's3-ctx-window', 's3-ctx-reveal', 's3-newchat',
   { id: 's2-qa', layout: 'qa', section: '02 改更好', title: '舉手 QA', notes: '10:41 舉手 QA(9)。', heading: '舉手 QA', sub: '到這裡有聽不懂的地方，現在問。' },
   'break2',
