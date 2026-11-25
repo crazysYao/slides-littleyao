@@ -37,9 +37,9 @@ test('頁序以外的原版頁不會混進來', () => {
   for (const id of ids) if (baseIds.has(id)) assert.ok(ordered.has(id), id);
 });
 
-test('投票頁：第 8 頁只留 4 個選項', () => {
+test('投票頁：第 8 頁 6 個選項', () => {
   for (const id of ['s1-ai-exp', 's1-paid']) assert.equal(page(id)?.layout, 'multiChoice', id);
-  assert.deepEqual(page('s1-ai-exp').options, ['問問題', '寫報告／作業', '寫履歷或自傳', '還沒用過']);
+  assert.deepEqual(page('s1-ai-exp').options, ['問問題', '寫報告／作業', '寫履歷或自傳', '寫程式', '其他', '還沒用過']);
 });
 
 test('複製卡保留', () => {
