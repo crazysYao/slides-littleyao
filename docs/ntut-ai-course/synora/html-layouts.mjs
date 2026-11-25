@@ -518,7 +518,7 @@ Object.assign(layouts, {
   quiz: (p, { n }) => ({ body: '', natives: [n.quiz(p.question, p.options, p.correct)] }),
   wordcloud: (p, { n }) => ({ body: '', natives: [n.wordcloud(p.question, p.maxWords)] }),
   // 標題下左右兩題開放問答
-  openTextPair: (p, { n }) => ({ body: title(p.heading), natives: p.questions.map(([q, ph], i) => n.opentext(q, ph, [44 + i * 444, 130, 428, 380])) }),
+  openTextPair: (p, { n }) => ({ body: title(p.heading), natives: p.questions.map(([q, ph], i, all) => n.opentext(q, ph, all.length === 1 ? [44, 130, 872, 380] : [44 + i * 444, 130, 428, 380])) }),
   showcase: (p, { n }) => ({ body: '', natives: [n.showcase(p.title, p.linkHomework)] }),
   webProject: (p, { n }) => ({ body: '', natives: [n.webProject(p.question, p.methods)] }),
 });

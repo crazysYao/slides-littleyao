@@ -1,6 +1,6 @@
 <style>#sjd,#sjd .stage{font-family:"PingFang TC","Noto Sans TC","Microsoft JhengHei",sans-serif}
 #sjd{--bg:#FBF6EC;--card:#fff;--line:#EDE6D8;--ink:#2B2620;--mute:#8A8275;--y:#F5B400;--yd:#D99A00;--y2:#FFF3CC;--ok:#2E8B57;position:absolute;left:0;top:0;width:960px;height:540px}#sjd *{box-sizing:border-box}
-#sjd .btn{border:1px solid var(--line);background:#fff;font:inherit;font-size:12px;padding:5px 12px;border-radius:999px;cursor:pointer;color:var(--ink)}
+#sjd .btn{border:1px solid var(--line);background:#fff;font:inherit;font-size:13px;padding:5px 12px;border-radius:999px;cursor:pointer;color:var(--ink)}
 #sjd .btn:hover{border-color:var(--y)}
 #sjd .outer{position:absolute;left:44px;top:112px;width:576px;height:288px}
 #sjd .stage{position:absolute;top:0;left:0;width:960px;height:480px;zoom:.6;background:var(--card);border:1px solid var(--line);border-radius:22px;overflow:hidden;display:flex;align-items:center;justify-content:space-around;padding:20px 36px}
@@ -67,7 +67,7 @@
 #sjd .cursor.down .touch{transform:translate(-50%,-50%) scale(.8)}
 #sjd .ripple{position:absolute;z-index:6;width:16px;height:16px;margin:-8px 0 0 -8px;border-radius:50%;border:2px solid var(--y);pointer-events:none;animation:rip .5s ease-out forwards}
 @keyframes rip{to{transform:scale(3.2);opacity:0}}
-#sjd .caption{position:absolute;left:44px;top:406px;width:576px;min-height:28px;font-size:15px;font-weight:600;text-align:center;transition:opacity .25s}
+#sjd .caption{position:absolute;left:44px;top:406px;width:576px;min-height:28px;font-size:18px;font-weight:600;text-align:center;transition:opacity .25s}
 #sjd .caption.fade{opacity:0}
 #sjd .ctl{position:absolute;left:44px;top:446px;display:flex;gap:8px;align-items:center}
 #sjd .steps{position:absolute;left:644px;right:44px;top:112px;display:grid;gap:10px}
@@ -75,13 +75,15 @@
 #sjd .step .n{width:16px;color:var(--mute);font-size:14px;text-align:center}
 #sjd .step .ic{width:40px;height:40px;border-radius:10px;background:var(--y);display:grid;place-items:center;flex:none;transition:transform .3s}
 #sjd .step .ic svg{width:22px;height:22px}
-#sjd .step .tt{font-size:15px;font-weight:700}
-#sjd .step .s{font-size:11px;color:var(--mute);margin-top:2px}
+#sjd .step .tt{font-size:17px;font-weight:700}
+#sjd .step .s{font-size:13px;color:var(--mute);margin-top:2px}
 #sjd .step .chk{margin-left:auto;width:22px;height:22px;font-size:12px;border-radius:50%;background:#E8F6EC;color:var(--ok);display:grid;place-items:center;opacity:0;transform:scale(.5);transition:all .3s;flex:none}
 #sjd .step.active{border-color:var(--y);box-shadow:0 6px 18px rgba(245,180,0,.18)}
 #sjd .step.active .ic{transform:scale(1.08)}
 #sjd .step.fin .chk{opacity:1;transform:none}
 #sjd .step:not(.active):not(.fin){opacity:.7}
+#sjd .tip{position:absolute;left:644px;right:44px;top:350px;display:flex;gap:10px;align-items:center;background:var(--y2);border:1.5px dashed var(--yd);border-radius:12px;padding:10px 14px;font-size:15px;font-weight:700;color:var(--ink)}
+#sjd .tip svg{width:26px;height:26px;flex:none}
 .cap #sjd .pv:not(.on),.cap #sjd .pslide:not(.on),.cap #sjd .toast,.cap #sjd .cursor,.cap #sjd .ripple,.cap #sjd .ctl,.cap #sjd .cam{display:none}
 @media (prefers-reduced-motion:reduce){#sjd .toast,#sjd .cursor,#sjd .ripple,#sjd .ctl,#sjd .cam{display:none}}</style>
 <div id="sjd"><div class="outer"><div class="stage" id="stage">
@@ -154,6 +156,7 @@
     <div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="#2B2620" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="12" height="12" rx="2"/><path d="M5 15V5a2 2 0 0 1 2-2h10"/></svg></div>
     <div><div class="tt">帶走 Prompt</div><div class="s">按複製，貼給自己的 AI</div></div><div class="chk">✓</div></div>
 </div>
+<div class="tip"><svg viewBox="0 0 24 24" fill="none" stroke="#2B2620" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="6" width="20" height="12" rx="3"/><path d="M18 12h.01"/></svg>小提醒：手機橫著拿，畫面會比較大</div>
 </div>
 <script>
 const $ = s => document.querySelector('#sjd '+s);

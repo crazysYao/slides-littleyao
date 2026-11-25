@@ -117,13 +117,15 @@ export const ORDER = [
     notes: '學員手機怎麼用（約 1 分）。讓動畫跑一輪，邊播邊講三件事：一、相機掃 QR 或輸入加入碼 AIORRCFD 加入；二、我翻到投票或問答，你的手機會自動跳到同一頁，點一下就送出；三、看到 Prompt 卡按「複製」，回家貼給自己的 AI 就能用。講完直接進下一頁，馬上用手機回答第一個問題。',
     heading: '今天你的手機這樣用',
   }, {
-    id: 'l-expect', layout: 'openTextPair', section: '開始之前', title: '開放問答：你想帶走什麼',
-    notes: '課綱後學員期待（約 2 分，用第一節緩衝的時間）。請大家用手機回答兩題，不用寫長，一兩句就好。邊等邊念幾則出來，告訴大家今天哪一段會回應到；跟今天內容無關的，留到最後 QA 一起聊。Synora 連不上時，請大家在 Meet 聊天室打字。',
-    heading: '開始之前，先聽聽你的',
-    questions: [
-      ['今天這 3 小時，你最想帶走什麼？', '例如：寫出像樣的自我介紹、做出自己的網站'],
-      ['最近有什麼事讓你卡住，想試試看讓 AI 幫忙？', '例如：寫履歷沒頭緒、報告整理不完'],
-    ],
+    id: 'l-expect-1', layout: 'openTextPair', section: '開始之前', title: '開放問答：你想帶走什麼',
+    notes: '學員期待 1/2（約 1 分，用第一節緩衝的時間）。請大家用手機回答，不用寫長，一兩句就好。邊等邊念幾則出來，告訴大家今天哪一段會回應到。Synora 連不上時，請大家在 Meet 聊天室打字。',
+    heading: '開始之前，先聽聽你的（1/2）',
+    questions: [['今天這 3 小時，你最想帶走什麼？', '例如：寫出像樣的自我介紹、做出自己的網站']],
+  }, {
+    id: 'l-expect-2', layout: 'openTextPair', section: '開始之前', title: '開放問答：想讓 AI 幫你解決什麼',
+    notes: '學員期待 2/2（約 1 分，用第一節緩衝的時間）。一樣一兩句就好。念幾則出來；跟今天內容無關的，留到最後 QA 一起聊。Synora 連不上時，請大家在 Meet 聊天室打字。',
+    heading: '開始之前，先聽聽你的（2/2）',
+    questions: [['最近有什麼事讓你卡住，想試試看讓 AI 幫忙？', '例如：寫履歷沒頭緒、報告整理不完']],
   },
   's1', 's1-goal', 's1-login', 's1-paid', 's1-ai-exp',
   's1-problem', 's1-problem-reveal', {
@@ -393,8 +395,29 @@ const byId = new Map(base.pages.map((p) => [p.id, p]));
 const SECTION_STARTS = ['s1', 's2', 's3'];
 let nth = 0;
 // 搬了節次的頁，頁首「02 給誰看」要跟著改成聽課版的節次編號
+// 2026-11-25 手機端：學生手機看到等比縮小的整張投影片，只放大這幾頁的字幕、步驟卡與步驟晶片（單頁樣式，其他頁不變）
+const demoCss = (box, [t, s] = ['.rc .tt', '.rc .ss']) =>
+  `#${box} .caption{font-size:18px}#${box} ${t}{font-size:17px}#${box} ${s}{font-size:13px;line-height:1.35}#${box} .btn{font-size:13px}`;
+const CHIPS_CSS = '.chips span{font-size:17px;padding:5px 14px}.chips b{min-width:24px;height:24px;line-height:24px;border-radius:12px;font-size:15px}';
+const CSS = {
+  's1-save': demoCss('cpd', ['.step .t', '.step .s']),
+  's1-interview': demoCss('pan'),
+  's2-skill-save': demoCss('sks'),
+  's2-skill-find': demoCss('skf'),
+  'v-cli': demoCss('vcd'),
+  'v-github': demoCss('vgh'),
+  'jp-why': demoCss('jpw'),
+  'jp-loop': demoCss('alp'),
+  'jp-map': demoCss('jpm'),
+  's1-interview-card': CHIPS_CSS,
+  's2-prompt-2': CHIPS_CSS,
+  's2-skill-make': CHIPS_CSS,
+  's3-newchat': CHIPS_CSS,
+};
+
 export const pages = ORDER.map((x) => {
-  const p = typeof x === 'string' ? { ...byId.get(x), ...OVERRIDES[x] } : x;
+  const raw = typeof x === 'string' ? { ...byId.get(x), ...OVERRIDES[x] } : x;
+  const p = CSS[raw.id] ? { ...raw, css: CSS[raw.id] } : raw;
   if (SECTION_STARTS.includes(p.id)) nth += 1;
   return p.section?.match(/^0\d /) ? { ...p, section: `0${nth}${p.section.slice(2)}` } : p;
 });

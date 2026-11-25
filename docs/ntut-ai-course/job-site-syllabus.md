@@ -54,7 +54,7 @@
 
 ## 聽課版（學員只聽不做）
 
-設計：[../superpowers/specs/2026-11-18-ntut-listen-version-design.md](../superpowers/specs/2026-11-18-ntut-listen-version-design.md)。內容沿用原版，變換檔 [synora/listen-content.mjs](synora/listen-content.mjs) 只寫頁序、覆寫與新頁；改原版會自動帶進聽課版（頁序清單以外的新頁除外）。共 78 頁（2026-11-24 attention-review 改版＋資安前直播漏金鑰短片＋localhost 反諷頁＋Skill 前「照字面做三明治」短片＋四個概念標題頁；之前 63 頁）。
+設計：[../superpowers/specs/2026-11-18-ntut-listen-version-design.md](../superpowers/specs/2026-11-18-ntut-listen-version-design.md)。內容沿用原版，變換檔 [synora/listen-content.mjs](synora/listen-content.mjs) 只寫頁序、覆寫與新頁；改原版會自動帶進聽課版（頁序清單以外的新頁除外）。共 81 頁（2026-11-25 加學生端 Synora 操作動畫＋開放問答兩頁；2026-11-24 attention-review 改版＋資安前直播漏金鑰短片＋localhost 反諷頁＋Skill 前「照字面做三明治」短片＋四個概念標題頁；之前 63 頁）。
 
 | 節次 | 內容 | 分 |
 |---|---|---|
@@ -63,7 +63,8 @@
 | 第三節 11:00–12:00 | 回想搶答 1＋localhost 反諷 1＋Drop 示範 8＋工程師怎麼上線（CLI、GitHub 只播動畫）4＋先看 PK 網站成品 2＋日檢動機 2＋動線 4＋日文情境示範 5＋對照 1＋換你想（文字雲）6＋回顧 1＋跟講師 PK 10＋QA 15 | 60 |
 
 - 產生：`node synora/build-deck-html.mjs /tmp/deck-listen.json synora/listen-content.mjs`
-- 檢查：`node synora/check-deck.mjs /tmp/deck-listen.json --sections --ranges=09:00-09:50=48,10:00-10:50=50,11:00-12:00=60 --expect-pages=78`
+- 檢查：`node synora/check-deck.mjs /tmp/deck-listen.json --sections --ranges=09:00-09:50=48,10:00-10:50=50,11:00-12:00=60 --expect-pages=81`
+- 2026-11-25 手機端：學生手機看到的是等比縮小的整張投影片（直拿約 0.35 倍），投票、搶答、問答、文字雲、複製卡是 Synora 內建元件，字級改不到。已做：第 4 頁提醒手機橫著拿；開放問答一頁一題；9 頁操作動畫的字幕 18px、步驟卡放大（內容檔 `CSS` 單頁樣式，不影響其他頁）；複製卡頁步驟晶片 17px。未驗證：正式站學生端在手機直拿、橫拿的實際縮放
 - 待講師提供：日文示範錄影備案
 - 未驗證（11/19 排練要確認）：
   - 付費版 Claude 建 Skill 的路徑「設定 → 功能 → Skills → 新增」（`assets/skill-save-demo-claude.fragment.html`）

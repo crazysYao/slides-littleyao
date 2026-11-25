@@ -32,7 +32,7 @@ export const buildDeck = ({ pages, brand, palette = {} }, { only, layouts = defa
     const special = palette.bgFor?.[p.layout] ?? (DARK.has(p.layout) ? palette.dark : undefined);
     const background = special ?? palette.bg;
     const { body, natives = [], loop = false } = layout(p, { palette, n: makeNative(p.id, palette.accent) });
-    const html = pageHtml({ brand, section: p.section, palette, body, loop, background: special });
+    const html = pageHtml({ brand, section: p.section, palette, body: p.css ? `${body}<style>${p.css}</style>` : body, loop, background: special });
     return {
       id: p.id,
       slideNumber: i + 1,

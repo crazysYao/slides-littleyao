@@ -330,16 +330,40 @@ test('QA 最後附 Instagram 聯絡方式（內嵌 QR，不用上傳圖片）', 
   assert.equal(ids.at(-1), 'qa');
 });
 
-test('第 3 頁課綱後接學員期待頁：兩題開放問答', () => {
-  assert.equal(ids[ids.indexOf('l-synora') + 1], 'l-expect');
-  const qs = slide('l-expect').elements.filter((e) => e.type === 'opentext');
-  assert.equal(qs.length, 2);
-  assert.ok(qs.every((e) => e.question && e.x + e.width <= 960 && e.y + e.height <= 540));
-  assert.match(slide('l-expect').notes, /Meet 聊天室/);
+test('學生端動畫後接學員期待兩頁，講稿有聊天室備案', () => {
+  assert.deepEqual(ids.slice(ids.indexOf('l-synora') + 1, ids.indexOf('l-synora') + 3), ['l-expect-1', 'l-expect-2']);
+  for (const id of ['l-expect-1', 'l-expect-2']) {
+    for (const e of slide(id).elements.filter((x) => x.type === 'opentext')) assert.ok(e.question && e.x + e.width <= 960 && e.y + e.height <= 540, id);
+    assert.match(slide(id).notes, /Meet 聊天室/, id);
+  }
 });
 
 test('課綱後先播學生端操作動畫，再進開放問答', () => {
-  assert.deepEqual(ids.slice(ids.indexOf('s1-outline'), ids.indexOf('s1-outline') + 3), ['s1-outline', 'l-synora', 'l-expect']);
+  assert.deepEqual(ids.slice(ids.indexOf('s1-outline'), ids.indexOf('s1-outline') + 3), ['s1-outline', 'l-synora', 'l-expect-1']);
   assert.match(slide('l-synora').elements[0].html, /id="sjd"/);
   assert.match(slide('l-synora').notes, /AIORRCFD/);
+});
+
+// 2026-11-25 手機端：學生手機看到的是等比縮小的整張投影片，操作動畫字幕與步驟卡、複製卡頁步驟晶片要放大
+const DEMO_BIG = { 's1-save': 'cpd', 's1-interview': 'pan', 's2-skill-save': 'sks', 's2-skill-find': 'skf', 'v-cli': 'vcd', 'v-github': 'vgh', 'jp-why': 'jpw', 'jp-loop': 'alp', 'jp-map': 'jpm' };
+test('手機端：操作動畫字幕 18px、按鈕 13px', () => {
+  for (const [id, box] of Object.entries(DEMO_BIG)) {
+    const h = slide(id).elements[0].html;
+    assert.ok(h.includes(`#${box} .caption{font-size:18px}`), id);
+    assert.ok(h.includes(`#${box} .btn{font-size:13px}`), id);
+  }
+});
+test('手機端：複製卡頁步驟晶片放大到 17px', () => {
+  for (const id of ['s1-interview-card', 's2-prompt-2', 's2-skill-make', 's3-newchat']) assert.ok(slide(id).elements[0].html.includes('.chips span{font-size:17px'), id);
+});
+test('手機端：開放問答拆成兩頁，一頁一題、輸入框夠寬', () => {
+  for (const id of ['l-expect-1', 'l-expect-2']) {
+    const qs = slide(id).elements.filter((e) => e.type === 'opentext');
+    assert.equal(qs.length, 1, id);
+    assert.ok(qs[0].width >= 800, id);
+  }
+  assert.ok(!ids.includes('l-expect'));
+});
+test('手機端：學生端動畫提醒手機橫著拿', () => {
+  assert.match(slide('l-synora').elements[0].html, /手機橫著拿/);
 });
