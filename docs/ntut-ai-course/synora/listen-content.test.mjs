@@ -452,3 +452,9 @@ test('終點頁：講師網站下面加 Megan 的網站', () => {
   assert.deepEqual(links.map((e) => e.linkUrl), ['https://hi.littleyao.me/zh', 'https://luyen.vercel.app/']);
   assert.ok(links[1].y > links[0].y + links[0].height);
 });
+
+test('終點頁：放 Megan 網站截圖（沿用已上傳的公開網址，不內嵌）', () => {
+  const html = slide('s1-goal').elements[0].html;
+  assert.ok(html.includes('src="https://lrypleluliwfgjdcbvoq.supabase.co/storage/v1/object/public/slides/images/0886115d-2379-4932-8497-6b4807777d91/e9d448c7-174d-47da-b61d-2c60f5a57453.jpg"'));
+  assert.ok(html.includes('alt="Megan 的網站'));
+});

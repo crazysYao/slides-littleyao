@@ -331,10 +331,19 @@ Object.assign(layouts, {
     body:
       title(p.heading) +
       abs(`left:44px;top:${p.link2 ? 430 : 300}px;width:420px;font-size:20px;line-height:1.6;color:${P.muted};border-left:6px solid ${P.accent};padding-left:14px`, esc(p.note), 2) +
+      (p.shot2
+        ? abs(
+            'left:474px;top:150px;width:360px;background:#fff;border-radius:12px;overflow:hidden;box-shadow:0 12px 32px rgba(0,0,0,.2);border:1px solid #ddd',
+            `<div style="height:22px;background:#eceff3;display:flex;gap:6px;align-items:center;padding-left:10px"><i style="width:9px;height:9px;border-radius:50%;background:#ff5f57"></i><i style="width:9px;height:9px;border-radius:50%;background:#febc2e"></i><i style="width:9px;height:9px;border-radius:50%;background:#28c840"></i></div><img src="${p.shot2[0]}" alt="${esc(p.shot2[1])}" style="display:block;width:100%;aspect-ratio:16/10;object-fit:cover;object-position:top">`,
+            1,
+          )
+        : '') +
       (p.shotSrc
         ? abs(
-            'left:599px;top:132px;width:208px;height:386px;background:#16161a;border-radius:30px;padding:8px;box-sizing:border-box;box-shadow:0 12px 32px rgba(0,0,0,.25)',
-            `<img src="${p.shotSrc}" alt="${esc(p.shot)}" style="display:block;width:100%;height:100%;object-fit:cover;object-position:top;border-radius:22px">`,
+            p.shot2
+              ? 'left:770px;top:226px;width:146px;height:270px;background:#16161a;border-radius:24px;padding:6px;box-sizing:border-box;box-shadow:0 12px 32px rgba(0,0,0,.35)'
+              : 'left:599px;top:132px;width:208px;height:386px;background:#16161a;border-radius:30px;padding:8px;box-sizing:border-box;box-shadow:0 12px 32px rgba(0,0,0,.25)',
+            `<img src="${p.shotSrc}" alt="${esc(p.shot)}" style="display:block;width:100%;height:100%;object-fit:cover;object-position:top;border-radius:${p.shot2 ? 18 : 22}px">`,
             1,
           )
         : ''),
