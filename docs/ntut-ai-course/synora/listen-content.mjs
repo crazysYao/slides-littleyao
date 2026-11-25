@@ -112,7 +112,16 @@ export const ORDER = [
       ['學員', '49+ 名'],
     ],
   },
-  's1', 's1-outline', 's1-goal', 's1-login', 's1-paid', 's1-ai-exp',
+  's1-outline', {
+    id: 'l-expect', layout: 'openTextPair', section: '開始之前', title: '開放問答：你想帶走什麼',
+    notes: '課綱後學員期待（約 2 分，用第一節緩衝的時間）。請大家用手機回答兩題，不用寫長，一兩句就好。邊等邊念幾則出來，告訴大家今天哪一段會回應到；跟今天內容無關的，留到最後 QA 一起聊。Synora 連不上時，請大家在 Meet 聊天室打字。',
+    heading: '開始之前，先聽聽你的',
+    questions: [
+      ['今天這 3 小時，你最想帶走什麼？', '例如：寫出像樣的自我介紹、做出自己的網站'],
+      ['最近有什麼事讓你卡住，想試試看讓 AI 幫忙？', '例如：寫履歷沒頭緒、報告整理不完'],
+    ],
+  },
+  's1', 's1-goal', 's1-login', 's1-paid', 's1-ai-exp',
   's1-problem', 's1-problem-reveal', {
     id: 'l-desc-title', layout: 'divider', section: '01 具體描述', title: '標題：具體描述',
     notes: '先秀大標題「具體描述」，停一拍再進例子：接下來這段講的就是它。',

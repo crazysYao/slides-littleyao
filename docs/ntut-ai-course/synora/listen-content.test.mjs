@@ -329,3 +329,11 @@ test('QA 最後附 Instagram 聯絡方式（內嵌 QR，不用上傳圖片）', 
   assert.ok(html.includes('<svg') && !html.includes('data:image'));
   assert.equal(ids.at(-1), 'qa');
 });
+
+test('第 3 頁課綱後接學員期待頁：兩題開放問答', () => {
+  assert.equal(ids[ids.indexOf('s1-outline') + 1], 'l-expect');
+  const qs = slide('l-expect').elements.filter((e) => e.type === 'opentext');
+  assert.equal(qs.length, 2);
+  assert.ok(qs.every((e) => e.question && e.x + e.width <= 960 && e.y + e.height <= 540));
+  assert.match(slide('l-expect').notes, /Meet 聊天室/);
+});

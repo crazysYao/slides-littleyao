@@ -24,6 +24,7 @@ export const makeNative = (slideId, accent = '#f5b400') => {
     fileDownload: (x, y, width, height, [fileUrl, fileName, fileSize, fileType]) =>
       el('fileDownload', { x, y, width, height, fileUrl, fileName, fileSize, fileType }),
     wordcloud: (question, maxWords, [x, y, width, height] = FULL) => el('wordcloud', { x, y, width, height, question, maxWords }),
+    opentext: (question, placeholder, [x, y, width, height] = FULL) => el('opentext', { x, y, width, height, question, placeholder, maxLength: 300 }),
     webProject: (question, enabledMethods = ['upload', 'url'], [x, y, width, height] = FULL) =>
       el('webProject', { x, y, width, height, question, enabledMethods, showVoting: true, peerVoteCount: 3 }),
     // showcase 以 linkedHomeworkId 綁定 homework，所以 homework 的 id 由內容檔指定
