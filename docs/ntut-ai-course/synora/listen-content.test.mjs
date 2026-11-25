@@ -378,6 +378,7 @@ test('學員端動畫頁一律建議用電腦：預設播電腦版、提示放�
   assert.ok(!h.includes('手機橫著拿'));
   assert.match(page('l-synora').heading, /建議用電腦/);
   assert.match(slide('l-synora').notes, /作答中/);
+  assert.match(h, /id="phoneNotice"[^>]*>[^<]*手機暫時無法使用互動功能[^<]*平台還在修正 bug/);
 });
 
 test('學員端動畫：手機／電腦切換，演加入、作答、自行瀏覽、複製，按鈕名稱照 Synora 學員端', () => {
