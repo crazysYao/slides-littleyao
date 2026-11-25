@@ -405,3 +405,8 @@ test('手機／電腦切換一律電腦在前、預設電腦', () => {
   }
   assert.match(slide('s1-save').elements[0].html, /class="device desktop"/);
 });
+test('搶答題正確答案不全排第一個，位置分散', () => {
+  const pos = ['l-quiz-s2-1', 'l-quiz-s2-2', 'l-quiz-s2-3', 'l-quiz-s3-1'].map((id) => slide(id).elements.find((e) => e.type === 'quiz').options.findIndex((o) => o.correct));
+  assert.ok(!pos.includes(-1), String(pos));
+  assert.ok(new Set(pos).size >= 3, String(pos));
+});
