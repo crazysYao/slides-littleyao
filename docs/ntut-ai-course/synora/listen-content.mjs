@@ -227,6 +227,7 @@ export const OVERRIDES = {
   // —— 第一節 ——
   cover: {
     notes: '進場時投影 Synora 加入碼 QR，請大家用手機加入，今天的 Prompt 都能從手機複製帶走。今天大家不用動手，看我從零做出一個求職網站，再讓它上線。',
+    date: '北科大 AI 課 · 2026.11.26',
     subtitle: '說清楚你是誰 → 看 AI 做出求職網站 → 讓它上線',
     pills: [['text', '講清楚'], ['text', '做出來'], ['text', '上線']],
   },
