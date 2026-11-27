@@ -1,0 +1,325 @@
+<style>#sjd,#sjd .stage{font-family:"PingFang TC","Noto Sans TC","Microsoft JhengHei",sans-serif}
+#sjd{--bg:#FBF6EC;--card:#fff;--line:#EDE6D8;--ink:#2B2620;--mute:#8A8275;--sub:#6B6458;--y:#F5B400;--yd:#D99A00;--y2:#FFF3CC;--ok:#2E8B57;position:absolute;left:0;top:0;width:960px;height:540px}#sjd *{box-sizing:border-box}
+#sjd .seg{display:inline-flex;background:#fff;border:1px solid var(--line);border-radius:999px;padding:3px}
+#sjd .seg button,#sjd .btn{border:0;background:transparent;font:inherit;font-size:13px;padding:5px 12px;border-radius:999px;cursor:pointer;color:var(--sub)}
+#sjd .seg button.on{background:var(--y);color:#fff;font-weight:700}
+#sjd .btn{background:#fff;border:1px solid var(--line);color:var(--ink)}
+#sjd .btn:hover{border-color:var(--y)}
+#sjd .outer{position:absolute;left:44px;top:112px;width:576px;height:288px}
+#sjd .stage{position:absolute;top:0;left:0;width:960px;height:480px;zoom:.6;background:var(--card);border:1px solid var(--line);border-radius:22px;overflow:hidden;display:flex;align-items:center;justify-content:space-around;padding:20px 30px}
+#sjd .stage::before{content:"";position:absolute;inset:0;background:radial-gradient(circle at 75% 50%,#FFF8E2 0,transparent 55%);pointer-events:none}
+#sjd .proj{position:relative;width:470px;transition:width .5s}
+#sjd .desk .proj{width:360px}
+#sjd .proj-lbl{font-size:14px;font-weight:600;color:var(--mute);margin-bottom:10px;display:flex;gap:8px;align-items:center}
+#sjd .proj-lbl i{width:10px;height:10px;border-radius:50%;background:#e5484d}
+#sjd .pscreen{position:relative;height:290px;background:#16161a;border-radius:14px;padding:10px;box-shadow:0 18px 40px rgba(60,40,0,.16);transition:height .5s}
+#sjd .desk .pscreen{height:230px}
+#sjd .pslide{position:absolute;inset:10px;background:#fbfaf7;border-radius:8px;padding:20px 24px;opacity:0;transition:opacity .4s;overflow:hidden}
+#sjd .pslide.on{opacity:1}
+#sjd .ph1{font-size:21px;font-weight:900;color:var(--ink)}
+#sjd .psub{font-size:14px;color:var(--mute);margin-top:6px}
+#sjd .join{display:flex;gap:22px;align-items:center;margin-top:18px}
+#sjd .qr{width:140px;height:140px;background:#fff;border:6px solid #fff;outline:1px solid var(--line);border-radius:6px;flex:none}
+#sjd .desk .qr{width:100px;height:100px}
+#sjd .code-lbl{font-size:14px;color:var(--mute)}
+#sjd .code{font-family:ui-monospace,'SF Mono',Menlo,monospace;font-size:30px;font-weight:800;letter-spacing:.06em;color:var(--ink);margin-top:4px}
+#sjd .desk .code{font-size:24px}
+#sjd .bars{margin-top:18px;display:grid;gap:12px}
+#sjd .bar{font-size:15px;font-weight:600;color:var(--ink)}
+#sjd .bar .tr{margin-top:5px;height:12px;border-radius:6px;background:#EFE9DC;overflow:hidden}
+#sjd .bar .fl{height:100%;width:0;background:var(--y);border-radius:6px;transition:width .8s cubic-bezier(.4,0,.2,1)}
+#sjd .pcard{margin-top:16px;background:#fff;border:1.5px solid var(--line);border-radius:12px;padding:12px 16px;font-size:14px;line-height:1.7;color:var(--ink)}
+#sjd .pcard b{display:block;font-size:15px;margin-bottom:4px}
+#sjd .device{position:relative;background:#1d1d1f;transition:width .5s,height .5s,border-radius .5s,padding .5s,box-shadow .4s}
+#sjd .device.phone{width:250px;height:440px;border-radius:42px;padding:10px;box-shadow:0 18px 40px rgba(60,40,0,.18)}
+#sjd .device.desktop{width:480px;height:330px;border-radius:14px;padding:1px;background:#d9d4ca;box-shadow:0 18px 40px rgba(60,40,0,.16)}
+#sjd .device.active{box-shadow:0 0 0 4px rgba(245,180,0,.45),0 18px 40px rgba(60,40,0,.18)}
+#sjd .pveen{position:relative;height:100%;background:#fff;overflow:hidden}
+#sjd .phone .pveen{border-radius:32px}
+#sjd .desktop .pveen{border-radius:13px}
+#sjd .notch{position:absolute;top:8px;left:calc(50% - 38px);width:76px;height:20px;background:#1d1d1f;border-radius:12px;z-index:4}
+#sjd .statusbar{position:relative;z-index:3;display:flex;justify-content:space-between;font-size:11px;font-weight:600;padding:10px 22px 4px}
+#sjd .bbar{display:none;align-items:center;gap:8px;background:#F3F0EA;border-bottom:1px solid #e6e1d6;padding:8px 12px;font-size:12px;color:var(--mute)}
+#sjd .bbar .dots{display:flex;gap:6px}#sjd .bbar .dots i{width:10px;height:10px;border-radius:50%;background:#ff5f57}#sjd .bbar .dots i:nth-child(2){background:#febc2e}#sjd .bbar .dots i:nth-child(3){background:#28c840}
+#sjd .bbar .url{flex:1;background:#fff;border-radius:6px;padding:3px 10px}
+#sjd .desktop .notch,#sjd .desktop .statusbar{display:none}
+#sjd .desktop .bbar{display:flex}
+#sjd .pv{position:absolute;left:0;right:0;top:34px;bottom:0;padding:10px 16px;opacity:0;transition:opacity .35s;display:flex;flex-direction:column}
+#sjd .desktop .pv{top:36px;padding:12px 22px}
+#sjd .pv.on{opacity:1}
+#sjd .app-top{display:flex;align-items:center;gap:8px;font-size:13px;font-weight:700;color:var(--ink);margin-bottom:10px}
+#sjd .app-top .lg{width:22px;height:22px;border-radius:6px;background:var(--y);color:#fff;display:grid;place-items:center;font-size:12px;font-weight:800;flex:none}
+#sjd .follow{margin-left:auto;display:inline-flex;gap:5px;align-items:center;font-size:12px;font-weight:700;border-radius:999px;padding:4px 10px;background:#E8F6EC;color:var(--ok);border:1px solid #BFE5CB;transition:all .2s}
+#sjd .follow i{width:7px;height:7px;border-radius:50%;background:var(--ok)}
+#sjd .follow.free{background:var(--y2);color:var(--ink);border-color:var(--y)}
+#sjd .follow.free i{background:var(--yd)}
+#sjd .cam{position:absolute;inset:0;top:-34px;background:#2a2a2c;display:grid;place-items:center;z-index:2}
+#sjd .desktop .cam{display:none}
+#sjd .cam .fr{width:150px;height:150px;border:3px solid #fff;border-radius:18px;position:relative;display:grid;place-items:center}
+#sjd .cam .mini{width:110px;height:110px;opacity:.85}
+#sjd .cam .scanline{position:absolute;left:8px;right:8px;top:10px;height:3px;background:var(--y);border-radius:2px;box-shadow:0 0 10px var(--y)}
+#sjd .cam .lbl{position:absolute;bottom:60px;left:0;right:0;text-align:center;color:#fff;font-size:13px}
+#sjd .field-lbl{font-size:12px;color:var(--sub);margin:4px 0 5px}
+#sjd .field{height:38px;border:1.5px solid var(--line);border-radius:10px;padding:0 12px;display:flex;align-items:center;font-size:16px;font-weight:700;color:var(--ink)}
+#sjd .field.mono{font-family:ui-monospace,'SF Mono',Menlo,monospace;letter-spacing:.06em}
+#sjd .field.focus{border-color:var(--y)}
+#sjd .caret{display:none;width:2px;height:18px;background:var(--yd);margin-left:1px;animation:blink 1s steps(1) 40}
+#sjd .focus .caret{display:inline-block}
+@keyframes blink{50%{opacity:0}}
+#sjd .pbtn{margin-top:12px;height:40px;border-radius:10px;background:var(--y);color:#fff;font-size:15px;font-weight:700;display:grid;place-items:center;transition:transform .15s}
+#sjd .pbtn.press{transform:scale(.94)}
+#sjd .joined{margin-top:10px;text-align:center;color:var(--ok);font-size:12px;font-weight:700;opacity:0;transition:opacity .3s}
+#sjd .joined.show{opacity:1}
+#sjd .qq{font-size:15px;font-weight:700;line-height:1.5;color:var(--ink);margin-bottom:10px}
+#sjd .op{border:1.5px solid var(--line);border-radius:10px;padding:9px 12px;font-size:13px;margin-bottom:7px;color:var(--ink);transition:all .2s}
+#sjd .op.pick{border-color:var(--y);background:var(--y2);font-weight:700}
+#sjd .pbtn.small{height:34px;font-size:14px;margin-top:4px}
+#sjd .pbtn.done2{background:#E8F6EC;color:var(--ok)}
+#sjd .slidebox{flex:1;border:1.5px solid var(--line);border-radius:10px;background:#FBFAF7;padding:12px;font-size:13px;color:var(--ink);position:relative}
+#sjd .slidebox b{display:block;font-size:15px;margin-bottom:6px}
+#sjd .pgnav{display:flex;align-items:center;justify-content:space-between;margin-top:8px;font-size:13px;color:var(--sub);font-weight:700}
+#sjd .pgnav .arr{width:34px;height:30px;border:1.5px solid var(--line);border-radius:8px;display:grid;place-items:center;font-size:16px;color:var(--ink);background:#fff}
+#sjd .backbar{position:absolute;left:12px;right:12px;bottom:12px;background:var(--ink);color:#fff;border-radius:10px;padding:8px 10px;font-size:12px;display:flex;align-items:center;gap:8px;opacity:0;transform:translateY(8px);transition:all .3s}
+#sjd .backbar.show{opacity:1;transform:none}
+#sjd .backbar .bk{margin-left:auto;background:var(--y);color:var(--ink);font-weight:800;border-radius:8px;padding:4px 10px;white-space:nowrap}
+#sjd .cc{border:1.5px solid var(--line);border-radius:12px;padding:12px;font-size:12px;line-height:1.7;color:var(--ink);background:#FBFAF7}
+#sjd .desktop .cc{font-size:13px}
+#sjd .cc b{display:block;font-size:13px;margin-bottom:4px}
+#sjd .copy-btn{margin-top:10px;align-self:flex-start;display:inline-flex;gap:6px;align-items:center;padding:7px 16px;border-radius:999px;border:1px solid var(--line);background:#fff;font-size:13px;color:var(--sub);transition:all .2s}
+#sjd .copy-btn svg{width:15px;height:15px}
+#sjd .copy-btn.press{transform:scale(.9);background:var(--y);color:#fff;border-color:var(--y)}
+#sjd .copy-btn.fin{background:#E8F6EC;color:var(--ok);border-color:#BFE5CB}
+#sjd .toast{position:absolute;top:18px;left:50%;transform:translate(-50%,-20px);background:var(--ink);color:#fff;font-size:14px;padding:9px 18px;border-radius:999px;opacity:0;transition:all .3s;z-index:5;white-space:nowrap}
+#sjd .toast.show{opacity:1;transform:translate(-50%,0)}
+#sjd .cursor{position:absolute;top:0;left:0;z-index:7;pointer-events:none;transform:translate(480px,560px)}
+#sjd .cursor .arrow{width:24px;height:24px;transform:translate(-3px,-2px);transition:transform .12s;filter:drop-shadow(0 2px 3px rgba(0,0,0,.25))}
+#sjd .cursor .touch{display:none;width:34px;height:34px;border-radius:50%;background:rgba(43,38,32,.18);border:2px solid rgba(43,38,32,.35);transform:translate(-50%,-50%);transition:transform .12s}
+#sjd .cursor.is-touch .arrow{display:none}
+#sjd .cursor.is-touch .touch{display:block}
+#sjd .cursor.down .arrow{transform:translate(-3px,-2px) scale(.85)}
+#sjd .cursor.down .touch{transform:translate(-50%,-50%) scale(.8)}
+#sjd .ripple{position:absolute;z-index:6;width:16px;height:16px;margin:-8px 0 0 -8px;border-radius:50%;border:2px solid var(--y);pointer-events:none;animation:rip .5s ease-out forwards}
+@keyframes rip{to{transform:scale(3.2);opacity:0}}
+#sjd .caption{position:absolute;left:44px;top:406px;width:576px;min-height:28px;font-size:18px;font-weight:600;text-align:center;transition:opacity .25s}
+#sjd .caption.fade{opacity:0}
+#sjd .ctl{position:absolute;left:44px;top:446px;display:flex;gap:8px;align-items:center}
+#sjd .steps{position:absolute;left:644px;right:44px;top:112px;display:grid;gap:8px}
+#sjd .step{display:flex;align-items:center;gap:10px;background:#fff;border:1.5px solid var(--line);border-radius:12px;padding:8px 12px;transition:all .3s}
+#sjd .step .n{width:14px;color:var(--mute);font-size:14px;text-align:center;flex:none}
+#sjd .step .ic{width:38px;height:38px;border-radius:10px;background:var(--y);display:grid;place-items:center;flex:none;transition:transform .3s}
+#sjd .step .ic svg{width:21px;height:21px}
+#sjd .step .tt{font-size:17px;font-weight:700}
+#sjd .step .s{font-size:13px;color:var(--sub);margin-top:1px;line-height:1.35}
+#sjd .step .chk{margin-left:auto;width:22px;height:22px;font-size:12px;border-radius:50%;background:#E8F6EC;color:var(--ok);display:grid;place-items:center;opacity:0;transform:scale(.5);transition:all .3s;flex:none}
+#sjd .step.active{border-color:var(--y);box-shadow:0 6px 18px rgba(245,180,0,.18)}
+#sjd .step.active .ic{transform:scale(1.08)}
+#sjd .step.fin .chk{opacity:1;transform:none}
+#sjd .step:not(.active):not(.fin){opacity:.7}
+#sjd .tip{position:absolute;left:644px;right:44px;top:412px;display:flex;gap:10px;align-items:center;background:var(--y2);border:1.5px dashed var(--yd);border-radius:12px;padding:8px 12px;font-size:14px;font-weight:700;color:var(--ink);line-height:1.4}
+#sjd .tip svg{width:24px;height:24px;flex:none}
+#sjd .tip span{min-width:0;white-space:pre-line;font-size:13px;letter-spacing:-.2px}
+#sjd .tip{gap:7px;padding:8px 10px}
+#sjd .tip svg{width:20px;height:20px}
+#sjd .notice{position:absolute;left:44px;right:250px;top:496px;display:flex;align-items:center;gap:8px;background:#fdecea;border:1.5px solid #e5534b;border-radius:10px;padding:6px 12px;font-size:14px;font-weight:700;color:#8a1f17;line-height:1.35}
+.cap #sjd .pv:not(.on),.cap #sjd .pslide:not(.on),.cap #sjd .toast,.cap #sjd .cursor,.cap #sjd .ripple,.cap #sjd .ctl,.cap #sjd .cam,.cap #sjd .backbar{display:none}
+@media (prefers-reduced-motion:reduce){#sjd .toast,#sjd .cursor,#sjd .ripple,#sjd .ctl,#sjd .cam,#sjd .backbar{display:none}}</style>
+<div id="sjd"><div class="outer"><div class="stage" id="stage">
+  <div class="proj">
+    <div class="proj-lbl"><i></i>老師的投影畫面</div>
+    <div class="pscreen">
+      <div class="pslide on" id="pJoin">
+        <div class="ph1">加入今天的課堂</div>
+        <div class="join">
+          <svg class="qr" id="qrBig" viewBox="0 0 25 25" shape-rendering="crispEdges"></svg>
+          <div><div class="code-lbl">課堂代碼</div><div class="code">AIORRCFD</div></div>
+        </div>
+      </div>
+      <div class="pslide" id="pPoll">
+        <div class="ph1">投票：你有沒有付費的 AI？</div>
+        <div class="bars">
+          <div class="bar">ChatGPT 付費版<div class="tr"><div class="fl" data-w="58"></div></div></div>
+          <div class="bar">Claude 付費版<div class="tr"><div class="fl" data-w="30"></div></div></div>
+          <div class="bar">其他或都沒有<div class="tr"><div class="fl" data-w="72"></div></div></div>
+        </div>
+      </div>
+      <div class="pslide" id="pNext">
+        <div class="ph1">我學乖了，然後又錯了</div>
+        <div class="psub">老師講到這一頁了</div>
+      </div>
+      <div class="pslide" id="pCard">
+        <div class="ph1">Prompt ②：網站 v1</div>
+        <div class="pcard"><b>幫我做一個單頁求職網站</b>給誰看：面試官<br>風格：＿＿＿＿</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="device phone" id="device"><div class="pveen">
+    <div class="notch"></div>
+    <div class="statusbar"><span>9:41</span><span>100%</span></div>
+    <div class="bbar"><span class="dots"><i></i><i></i><i></i></span><span class="url">Synora · 學員</span></div>
+    <div class="pv on" id="sJoin">
+      <div class="cam" id="cam"><div class="fr"><svg class="mini" id="qrMini" viewBox="0 0 25 25" shape-rendering="crispEdges"></svg><div class="scanline" id="scan"></div></div><div class="lbl">對準老師畫面上的 QR</div></div>
+      <div class="app-top"><span class="lg">S</span>加入課堂</div>
+      <div class="field-lbl">課堂代碼</div>
+      <div class="field mono" id="fCode"><span id="codeTxt"></span><span class="caret"></span></div>
+      <div class="field-lbl">你的姓名</div>
+      <div class="field" id="fName"><span id="nameTxt"></span><span class="caret"></span></div>
+      <div class="pbtn" id="joinBtn">加入課堂</div>
+      <div class="joined" id="joined">✓ 已加入</div>
+    </div>
+    <div class="pv" id="sPoll">
+      <div class="app-top"><span class="lg">S</span>第 9 頁<span class="follow"><i></i>跟隨</span></div>
+      <div class="qq">你有沒有付費的 AI？</div>
+      <div class="op">ChatGPT 付費版</div>
+      <div class="op" id="optPick">Claude 付費版</div>
+      <div class="op">其他或都沒有</div>
+      <div class="pbtn small" id="sendBtn">送出</div>
+    </div>
+    <div class="pv" id="sBrowse">
+      <div class="app-top"><span class="lg">S</span><span id="pgNo">第 9 頁</span><span class="follow" id="followBtn"><i></i><span id="followTxt">跟隨</span></span></div>
+      <div class="slidebox" id="slidebox"><b id="sbTitle">投票：你有沒有付費的 AI？</b><span id="sbSub">已作答</span></div>
+      <div class="pgnav"><span class="arr" id="prevBtn">‹</span><span id="pgNav">9 / 83</span><span class="arr">›</span></div>
+      <div class="backbar" id="backbar">老師已經翻到下一頁<span class="bk" id="backBtn">回到講師</span></div>
+    </div>
+    <div class="pv" id="sCard">
+      <div class="app-top"><span class="lg">S</span>第 30 頁<span class="follow"><i></i>跟隨</span></div>
+      <div class="cc"><b>Prompt ②：網站 v1</b>幫我做一個單頁求職網站。給誰看：面試官；風格：＿＿</div>
+      <div class="copy-btn" id="copyBtn"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="12" height="12" rx="2"/><path d="M5 15V5a2 2 0 0 1 2-2h10"/></svg><span id="copyLabel">複製</span></div>
+    </div>
+  </div></div>
+
+  <div class="toast" id="toast">✓ 已複製，貼到你自己的 AI 就能用</div>
+  <div class="cursor" id="cursor"><svg class="arrow" viewBox="0 0 24 24"><path d="M4 2l15 11.5-6.6.9 3.9 7.4-3 1.5-3.9-7.5L4 20.5z" fill="#fff" stroke="#2B2620" stroke-width="1.6" stroke-linejoin="round"/></svg><div class="touch"></div></div>
+</div></div>
+<div class="caption" id="caption">&nbsp;</div>
+<div class="ctl"><div class="seg" id="modeSeg"><button data-mode="desktop" class="on">用電腦</button><button data-mode="phone">用手機</button></div><button class="btn" id="loopBtn">自動循環：開</button><button class="btn" id="replay">↻ 重播</button></div>
+<div class="steps">
+  <div class="step" data-step="1"><div class="n">1</div>
+    <div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="#2B2620" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><path d="M14 14h3v3M21 14v7h-7"/></svg></div>
+    <div><div class="tt">加入課堂</div><div class="s" id="s1s">掃 QR，填姓名</div></div><div class="chk">✓</div></div>
+  <div class="step" data-step="2"><div class="n">2</div>
+    <div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="#2B2620" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 20V10M10 20V4M16 20v-7M22 20H2"/></svg></div>
+    <div><div class="tt">跟著作答</div><div class="s">選好按「送出」</div></div><div class="chk">✓</div></div>
+  <div class="step" data-step="3"><div class="n">3</div>
+    <div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="#2B2620" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18l-6-6 6-6"/><rect x="3" y="3" width="18" height="18" rx="3"/></svg></div>
+    <div><div class="tt">自行瀏覽</div><div class="s">翻回前面，再回到講師</div></div><div class="chk">✓</div></div>
+  <div class="step" data-step="4"><div class="n">4</div>
+    <div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="#2B2620" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="12" height="12" rx="2"/><path d="M5 15V5a2 2 0 0 1 2-2h10"/></svg></div>
+    <div><div class="tt">帶走 Prompt</div><div class="s">按複製，貼給你的 AI</div></div><div class="chk">✓</div></div>
+</div>
+<div class="notice" id="phoneNotice">⚠ 手機暫時無法使用互動功能：平台還在修正 bug，投票、問答請改用電腦或平板作答</div>
+<div class="tip" id="tip"><svg viewBox="0 0 24 24" fill="none" stroke="#2B2620" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="12" rx="2"/><path d="M2 20h20"/></svg><span id="tipTxt">建議用電腦：
+synora.biz/app/student/AIORRCFD</span></div>
+</div>
+<script>
+const $ = s => document.querySelector('#sjd '+s);
+const stage=$('#stage'), cursor=$('#cursor'), device=$('#device'), cam=$('#cam'), scan=$('#scan'),
+      fCode=$('#fCode'), codeTxt=$('#codeTxt'), fName=$('#fName'), nameTxt=$('#nameTxt'), joinBtn=$('#joinBtn'), joined=$('#joined'),
+      optPick=$('#optPick'), sendBtn=$('#sendBtn'), followBtn=$('#followBtn'), followTxt=$('#followTxt'), prevBtn=$('#prevBtn'),
+      sbTitle=$('#sbTitle'), sbSub=$('#sbSub'), pgNo=$('#pgNo'), pgNav=$('#pgNav'), backbar=$('#backbar'), backBtn=$('#backBtn'),
+      copyBtn=$('#copyBtn'), copyLabel=$('#copyLabel'), toast=$('#toast'), caption=$('#caption');
+const scale=.6, CODE='AIORRCFD', NAME='王小明';
+let runId=0, looping=true, mode='desktop', cx=480, cy=560;
+const phone=()=>mode==='phone';
+
+// 示意用 QR 圖樣（不是真的連結）：三個定位框＋固定亂數點
+(function(){ let r='', seed=7; const rnd=()=>(seed=(seed*9301+49297)%233280)/233280;
+  const finder=(x,y)=>`<rect x="${x}" y="${y}" width="7" height="7"/><rect x="${x+1}" y="${y+1}" width="5" height="5" fill="#fff"/><rect x="${x+2}" y="${y+2}" width="3" height="3"/>`;
+  for(let y=0;y<25;y++)for(let x=0;x<25;x++){ const inF=(x<8&&y<8)||(x>16&&y<8)||(x<8&&y>16); if(!inF&&rnd()>.52) r+=`<rect x="${x}" y="${y}" width="1" height="1"/>`; }
+  const svg=finder(0,0)+finder(18,0)+finder(0,18)+r;
+  ['#qrBig','#qrMini'].forEach(id=>{ $(id).innerHTML=`<g fill="#16161a">${svg}</g>`; });
+})();
+
+const sleep=(ms,t)=>new Promise((res,rej)=>setTimeout(()=>t!==runId?rej('cancel'):res(),ms));
+function pos(el,fx=.5,fy=.5){ const s=stage.getBoundingClientRect(), r=el.getBoundingClientRect();
+  return {x:(r.left-s.left+r.width*fx)/scale, y:(r.top-s.top+r.height*fy)/scale}; }
+function place(x,y,dur){ cx=x; cy=y; cursor.style.transition=dur?`transform ${dur}ms cubic-bezier(.45,.05,.25,1)`:'none'; cursor.style.transform=`translate(${x}px,${y}px)`; }
+async function move(t,el,fx,fy,dur=700){ const p=pos(el,fx,fy); place(p.x,p.y,dur); await sleep(dur,t); }
+function ripple(){ const r=document.createElement('div'); r.className='ripple'; r.style.left=cx+'px'; r.style.top=cy+'px'; stage.appendChild(r); setTimeout(()=>r.remove(),900); }
+async function click(t){ cursor.classList.add('down'); ripple(); await sleep(140,t); cursor.classList.remove('down'); }
+async function tap(t,el,dur=750){ await move(t,el,.5,.5,dur); await click(t); }
+async function type(t,el,txt){ for(const ch of txt){ el.textContent+=ch; await sleep(120,t); } }
+function setCap(txt){ caption.classList.add('fade'); setTimeout(()=>{caption.textContent=txt; caption.classList.remove('fade');},200); }
+function setStep(n){ document.querySelectorAll('#sjd .step').forEach(s=>{ const k=+s.dataset.step; s.classList.toggle('active',k===n); s.classList.toggle('fin',k<n); }); }
+function show(projId, scrId){ document.querySelectorAll('#sjd .pslide').forEach(e=>e.classList.toggle('on',e.id===projId)); document.querySelectorAll('#sjd .pv').forEach(e=>e.classList.toggle('on',e.id===scrId)); }
+function bars(on){ document.querySelectorAll('#sjd .fl').forEach(f=>f.style.width=on?f.dataset.w+'%':'0'); }
+function applyMode(){
+  device.className='device '+mode; stage.classList.toggle('desk',!phone());
+  $('#s1s').textContent = phone() ? '掃 QR，填姓名' : '輸入課堂代碼和姓名';
+  $('#tipTxt').textContent = phone() ? '手機作答可能卡住，建議改用電腦' : '建議用電腦：\nsynora.biz/app/student/AIORRCFD';
+}
+function setFollow(free){ followBtn.classList.toggle('free',free); followTxt.textContent=free?'自行瀏覽':'跟隨'; }
+function setBrowse(no,title,sub){ pgNo.textContent=`第 ${no} 頁`; pgNav.textContent=`${no} / 83`; sbTitle.textContent=title; sbSub.textContent=sub; }
+
+function reset(){
+  [device,fCode,fName,joined,toast,optPick,backbar,cursor].forEach(e=>e.classList.remove('active','focus','show','pick','down','is-touch'));
+  sendBtn.className='pbtn small'; sendBtn.textContent='送出';
+  copyBtn.className='copy-btn'; copyLabel.textContent='複製'; codeTxt.textContent=''; nameTxt.textContent='';
+  cam.style.display=''; cam.style.opacity=1; scan.getAnimations().forEach(a=>a.cancel());
+  setFollow(false); setBrowse(9,'投票：你有沒有付費的 AI？','已作答');
+  applyMode(); show('pJoin','sJoin'); bars(false); place(480,560,0); setStep(0); caption.innerHTML='&nbsp;';
+}
+
+async function run(){
+  const t=++runId; reset();
+  try{
+    await sleep(600,t);
+    if(phone()) cursor.classList.add('is-touch');
+    // 步驟 1：加入課堂
+    setStep(1); device.classList.add('active');
+    if(phone()){
+      setCap('步驟 1：手機相機對準老師畫面上的 QR');
+      scan.animate([{transform:'translateY(0)'},{transform:'translateY(124px)'},{transform:'translateY(0)'}],{duration:1400,iterations:2});
+      await sleep(2800,t); cam.style.transition='opacity .35s'; cam.style.opacity=0; await sleep(350,t); cam.style.display='none';
+      codeTxt.textContent=CODE; setCap('課堂代碼自動帶入，填上你的姓名');
+    } else {
+      setCap('步驟 1：打開 Synora，輸入老師畫面上的課堂代碼');
+      await tap(t,fCode); fCode.classList.add('focus'); await type(t,codeTxt,CODE); fCode.classList.remove('focus');
+      setCap('再填上你的姓名');
+    }
+    await tap(t,fName); fName.classList.add('focus'); await type(t,nameTxt,NAME); fName.classList.remove('focus');
+    await tap(t,joinBtn); joinBtn.classList.add('press'); await sleep(150,t); joinBtn.classList.remove('press');
+    joined.classList.add('show'); await sleep(1100,t);
+
+    // 步驟 2：跟著作答
+    setStep(2); setCap('步驟 2：老師翻到投票，你的畫面自動跟上');
+    show('pPoll','sPoll'); await sleep(1300,t);
+    await tap(t,optPick); optPick.classList.add('pick');
+    await tap(t,sendBtn,500); sendBtn.classList.add('done2'); sendBtn.textContent='✓ 已作答';
+    setCap('按「送出」，大家的結果出現在投影上'); bars(true); await sleep(1800,t);
+
+    // 步驟 3：自行瀏覽 → 回到講師
+    setStep(3); show('pNext','sBrowse'); setBrowse(9,'投票：你有沒有付費的 AI？','已作答');
+    setCap('步驟 3：想看前面？點「跟隨」切成「自行瀏覽」');
+    await tap(t,followBtn); setFollow(true); await sleep(500,t);
+    await tap(t,prevBtn,600); setBrowse(8,'登入聊天 AI','剛剛沒看清楚的頁，自己翻回來看');
+    await sleep(1200,t); backbar.classList.add('show');
+    setCap('看完按「回到講師」，馬上跟上老師這一頁');
+    await sleep(900,t); await tap(t,backBtn,700); backbar.classList.remove('show'); setFollow(false);
+    setBrowse(17,'我學乖了，然後又錯了','跟老師同一頁'); await sleep(1300,t);
+
+    // 步驟 4：帶走 Prompt
+    setStep(4); setCap('步驟 4：看到 Prompt 卡，按「複製」就帶走了');
+    show('pCard','sCard'); await sleep(1200,t);
+    await tap(t,copyBtn); copyBtn.classList.add('press'); await sleep(120,t); copyBtn.classList.remove('press');
+    copyBtn.classList.add('fin'); copyLabel.textContent='已複製'; toast.classList.add('show');
+    await sleep(1300,t); toast.classList.remove('show');
+    setStep(5); device.classList.remove('active');
+    setCap('完成！只要看、回答、複製，Prompt 都能帶回家');
+    place(cx+80,560,900);
+    await sleep(3200,t);
+    if(looping) run();
+  }catch(e){ if(e!=='cancel') console.error(e); }
+}
+
+document.querySelectorAll('#sjd #modeSeg button').forEach(b=>b.onclick=()=>{
+  document.querySelectorAll('#sjd #modeSeg button').forEach(x=>x.classList.toggle('on',x===b));
+  mode=b.dataset.mode; runId++; applyMode(); setTimeout(run,520);
+});
+$('#replay').onclick=()=>run();
+$('#loopBtn').onclick=e=>{ looping=!looping; e.target.textContent='自動循環：'+(looping?'開':'關'); };
+function finalState(){ applyMode(); cam.style.display='none'; codeTxt.textContent=CODE; nameTxt.textContent=NAME; joined.classList.add('show');
+  show('pCard','sCard'); copyBtn.classList.add('fin'); copyLabel.textContent='已複製';
+  setStep(5); caption.textContent='完成！只要看、回答、複製，Prompt 都能帶回家'; }
+if (window.__SYNORA_CAPTURE__ || matchMedia('(prefers-reduced-motion: reduce)').matches) finalState(); else run();
+</script>

@@ -1,0 +1,113 @@
+<!-- 聽課版：同一套方法換個題目（求職網站 ↔ 學日文，三招一一對上，最後日文 PK 網站上線） -->
+<style>
+#jpm{--line:#EDE6D8;--ink:#2B2620;--mute:#8A8275;--y:#F5B400;--yd:#D99A00;--y2:#FFF3CC;--ok:#2E8B57;position:absolute;left:0;top:0;width:960px;height:540px}
+#jpm *{box-sizing:border-box}
+#jpm .outer{position:absolute;left:44px;top:112px;width:576px;height:288px}
+#jpm .stage{zoom:.6;position:absolute;top:0;left:0;width:960px;height:480px;background:#fff;border:1px solid var(--line);border-radius:22px;overflow:hidden;padding:20px 26px;display:flex;flex-direction:column;gap:12px}
+#jpm .stage::before{content:"";position:absolute;inset:0;background:radial-gradient(circle at 80% 40%,#FFF8E2 0,transparent 55%);pointer-events:none}
+#jpm .heads{position:relative;display:grid;grid-template-columns:1fr 150px 1fr;gap:14px;font-size:18px;font-weight:900;text-align:center}
+#jpm .heads .l{color:var(--mute)}
+#jpm .heads .r{color:var(--yd)}
+#jpm .row{position:relative;display:grid;grid-template-columns:1fr 150px 1fr;gap:14px;align-items:center;height:84px}
+#jpm .side{height:100%;border-radius:14px;border:1.5px solid var(--line);background:#F7F4EE;padding:12px 16px;font-size:17px;font-weight:700;line-height:1.45;display:flex;align-items:center;opacity:0;transition:all .45s cubic-bezier(.3,1.2,.5,1)}
+#jpm .side.l{transform:translateX(-30px)}
+#jpm .side.r{transform:translateX(30px);background:#fff;border-color:var(--y)}
+#jpm .side.vis{opacity:1;transform:none}
+#jpm .mid{position:relative;height:56px;border-radius:999px;background:#fff;border:2px solid var(--line);display:grid;place-items:center;font-size:19px;font-weight:900;color:#bdb6a8;transition:all .35s}
+#jpm .mid.on{background:var(--y);border-color:var(--y);color:#16161a;box-shadow:0 6px 16px rgba(245,180,0,.35)}
+#jpm .mid.fin{background:#16161a;border-color:#16161a;color:#fff}
+#jpm .mid::before,#jpm .mid::after{content:"";position:absolute;top:50%;width:14px;height:3px;background:var(--line);transition:background .35s}
+#jpm .mid::before{left:-16px}
+#jpm .mid::after{right:-16px}
+#jpm .mid.on::before,#jpm .mid.on::after,#jpm .mid.fin::before,#jpm .mid.fin::after{background:var(--y)}
+#jpm .ship{position:relative;margin-top:auto;display:flex;align-items:center;gap:14px;background:#16161a;color:#fff;border-radius:16px;padding:12px 16px;opacity:0;transform:translateY(16px);transition:all .45s}
+#jpm .ship.vis{opacity:1;transform:none}
+#jpm .ship .k{font-size:16px;font-weight:900;color:var(--y);flex:0 0 auto}
+#jpm .addr{flex:1;padding:8px 14px;border-radius:999px;background:#2a2a30;font-family:ui-monospace,Menlo,Consolas,monospace;font-size:17px;min-height:38px}
+#jpm .caret{display:inline-block;width:9px;height:18px;background:var(--y);vertical-align:-3px;margin-left:2px;animation:blink 1s steps(1) 40}
+@keyframes blink{50%{opacity:0}}
+#jpm .live{flex:0 0 auto;padding:5px 12px;border-radius:999px;background:#E8F6EC;color:var(--ok);font-size:14px;font-weight:800;opacity:0;transform:scale(.8);transition:all .35s cubic-bezier(.3,1.6,.5,1)}
+#jpm .live.show{opacity:1;transform:none}
+#jpm .toast{position:absolute;top:12px;left:50%;transform:translate(-50%,-20px);background:var(--ink);color:#fff;font-size:15px;padding:9px 18px;border-radius:999px;opacity:0;transition:all .3s;z-index:5}
+#jpm .toast.show{opacity:1;transform:translate(-50%,0)}
+#jpm .caption{position:absolute;left:44px;top:406px;width:576px;text-align:center;font-size:15px;font-weight:700;min-height:22px;transition:opacity .25s}
+#jpm .caption.fade{opacity:0}
+#jpm .ctl{position:absolute;left:44px;top:446px;display:flex;gap:8px}
+#jpm .btn{border:1px solid var(--line);background:#fff;font:inherit;font-size:12px;padding:5px 12px;border-radius:999px;cursor:pointer;color:var(--ink)}
+#jpm .cards{position:absolute;left:644px;right:44px;top:112px;display:grid;gap:10px}
+#jpm .rc{display:flex;align-items:center;gap:10px;background:#fff;border:1.5px solid var(--line);border-radius:12px;padding:10px 12px;transition:all .3s}
+#jpm .rc.dark{background:#16161a;border-color:#16161a;color:#fff}
+#jpm .rc .n{flex:0 0 26px;height:26px;border-radius:13px;background:var(--y);color:#16161a;display:grid;place-items:center;font-weight:900;font-size:13px}
+#jpm .rc .tt{font-size:14px;font-weight:800}
+#jpm .rc .ss{font-size:11px;color:var(--mute);margin-top:2px;line-height:1.4}
+#jpm .rc.dark .ss{color:#c9c6bd}
+#jpm .rc .chk{margin-left:auto;flex:0 0 22px;height:22px;border-radius:50%;background:#E8F6EC;color:var(--ok);display:grid;place-items:center;font-size:12px;opacity:0;transform:scale(.5);transition:all .3s}
+#jpm .rc.active{border-color:var(--y);box-shadow:0 6px 18px rgba(245,180,0,.2)}
+#jpm .rc.fin .chk{opacity:1;transform:none}
+#jpm .rc:not(.active):not(.fin){opacity:.7}
+.cap #jpm .toast,.cap #jpm .ctl,.cap #jpm .caret{display:none}
+@media (prefers-reduced-motion:reduce){#jpm .toast{display:none}}
+</style>
+<div id="jpm">
+  <div class="outer"><div class="stage" id="stage">
+    <div class="heads"><span class="l">求職網站</span><span></span><span class="r">學日文</span></div>
+    <div class="row"><div class="side l">我的基本資料</div><div class="mid">基本資料</div><div class="side r">計畫、程度、複習清單</div></div>
+    <div class="row"><div class="side l">做網站的做法</div><div class="mid">Skill</div><div class="side r">打卡、測驗、改句子</div></div>
+    <div class="row"><div class="side l">開新對話只貼副本</div><div class="mid">Context</div><div class="side r">只讀我的錯題出題</div></div>
+    <div class="ship" id="ship"><span class="k">上線</span><span class="addr" id="addr"></span><span class="live" id="live">✓ 推上 GitHub 自動上線</span></div>
+    <div class="toast" id="toast"></div>
+  </div></div>
+  <div class="caption" id="caption">&nbsp;</div>
+  <div class="ctl"><button class="btn" id="loopBtn">自動循環：開</button><button class="btn" id="replay">↻ 重播</button></div>
+  <div class="cards">
+    <div class="rc" data-step="1"><span class="n">1</span><div><div class="tt">基本資料</div><div class="ss">AI 先認識你是誰</div></div><span class="chk">✓</span></div>
+    <div class="rc" data-step="2"><span class="n">2</span><div><div class="tt">Skill</div><div class="ss">把做法存起來，下次直接用</div></div><span class="chk">✓</span></div>
+    <div class="rc" data-step="3"><span class="n">3</span><div><div class="tt">Context</div><div class="ss">只給 AI 需要的那一份</div></div><span class="chk">✓</span></div>
+  </div>
+</div>
+<script>
+(() => {
+const $ = (s) => document.querySelector('#jpm ' + s);
+const rows = [...document.querySelectorAll('#jpm .row')], ship = $('#ship'), addr = $('#addr'), live = $('#live'), toast = $('#toast'), caption = $('#caption');
+const URL_ = 'japanes-pk.littleyao.me';
+const CAPS = ['基本資料：求職放履歷素材，日文放計畫、程度和複習清單', 'Skill：求職是做網站的做法，日文是打卡、測驗、改句子', 'Context：一樣只給 AI 需要的那一份，日文只讀我的錯題'];
+let runId = 0, looping = true;
+const sleep = (ms, t) => new Promise((res, rej) => setTimeout(() => (t !== runId ? rej('cancel') : res()), ms));
+const setCap = (txt) => { caption.classList.add('fade'); setTimeout(() => { caption.textContent = txt; caption.classList.remove('fade'); }, 200); };
+const setStep = (n) => document.querySelectorAll('#jpm .rc').forEach((s) => { const k = +s.dataset.step; s.classList.toggle('active', k === n); s.classList.toggle('fin', k < n); });
+const show = (el) => requestAnimationFrame(() => requestAnimationFrame(() => el.classList.add('vis')));
+function reset() {
+  rows.forEach((r) => { r.querySelectorAll('.side').forEach((s) => s.classList.remove('vis')); r.querySelector('.mid').className = 'mid'; });
+  ship.classList.remove('vis'); addr.textContent = ''; live.classList.remove('show'); toast.classList.remove('show');
+  setStep(0); caption.innerHTML = '&nbsp;';
+}
+async function run() {
+  const t = ++runId; reset();
+  try {
+    await sleep(500, t);
+    for (let i = 0; i < 3; i++) {
+      const r = rows[i], [l, rr] = r.querySelectorAll('.side'), m = r.querySelector('.mid');
+      setStep(i + 1); setCap(CAPS[i]);
+      m.classList.add('on'); show(l); await sleep(900, t); show(rr); await sleep(1700, t);
+      m.className = 'mid fin';
+    }
+    setStep(4); setCap('上線：日文練習也做成 PK 網站，用第三種方式上線');
+    show(ship); await sleep(500, t);
+    addr.innerHTML = '<span class="u"></span><span class="caret"></span>'; const u = addr.querySelector('.u');
+    for (const ch of URL_) { u.textContent += ch; await sleep(55, t); }
+    await sleep(300, t); addr.querySelector('.caret').remove(); live.classList.add('show');
+    toast.textContent = '同一套方法，換個題目也能用'; toast.classList.add('show'); await sleep(1600, t); toast.classList.remove('show');
+    setStep(4); await sleep(3000, t);
+    if (looping) run();
+  } catch (e) { if (e !== 'cancel') console.error(e); }
+}
+function finalState() {
+  rows.forEach((r) => { r.querySelectorAll('.side').forEach((s) => s.classList.add('vis')); r.querySelector('.mid').className = 'mid fin'; });
+  ship.classList.add('vis'); addr.textContent = URL_; live.classList.add('show');
+  setStep(4); caption.textContent = '同一套方法：基本資料、Skill、Context，換個題目也能用';
+}
+$('#replay').onclick = () => run();
+$('#loopBtn').onclick = (e) => { looping = !looping; e.target.textContent = '自動循環：' + (looping ? '開' : '關'); };
+if (window.__SYNORA_CAPTURE__ || matchMedia('(prefers-reduced-motion: reduce)').matches) finalState(); else run();
+})();
+</script>

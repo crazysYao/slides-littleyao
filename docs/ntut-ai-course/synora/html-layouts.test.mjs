@@ -287,3 +287,83 @@ test('photo：照片放在 HTML 裡，沒有原生元件', () => {
   assert.match(r.body, /那天，抬頭就是天空/);
   assert.deepEqual(r.natives, []);
 });
+
+test('photoStory：給 photos 時左邊上下疊兩張圖', () => {
+  const photos = [
+    { src: 'data:image/jpeg;base64,IN', alt: '室內' },
+    { src: 'data:image/jpeg;base64,OUT', alt: '室外' },
+  ];
+  const r = layouts.photoStory({ heading: '我家真的遇過', lines: ['a', 'b', 'c'], photos }, { palette });
+  for (const ph of photos) assert.ok(r.body.includes(`src="${ph.src}" alt="${ph.alt}"`));
+  assert.equal((r.body.match(/<img /g) || []).length, 2);
+});
+
+test('handRaise：問題、選項字母、舉手圖示、不出原生元件', () => {
+  const n = makeNative('hr', palette.accent);
+  const opts = ['還沒用過', '問問題', '寫報告／作業', '寫履歷或自傳', '翻譯', '做簡報', '寫程式', '做圖'];
+  const out = layouts.handRaise({ id: 'hr', heading: '你用 AI 做過哪些事？', options: opts }, { palette, n });
+  assert.ok(out.body.includes('你用 AI 做過哪些事？'));
+  for (const o of opts) assert.ok(out.body.includes(esc(o)), o);
+  for (const L of 'ABCDEFGH') assert.ok(out.body.includes(`>${L}<`), L);
+  assert.ok(out.body.includes('class="hand"'));
+  assert.equal(out.natives.length, 0);
+  const bare = layouts.handRaise({ id: 'hr2', heading: '看懂的舉手' }, { palette, n });
+  assert.ok(bare.body.includes('看懂的舉手') && bare.body.includes('class="hand"'));
+});
+
+test('shotPair：兩個截圖框都在畫面內', () => {
+  const n = makeNative('sp', palette.accent);
+  const out = layouts.shotPair({ id: 'sp', heading: 'v1 → v2', shots: ['待講師提供：網站 v1 截圖', '待講師提供：網站 v2 截圖'] }, { palette, n });
+  assert.equal(out.natives.length, 2);
+  for (const e of out.natives) {
+    assert.equal(e.type, 'svg');
+    assert.ok(e.x >= 0 && e.y >= 0 && e.x + e.width <= 960 && e.y + e.height <= 540);
+  }
+});
+
+test('photoWall：照片依序排、每張有經歷標籤、右側事實卡、不出原生元件', () => {
+  const n = makeNative('pw', palette.accent);
+  const photos = [
+    { src: 'data:image/jpeg;base64,AAA', label: '安東社大', sub: 'AI 課程', pos: 'center 30%' },
+    { src: 'data:image/jpeg;base64,BBB', label: '開南大學', sub: '電腦教室' },
+  ];
+  const facts = [['身份', '後端工程師 7+ 年'], ['學員', '49+ 名']];
+  const out = layouts.photoWall({ id: 'pw', heading: '我是 David', photos, facts }, { palette, n });
+  assert.ok(out.body.includes('我是 David'));
+  for (const ph of photos) {
+    assert.ok(out.body.includes(`src="${ph.src}"`), ph.src);
+    assert.ok(out.body.includes(esc(ph.label)) && out.body.includes(esc(ph.sub)), ph.label);
+  }
+  assert.ok(out.body.includes('object-position:center 30%'));
+  for (const [k, v] of facts) assert.ok(out.body.includes(esc(k)) && out.body.includes(esc(v)), k);
+  assert.equal(out.body.includes('infinite'), false);
+  assert.deepEqual(out.natives, []);
+});
+
+test('opDemo：copy 為真時右下放複製卡', () => {
+  const n = makeNative('od', palette.accent);
+  const out = layouts.opDemo({ id: 'od', heading: 'H', demo: 'copy-paste-demo', copy: true, cardTitle: '卡', prompt: 'P' }, { palette, n });
+  assert.equal(out.natives.length, 1);
+  assert.equal(out.natives[0].type, 'copycard');
+  assert.equal(out.natives[0].content, 'P');
+});
+
+test('bigPrompt：有 after 時在下方加「讓它跑」提示，沒有就不加', () => {
+  const n = makeNative('bp', palette.accent);
+  const out = layouts.bigPrompt({ id: 'bp', caption: 'C', prompt: 'P', after: '然後就讓它自己跑' }, { palette, n });
+  assert.ok(out.body.includes('然後就讓它自己跑') && out.body.includes('class="run"'));
+  assert.equal(out.body.includes('infinite'), false);
+  const bare = layouts.bigPrompt({ id: 'bp2', caption: 'C', prompt: 'P' }, { palette, n });
+  assert.equal(bare.body.includes('class="run"'), false);
+});
+
+test('sameMove：女朋友與 AI 圖示對照、同一個動作相反結果、結論三項', () => {
+  const n = makeNative('sm', palette.accent);
+  const p = { id: 'sm', heading: '但同一招，AI 最吃', mid: '同一招', left: { say: '好煩喔…', act: '你追問細節 → 她更氣', ok: false, verdict: '不解風情' }, right: { say: '幫我寫自我介紹', act: '你給足細節 → 它才寫對', ok: true, verdict: '具體描述' }, give: ['你要主動給', ['發生什麼事', '要什麼結果', '怎樣算做好']] };
+  const out = layouts.sameMove(p, { palette, n });
+  for (const w of ['但同一招，AI 最吃', '同一招', '好煩喔…', '這叫不解風情', '幫我寫自我介紹', '這叫具體描述', '你追問細節 → 她更氣', '你給足細節 → 它才寫對', '你要主動給', '發生什麼事', '要什麼結果', '怎樣算做好'])
+    assert.ok(out.body.includes(esc(w)), w);
+  assert.equal((out.body.match(/<svg /g) ?? []).length, 2);
+  assert.ok(out.body.includes('✗') && out.body.includes('✓'));
+  assert.deepEqual(out.natives, []);
+});

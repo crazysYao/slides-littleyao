@@ -130,7 +130,7 @@
       </div>
 
       <!-- device -->
-      <div class="device phone" id="device">
+      <div class="device desktop" id="device">
         <div class="screen">
           <div class="notch"></div>
           <div class="statusbar"><span>9:41</span><span>100%</span></div>
@@ -174,7 +174,7 @@
         <div class="touch"></div>
       </div>
     </div>
-</div><div class="caption" id="caption">&nbsp;</div><div class="ctl"><div class="seg" id="modeSeg"><button data-mode="phone" class="on">存到手機</button><button data-mode="desktop">存到電腦</button></div><button class="btn" id="loopBtn">自動循環：開</button><button class="btn" id="replay">↻ 重播</button></div><div class="steps">
+</div><div class="caption" id="caption">&nbsp;</div><div class="ctl"><div class="seg" id="modeSeg"><button data-mode="desktop" class="on">存到電腦</button><button data-mode="phone">存到手機</button></div><button class="btn" id="loopBtn">自動循環：開</button><button class="btn" id="replay">↻ 重播</button></div><div class="steps">
     <div class="step" data-step="1">
       <div class="n">1</div>
       <div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="#2B2620" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="12" height="12" rx="2"/><path d="M5 15V5a2 2 0 0 1 2-2h10"/></svg></div>
@@ -202,7 +202,7 @@ const stage=$('#stage'), outer=$('#outer'), cursor=$('#cursor'), chat=$('#chat')
       noteTitle=$('#noteTitle'), titlePh=$('#titlePh'), tt=$('#tt'), noteBody=$('#noteBody'), bodyPh=$('#bodyPh'),
       pasted=$('#pasted'), menu=$('#menu'), saved=$('#saved'), caption=$('#caption');
 const LINES=['「我的基本資料」','學校：北科大 資工系','想做：前端工程師','專題：校園二手書平台','技能：HTML、Figma'];
-let runId=0, scale=1, mode='phone', looping=true, cx=480, cy=560;
+let runId=0, scale=1, mode='desktop', looping=true, cx=480, cy=560;
 
 /* ---------- layout ---------- */
 scale=.6;

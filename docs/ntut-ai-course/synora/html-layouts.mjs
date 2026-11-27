@@ -56,6 +56,17 @@ export const layouts = {
   }),
 
   // 連結任務：標籤＋標題 → 原生連結 → 編號步驟卡
+  // 請學員留 Google 評論：左邊說明怎麼寫，右邊 QR（已上傳的公開圖片）＋可點連結；版面照 Eric 新竹將軍村 jj-review
+  reviewAsk: (p, { palette: P, n }) => ({
+    body:
+      title(p.heading) +
+      `<div style="position:absolute;left:44px;top:132px;width:540px">` +
+      `<div class="in" style="${d(0, 0.1)};font-size:19px;margin-bottom:16px;line-height:1.6">${esc(p.lead[0])}<b style="color:${P.dark}">${esc(p.lead[1])}</b>${esc(p.lead[2])}</div>` +
+      p.checks.map((c, i) => `<div class="in" style="${d(i, 0.2, 0.2)};display:flex;gap:10px;align-items:baseline;font-size:18px;margin-bottom:10px"><b style="color:${P.accent};-webkit-text-stroke:.4px ${P.text}">✓</b><span>${esc(c)}</span></div>`).join('') +
+      `<div class="in" style="${d(0, 0.8)};margin-top:22px;background:${P.dark};color:#fff;border-radius:10px;padding:14px 18px;font-size:19px;font-weight:900;line-height:1.5">${esc(p.closing)}</div></div>` +
+      `<div style="position:absolute;left:656px;top:118px;width:230px;height:230px;background:#fff;border:2px solid ${P.line};border-radius:10px"></div>`,
+    natives: [n.image(666, 128, 210, 210, p.qr), n.link(636, 366, 270, 60, p.link)],
+  }),
   linkTask: (p, { palette: P, n }) => ({
     body:
       `<div class="in" style="position:absolute;left:44px;top:56px;font-size:13px;font-weight:700;color:#fff;background:${P.dark};border-radius:99px;padding:4px 12px">${esc(p.tag)}</div>` +
@@ -144,7 +155,10 @@ Object.assign(layouts, {
   bigPrompt: (p, { palette: P }) => ({
     body: centerCol(
       lineIn(0, `font-size:20px;font-weight:700;color:${P.muted}`, esc(p.caption)) +
-        lineIn(1, `background:${P.dark};color:#fff;border-radius:28px;padding:22px 56px;font-size:48px;font-weight:900;box-shadow:0 14px 30px ${P.text}40`, esc(p.prompt)),
+        lineIn(1, `background:${P.dark};color:#fff;border-radius:28px;padding:22px 56px;font-size:48px;font-weight:900;box-shadow:0 14px 30px ${P.text}40`, esc(p.prompt)) +
+        (p.after
+          ? lineIn(2, `display:flex;align-items:center;gap:12px;font-size:26px;font-weight:900;color:${P.text}`, `<span style="font-size:30px">↓</span><span style="background:${P.accent};border-radius:10px;padding:4px 16px">${esc(p.after)}</span><span class="run" style="display:inline-flex;gap:6px">${[0, 1, 2].map((i) => `<i style="width:10px;height:10px;border-radius:5px;background:${P.text};animation:runDot 1s ease-in-out ${i * 0.2}s 12 both"></i>`).join('')}</span><style>@keyframes runDot{0%,100%{opacity:.2}50%{opacity:1}}</style>`, 0.5)
+          : ''),
     ),
   }),
 
@@ -293,7 +307,14 @@ Object.assign(layouts, {
   }),
 
   qa: (p, { palette: P }) => ({
-    body: centerCol(lineIn(0, `font-size:80px;font-weight:900;color:#fff`, esc(p.heading)) + lineIn(1, `font-size:24px;color:${P.darkSub}`, esc(p.sub))),
+    body: centerCol(
+      lineIn(0, `font-size:80px;font-weight:900;color:#fff`, esc(p.heading)) +
+        lineIn(1, `font-size:24px;color:${P.darkSub}`, esc(p.sub)) +
+        // 聽課版：QA 最後附講師聯絡方式（QR 是內嵌 SVG，不用上傳圖片）
+        (p.contact
+          ? lineIn(2, 'margin-top:14px;display:flex;align-items:center;gap:22px;text-align:left', `<div style="width:150px;height:150px;background:#fff;border-radius:12px;padding:8px">${p.contact.qr}</div><div><div style="font-size:16px;color:${P.darkSub}">${esc(p.contact.label)}</div><div style="font-size:30px;font-weight:900;color:#fff;margin-top:4px">${esc(p.contact.handle)}</div></div>`)
+          : ''),
+    ),
   }),
 
   closing: (p, { palette: P }) => ({
@@ -309,15 +330,24 @@ Object.assign(layouts, {
   goalShot: (p, { palette: P, n }) => ({
     body:
       title(p.heading) +
-      abs(`left:44px;top:300px;width:420px;font-size:20px;line-height:1.6;color:${P.muted};border-left:6px solid ${P.accent};padding-left:14px`, esc(p.note), 2) +
+      abs(`left:44px;top:${p.link2 ? 430 : 300}px;width:420px;font-size:20px;line-height:1.6;color:${P.muted};border-left:6px solid ${P.accent};padding-left:14px`, esc(p.note), 2) +
+      (p.shot2
+        ? abs(
+            'left:474px;top:150px;width:360px;background:#fff;border-radius:12px;overflow:hidden;box-shadow:0 12px 32px rgba(0,0,0,.2);border:1px solid #ddd',
+            `<div style="height:22px;background:#eceff3;display:flex;gap:6px;align-items:center;padding-left:10px"><i style="width:9px;height:9px;border-radius:50%;background:#ff5f57"></i><i style="width:9px;height:9px;border-radius:50%;background:#febc2e"></i><i style="width:9px;height:9px;border-radius:50%;background:#28c840"></i></div><img src="${p.shot2[0]}" alt="${esc(p.shot2[1])}" style="display:block;width:100%;aspect-ratio:16/10;object-fit:cover;object-position:top">`,
+            1,
+          )
+        : '') +
       (p.shotSrc
         ? abs(
-            'left:599px;top:132px;width:208px;height:386px;background:#16161a;border-radius:30px;padding:8px;box-sizing:border-box;box-shadow:0 12px 32px rgba(0,0,0,.25)',
-            `<img src="${p.shotSrc}" alt="${esc(p.shot)}" style="display:block;width:100%;height:100%;object-fit:cover;object-position:top;border-radius:22px">`,
+            p.shot2
+              ? 'left:770px;top:226px;width:146px;height:270px;background:#16161a;border-radius:24px;padding:6px;box-sizing:border-box;box-shadow:0 12px 32px rgba(0,0,0,.35)'
+              : 'left:599px;top:132px;width:208px;height:386px;background:#16161a;border-radius:30px;padding:8px;box-sizing:border-box;box-shadow:0 12px 32px rgba(0,0,0,.25)',
+            `<img src="${p.shotSrc}" alt="${esc(p.shot)}" style="display:block;width:100%;height:100%;object-fit:cover;object-position:top;border-radius:${p.shot2 ? 18 : 22}px">`,
             1,
           )
         : ''),
-    natives: [n.link(44, 160, 420, 110, p.link), ...(p.shotSrc ? [] : [n.shotFrame(490, 140, 426, 370, p.shot, P.muted, P.text)])],
+    natives: [n.link(44, 160, 420, 110, p.link), ...(p.link2 ? [n.link(44, 290, 420, 110, p.link2)] : []), ...(p.shotSrc ? [] : [n.shotFrame(490, 140, 426, 370, p.shot, P.muted, P.text)])],
   }),
 
   iconLinks: (p, { palette: P, n }) => {
@@ -351,14 +381,19 @@ Object.assign(layouts, {
   // 操作示範動畫：assets/<demo>.fragment.html（做法見 .claude/skills/operation-demo）
   opDemo: (p, { n }) => ({
     body: title(p.heading) + readFileSync(new URL(`assets/${p.demo}.fragment.html`, import.meta.url), 'utf8'),
-    natives: p.link ? [n.link(644, 412, 272, 96, p.link)] : [],
+    natives: p.link ? [n.link(644, 412, 272, 96, p.link)] : p.copy ? [n.copycard(644, 112, 272, 400, p.cardTitle, p.prompt)] : [],
   }),
 
-  // 照片在左，三句故事依序出現在右，最後一句打上黃底
+  // 照片在左（photos 給兩張時上下疊），三句故事依序出現在右，最後一句打上黃底
   photoStory: (p, { palette: P }) => ({
     body:
       title(p.heading) +
-      abs('left:44px;top:120px;width:520px;height:390px;border-radius:12px;overflow:hidden;box-shadow:0 10px 28px rgba(0,0,0,.2)', `<img src="${p.src}" alt="${esc(p.alt)}" style="display:block;width:100%;height:100%;object-fit:cover">`, 0) +
+      (p.photos || [{ src: p.src, alt: p.alt }])
+        .map((ph, i, all) => {
+          const h = (390 - 10 * (all.length - 1)) / all.length;
+          return abs(`left:44px;top:${120 + i * (h + 10)}px;width:520px;height:${h}px;border-radius:12px;overflow:hidden;box-shadow:0 10px 28px rgba(0,0,0,.2)`, `<img src="${ph.src}" alt="${esc(ph.alt)}" style="display:block;width:100%;height:100%;object-fit:cover${ph.pos ? `;object-position:${ph.pos}` : ''}">`, i);
+        })
+        .join('') +
       `<div style="position:absolute;left:596px;right:44px;top:140px;display:flex;flex-direction:column;gap:22px">${p.lines
         .map((s, i) => {
           const last = i === p.lines.length - 1;
@@ -417,10 +452,98 @@ Object.assign(layouts, {
   }),
 
   homework: (p, { n }) => ({ body: title(p.heading), natives: [n.homework(p.hwId, 70, 130, 820, 400, p.title, p.description)] }),
+  // 聽課版：現場舉手取代投票／搶答；選項依序唸、學員舉手
+  handRaise: (p, { palette: P }) => {
+    const opts = p.options ?? [];
+    const cols = opts.length > 4 ? 2 : 1;
+    const grid = opts.length
+      ? `<div style="position:absolute;left:44px;right:250px;top:170px;display:grid;grid-template-columns:repeat(${cols},1fr);gap:12px 18px">${opts
+          .map(
+            (o, i) =>
+              `<div class="card in" style="${d(i, 0.2, 0.06)};display:flex;align-items:center;gap:14px;padding:12px 16px"><span style="flex:none;width:40px;height:40px;border-radius:50%;background:${P.accent};color:${P.text};font-weight:900;font-size:22px;display:flex;align-items:center;justify-content:center">${String.fromCharCode(65 + i)}</span><span style="font-size:${opts.length > 4 ? 21 : 26}px;font-weight:700">${esc(o)}</span></div>`,
+          )
+          .join('')}</div>`
+      : '';
+    const hand = `<svg class="hand" viewBox="0 0 64 64" width="180" height="180" aria-hidden="true"><path fill="${P.accent}" stroke="${P.text}" stroke-width="2.5" stroke-linejoin="round" d="M22 58c-6-4-10-11-11-18l-2-9c-1-3 3-5 5-2l4 7V12c0-3 5-3 5 0v16-20c0-3 5-3 5 0v20-18c0-3 5-3 5 0v18-14c0-3 5-3 5 0v26c0 9-3 14-6 18z"/></svg>`;
+    return {
+      // 沒有選項：問題放大置中，細節講師現場問
+      body: opts.length
+        ? title(p.heading) + `<div class="in" style="position:absolute;right:44px;bottom:40px;${d(0, 0.1)}">${hand}</div>` + grid
+        : abs('left:44px;right:44px;top:120px;display:flex;flex-direction:column;align-items:center;gap:28px;text-align:center', `<div style="font-size:56px;font-weight:900;line-height:1.3">${esc(p.heading)}</div>${hand}`),
+      natives: [],
+    };
+  },
+  // 同一招兩種結果：左黑卡（對人）、右黃卡（對 AI），中間「同一招」，下方等式與結論條
+  // 同一招：左女朋友、右 AI 機器人，各一個對話泡泡＋同一個動作＋相反結果；底部結論條
+  sameMove: (p, { palette: P }) => {
+    const face = (robot) =>
+      robot
+        ? `<svg width="92" height="92" viewBox="0 0 92 92"><circle cx="46" cy="46" r="44" fill="${P.accent}"/><line x1="46" y1="14" x2="46" y2="24" stroke="${P.text}" stroke-width="4" stroke-linecap="round"/><circle cx="46" cy="12" r="4" fill="${P.text}"/><rect x="22" y="24" width="48" height="40" rx="10" fill="#fff" stroke="${P.text}" stroke-width="4"/><circle cx="36" cy="42" r="5" fill="${P.text}"/><circle cx="56" cy="42" r="5" fill="${P.text}"/><line x1="36" y1="54" x2="56" y2="54" stroke="${P.text}" stroke-width="4" stroke-linecap="round"/><rect x="16" y="38" width="6" height="12" rx="3" fill="${P.text}"/><rect x="70" y="38" width="6" height="12" rx="3" fill="${P.text}"/></svg>`
+        : `<svg width="92" height="92" viewBox="0 0 92 92"><circle cx="46" cy="46" r="44" fill="${P.dark}"/><path d="M20 76 C16 40 24 18 46 18 C68 18 76 40 72 76 Z" fill="#5A4636"/><circle cx="46" cy="46" r="20" fill="#FFE2C6"/><path d="M26 42 C28 28 38 24 46 24 C54 24 64 28 66 42 C58 36 50 32 42 34 C36 36 30 40 26 42 Z" fill="#5A4636"/><line x1="36" y1="42" x2="42" y2="45" stroke="${P.text}" stroke-width="3" stroke-linecap="round"/><line x1="56" y1="42" x2="50" y2="45" stroke="${P.text}" stroke-width="3" stroke-linecap="round"/><path d="M40 57 Q46 53 52 57" fill="none" stroke="${P.text}" stroke-width="3" stroke-linecap="round"/></svg>`;
+    const side = (s, robot, i) =>
+      abs(
+        `left:${robot ? 556 : 44}px;top:124px;width:360px;display:flex;flex-direction:column;align-items:center;text-align:center`,
+        `<div style="display:flex;align-items:center;gap:14px">${face(robot)}<div style="position:relative;background:#fff;border:2px solid ${P.text};border-radius:16px;padding:10px 18px;font-size:26px;font-weight:900;white-space:nowrap">${esc(s.say)}</div></div>` +
+          `<div style="margin-top:18px;font-size:20px;font-weight:700;color:${P.muted}">${esc(s.act)} <b style="color:${s.ok ? '#2E8B57' : '#C0392B'}">${s.ok ? '✓' : '✗'}</b></div>` +
+          `<div style="margin-top:12px;border-radius:14px;padding:10px 26px;font-size:36px;font-weight:900;background:${robot ? P.accent : P.dark};color:${robot ? P.text : '#fff'}">這叫${esc(s.verdict)}</div>`,
+        i * 2,
+        0.2,
+      );
+    return {
+      body:
+        title(p.heading) +
+        side(p.left, false, 0) +
+        abs('left:404px;width:152px;top:210px;text-align:center', `<div style="font-size:22px;font-weight:900">${esc(p.mid)}</div><div style="font-size:40px;font-weight:900;line-height:1">⟶</div>`, 1, 0.2) +
+        side(p.right, true, 1) +
+        (p.give ? abs(
+          `left:44px;right:44px;top:404px;display:flex;align-items:center;gap:16px;background:#fff;border:2px solid ${P.text};border-radius:14px;padding:16px 22px`,
+          `<b style="flex:none;font-size:24px;font-weight:900">${esc(p.give[0])}</b>${p.give[1]
+            .map((g, j) => `${j ? `<span style="font-size:22px;font-weight:900;color:${P.muted}">＋</span>` : ''}<span style="flex:1;text-align:center;background:${P.accent};border-radius:10px;padding:8px 10px;font-size:21px;font-weight:900">${esc(g)}</span>`)
+            .join('')}`,
+          4,
+          0.2,
+        ) : ''),
+      natives: [],
+    };
+  },
+  // 照片牆：左邊 2×2 真照片（每張壓經歷標籤），右邊身份事實卡
+  photoWall: (p, { palette: P }) => ({
+    body:
+      title(p.heading) +
+      `<div style="position:absolute;left:44px;top:112px;width:556px;height:400px;display:grid;grid-template-columns:1fr 1fr;grid-auto-rows:1fr;gap:10px">${p.photos
+        .map(
+          (ph, i) =>
+            `<div class="in" style="${d(i, 0.15, 0.25)};position:relative;border-radius:10px;overflow:hidden;box-shadow:0 6px 18px rgba(0,0,0,.18)">` +
+            `<img src="${ph.src}" alt="${esc(ph.label)}" style="display:block;width:100%;height:100%;object-fit:cover;object-position:${ph.pos ?? 'center'}">` +
+            `<div style="position:absolute;left:0;right:0;bottom:0;padding:18px 12px 8px;background:linear-gradient(transparent,rgba(0,0,0,.78));color:#fff">` +
+            `<b style="display:inline-block;background:${P.accent};color:${P.text};font-size:15px;font-weight:900;border-radius:4px;padding:1px 8px">${esc(ph.label)}</b>` +
+            `<span style="margin-left:8px;font-size:13px;font-weight:700">${esc(ph.sub)}</span></div></div>`,
+        )
+        .join('')}</div>` +
+      `<div style="position:absolute;left:624px;right:44px;top:112px;display:flex;flex-direction:column;gap:12px">${p.facts
+        .map(
+          ([k, v], i) =>
+            `<div class="card in" style="${d(i, 1.2, 0.2)};padding:14px 18px"><div style="font-size:14px;font-weight:700;color:${P.muted}">${esc(k)}</div><div style="font-size:21px;font-weight:900;line-height:1.4;margin-top:2px">${esc(v)}</div></div>`,
+        )
+        .join('')}</div>`,
+    natives: [],
+  }),
+  // 左右兩張截圖對照（v1 → v2），截圖框留原生，講師課前在 Synora 換成真截圖
+  shotPair: (p, { palette: P, n }) => ({
+    body: title(p.heading) + abs(`left:462px;top:300px;font-size:36px;font-weight:900;color:${P.accent}`, '→', 1),
+    natives: p.shots.map((s, i) => n.shotFrame(44 + i * 460, 140, 412, 370, s, P.muted, P.text)),
+  }),
   poll: (p, { n }) => ({ body: '', natives: [n.poll(p.question, p.options)] }),
   multiChoice: (p, { n }) => ({ body: '', natives: [n.poll(p.question, p.options, true)] }),
   quiz: (p, { n }) => ({ body: '', natives: [n.quiz(p.question, p.options, p.correct)] }),
   wordcloud: (p, { n }) => ({ body: '', natives: [n.wordcloud(p.question, p.maxWords)] }),
+  // 標題下左右兩題開放問答
+  openTextPair: (p, { n }) => {
+    const h = p.link ? 300 : 380;
+    const natives = p.questions.map(([q, ph], i, all) => n.opentext(q, ph, all.length === 1 ? [44, 130, 872, h] : [44 + i * 444, 130, 428, h]));
+    if (p.link) natives.push(n.link(44, 446, 872, 70, p.link, 'computer'));
+    return { body: title(p.heading), natives };
+  },
   showcase: (p, { n }) => ({ body: '', natives: [n.showcase(p.title, p.linkHomework)] }),
   webProject: (p, { n }) => ({ body: '', natives: [n.webProject(p.question, p.methods)] }),
 });
